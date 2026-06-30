@@ -39,3 +39,45 @@ order by policyname;
 select id, email, display_name, role, division, is_active
 from public.profiles
 order by created_at;
+
+
+-- Hardening validation
+
+select
+  conname,
+  contype
+from pg_constraint
+where conrelid in (
+  'public.profiles'::regclass,
+  'public.record_posts'::regclass,
+  'public.record_attachments'::regclass,
+  'public.desk_messages'::regclass
+)
+and conname in (
+  'profiles_id_fkey',
+  'record_posts_created_by_fkey',
+  'record_attachments_created_by_fkey',
+  'desk_messages_created_by_fkey',
+  'record_attachments_bucket_check'
+)
+order by conname;
+
+select
+  proname
+from pg_proc
+where proname in (
+  'can_delete_owned_or_founder',
+  'validate_record_attachment_metadata',
+  'set_desk_message_sender_snapshot',
+  'record_attachment_object_matches_post'
+)
+order by proname;
+
+select
+  policyname,
+  cmd
+from pg_policies
+where schemaname = 'storage'
+  and tablename = 'objects'
+  and policyname like 'record_attachment_objects_%'
+order by policyname;

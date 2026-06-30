@@ -378,7 +378,8 @@
       display: flex;
       flex-direction: column;
     }
-    .side-nav nav a {
+    .side-nav nav a,
+    .side-nav nav .nav-reserved {
       font-family: 'Cinzel', serif;
       font-size: 12.5px;
       font-weight: 300;
@@ -403,24 +404,31 @@
       transition-delay: 0s;
     }
 
-    .side-nav nav a .num {
+    .side-nav nav a .num,
+    .side-nav nav .nav-reserved .num {
       font-size: 9px;
       color: rgba(196, 110, 40, 0.5);
       letter-spacing: 0.1em;
       font-family: 'Cormorant Garamond', serif;
       font-style: italic;
     }
-    .side-nav.open nav a {
+    .side-nav.open nav a,
+    .side-nav.open nav .nav-reserved {
       opacity: 1;
       transform: translate3d(0, 0, 0);
       transition-delay: 0s;
     }
 
-    .side-nav.open.entrance-stagger nav a:nth-child(1) { transition-delay: 0.08s; }
-    .side-nav.open.entrance-stagger nav a:nth-child(2) { transition-delay: 0.14s; }
-    .side-nav.open.entrance-stagger nav a:nth-child(3) { transition-delay: 0.20s; }
-    .side-nav.open.entrance-stagger nav a:nth-child(4) { transition-delay: 0.26s; }
-    .side-nav.open.entrance-stagger nav a:nth-child(5) { transition-delay: 0.32s; }
+    .side-nav.open.entrance-stagger nav > *:nth-child(1) { transition-delay: 0.08s; }
+    .side-nav.open.entrance-stagger nav > *:nth-child(2) { transition-delay: 0.14s; }
+    .side-nav.open.entrance-stagger nav > *:nth-child(3) { transition-delay: 0.20s; }
+    .side-nav.open.entrance-stagger nav > *:nth-child(4) { transition-delay: 0.26s; }
+    .side-nav.open.entrance-stagger nav > *:nth-child(5) { transition-delay: 0.32s; }
+
+    .side-nav nav .nav-reserved {
+      color: rgba(242, 237, 228, 0.24);
+      cursor: default;
+    }
 
     .side-nav .nav-footer {
       margin-top: auto;
@@ -830,7 +838,7 @@
       max-height: 124px;
       border: 0;
       background: transparent;
-      resize: vertical;
+      resize: none;
       font-family: 'Cormorant Garamond', serif;
       font-size: 16px;
       font-weight: 300;
@@ -1674,7 +1682,7 @@
     .dashboard-textarea {
       min-height: 44px;
       max-height: 120px;
-      resize: vertical;
+      resize: none;
       padding: 9px 11px;
       line-height: 1.35;
     }
@@ -2321,6 +2329,52 @@
       justify-content: center;
     }
 
+    .internal-auth-form {
+      width: 100%;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .internal-auth-label {
+      align-self: flex-start;
+      font-family: 'Cinzel', serif;
+      font-size: 7px;
+      font-weight: 300;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      color: rgba(242, 237, 228, 0.24);
+    }
+
+    .internal-auth-input {
+      width: 100%;
+      min-height: 36px;
+      border: 1px solid rgba(242, 237, 228, 0.085);
+      background: rgba(8, 5, 3, 0.22);
+      padding: 0 12px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 15px;
+      font-weight: 300;
+      letter-spacing: 0.035em;
+      color: rgba(242, 237, 228, 0.62);
+      outline: none;
+    }
+
+    .internal-auth-input::placeholder {
+      color: rgba(242, 237, 228, 0.22);
+      font-style: italic;
+    }
+
+    .internal-auth-feedback {
+      min-height: 12px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 12px;
+      font-weight: 300;
+      font-style: italic;
+      letter-spacing: 0.035em;
+      color: rgba(232, 192, 122, 0.42);
+      text-align: center;
+    }
+
     .internal-access-button {
       min-height: 34px;
       padding: 0 18px;
@@ -2425,7 +2479,7 @@
 
   </style>
 </head>
-<body data-internal-mode="mock" data-internal-auth="signed_out" data-internal-ready="false" data-internal-route="public" data-internal-feature="public">
+<body data-internal-mode="supabase" data-internal-auth="signed_out" data-internal-ready="false" data-internal-route="public" data-internal-feature="public">
 
   <div class="bg-scene" id="bgScene">
     <div class="orb orb-1"></div>
@@ -2444,8 +2498,8 @@
     <p class="nav-label i18n-text" data-i18n="nav.label">Navigation</p>
     <nav>
       <a href="#home" data-route="home" aria-current="page"><span class="num">I</span> <span class="link-text i18n-text" data-i18n="nav.home">Home</span></a>
-      <a href="#"><span class="num">II</span> <span class="link-text i18n-text" data-i18n="nav.collections">Collections</span></a>
-      <a href="#"><span class="num">III</span> <span class="link-text i18n-text" data-i18n="nav.atelier">Atelier</span></a>
+      <span class="nav-reserved" aria-disabled="true"><span class="num">II</span> <span class="link-text i18n-text" data-i18n="nav.collections">Collections</span></span>
+      <span class="nav-reserved" aria-disabled="true"><span class="num">III</span> <span class="link-text i18n-text" data-i18n="nav.atelier">Atelier</span></span>
       <a href="#gallery" data-route="gallery"><span class="num">IV</span> <span class="link-text i18n-text" data-i18n="nav.gallery">Gallery</span></a>
       <a href="#dashboard" data-route="dashboard"><span class="num">V</span> <span class="link-text i18n-text" data-i18n="nav.dashboard">Dashboard</span></a>
       <a href="#divisions" data-route="divisions"><span class="num">VI</span> <span class="link-text i18n-text" data-i18n="nav.divisions">Divisions</span></a>
@@ -2519,9 +2573,12 @@
             <div class="internal-gate-status" data-internal-status>
               <span class="i18n-text" data-i18n="internal.status.signedOut">Authentication required</span>
             </div>
-            <div class="internal-gate-actions">
-              <button class="internal-access-button i18n-text" type="button" data-internal-mock-sign-in data-i18n="internal.mockAccess">Enter in mock mode</button>
-            </div>
+            <form class="internal-gate-actions internal-auth-form" data-internal-auth-form novalidate>
+              <label class="internal-auth-label i18n-text" data-i18n="internal.emailLabel">Email</label>
+              <input class="internal-auth-input" type="email" inputmode="email" autocomplete="email" data-internal-email data-i18n-placeholder="internal.emailPlaceholder" placeholder="name@moscatelli.co" required>
+              <button class="internal-access-button i18n-text" type="submit" data-internal-auth-submit data-i18n="internal.sendLink">Send access link</button>
+              <div class="internal-auth-feedback" data-internal-auth-feedback aria-live="polite"></div>
+            </form>
           </div>
         </div>
 
@@ -2532,7 +2589,7 @@
           </div>
           <div class="dashboard-filter" id="dashboardFilter">
             <button class="dashboard-filter-trigger" id="dashboardFilterTrigger" type="button" aria-haspopup="listbox" aria-expanded="false">
-              <span class="i18n-text" data-i18n="dashboard.filter">Filter</span>
+              <span class="i18n-text" data-i18n="dashboard.filter">Index</span>
               <span class="dashboard-filter-value i18n-text" id="dashboardFilterValue" data-i18n="dashboard.all">All</span>
             </button>
             <div class="dashboard-filter-menu" id="dashboardFilterMenu" role="listbox" aria-label="Dashboard filter">
@@ -2550,49 +2607,13 @@
         </div>
 
         <div class="dashboard-feed" id="dashboardFeed" aria-live="polite">
-          <article class="dashboard-post" data-category="decisions" data-date="2026-07-02">
-            <div class="dashboard-post-date">II JULY MMXXVI</div>
-            <div class="dashboard-post-main">
-              <span class="dashboard-post-category i18n-text" data-i18n="dashboard.cat.decisions">Decisions</span>
-              <h2>Packaging direction confirmed</h2>
-              <p>Oxblood rigid box, ivory lining, charcoal dust bag, ivory tissue and correspondence card remain the base direction for Lotto I.</p>
-              <div class="dashboard-post-foot">Gianluca Moscatelli · Product / Brand</div>
-            </div>
-          </article>
-          <article class="dashboard-post" data-category="meetings" data-date="2026-06-28">
-            <div class="dashboard-post-date">XXVIII JUNE MMXXVI</div>
-            <div class="dashboard-post-main">
-              <span class="dashboard-post-category i18n-text" data-i18n="dashboard.cat.meetings">Meetings</span>
-              <h2>Lotto I weekly review</h2>
-              <p>Agenda reserved for production timing, supplier follow-up, launch sequence, and visual material priorities.</p>
-              <div class="dashboard-post-foot">Gianluca · Gabriela · Marcella</div>
-            </div>
-          </article>
-          <article class="dashboard-post" data-category="ideas" data-date="2026-06-21">
-            <div class="dashboard-post-date">XXI JUNE MMXXVI</div>
-            <div class="dashboard-post-main">
-              <span class="dashboard-post-category i18n-text" data-i18n="dashboard.cat.ideas">Ideas</span>
-              <h2>Private correspondence card</h2>
-              <p>Explore a restrained ivory card placed inside each box, written as a maison note rather than a commercial insert.</p>
-              <div class="dashboard-post-foot">Gabriela · Brand</div>
-            </div>
-          </article>
-          <article class="dashboard-post" data-category="operations" data-date="2026-06-17">
-            <div class="dashboard-post-date">XVII JUNE MMXXVI</div>
-            <div class="dashboard-post-main">
-              <span class="dashboard-post-category i18n-text" data-i18n="dashboard.cat.operations">Operations</span>
-              <h2>Supplier archive structure</h2>
-              <p>Keep mill contact, fabric notes, MOQ, pricing, delivery expectations, and rejection reasons in a single operational record.</p>
-              <div class="dashboard-post-foot">Marcella · Operations</div>
-            </div>
-          </article>
           <p class="dashboard-empty i18n-text" id="dashboardEmpty" data-i18n="dashboard.empty">No entries in this category.</p>
         </div>
 
         <div class="dashboard-entry">
           <div class="dashboard-entry-meta">
-            <span class="i18n-text" data-i18n="dashboard.newEntry">New Entry</span>
-            <span class="dashboard-entry-note i18n-text" data-i18n="dashboard.localOnly">Private Draft</span>
+            <span class="i18n-text" data-i18n="dashboard.newEntry">New Record</span>
+            <span class="dashboard-entry-note i18n-text" data-i18n="dashboard.localOnly">Private Note</span>
           </div>
           <div class="dashboard-entry-grid">
             <input class="dashboard-input" id="dashboardEntryTitle" type="text" data-i18n-placeholder="dashboard.titlePlaceholder" placeholder="Title">
@@ -2612,14 +2633,14 @@
               </div>
             </div>
           </div>
-          <textarea class="dashboard-textarea" id="dashboardEntryBody" data-i18n-placeholder="dashboard.bodyPlaceholder" placeholder="Write a short internal note..."></textarea>
+          <textarea class="dashboard-textarea" id="dashboardEntryBody" data-i18n-placeholder="dashboard.bodyPlaceholder" placeholder="Write a measured internal note..."></textarea>
           <div class="dashboard-upload-row">
             <label class="dashboard-upload">
               <input id="dashboardAttachmentInput" type="file" accept="image/*" multiple>
-              <span class="i18n-text" data-i18n="dashboard.attach">Attach images</span>
+              <span class="i18n-text" data-i18n="dashboard.attach">Attach plates</span>
             </label>
-            <span class="dashboard-upload-note i18n-text" data-i18n="dashboard.resizeNote">Images are resized locally before preview.</span>
-            <button class="dashboard-commit i18n-text" id="dashboardCommitEntry" type="button" data-i18n="dashboard.commit">Commit Entry</button>
+            <span class="dashboard-upload-note i18n-text" data-i18n="dashboard.resizeNote">Plates are resized locally before preview.</span>
+            <button class="dashboard-commit i18n-text" id="dashboardCommitEntry" type="button" data-i18n="dashboard.commit">Enter into the Record</button>
           </div>
           <div class="dashboard-attachments" id="dashboardAttachments" aria-live="polite"></div>
           <div class="dashboard-attachment-limit i18n-text" id="dashboardAttachmentLimit" data-i18n="dashboard.attachLimit">Maximum four images.</div>
@@ -2659,9 +2680,12 @@
           <div class="internal-gate-status" data-internal-status>
             <span class="i18n-text" data-i18n="internal.status.signedOut">Authentication required</span>
           </div>
-          <div class="internal-gate-actions">
-            <button class="internal-access-button i18n-text" type="button" data-internal-mock-sign-in data-i18n="internal.mockAccess">Enter in mock mode</button>
-          </div>
+          <form class="internal-gate-actions internal-auth-form" data-internal-auth-form novalidate>
+              <label class="internal-auth-label i18n-text" data-i18n="internal.emailLabel">Email</label>
+              <input class="internal-auth-input" type="email" inputmode="email" autocomplete="email" data-internal-email data-i18n-placeholder="internal.emailPlaceholder" placeholder="name@moscatelli.co" required>
+              <button class="internal-access-button i18n-text" type="submit" data-internal-auth-submit data-i18n="internal.sendLink">Send access link</button>
+              <div class="internal-auth-feedback" data-internal-auth-feedback aria-live="polite"></div>
+            </form>
         </div>
       </div>
     </section>
@@ -2674,9 +2698,12 @@
           <div class="internal-gate-status" data-internal-status>
             <span class="i18n-text" data-i18n="internal.status.signedOut">Authentication required</span>
           </div>
-          <div class="internal-gate-actions">
-            <button class="internal-access-button i18n-text" type="button" data-internal-mock-sign-in data-i18n="internal.mockAccess">Enter in mock mode</button>
-          </div>
+          <form class="internal-gate-actions internal-auth-form" data-internal-auth-form novalidate>
+              <label class="internal-auth-label i18n-text" data-i18n="internal.emailLabel">Email</label>
+              <input class="internal-auth-input" type="email" inputmode="email" autocomplete="email" data-internal-email data-i18n-placeholder="internal.emailPlaceholder" placeholder="name@moscatelli.co" required>
+              <button class="internal-access-button i18n-text" type="submit" data-internal-auth-submit data-i18n="internal.sendLink">Send access link</button>
+              <div class="internal-auth-feedback" data-internal-auth-feedback aria-live="polite"></div>
+            </form>
         </div>
       </div>
     </section>
@@ -2689,9 +2716,12 @@
           <div class="internal-gate-status" data-internal-status>
             <span class="i18n-text" data-i18n="internal.status.signedOut">Authentication required</span>
           </div>
-          <div class="internal-gate-actions">
-            <button class="internal-access-button i18n-text" type="button" data-internal-mock-sign-in data-i18n="internal.mockAccess">Enter in mock mode</button>
-          </div>
+          <form class="internal-gate-actions internal-auth-form" data-internal-auth-form novalidate>
+              <label class="internal-auth-label i18n-text" data-i18n="internal.emailLabel">Email</label>
+              <input class="internal-auth-input" type="email" inputmode="email" autocomplete="email" data-internal-email data-i18n-placeholder="internal.emailPlaceholder" placeholder="name@moscatelli.co" required>
+              <button class="internal-access-button i18n-text" type="submit" data-internal-auth-submit data-i18n="internal.sendLink">Send access link</button>
+              <div class="internal-auth-feedback" data-internal-auth-feedback aria-live="polite"></div>
+            </form>
         </div>
       </div>
     </section>
@@ -2727,9 +2757,12 @@
           <div class="internal-gate-status" data-internal-status>
             <span class="i18n-text" data-i18n="internal.status.signedOut">Authentication required</span>
           </div>
-          <div class="internal-gate-actions">
-            <button class="internal-access-button i18n-text" type="button" data-internal-mock-sign-in data-i18n="internal.mockAccess">Enter in mock mode</button>
-          </div>
+          <form class="internal-gate-actions internal-auth-form" data-internal-auth-form novalidate>
+              <label class="internal-auth-label i18n-text" data-i18n="internal.emailLabel">Email</label>
+              <input class="internal-auth-input" type="email" inputmode="email" autocomplete="email" data-internal-email data-i18n-placeholder="internal.emailPlaceholder" placeholder="name@moscatelli.co" required>
+              <button class="internal-access-button i18n-text" type="submit" data-internal-auth-submit data-i18n="internal.sendLink">Send access link</button>
+              <div class="internal-auth-feedback" data-internal-auth-feedback aria-live="polite"></div>
+            </form>
         </div>
       </div>
 
@@ -2745,15 +2778,16 @@
 
       <form class="desk-composer" id="deskComposer" data-desk-composer aria-label="Desk message composer">
         <label class="desk-composer-label i18n-text" for="deskMessageInput" data-i18n="desk.composer">Correspondence field</label>
-        <textarea class="desk-message-input" id="deskMessageInput" rows="2" data-desk-message-input data-i18n-placeholder="desk.placeholder" placeholder="Write a quiet internal note…"></textarea>
+        <textarea class="desk-message-input" id="deskMessageInput" rows="2" data-desk-message-input data-i18n-placeholder="desk.placeholder" placeholder="Write a quiet correspondence…"></textarea>
         <div class="desk-composer-row">
           <span class="desk-composer-meta" id="deskComposerMeta" data-desk-composer-meta></span>
-          <button class="desk-send i18n-text" id="deskSendMessage" type="submit" data-i18n="desk.send">Send</button>
+          <button class="desk-send i18n-text" id="deskSendMessage" type="submit" data-i18n="desk.send">Dispatch</button>
         </div>
       </form>
     </div>
   </aside>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
     const bgScene   = document.getElementById('bgScene');
     const header    = document.getElementById('header');
@@ -2792,6 +2826,10 @@
     const internalSessionUser = document.getElementById('internalSessionUser');
     const internalSignOut = document.getElementById('internalSignOut');
     const internalMockSignInButtons = document.querySelectorAll('[data-internal-mock-sign-in]');
+    const internalAuthForms = document.querySelectorAll('[data-internal-auth-form]');
+    const internalAuthEmailInputs = document.querySelectorAll('[data-internal-email]');
+    const internalAuthSubmitButtons = document.querySelectorAll('[data-internal-auth-submit]');
+    const internalAuthFeedbacks = document.querySelectorAll('[data-internal-auth-feedback]');
     const internalStatusElements = document.querySelectorAll('[data-internal-status]');
 
     const ROUTES = Object.freeze({
@@ -2910,12 +2948,12 @@
     });
 
     const INTERNAL_CONFIG = Object.freeze({
-      mode: 'mock',
-      supabaseEnabled: false,
+      mode: 'supabase',
+      supabaseEnabled: true,
       supabase: Object.freeze({
-        url: '',
-        anonKey: '',
-        redirectTo: `${window.location.origin}${window.location.pathname}`
+        url: 'https://htxzyqjynthuxrhnfcrj.supabase.co',
+        anonKey: 'sb_publishable_TIHcoDVmM3gezwSce3SA6g_QY8clFCB',
+        redirectTo: 'https://gianmoska-prog.github.io/MainHub/'
       }),
       auth: Object.freeze({
         persistSession: true,
@@ -3058,11 +3096,56 @@
 
       const auth = {
         async getSession() {
-          return {
-            user: InternalState.user,
-            session: InternalState.session,
-            mode: getInternalMode()
-          };
+          if (getInternalMode() !== 'supabase') {
+            return {
+              user: InternalState.user,
+              session: InternalState.session,
+              mode: getInternalMode()
+            };
+          }
+
+          const client = createInternalSupabaseClient();
+          if (!client) {
+            return { user: null, session: null, mode: 'supabase', error: 'client_unavailable' };
+          }
+
+          const { data, error } = await client.auth.getSession();
+          if (error) {
+            dataEvent('auth-session-error', { error });
+            return { user: null, session: null, mode: 'supabase', error };
+          }
+
+          const session = data?.session || null;
+          const user = session?.user ? await profileFromSupabaseUser(session.user) : null;
+
+          return { user, session, mode: 'supabase' };
+        },
+
+        async signInWithEmail(email) {
+          if (getInternalMode() !== 'supabase') {
+            const result = await this.signInMock(INTERNAL_MOCK_USER);
+            return { ok: true, ...result };
+          }
+
+          const client = createInternalSupabaseClient();
+          if (!client) {
+            return { ok: false, error: 'client_unavailable' };
+          }
+
+          const { error } = await client.auth.signInWithOtp({
+            email,
+            options: {
+              emailRedirectTo: INTERNAL_CONFIG.supabase.redirectTo
+            }
+          });
+
+          if (error) {
+            dataEvent('auth-link-error', { error });
+            return { ok: false, error };
+          }
+
+          dataEvent('auth-link-sent', { email });
+          return { ok: true, email };
         },
 
         async signInMock(user = INTERNAL_MOCK_USER) {
@@ -3078,6 +3161,11 @@
         },
 
         async signOut() {
+          if (getInternalMode() === 'supabase') {
+            const client = createInternalSupabaseClient();
+            if (client) await client.auth.signOut();
+          }
+
           dataEvent('auth-sign-out');
           return { ok: true };
         }
@@ -3213,23 +3301,23 @@
         'nav.dashboard': 'Dashboard',
         'dashboard.title': 'The Record',
         'dashboard.kicker': 'Internal Ledger',
-        'dashboard.filter': 'Filter',
+        'dashboard.filter': 'Index',
         'dashboard.all': 'All',
-        'dashboard.newEntry': 'New Entry',
-        'dashboard.localOnly': 'Private Draft',
+        'dashboard.newEntry': 'New Record',
+        'dashboard.localOnly': 'Private Note',
         'dashboard.titlePlaceholder': 'Title',
-        'dashboard.bodyPlaceholder': 'Write a short internal note...',
-        'dashboard.attach': 'Attach images',
+        'dashboard.bodyPlaceholder': 'Write a measured internal note...',
+        'dashboard.attach': 'Attach plates',
         'dashboard.attachLimit': 'Maximum four images.',
-        'dashboard.commit': 'Commit Entry',
-        'dashboard.recording': 'Recording…',
-        'dashboard.recorded': 'Entry recorded',
+        'dashboard.commit': 'Enter into the Record',
+        'dashboard.recording': 'Entering…',
+        'dashboard.recorded': 'Entered into the Record',
         'dashboard.delete': 'Delete',
         'dashboard.deleted': 'Entry deleted',
-        'dashboard.empty': 'No entries in this category.',
+        'dashboard.empty': 'No records in this index.',
         'dashboard.untitled': 'Untitled entry',
         'dashboard.authorLocal': 'Local draft · Not saved',
-        'dashboard.resizeNote': 'Images are resized locally before preview.',
+        'dashboard.resizeNote': 'Plates are resized locally before preview.',
         'dashboard.cat.meetings': 'Meetings',
         'dashboard.cat.ideas': 'Ideas',
         'dashboard.cat.decisions': 'Decisions',
@@ -3258,16 +3346,23 @@
         'internal.recordSource.mock': 'Mock record',
         'internal.recordSource.supabase': 'Live record',
         'internal.mockAccess': 'Enter in mock mode',
+        'internal.emailLabel': 'Email',
+        'internal.emailPlaceholder': 'name@moscatelli.co',
+        'internal.sendLink': 'Send access link',
         'internal.signOut': 'Sign out',
         'internal.signedInAs': 'Signed in as',
         'internal.status.signedOut': 'Authentication required',
         'internal.status.checking': 'Verifying access…',
         'internal.status.signedIn': 'Access granted',
+        'internal.status.linkSent': 'Access link sent. Check your email.',
+        'internal.status.configError': 'Connection unavailable. Check Supabase settings.',
+        'internal.status.authError': 'Access could not be sent.',
+        'internal.status.inactive': 'Profile not active yet.',
         'desk.composer': 'Correspondence field',
-        'desk.placeholder': 'Write a quiet internal note…',
-        'desk.send': 'Send',
-        'desk.empty': 'No correspondence yet.',
-        'desk.local': 'Local correspondence',
+        'desk.placeholder': 'Write a quiet correspondence…',
+        'desk.send': 'Dispatch',
+        'desk.empty': 'No correspondence has been entered.',
+        'desk.local': 'Local dispatch',
         'desk.locked': 'Sign in to write.',
         'desk.ready': 'Ready for internal correspondence.',
         'footer.rights': 'All rights reserved',
@@ -3295,17 +3390,17 @@
         'dashboard.filter': 'Filtrar',
         'dashboard.all': 'Tudo',
         'dashboard.newEntry': 'Nova Entrada',
-        'dashboard.localOnly': 'Rascunho privado',
+        'dashboard.localOnly': 'Nota privada',
         'dashboard.titlePlaceholder': 'Título',
         'dashboard.bodyPlaceholder': 'Escreva uma breve nota interna...',
-        'dashboard.attach': 'Anexar imagens',
+        'dashboard.attach': 'Anexar pranchas',
         'dashboard.attachLimit': 'Máximo de quatro imagens.',
-        'dashboard.commit': 'Registrar entrada',
-        'dashboard.recording': 'Registrando…',
-        'dashboard.recorded': 'Entrada registrada',
+        'dashboard.commit': 'Registrar no Livro',
+        'dashboard.recording': 'Inscrevendo…',
+        'dashboard.recorded': 'Registro inscrito',
         'dashboard.delete': 'Apagar',
         'dashboard.deleted': 'Entrada apagada',
-        'dashboard.empty': 'Nenhuma entrada nesta categoria.',
+        'dashboard.empty': 'Nenhum registro neste índice.',
         'dashboard.untitled': 'Entrada sem título',
         'dashboard.authorLocal': 'Rascunho local · Não salvo',
         'dashboard.resizeNote': 'As imagens são redimensionadas localmente antes da pré-visualização.',
@@ -3337,16 +3432,23 @@
         'internal.recordSource.mock': 'Registro local',
         'internal.recordSource.supabase': 'Registro ativo',
         'internal.mockAccess': 'Entrar em modo local',
+        'internal.emailLabel': 'Email',
+        'internal.emailPlaceholder': 'nome@moscatelli.co',
+        'internal.sendLink': 'Enviar link de acesso',
         'internal.signOut': 'Sair',
         'internal.signedInAs': 'Sessão de',
         'internal.status.signedOut': 'Autenticação necessária',
         'internal.status.checking': 'Verificando acesso…',
         'internal.status.signedIn': 'Acesso concedido',
+        'internal.status.linkSent': 'Link de acesso enviado. Verifique seu email.',
+        'internal.status.configError': 'Conexão indisponível. Verifique o Supabase.',
+        'internal.status.authError': 'Não foi possível enviar o acesso.',
+        'internal.status.inactive': 'Perfil ainda não está ativo.',
         'desk.composer': 'Campo de correspondência',
-        'desk.placeholder': 'Escreva uma nota interna discreta…',
-        'desk.send': 'Enviar',
+        'desk.placeholder': 'Escreva uma correspondência discreta…',
+        'desk.send': 'Despachar',
         'desk.empty': 'Ainda não há correspondência.',
-        'desk.local': 'Correspondência local',
+        'desk.local': 'Despacho local',
         'desk.locked': 'Entre para escrever.',
         'desk.ready': 'Pronto para correspondência interna.',
         'footer.rights': 'Todos os direitos reservados',
@@ -3461,6 +3563,69 @@
       );
     }
 
+    function createInternalSupabaseClient() {
+      if (!isInternalSupabaseEnabled()) return null;
+      if (InternalState.supabaseClient) return InternalState.supabaseClient;
+
+      const factory = window.supabase?.createClient;
+      if (!factory) {
+        internalAccessEvent('supabase-client-missing', { url: INTERNAL_CONFIG.supabase.url });
+        return null;
+      }
+
+      InternalState.supabaseClient = factory(
+        INTERNAL_CONFIG.supabase.url,
+        INTERNAL_CONFIG.supabase.anonKey,
+        {
+          auth: {
+            persistSession: INTERNAL_CONFIG.auth.persistSession,
+            autoRefreshToken: INTERNAL_CONFIG.auth.autoRefreshToken,
+            detectSessionInUrl: INTERNAL_CONFIG.auth.detectSessionInUrl
+          }
+        }
+      );
+
+      return InternalState.supabaseClient;
+    }
+
+    async function profileFromSupabaseUser(authUser) {
+      if (!authUser) return null;
+
+      const fallback = {
+        id: authUser.id,
+        email: authUser.email || '',
+        displayName: authUser.user_metadata?.display_name || authUser.email?.split('@')[0] || 'Member',
+        role: 'member',
+        division: 'all',
+        isActive: false,
+        provider: 'supabase'
+      };
+
+      const client = createInternalSupabaseClient();
+      if (!client) return fallback;
+
+      const { data, error } = await client
+        .from('profiles')
+        .select('id,email,display_name,role,division,is_active')
+        .eq('id', authUser.id)
+        .maybeSingle();
+
+      if (error || !data) {
+        internalAccessEvent('profile-missing', { error, userId: authUser.id });
+        return fallback;
+      }
+
+      return {
+        id: data.id,
+        email: data.email || authUser.email || '',
+        displayName: data.display_name || fallback.displayName,
+        role: data.role || 'member',
+        division: data.division || 'all',
+        isActive: Boolean(data.is_active),
+        provider: 'supabase'
+      };
+    }
+
     function getInternalMode() {
       return isInternalSupabaseEnabled() ? 'supabase' : 'mock';
     }
@@ -3486,6 +3651,14 @@
     }
 
     function setInternalUser(user, session = null) {
+      if (user && user.provider === 'supabase' && !user.isActive) {
+        InternalState.user = null;
+        InternalState.session = null;
+        setInternalAuthStatus('inactive');
+        internalAccessEvent('inactive-user', { user });
+        return;
+      }
+
       InternalState.user = user || null;
       InternalState.session = session;
       setInternalAuthStatus(user ? 'signed_in' : 'signed_out');
@@ -3578,7 +3751,7 @@
       lockInternalAreas();
     }
 
-    function initInternalAccessLayer() {
+    async function initInternalAccessLayer() {
       InternalState.mode = getInternalMode();
       document.body.dataset.internalMode = InternalState.mode;
 
@@ -3592,13 +3765,57 @@
 
       setInternalAuthStatus('checking');
       setInternalReadyState(false);
-      internalAccessEvent('supabase-pending', { config: INTERNAL_CONFIG });
+
+      const client = createInternalSupabaseClient();
+      if (!client) {
+        setInternalAuthStatus('config_error');
+        setInternalReadyState(true);
+        lockInternalAreas();
+        updateInternalAccessUI();
+        internalAccessEvent('supabase-client-unavailable', { config: INTERNAL_CONFIG });
+        return;
+      }
+
+      const sessionResult = await InternalData.auth.getSession();
+      if (sessionResult.user) {
+        setInternalUser(sessionResult.user, sessionResult.session);
+        unlockInternalAreas();
+        restorePendingInternalRoute();
+        clearSupabaseAuthCallbackUrl(currentRoute || routeFromHash());
+      } else {
+        clearInternalUser();
+        lockInternalAreas();
+        clearSupabaseAuthCallbackUrl(currentRoute || ROUTES.HOME);
+      }
+
+      setInternalReadyState(true);
+      updateInternalAccessUI();
+      applyInternalRouteProtection(currentRoute || routeFromHash());
+      internalAccessEvent('supabase-ready', { user: InternalState.user });
+
+      client.auth.onAuthStateChange(async (_event, session) => {
+        if (session?.user) {
+          const user = await profileFromSupabaseUser(session.user);
+          setInternalUser(user, session);
+          unlockInternalAreas();
+          restorePendingInternalRoute();
+          clearSupabaseAuthCallbackUrl(currentRoute || routeFromHash());
+        } else {
+          clearInternalUser();
+          lockInternalAreas();
+          clearSupabaseAuthCallbackUrl(currentRoute || ROUTES.HOME);
+        }
+
+        updateInternalAccessUI();
+        applyInternalRouteProtection(currentRoute || routeFromHash());
+      });
     }
 
     window.MoscatelliInternal = Object.freeze({
       config: INTERNAL_CONFIG,
       state: InternalState,
       data: InternalData,
+      getSupabaseClient: createInternalSupabaseClient,
       dashboard: DASHBOARD_DATA_CONFIG,
       desk: DESK_DATA_CONFIG,
       roles: INTERNAL_ROLES,
@@ -3618,6 +3835,10 @@
     function internalStatusKey() {
       if (InternalState.authStatus === 'checking') return 'internal.status.checking';
       if (InternalState.authStatus === 'signed_in') return 'internal.status.signedIn';
+      if (InternalState.authStatus === 'link_sent') return 'internal.status.linkSent';
+      if (InternalState.authStatus === 'config_error') return 'internal.status.configError';
+      if (InternalState.authStatus === 'auth_error') return 'internal.status.authError';
+      if (InternalState.authStatus === 'inactive') return 'internal.status.inactive';
       return 'internal.status.signedOut';
     }
 
@@ -3627,6 +3848,16 @@
 
       internalStatusElements.forEach(element => {
         element.textContent = statusText;
+      });
+
+      internalAuthFeedbacks.forEach(element => {
+        element.textContent = ['link_sent', 'auth_error', 'config_error', 'inactive'].includes(InternalState.authStatus)
+          ? statusText
+          : '';
+      });
+
+      internalAuthSubmitButtons.forEach(button => {
+        button.disabled = InternalState.authStatus === 'checking' || InternalState.authStatus === 'signed_in';
       });
 
       if (internalSessionUser) {
@@ -3640,22 +3871,50 @@
       updateInternalGateVisibility();
     }
 
-    function requestMockInternalAccess() {
+    async function requestInternalEmailAccess(event) {
+      event?.preventDefault?.();
+
+      const form = event?.currentTarget;
+      const emailInput = form?.querySelector('[data-internal-email]') || internalAuthEmailInputs[0];
+      const email = emailInput?.value.trim();
+
+      if (!email) {
+        setInternalAuthStatus('auth_error');
+        updateInternalAccessUI();
+        return;
+      }
+
+      rememberPendingInternalRoute(currentRoute || routeFromHash());
       setInternalAuthStatus('checking');
       updateInternalAccessUI();
 
-      setTimeout(async () => {
+      const result = await InternalData.auth.signInWithEmail(email);
+
+      if (result.ok && getInternalMode() === 'supabase') {
+        setInternalAuthStatus('link_sent');
+      } else if (result.ok) {
         await mockSignInInternalUser();
         applyInternalRouteProtection(currentRoute);
-        updateInternalAccessUI();
-      }, 520);
+      } else {
+        setInternalAuthStatus(result.error === 'client_unavailable' ? 'config_error' : 'auth_error');
+      }
+
+      updateInternalAccessUI();
+    }
+
+    function requestMockInternalAccess() {
+      requestInternalEmailAccess();
     }
 
     async function requestInternalSignOut() {
-      await mockSignOutInternalUser();
+      await InternalData.auth.signOut();
+      clearInternalUser();
+      lockInternalAreas();
       applyInternalRouteProtection(currentRoute);
       updateInternalAccessUI();
     }
+
+    const INTERNAL_PENDING_ROUTE_KEY = 'moscatelli:pending-internal-route';
 
     function normaliseRoute(route) {
       const cleanRoute = String(route || '')
@@ -3666,7 +3925,67 @@
       return VALID_ROUTES.has(cleanRoute) ? cleanRoute : ROUTES.HOME;
     }
 
+    function hasSupabaseAuthParams(value = '') {
+      const raw = String(value || '').replace(/^#/, '').replace(/^\?/, '');
+      if (!raw) return false;
+
+      const params = new URLSearchParams(raw);
+      return (
+        params.has('access_token') ||
+        params.has('refresh_token') ||
+        params.has('error') ||
+        params.has('error_code') ||
+        params.has('code')
+      );
+    }
+
+    function hasSupabaseAuthCallbackUrl() {
+      return hasSupabaseAuthParams(window.location.hash) || hasSupabaseAuthParams(window.location.search);
+    }
+
+    function rememberPendingInternalRoute(route) {
+      const safeRoute = normaliseRoute(route);
+      if (!isInternalRoute(safeRoute)) return;
+
+      try {
+        localStorage.setItem(INTERNAL_PENDING_ROUTE_KEY, safeRoute);
+      } catch {
+        // Private browsing or storage restrictions should not block authentication.
+      }
+    }
+
+    function consumePendingInternalRoute() {
+      try {
+        const storedRoute = normaliseRoute(localStorage.getItem(INTERNAL_PENDING_ROUTE_KEY));
+        localStorage.removeItem(INTERNAL_PENDING_ROUTE_KEY);
+        return isInternalRoute(storedRoute) ? storedRoute : null;
+      } catch {
+        return null;
+      }
+    }
+
+    function restorePendingInternalRoute() {
+      const pendingRoute = consumePendingInternalRoute();
+      if (!pendingRoute) return false;
+
+      history.replaceState({ route: pendingRoute }, '', `#${pendingRoute}`);
+      applyRoute(pendingRoute);
+      return true;
+    }
+
+    function clearSupabaseAuthCallbackUrl(route = currentRoute || ROUTES.HOME) {
+      if (!hasSupabaseAuthCallbackUrl()) return;
+
+      const safeRoute = normaliseRoute(route);
+      const routeHash = safeRoute === ROUTES.HOME ? '' : `#${safeRoute}`;
+      history.replaceState({ route: safeRoute }, '', `${window.location.origin}${window.location.pathname}${routeHash}`);
+    }
+
     function routeFromHash() {
+      if (hasSupabaseAuthParams(window.location.hash)) {
+        return currentRoute || ROUTES.HOME;
+      }
+
       const rawHash = window.location.hash.replace('#', '');
 
       try {
@@ -3822,7 +4141,14 @@
     }
 
     window.addEventListener('popstate', () => applyRoute(routeFromHash()));
-    window.addEventListener('hashchange', () => applyRoute(routeFromHash()));
+    window.addEventListener('hashchange', () => {
+      if (hasSupabaseAuthCallbackUrl()) {
+        initInternalAccessLayer();
+        return;
+      }
+
+      applyRoute(routeFromHash());
+    });
 
     // ── Desktop slit-gallery interaction ──
     function getGalleryGap() {
@@ -3963,6 +4289,30 @@
       updateMenuAria();
     }
 
+    function detectDefaultLanguage() {
+      try {
+        const storedLanguage = localStorage.getItem('moscatelli:language');
+        if (translations[storedLanguage]) return storedLanguage;
+      } catch {
+        // Local storage should never block the page.
+      }
+
+      const browserLanguage = navigator.language || '';
+      return browserLanguage.toLowerCase().startsWith('pt') ? 'pt' : 'en';
+    }
+
+    const initialLanguage = detectDefaultLanguage();
+    if (initialLanguage !== currentLang) {
+      setLanguage(initialLanguage);
+    } else {
+      updateLangControls(currentLang);
+      updateMenuAria();
+    }
+
+    internalAuthForms.forEach(form => {
+      form.addEventListener('submit', requestInternalEmailAccess);
+    });
+
     internalMockSignInButtons.forEach(button => {
       button.addEventListener('click', requestMockInternalAccess);
     });
@@ -3978,6 +4328,7 @@
         e.preventDefault();
         e.stopPropagation();
         setLanguage(button.dataset.lang);
+        try { localStorage.setItem('moscatelli:language', currentLang); } catch {}
         releaseTapFocus();
       });
       button.addEventListener('keydown', e => {
@@ -3985,6 +4336,7 @@
         e.preventDefault();
         e.stopPropagation();
         setLanguage(button.dataset.lang);
+        try { localStorage.setItem('moscatelli:language', currentLang); } catch {}
         releaseTapFocus();
       });
     });
@@ -4324,7 +4676,17 @@
       return result;
     }
 
-    function formatLedgerDate(date) {
+    function normaliseLedgerDate(value) {
+      const date = value instanceof Date ? value : new Date(value || Date.now());
+      return Number.isNaN(date.getTime()) ? new Date() : date;
+    }
+
+    function ledgerDateIso(value) {
+      return normaliseLedgerDate(value).toISOString().slice(0, 10);
+    }
+
+    function formatLedgerDate(value) {
+      const date = normaliseLedgerDate(value);
       const months = {
         en: ['JANUARY', 'FEBRUARY', 'MARCH', 'APRIL', 'MAY', 'JUNE', 'JULY', 'AUGUST', 'SEPTEMBER', 'OCTOBER', 'NOVEMBER', 'DECEMBER'],
         pt: ['JANEIRO', 'FEVEREIRO', 'MARÇO', 'ABRIL', 'MAIO', 'JUNHO', 'JULHO', 'AGOSTO', 'SETEMBRO', 'OUTUBRO', 'NOVEMBRO', 'DEZEMBRO']
@@ -4411,7 +4773,7 @@
 
       post.dataset.postId = record.id;
       post.dataset.category = record.category;
-      post.dataset.date = String(record.created_at || '').slice(0, 10);
+      post.dataset.date = ledgerDateIso(record.created_at);
       post.dataset.owned = String(permissions.owned);
       post.dataset.canDelete = String(permissions.can_delete);
       post.dataset.createdBy = record.created_by || '';
@@ -4423,8 +4785,8 @@
     function renderDashboardPostRecord(record, { prepend = true } = {}) {
       if (!dashboardFeed || !record) return null;
 
-      const createdAt = new Date(record.created_at);
-      const dateIso = record.created_at.slice(0, 10);
+      const createdAt = normaliseLedgerDate(record.created_at);
+      const dateIso = ledgerDateIso(record.created_at);
 
       const post = document.createElement('article');
       post.className = record.source === 'mock' ? 'dashboard-post is-local' : 'dashboard-post';

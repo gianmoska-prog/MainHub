@@ -55,7 +55,7 @@ stable
 security definer
 set search_path = public
 as $$
-  select coalesce(owner_id = auth.uid() or public.is_founder(), false);
+  select coalesce(public.is_internal_member() and (owner_id = auth.uid() or public.is_founder()), false);
 $$;
 
 -- Profiles

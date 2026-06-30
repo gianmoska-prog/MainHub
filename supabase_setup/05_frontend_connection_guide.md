@@ -1,61 +1,36 @@
-# MOSCATELLI — Future frontend connection guide
+# MOSCATELLI — Frontend connection notes
 
-The current site is still in mock mode.
+This site build already includes the first live Supabase Auth connection layer:
 
-When the Supabase project exists, the future connection patch should do four things.
+- `@supabase/supabase-js@2`
+- browser-safe publishable key usage
+- `signInWithOtp`
+- session restoration
+- `onAuthStateChange`
+- profile lookup from `public.profiles`
+- inactive profile handling
+- real sign out
+- GitHub Pages redirect URL support
 
-## 1. Add the Supabase client script
+The Record and The Desk still use the local/mock data adapter for entries, messages, and attachments. That is intentional for this stage: the authentication gate is live first; persistent Record/Desk data should be connected in a later patch without redesigning the UI.
 
-Recommended browser module approach:
+## Current live Auth flow
 
-```html
-<script type="module">
-  import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
-</script>
-```
-
-Or bundle it later if the site moves into a build system.
-
-## 2. Fill the config
-
-Current placeholder:
+Expected browser-side flow:
 
 ```js
-const INTERNAL_CONFIG = Object.freeze({
-  mode: 'mock',
-  supabaseEnabled: false,
-  supabase: Object.freeze({
-    url: '',
-    anonKey: '',
-    redirectTo: `${window.location.origin}${window.location.pathname}`
-  })
-});
+supabase.auth.getSession()
+supabase.auth.signInWithOtp({ email, options: { emailRedirectTo } })
+supabase.auth.onAuthStateChange(...)
+supabase.auth.signOut()
+supabase.from('profiles').select(...)
 ```
 
-Future live version:
+## Later data-persistence patch
+
+Keep the current `InternalData` interface and replace only the internal implementations of:
 
 ```js
-const INTERNAL_CONFIG = Object.freeze({
-  mode: 'supabase',
-  supabaseEnabled: true,
-  supabase: Object.freeze({
-    url: 'https://YOUR_PROJECT_ID.supabase.co',
-    anonKey: 'YOUR_PUBLIC_ANON_KEY',
-    redirectTo: `${window.location.origin}${window.location.pathname}`
-  })
-});
-```
-
-## 3. Replace adapter internals, not UI code
-
-Keep the current `InternalData` shape.
-
-Replace only the inside of:
-
-```js
-InternalData.auth.getSession()
-InternalData.auth.signInMock()
-InternalData.auth.signOut()
 InternalData.posts.list()
 InternalData.posts.create()
 InternalData.posts.remove()
@@ -64,16 +39,9 @@ InternalData.messages.send()
 InternalData.attachments.fromComposer()
 ```
 
-The Record and The Desk should not need a visual redesign.
-
-## 4. Expected Supabase methods later
-
-Typical future methods:
+Expected Supabase methods later:
 
 ```js
-supabase.auth.getSession()
-supabase.auth.signInWithOtp({ email, options: { emailRedirectTo } })
-supabase.auth.signOut()
 supabase.from('record_posts').select(...)
 supabase.from('record_posts').insert(...)
 supabase.from('record_posts').delete(...)
@@ -83,12 +51,13 @@ supabase.storage.from('record-attachments').upload(...)
 supabase.channel(...).on('postgres_changes', ...)
 ```
 
-## 5. Path convention for attachments
+## GitHub Pages redirect URLs
 
-Use:
+Add both in Supabase Auth redirect allow-list:
 
 ```text
-{auth.uid()}/{post_id}/{filename}
+https://gianmoska-prog.github.io/MainHub/
+https://gianmoska-prog.github.io/MainHub/index.html
 ```
 
-That matches the Storage policies in `03_storage.sql`.
+The frontend also stores the pending internal route before sending the email link, then restores it after Supabase completes the login callback.
