@@ -1,16 +1,16 @@
 # MOSCATELLI — Frontend connection notes
 
-This site build already includes the first live Supabase Auth connection layer:
+This site build includes the first live Supabase Auth connection layer:
 
 - `@supabase/supabase-js@2`
 - browser-safe publishable key usage
-- `signInWithOtp`
+- `signInWithPassword`
 - session restoration
 - `onAuthStateChange`
 - profile lookup from `public.profiles`
 - inactive profile handling
 - real sign out
-- GitHub Pages redirect URL support
+- GitHub Pages URL support
 
 The Record and The Desk still use the local/mock data adapter for entries, messages, and attachments. That is intentional for this stage: the authentication gate is live first; persistent Record/Desk data should be connected in a later patch without redesigning the UI.
 
@@ -20,7 +20,7 @@ Expected browser-side flow:
 
 ```js
 supabase.auth.getSession()
-supabase.auth.signInWithOtp({ email, options: { emailRedirectTo } })
+supabase.auth.signInWithPassword({ email, password })
 supabase.auth.onAuthStateChange(...)
 supabase.auth.signOut()
 supabase.from('profiles').select(...)
@@ -51,13 +51,13 @@ supabase.storage.from('record-attachments').upload(...)
 supabase.channel(...).on('postgres_changes', ...)
 ```
 
-## GitHub Pages redirect URLs
+## GitHub Pages URLs
 
-Add both in Supabase Auth redirect allow-list:
+Keep both in Supabase Auth redirect allow-list for future recovery/confirmation flows:
 
 ```text
 https://gianmoska-prog.github.io/MainHub/
 https://gianmoska-prog.github.io/MainHub/index.html
 ```
 
-The frontend also stores the pending internal route before sending the email link, then restores it after Supabase completes the login callback.
+Password login itself does not require a magic-link redirect callback.

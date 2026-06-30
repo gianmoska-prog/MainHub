@@ -4,38 +4,40 @@ Use this after creating the Supabase project.
 
 ## Auth strategy
 
-Recommended: invite-only email authentication using magic link / OTP.
+Recommended for the current build: invite-only email and password authentication.
 
-This keeps the internal area simple:
+This keeps the internal area closed while avoiding magic-link redirect fragility on GitHub Pages:
 
-- no passwords to manage at first
-- persistent browser session
-- access remains until manual sign-out
-- inactive users cannot access internal data even if they have an Auth account
+- users are created manually in Supabase Auth
+- each approved user has a password
+- persistent browser session remains available
+- inactive profiles cannot access internal data even if they have an Auth account
+- public self-signup should remain disabled where available
 
 ## Supabase dashboard settings
 
 1. Open Authentication.
 2. Enable the Email provider.
-3. Use passwordless email login / magic link or OTP.
+3. Ensure email/password sign-in is available.
 4. Disable public self-signup if available in your project settings.
-5. Create or invite users manually.
+5. Create users manually and set passwords for them.
 6. After users exist, activate them in `public.profiles` using `04_seed_profiles_template.sql`.
 
 ## Redirect URLs
 
-Add your website URL to the allowed Redirect URLs.
+Password login does not depend on a magic-link callback. Still, keep redirect URLs configured for future recovery or confirmation flows.
 
-Examples:
+Add both in Supabase Auth redirect allow-list:
 
-- local test: `http://localhost:3000`
-- Netlify: `https://your-site.netlify.app`
-- final domain: `https://moscatelliroma.com`
+```text
+https://gianmoska-prog.github.io/MainHub/
+https://gianmoska-prog.github.io/MainHub/index.html
+```
 
-The website config already expects a future redirect like:
+Set the Site URL to:
 
-```js
-redirectTo: `${window.location.origin}${window.location.pathname}`
+```text
+https://gianmoska-prog.github.io/MainHub/
 ```
 
 ## Session persistence

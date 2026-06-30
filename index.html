@@ -2576,7 +2576,9 @@
             <form class="internal-gate-actions internal-auth-form" data-internal-auth-form novalidate>
               <label class="internal-auth-label i18n-text" data-i18n="internal.emailLabel">Email</label>
               <input class="internal-auth-input" type="email" inputmode="email" autocomplete="email" data-internal-email data-i18n-placeholder="internal.emailPlaceholder" placeholder="name@moscatelli.co" required>
-              <button class="internal-access-button i18n-text" type="submit" data-internal-auth-submit data-i18n="internal.sendLink">Send access link</button>
+              <label class="internal-auth-label i18n-text" data-i18n="internal.passwordLabel">Password</label>
+              <input class="internal-auth-input" type="password" autocomplete="current-password" data-internal-password data-i18n-placeholder="internal.passwordPlaceholder" placeholder="••••••••" required>
+              <button class="internal-access-button i18n-text" type="submit" data-internal-auth-submit data-i18n="internal.enter">Enter</button>
               <div class="internal-auth-feedback" data-internal-auth-feedback aria-live="polite"></div>
             </form>
           </div>
@@ -2683,7 +2685,9 @@
           <form class="internal-gate-actions internal-auth-form" data-internal-auth-form novalidate>
               <label class="internal-auth-label i18n-text" data-i18n="internal.emailLabel">Email</label>
               <input class="internal-auth-input" type="email" inputmode="email" autocomplete="email" data-internal-email data-i18n-placeholder="internal.emailPlaceholder" placeholder="name@moscatelli.co" required>
-              <button class="internal-access-button i18n-text" type="submit" data-internal-auth-submit data-i18n="internal.sendLink">Send access link</button>
+              <label class="internal-auth-label i18n-text" data-i18n="internal.passwordLabel">Password</label>
+              <input class="internal-auth-input" type="password" autocomplete="current-password" data-internal-password data-i18n-placeholder="internal.passwordPlaceholder" placeholder="••••••••" required>
+              <button class="internal-access-button i18n-text" type="submit" data-internal-auth-submit data-i18n="internal.enter">Enter</button>
               <div class="internal-auth-feedback" data-internal-auth-feedback aria-live="polite"></div>
             </form>
         </div>
@@ -2701,7 +2705,9 @@
           <form class="internal-gate-actions internal-auth-form" data-internal-auth-form novalidate>
               <label class="internal-auth-label i18n-text" data-i18n="internal.emailLabel">Email</label>
               <input class="internal-auth-input" type="email" inputmode="email" autocomplete="email" data-internal-email data-i18n-placeholder="internal.emailPlaceholder" placeholder="name@moscatelli.co" required>
-              <button class="internal-access-button i18n-text" type="submit" data-internal-auth-submit data-i18n="internal.sendLink">Send access link</button>
+              <label class="internal-auth-label i18n-text" data-i18n="internal.passwordLabel">Password</label>
+              <input class="internal-auth-input" type="password" autocomplete="current-password" data-internal-password data-i18n-placeholder="internal.passwordPlaceholder" placeholder="••••••••" required>
+              <button class="internal-access-button i18n-text" type="submit" data-internal-auth-submit data-i18n="internal.enter">Enter</button>
               <div class="internal-auth-feedback" data-internal-auth-feedback aria-live="polite"></div>
             </form>
         </div>
@@ -2719,7 +2725,9 @@
           <form class="internal-gate-actions internal-auth-form" data-internal-auth-form novalidate>
               <label class="internal-auth-label i18n-text" data-i18n="internal.emailLabel">Email</label>
               <input class="internal-auth-input" type="email" inputmode="email" autocomplete="email" data-internal-email data-i18n-placeholder="internal.emailPlaceholder" placeholder="name@moscatelli.co" required>
-              <button class="internal-access-button i18n-text" type="submit" data-internal-auth-submit data-i18n="internal.sendLink">Send access link</button>
+              <label class="internal-auth-label i18n-text" data-i18n="internal.passwordLabel">Password</label>
+              <input class="internal-auth-input" type="password" autocomplete="current-password" data-internal-password data-i18n-placeholder="internal.passwordPlaceholder" placeholder="••••••••" required>
+              <button class="internal-access-button i18n-text" type="submit" data-internal-auth-submit data-i18n="internal.enter">Enter</button>
               <div class="internal-auth-feedback" data-internal-auth-feedback aria-live="polite"></div>
             </form>
         </div>
@@ -2760,7 +2768,9 @@
           <form class="internal-gate-actions internal-auth-form" data-internal-auth-form novalidate>
               <label class="internal-auth-label i18n-text" data-i18n="internal.emailLabel">Email</label>
               <input class="internal-auth-input" type="email" inputmode="email" autocomplete="email" data-internal-email data-i18n-placeholder="internal.emailPlaceholder" placeholder="name@moscatelli.co" required>
-              <button class="internal-access-button i18n-text" type="submit" data-internal-auth-submit data-i18n="internal.sendLink">Send access link</button>
+              <label class="internal-auth-label i18n-text" data-i18n="internal.passwordLabel">Password</label>
+              <input class="internal-auth-input" type="password" autocomplete="current-password" data-internal-password data-i18n-placeholder="internal.passwordPlaceholder" placeholder="••••••••" required>
+              <button class="internal-access-button i18n-text" type="submit" data-internal-auth-submit data-i18n="internal.enter">Enter</button>
               <div class="internal-auth-feedback" data-internal-auth-feedback aria-live="polite"></div>
             </form>
         </div>
@@ -2828,6 +2838,7 @@
     const internalMockSignInButtons = document.querySelectorAll('[data-internal-mock-sign-in]');
     const internalAuthForms = document.querySelectorAll('[data-internal-auth-form]');
     const internalAuthEmailInputs = document.querySelectorAll('[data-internal-email]');
+    const internalAuthPasswordInputs = document.querySelectorAll('[data-internal-password]');
     const internalAuthSubmitButtons = document.querySelectorAll('[data-internal-auth-submit]');
     const internalAuthFeedbacks = document.querySelectorAll('[data-internal-auth-feedback]');
     const internalStatusElements = document.querySelectorAll('[data-internal-status]');
@@ -3121,7 +3132,7 @@
           return { user, session, mode: 'supabase' };
         },
 
-        async signInWithEmail(email) {
+        async signInWithPassword(email, password) {
           if (getInternalMode() !== 'supabase') {
             const result = await this.signInMock(INTERNAL_MOCK_USER);
             return { ok: true, ...result };
@@ -3132,20 +3143,21 @@
             return { ok: false, error: 'client_unavailable' };
           }
 
-          const { error } = await client.auth.signInWithOtp({
+          const { data, error } = await client.auth.signInWithPassword({
             email,
-            options: {
-              emailRedirectTo: INTERNAL_CONFIG.supabase.redirectTo
-            }
+            password
           });
 
           if (error) {
-            dataEvent('auth-link-error', { error });
+            dataEvent('auth-password-error', { error });
             return { ok: false, error };
           }
 
-          dataEvent('auth-link-sent', { email });
-          return { ok: true, email };
+          const session = data?.session || null;
+          const user = data?.user ? await profileFromSupabaseUser(data.user) : null;
+
+          dataEvent('auth-password-sign-in', { email, user, session });
+          return { ok: true, email, user, session };
         },
 
         async signInMock(user = INTERNAL_MOCK_USER) {
@@ -3348,7 +3360,9 @@
         'internal.mockAccess': 'Enter in mock mode',
         'internal.emailLabel': 'Email',
         'internal.emailPlaceholder': 'name@moscatelli.co',
-        'internal.sendLink': 'Send access link',
+        'internal.passwordLabel': 'Password',
+        'internal.passwordPlaceholder': 'Password',
+        'internal.enter': 'Enter',
         'internal.signOut': 'Sign out',
         'internal.signedInAs': 'Signed in as',
         'internal.status.signedOut': 'Authentication required',
@@ -3356,7 +3370,7 @@
         'internal.status.signedIn': 'Access granted',
         'internal.status.linkSent': 'Access link sent. Check your email.',
         'internal.status.configError': 'Connection unavailable. Check Supabase settings.',
-        'internal.status.authError': 'Access could not be sent.',
+        'internal.status.authError': 'Access denied. Check the email and password.',
         'internal.status.inactive': 'Profile not active yet.',
         'desk.composer': 'Correspondence field',
         'desk.placeholder': 'Write a quiet correspondence…',
@@ -3434,7 +3448,9 @@
         'internal.mockAccess': 'Entrar em modo local',
         'internal.emailLabel': 'Email',
         'internal.emailPlaceholder': 'nome@moscatelli.co',
-        'internal.sendLink': 'Enviar link de acesso',
+        'internal.passwordLabel': 'Senha',
+        'internal.passwordPlaceholder': 'Senha',
+        'internal.enter': 'Entrar',
         'internal.signOut': 'Sair',
         'internal.signedInAs': 'Sessão de',
         'internal.status.signedOut': 'Autenticação necessária',
@@ -3442,7 +3458,7 @@
         'internal.status.signedIn': 'Acesso concedido',
         'internal.status.linkSent': 'Link de acesso enviado. Verifique seu email.',
         'internal.status.configError': 'Conexão indisponível. Verifique o Supabase.',
-        'internal.status.authError': 'Não foi possível enviar o acesso.',
+        'internal.status.authError': 'Acesso recusado. Verifique email e senha.',
         'internal.status.inactive': 'Perfil ainda não está ativo.',
         'desk.composer': 'Campo de correspondência',
         'desk.placeholder': 'Escreva uma correspondência discreta…',
@@ -3871,14 +3887,16 @@
       updateInternalGateVisibility();
     }
 
-    async function requestInternalEmailAccess(event) {
+    async function requestInternalPasswordAccess(event) {
       event?.preventDefault?.();
 
       const form = event?.currentTarget;
       const emailInput = form?.querySelector('[data-internal-email]') || internalAuthEmailInputs[0];
+      const passwordInput = form?.querySelector('[data-internal-password]') || internalAuthPasswordInputs[0];
       const email = emailInput?.value.trim();
+      const password = passwordInput?.value || '';
 
-      if (!email) {
+      if (!email || !password) {
         setInternalAuthStatus('auth_error');
         updateInternalAccessUI();
         return;
@@ -3888,10 +3906,15 @@
       setInternalAuthStatus('checking');
       updateInternalAccessUI();
 
-      const result = await InternalData.auth.signInWithEmail(email);
+      const result = await InternalData.auth.signInWithPassword(email, password);
 
       if (result.ok && getInternalMode() === 'supabase') {
-        setInternalAuthStatus('link_sent');
+        setInternalUser(result.user, result.session);
+        if (InternalState.authStatus === 'signed_in') {
+          unlockInternalAreas();
+          restorePendingInternalRoute();
+          applyInternalRouteProtection(currentRoute || routeFromHash());
+        }
       } else if (result.ok) {
         await mockSignInInternalUser();
         applyInternalRouteProtection(currentRoute);
@@ -3903,7 +3926,7 @@
     }
 
     function requestMockInternalAccess() {
-      requestInternalEmailAccess();
+      requestInternalPasswordAccess();
     }
 
     async function requestInternalSignOut() {
@@ -4310,7 +4333,7 @@
     }
 
     internalAuthForms.forEach(form => {
-      form.addEventListener('submit', requestInternalEmailAccess);
+      form.addEventListener('submit', requestInternalPasswordAccess);
     });
 
     internalMockSignInButtons.forEach(button => {
