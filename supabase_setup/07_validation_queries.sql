@@ -81,3 +81,32 @@ where schemaname = 'storage'
   and tablename = 'objects'
   and policyname like 'record_attachment_objects_%'
 order by policyname;
+
+-- Patch 11 realtime validation
+
+select
+  pubname,
+  schemaname,
+  tablename
+from pg_publication_tables
+where pubname = 'supabase_realtime'
+  and schemaname = 'public'
+  and tablename in ('record_posts', 'record_attachments', 'desk_messages')
+order by tablename;
+
+select
+  relname as table_name,
+  case relreplident
+    when 'd' then 'default'
+    when 'n' then 'nothing'
+    when 'f' then 'full'
+    when 'i' then 'index'
+    else relreplident::text
+  end as replica_identity
+from pg_class
+where oid in (
+  'public.record_posts'::regclass,
+  'public.record_attachments'::regclass,
+  'public.desk_messages'::regclass
+)
+order by relname;

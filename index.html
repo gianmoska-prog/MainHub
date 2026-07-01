@@ -3129,10 +3129,10 @@
     });
 
     const DESK_CONFIG = Object.freeze({
-      provider: 'none',
-      state: 'mock-ready',
-      futureProvider: 'supabase',
-      realtimeEnabled: false
+      provider: 'supabase',
+      state: 'realtime-ready',
+      futureProvider: null,
+      realtimeEnabled: true
     });
 
     const DESK_DATA_CONFIG = Object.freeze({
@@ -3142,7 +3142,7 @@
       ownerKey: 'created_by',
       createdAtKey: 'created_at',
       realtimeEvent: 'postgres_changes',
-      realtimeEnabled: false,
+      realtimeEnabled: true,
       fields: Object.freeze([
         'id',
         'channel',
@@ -3166,6 +3166,8 @@
       defaultCategory: 'meetings',
       defaultChannel: 'record',
       maxAttachments: 4,
+      realtimeEvent: 'postgres_changes',
+      realtimeEnabled: true,
       fields: Object.freeze([
         'id',
         'channel',
@@ -3268,7 +3270,19 @@
       channel: DESK_DATA_CONFIG.channel
     };
 
+    const RealtimeRuntime = {
+      deskChannel: null,
+      dashboardChannel: null,
+      attachmentChannel: null,
+      dashboardRefreshTimer: null,
+      status: 'idle'
+    };
+
     const InternalData = (() => {
+      const STORAGE_BUCKET = 'record-attachments';
+      const SUPABASE_RECORD_LIMIT = 240;
+      const SUPABASE_DESK_LIMIT = 300;
+
       const mockStore = {
         posts: new Map(),
         messages: [],
@@ -3305,6 +3319,25 @@
         return Boolean(policy.canDeleteAnyRecord || (policy.canDeleteOwnRecord && isOwner));
       }
 
+      function canCurrentUserUseDesk() {
+        const policy = currentRolePolicy();
+        return Boolean(isInternalUserSignedIn() && policy.canUseDesk);
+      }
+
+      function canCurrentUserSendDeskMessage() {
+        const policy = currentRolePolicy();
+        return Boolean(isInternalUserSignedIn() && policy.canSendDeskMessage);
+      }
+
+      function activeSupabaseClient() {
+        if (getInternalMode() !== 'supabase') return null;
+        return createInternalSupabaseClient();
+      }
+
+      function supabaseFieldList(fields = []) {
+        return fields.join(',');
+      }
+
       function normalisePostPayload(payload = {}) {
         const now = payload.created_at || new Date().toISOString();
         const ownerId = payload.created_by || currentOwnerId();
@@ -3319,16 +3352,6 @@
           created_at: now,
           updated_at: payload.updated_at || now
         };
-      }
-
-      function canCurrentUserUseDesk() {
-        const policy = currentRolePolicy();
-        return Boolean(isInternalUserSignedIn() && policy.canUseDesk);
-      }
-
-      function canCurrentUserSendDeskMessage() {
-        const policy = currentRolePolicy();
-        return Boolean(isInternalUserSignedIn() && policy.canSendDeskMessage);
       }
 
       function normaliseDeskMessagePayload(payload = {}) {
@@ -3347,20 +3370,164 @@
         };
       }
 
-      function normaliseAttachment(item, postId = null) {
+      function normaliseAttachment(item = {}, postId = null) {
         const id = item.id || mockId('attachment');
+        const mimeType = item.mimeType || item.mime_type || item.blob?.type || 'image/jpeg';
 
         return {
           id,
           post_id: postId,
+          bucket: item.bucket || STORAGE_BUCKET,
           path: item.path || '',
-          preview_url: item.previewUrl || item.url || '',
+          preview_url: item.previewUrl || item.preview_url || item.url || item.local_preview_url || '',
+          local_preview_url: item.local_preview_url || item.url || '',
           original_size: item.originalSize || item.original_size || 0,
-          resized_size: item.resizedSize || item.resized_size || 0,
-          mime_type: item.mimeType || item.mime_type || 'image/jpeg',
-          created_by: currentOwnerId(),
+          resized_size: item.resizedSize || item.resized_size || item.blob?.size || 0,
+          mime_type: mimeType,
+          blob: item.blob || null,
+          file_name: item.fileName || item.file_name || item.name || '',
+          created_by: item.created_by || currentOwnerId(),
           created_at: item.createdAt || item.created_at || new Date().toISOString()
         };
+      }
+
+      function hydratePost(row, attachments = []) {
+        const post = normalisePostPayload(row);
+
+        return {
+          ...post,
+          owned: post.created_by === currentOwnerId(),
+          can_delete: canCurrentUserModifyRecord(post),
+          source: 'supabase',
+          attachments
+        };
+      }
+
+      function safeStorageFileName(item, index = 0) {
+        const raw = item.file_name || item.name || `plate-${index + 1}.jpg`;
+        const base = String(raw)
+          .replace(/\.[a-z0-9]{2,5}$/i, '')
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '')
+          .replace(/[^a-z0-9_-]+/gi, '-')
+          .replace(/^-+|-+$/g, '')
+          .slice(0, 54) || `plate-${index + 1}`;
+
+        return `${Date.now()}-${index + 1}-${base}.jpg`;
+      }
+
+      async function signedAttachmentUrl(client, path) {
+        if (!client || !path) return '';
+
+        const { data, error } = await client.storage
+          .from(STORAGE_BUCKET)
+          .createSignedUrl(path, 60 * 60);
+
+        if (error) {
+          dataEvent('attachment-signed-url-error', { error, path });
+          return '';
+        }
+
+        return data?.signedUrl || '';
+      }
+
+      async function hydrateAttachmentRows(client, rows = []) {
+        const hydrated = [];
+
+        for (const row of rows) {
+          const signedUrl = await signedAttachmentUrl(client, row.path);
+          hydrated.push({
+            ...normaliseAttachment(row, row.post_id),
+            id: row.id,
+            post_id: row.post_id,
+            path: row.path,
+            preview_url: signedUrl || row.preview_url || '',
+            blob: null,
+            source: 'supabase'
+          });
+        }
+
+        return hydrated;
+      }
+
+      async function fetchAttachmentsForPosts(client, postIds = []) {
+        if (!client || !postIds.length) return new Map();
+
+        const { data, error } = await client
+          .from(DASHBOARD_DATA_CONFIG.attachmentsTable)
+          .select(supabaseFieldList(DASHBOARD_DATA_CONFIG.attachmentFields))
+          .in('post_id', postIds)
+          .order('created_at', { ascending: true });
+
+        if (error) {
+          dataEvent('attachments-list-error', { error, table: DASHBOARD_DATA_CONFIG.attachmentsTable });
+          return new Map();
+        }
+
+        const rows = await hydrateAttachmentRows(client, data || []);
+        return rows.reduce((map, item) => {
+          if (!map.has(item.post_id)) map.set(item.post_id, []);
+          map.get(item.post_id).push(item);
+          return map;
+        }, new Map());
+      }
+
+      async function persistPostAttachments(client, post, items = []) {
+        const ownerId = post?.created_by || currentOwnerId();
+        const persisted = [];
+        const errors = [];
+
+        for (const [index, sourceItem] of items.entries()) {
+          const item = normaliseAttachment(sourceItem, post.id);
+          if (!item.blob) continue;
+
+          const path = `${ownerId}/${post.id}/${safeStorageFileName(item, index)}`;
+          const upload = await client.storage
+            .from(STORAGE_BUCKET)
+            .upload(path, item.blob, {
+              cacheControl: '3600',
+              contentType: item.mime_type || 'image/jpeg',
+              upsert: false
+            });
+
+          if (upload.error) {
+            errors.push({ stage: 'storage_upload', path, error: upload.error });
+            dataEvent('attachment-upload-error', { error: upload.error, path });
+            continue;
+          }
+
+          const metadataPayload = {
+            post_id: post.id,
+            bucket: STORAGE_BUCKET,
+            path,
+            preview_url: null,
+            original_size: item.original_size || 0,
+            resized_size: item.resized_size || item.blob.size || 0,
+            mime_type: item.mime_type || 'image/jpeg',
+            created_by: ownerId
+          };
+
+          const { data, error } = await client
+            .from(DASHBOARD_DATA_CONFIG.attachmentsTable)
+            .insert(metadataPayload)
+            .select(supabaseFieldList(DASHBOARD_DATA_CONFIG.attachmentFields))
+            .single();
+
+          if (error) {
+            await client.storage.from(STORAGE_BUCKET).remove([path]);
+            errors.push({ stage: 'metadata_insert', path, error });
+            dataEvent('attachment-metadata-error', { error, path });
+            continue;
+          }
+
+          const [hydrated] = await hydrateAttachmentRows(client, [data]);
+          persisted.push({
+            ...hydrated,
+            preview_url: hydrated.preview_url || item.local_preview_url || ''
+          });
+        }
+
+        return { attachments: persisted, errors };
       }
 
       const auth = {
@@ -3443,47 +3610,142 @@
 
       const posts = {
         async list(filters = {}) {
-          const values = Array.from(mockStore.posts.values());
           const category = filters.category || 'all';
+          const client = activeSupabaseClient();
 
-          return values
-            .filter(post => category === 'all' || post.category === category)
-            .sort((a, b) => String(b.created_at).localeCompare(String(a.created_at)));
+          if (!client) {
+            const values = Array.from(mockStore.posts.values());
+            return values
+              .filter(post => category === 'all' || post.category === category)
+              .sort((a, b) => String(b.created_at).localeCompare(String(a.created_at)));
+          }
+
+          let query = client
+            .from(DASHBOARD_DATA_CONFIG.table)
+            .select(supabaseFieldList(DASHBOARD_DATA_CONFIG.fields))
+            .eq('channel', filters.channel || DASHBOARD_DATA_CONFIG.defaultChannel)
+            .order('created_at', { ascending: false })
+            .limit(SUPABASE_RECORD_LIMIT);
+
+          if (category !== 'all') query = query.eq('category', category);
+
+          const { data, error } = await query;
+          if (error) {
+            dataEvent('posts-list-error', { error, table: DASHBOARD_DATA_CONFIG.table });
+            return [];
+          }
+
+          const rows = data || [];
+          const attachmentsByPost = await fetchAttachmentsForPosts(client, rows.map(row => row.id));
+          return rows.map(row => hydratePost(row, attachmentsByPost.get(row.id) || []));
         },
 
         async create(payload = {}) {
-          const basePost = normalisePostPayload(payload);
-          const attachments = (payload.attachments || []).map(item => normaliseAttachment(item, basePost.id));
+          const client = activeSupabaseClient();
 
-          const post = {
-            ...basePost,
-            owned: basePost.created_by === currentOwnerId(),
-            can_delete: canCurrentUserModifyRecord(basePost),
-            source: getInternalMode(),
-            attachments
+          if (!client) {
+            const basePost = normalisePostPayload(payload);
+            const attachments = (payload.attachments || []).map(item => normaliseAttachment(item, basePost.id));
+
+            const post = {
+              ...basePost,
+              owned: basePost.created_by === currentOwnerId(),
+              can_delete: canCurrentUserModifyRecord(basePost),
+              source: getInternalMode(),
+              attachments
+            };
+
+            mockStore.posts.set(post.id, post);
+            attachments.forEach(item => mockStore.attachments.set(item.id, item));
+            dataEvent('post-created', { post, table: DASHBOARD_DATA_CONFIG.table });
+            return post;
+          }
+
+          if (!isInternalUserSignedIn()) {
+            dataEvent('post-create-error', { error: 'not_signed_in' });
+            return null;
+          }
+
+          const postPayload = {
+            channel: payload.channel || DASHBOARD_DATA_CONFIG.defaultChannel,
+            category: payload.category || DASHBOARD_DATA_CONFIG.defaultCategory,
+            title: payload.title || 'Untitled entry',
+            body: payload.body || '—',
+            created_by: currentOwnerId()
           };
 
-          mockStore.posts.set(post.id, post);
-          attachments.forEach(item => mockStore.attachments.set(item.id, item));
-          dataEvent('post-created', { post, table: DASHBOARD_DATA_CONFIG.table });
+          const { data, error } = await client
+            .from(DASHBOARD_DATA_CONFIG.table)
+            .insert(postPayload)
+            .select(supabaseFieldList(DASHBOARD_DATA_CONFIG.fields))
+            .single();
+
+          if (error || !data) {
+            dataEvent('post-create-error', { error, table: DASHBOARD_DATA_CONFIG.table });
+            return null;
+          }
+
+          const uploadResult = await persistPostAttachments(client, data, payload.attachments || []);
+          const post = hydratePost(data, uploadResult.attachments);
+          post.attachment_errors = uploadResult.errors;
+
+          dataEvent('post-created', { post, table: DASHBOARD_DATA_CONFIG.table, attachmentErrors: uploadResult.errors });
           return post;
         },
 
         async remove(postId) {
-          const post = mockStore.posts.get(postId);
+          const client = activeSupabaseClient();
 
-          if (!post) {
-            return { ok: false, error: 'not_found' };
+          if (!client) {
+            const post = mockStore.posts.get(postId);
+
+            if (!post) {
+              return { ok: false, error: 'not_found' };
+            }
+
+            if (!canCurrentUserModifyRecord(post)) {
+              return { ok: false, error: 'not_authorized' };
+            }
+
+            mockStore.posts.delete(postId);
+            post.attachments?.forEach(item => mockStore.attachments.delete(item.id));
+            dataEvent('post-deleted', { postId, post, table: DASHBOARD_DATA_CONFIG.table });
+            return { ok: true, post };
           }
 
-          if (!canCurrentUserModifyRecord(post)) {
-            return { ok: false, error: 'not_authorized' };
+          const { data: attachmentRows, error: attachmentError } = await client
+            .from(DASHBOARD_DATA_CONFIG.attachmentsTable)
+            .select('path')
+            .eq('post_id', postId);
+
+          if (attachmentError) {
+            dataEvent('post-delete-attachment-list-error', { error: attachmentError, postId });
+            return { ok: false, error: attachmentError };
           }
 
-          mockStore.posts.delete(postId);
-          post.attachments?.forEach(item => mockStore.attachments.delete(item.id));
-          dataEvent('post-deleted', { postId, post, table: DASHBOARD_DATA_CONFIG.table });
-          return { ok: true, post };
+          const paths = (attachmentRows || []).map(item => item.path).filter(Boolean);
+          if (paths.length) {
+            const { error: storageError } = await client.storage.from(STORAGE_BUCKET).remove(paths);
+            if (storageError) {
+              dataEvent('post-delete-storage-error', { error: storageError, postId, paths });
+              return { ok: false, error: storageError };
+            }
+          }
+
+          const { data, error } = await client
+            .from(DASHBOARD_DATA_CONFIG.table)
+            .delete()
+            .eq('id', postId)
+            .select(supabaseFieldList(DASHBOARD_DATA_CONFIG.fields))
+            .maybeSingle();
+
+          if (error) {
+            dataEvent('post-delete-error', { error, postId });
+            return { ok: false, error };
+          }
+
+          dataEvent('post-deleted', { postId, post: data, table: DASHBOARD_DATA_CONFIG.table });
+          return { ok: true, post: data };
         },
 
         permissions(record) {
@@ -3496,12 +3758,47 @@
       };
 
       const messages = {
+        fromRealtime(row = {}) {
+          if (!row) return null;
+
+          return {
+            ...normaliseDeskMessagePayload(row),
+            id: row.id,
+            sender_display: row.sender_display || 'Member',
+            sender_role: row.sender_role || 'member',
+            source: 'supabase-realtime'
+          };
+        },
+
         async list(filters = {}) {
           const channel = filters.channel || DESK_DATA_CONFIG.channel;
+          const client = activeSupabaseClient();
 
-          return mockStore.messages
-            .filter(message => message.channel === channel)
-            .sort((a, b) => String(a.created_at).localeCompare(String(b.created_at)));
+          if (!client) {
+            return mockStore.messages
+              .filter(message => message.channel === channel)
+              .sort((a, b) => String(a.created_at).localeCompare(String(b.created_at)));
+          }
+
+          const { data, error } = await client
+            .from(DESK_DATA_CONFIG.table)
+            .select(supabaseFieldList(DESK_DATA_CONFIG.fields))
+            .eq('channel', channel)
+            .order('created_at', { ascending: true })
+            .limit(SUPABASE_DESK_LIMIT);
+
+          if (error) {
+            dataEvent('messages-list-error', { error, table: DESK_DATA_CONFIG.table });
+            return [];
+          }
+
+          return (data || []).map(message => ({
+            ...normaliseDeskMessagePayload(message),
+            id: message.id,
+            sender_display: message.sender_display || 'Member',
+            sender_role: message.sender_role || 'member',
+            source: 'supabase'
+          }));
         },
 
         async send(payload = {}) {
@@ -3509,13 +3806,45 @@
             return { ok: false, error: 'not_authorized' };
           }
 
-          const message = {
-            ...normaliseDeskMessagePayload(payload),
-            owned: true,
-            source: getInternalMode()
+          const client = activeSupabaseClient();
+
+          if (!client) {
+            const message = {
+              ...normaliseDeskMessagePayload(payload),
+              owned: true,
+              source: getInternalMode()
+            };
+
+            mockStore.messages.push(message);
+            dataEvent('message-created', { message, table: DESK_DATA_CONFIG.table });
+            return { ok: true, message };
+          }
+
+          const messagePayload = {
+            channel: payload.channel || DESK_DATA_CONFIG.channel,
+            body: payload.body || '',
+            created_by: currentOwnerId()
           };
 
-          mockStore.messages.push(message);
+          const { data, error } = await client
+            .from(DESK_DATA_CONFIG.table)
+            .insert(messagePayload)
+            .select(supabaseFieldList(DESK_DATA_CONFIG.fields))
+            .single();
+
+          if (error || !data) {
+            dataEvent('message-create-error', { error, table: DESK_DATA_CONFIG.table });
+            return { ok: false, error };
+          }
+
+          const message = {
+            ...normaliseDeskMessagePayload(data),
+            id: data.id,
+            sender_display: data.sender_display || getCurrentInternalUser()?.displayName || 'Member',
+            sender_role: data.sender_role || getCurrentInternalUser()?.role || 'member',
+            source: 'supabase'
+          };
+
           dataEvent('message-created', { message, table: DESK_DATA_CONFIG.table });
           return { ok: true, message };
         },
@@ -3587,6 +3916,7 @@
         'dashboard.empty': 'No records in this index.',
         'dashboard.untitled': 'Untitled entry',
         'dashboard.authorLocal': 'Local draft · Not saved',
+        'dashboard.authorSupabase': 'Recorded in the Record',
         'dashboard.resizeNote': 'Plates are resized locally before preview.',
         'dashboard.cat.meetings': 'Meetings',
         'dashboard.cat.ideas': 'Ideas',
@@ -3675,6 +4005,7 @@
         'dashboard.empty': 'Nenhum registro neste índice.',
         'dashboard.untitled': 'Entrada sem título',
         'dashboard.authorLocal': 'Rascunho local · Não salvo',
+        'dashboard.authorSupabase': 'Registrado no Record',
         'dashboard.resizeNote': 'As imagens são redimensionadas localmente antes da pré-visualização.',
         'dashboard.cat.meetings': 'Reuniões',
         'dashboard.cat.ideas': 'Ideias',
@@ -4092,6 +4423,7 @@
       getSupabaseClient: createInternalSupabaseClient,
       dashboard: DASHBOARD_DATA_CONFIG,
       desk: DESK_DATA_CONFIG,
+      realtime: RealtimeRuntime,
       roles: INTERNAL_ROLES,
       getMode: getInternalMode,
       getCurrentUser: getCurrentInternalUser,
@@ -4101,6 +4433,7 @@
       applyRouteProtection: applyInternalRouteProtection,
       unlock: unlockInternalAreas,
       lock: lockInternalAreas,
+      releaseRealtime: releaseAllRealtime,
       mockSignIn: mockSignInInternalUser,
       mockSignOut: mockSignOutInternalUser,
       clearUser: clearInternalUser
@@ -4769,18 +5102,139 @@
     }
 
     async function loadDeskMessages() {
-      if (!deskThread || DeskRuntime.loaded) return [];
+      if (!deskThread || DeskRuntime.loaded || !isInternalUserSignedIn()) return [];
 
-      const messages = await InternalData.messages.list({ channel: DESK_DATA_CONFIG.channel });
-      messages.forEach(message => renderDeskMessageRecord(message));
+      try {
+        const messages = await InternalData.messages.list({ channel: DESK_DATA_CONFIG.channel });
+        messages.forEach(message => renderDeskMessageRecord(message));
+        if (!messages.length && deskEmpty && !deskThread.contains(deskEmpty)) deskThread.appendChild(deskEmpty);
 
-      DeskRuntime.loaded = true;
-      return messages;
+        DeskRuntime.loaded = true;
+        return messages;
+      } catch (error) {
+        window.dispatchEvent(new CustomEvent('moscatelli:desk-load-error', { detail: { error } }));
+        return [];
+      }
+    }
+
+    function dispatchRealtimeEvent(type, detail = {}) {
+      window.dispatchEvent(new CustomEvent(`moscatelli:realtime-${type}`, {
+        detail: {
+          mode: getInternalMode(),
+          signedIn: isInternalUserSignedIn(),
+          user: getCurrentInternalUser(),
+          ...detail
+        }
+      }));
+    }
+
+    function releaseRealtimeChannel(key, label = key) {
+      const channel = RealtimeRuntime[key];
+      if (!channel) return;
+
+      const client = createInternalSupabaseClient();
+      if (client?.removeChannel) {
+        Promise.resolve(client.removeChannel(channel)).catch(error => {
+          dispatchRealtimeEvent('release-error', { label, error });
+        });
+      }
+
+      RealtimeRuntime[key] = null;
+      dispatchRealtimeEvent('released', { label });
+    }
+
+    function releaseDeskRealtime() {
+      releaseRealtimeChannel('deskChannel', 'desk');
+      DeskRuntime.subscribed = false;
+    }
+
+    function releaseDashboardRealtime() {
+      releaseRealtimeChannel('dashboardChannel', 'record');
+      releaseRealtimeChannel('attachmentChannel', 'record-attachments');
+      if (RealtimeRuntime.dashboardRefreshTimer) {
+        clearTimeout(RealtimeRuntime.dashboardRefreshTimer);
+        RealtimeRuntime.dashboardRefreshTimer = null;
+      }
+    }
+
+    function releaseAllRealtime() {
+      releaseDeskRealtime();
+      releaseDashboardRealtime();
+      RealtimeRuntime.status = 'idle';
+    }
+
+    function removeDeskMessageById(messageId) {
+      if (!messageId || !deskThread) return false;
+      const item = deskThread.querySelector(`[data-message-id="${messageId}"]`);
+      if (!item) return false;
+      item.remove();
+      if (deskEmpty && !deskThread.querySelector('.desk-message') && !deskThread.contains(deskEmpty)) deskThread.appendChild(deskEmpty);
+      return true;
+    }
+
+    function updateDeskMessageFromRealtime(message) {
+      if (!message?.id || !deskThread || !DeskRuntime.loaded) return;
+      removeDeskMessageById(message.id);
+      renderDeskMessageRecord(message);
     }
 
     function prepareDeskRealtimeHooks() {
-      if (DeskRuntime.subscribed) return;
+      if (DeskRuntime.subscribed || RealtimeRuntime.deskChannel) return;
 
+      if (!DESK_DATA_CONFIG.realtimeEnabled || getInternalMode() !== 'supabase' || !isInternalUserSignedIn()) {
+        dispatchRealtimeEvent('desk-skipped', {
+          enabled: DESK_DATA_CONFIG.realtimeEnabled,
+          channel: DESK_DATA_CONFIG.channel,
+          table: DESK_DATA_CONFIG.table
+        });
+        return;
+      }
+
+      const client = createInternalSupabaseClient();
+      if (!client?.channel) {
+        dispatchRealtimeEvent('desk-unavailable', { table: DESK_DATA_CONFIG.table });
+        return;
+      }
+
+      const channel = client
+        .channel(`moscatelli-desk-${DESK_DATA_CONFIG.channel}`)
+        .on('postgres_changes', {
+          event: 'INSERT',
+          schema: 'public',
+          table: DESK_DATA_CONFIG.table,
+          filter: `channel=eq.${DESK_DATA_CONFIG.channel}`
+        }, payload => {
+          const message = InternalData.messages.fromRealtime(payload.new);
+          if (!message || !DeskRuntime.loaded) return;
+          renderDeskMessageRecord(message);
+          dispatchRealtimeEvent('desk-insert', { messageId: message.id });
+        })
+        .on('postgres_changes', {
+          event: 'UPDATE',
+          schema: 'public',
+          table: DESK_DATA_CONFIG.table,
+          filter: `channel=eq.${DESK_DATA_CONFIG.channel}`
+        }, payload => {
+          const message = InternalData.messages.fromRealtime(payload.new);
+          updateDeskMessageFromRealtime(message);
+          dispatchRealtimeEvent('desk-update', { messageId: message?.id || null });
+        })
+        .on('postgres_changes', {
+          event: 'DELETE',
+          schema: 'public',
+          table: DESK_DATA_CONFIG.table,
+          filter: `channel=eq.${DESK_DATA_CONFIG.channel}`
+        }, payload => {
+          const messageId = payload.old?.id || null;
+          if (messageId) removeDeskMessageById(messageId);
+          dispatchRealtimeEvent('desk-delete', { messageId });
+        })
+        .subscribe(status => {
+          RealtimeRuntime.status = status;
+          dispatchRealtimeEvent('desk-status', { status, channel: DESK_DATA_CONFIG.channel, table: DESK_DATA_CONFIG.table });
+        });
+
+      RealtimeRuntime.deskChannel = channel;
       DeskRuntime.subscribed = true;
       window.dispatchEvent(new CustomEvent('moscatelli:desk-realtime-ready', {
         detail: {
@@ -4796,13 +5250,18 @@
       const payload = deskMessageFromComposer();
       if (!payload.body) return null;
 
-      const result = await InternalData.messages.send(payload);
-      if (!result.ok) return null;
+      try {
+        const result = await InternalData.messages.send(payload);
+        if (!result.ok) return null;
 
-      renderDeskMessageRecord(result.message);
-      if (deskMessageInput) deskMessageInput.value = '';
+        renderDeskMessageRecord(result.message);
+        if (deskMessageInput) deskMessageInput.value = '';
 
-      return result.message;
+        return result.message;
+      } catch (error) {
+        window.dispatchEvent(new CustomEvent('moscatelli:desk-send-error', { detail: { error } }));
+        return null;
+      }
     }
 
     function setDeskOpenState(isOpen) {
@@ -4861,6 +5320,7 @@
     let dashboardLocalAttachments = [];
 
     let dashboardCurrentFilter = 'all';
+    const DashboardRuntime = { loaded: false, loading: false };
 
     function updateDashboardEmptyState() {
       const empty = document.getElementById('dashboardEmpty');
@@ -4870,6 +5330,14 @@
         .filter(post => !post.classList.contains('is-hidden'));
 
       empty.classList.toggle('is-visible', visiblePosts.length === 0);
+    }
+
+    function clearDashboardPosts({ resetLoaded = true } = {}) {
+      if (!dashboardFeed) return;
+
+      dashboardFeed.querySelectorAll('.dashboard-post').forEach(post => post.remove());
+      if (resetLoaded) DashboardRuntime.loaded = false;
+      updateDashboardEmptyState();
     }
 
     function setDashboardFilter(category) {
@@ -5065,6 +5533,7 @@
 
     function renderDashboardPostRecord(record, { prepend = true } = {}) {
       if (!dashboardFeed || !record) return null;
+      if (record.id && dashboardFeed.querySelector(`[data-post-id="${record.id}"]`)) return null;
 
       const createdAt = normaliseLedgerDate(record.created_at);
       const dateIso = ledgerDateIso(record.created_at);
@@ -5093,7 +5562,9 @@
 
       const foot = document.createElement('div');
       foot.className = 'dashboard-post-foot';
-      foot.textContent = translations[currentLang]?.['dashboard.authorLocal'] || 'Local draft · Not saved';
+      foot.textContent = record.source === 'supabase'
+        ? (translations[currentLang]?.['dashboard.authorSupabase'] || 'Recorded in the Record')
+        : (translations[currentLang]?.['dashboard.authorLocal'] || 'Local draft · Not saved');
 
       const actions = document.createElement('div');
       actions.className = 'dashboard-post-actions';
@@ -5148,29 +5619,162 @@
     }
 
     async function loadDashboardRecords(filters = {}) {
+      clearDashboardPosts({ resetLoaded: false });
       const records = await InternalData.posts.list(filters);
       records.forEach(record => renderDashboardPostRecord(record, { prepend: false }));
       sortDashboardPostsByDate();
       setDashboardFilter(dashboardCurrentFilter);
+      DashboardRuntime.loaded = true;
       return records;
+    }
+
+    async function ensureDashboardRecordsLoaded({ force = false } = {}) {
+      if (!dashboardFeed || !isInternalUserSignedIn()) return [];
+      if (DashboardRuntime.loading) return [];
+      if (DashboardRuntime.loaded && !force) return [];
+
+      DashboardRuntime.loading = true;
+      try {
+        return await loadDashboardRecords({ channel: DASHBOARD_DATA_CONFIG.defaultChannel });
+      } catch (error) {
+        window.dispatchEvent(new CustomEvent('moscatelli:record-load-error', { detail: { error } }));
+        return [];
+      } finally {
+        DashboardRuntime.loading = false;
+      }
+    }
+
+    function removeDashboardPostById(postId) {
+      if (!postId || !dashboardFeed) return false;
+
+      const post = dashboardFeed.querySelector(`[data-post-id="${postId}"]`);
+      if (!post) return false;
+
+      post.remove();
+      updateDashboardEmptyState();
+      return true;
+    }
+
+    function scheduleDashboardRealtimeRefresh(reason = 'record-change') {
+      if (!isInternalUserSignedIn()) return;
+
+      if (RealtimeRuntime.dashboardRefreshTimer) {
+        clearTimeout(RealtimeRuntime.dashboardRefreshTimer);
+      }
+
+      RealtimeRuntime.dashboardRefreshTimer = setTimeout(() => {
+        RealtimeRuntime.dashboardRefreshTimer = null;
+
+        if (currentRoute !== ROUTES.DASHBOARD && !DashboardRuntime.loaded) return;
+        ensureDashboardRecordsLoaded({ force: true });
+        dispatchRealtimeEvent('record-refresh', { reason });
+      }, 650);
+    }
+
+    function prepareDashboardRealtimeHooks() {
+      if (RealtimeRuntime.dashboardChannel && RealtimeRuntime.attachmentChannel) return;
+
+      if (!DASHBOARD_DATA_CONFIG.realtimeEnabled || getInternalMode() !== 'supabase' || !isInternalUserSignedIn()) {
+        dispatchRealtimeEvent('record-skipped', {
+          enabled: DASHBOARD_DATA_CONFIG.realtimeEnabled,
+          channel: DASHBOARD_DATA_CONFIG.defaultChannel,
+          table: DASHBOARD_DATA_CONFIG.table
+        });
+        return;
+      }
+
+      const client = createInternalSupabaseClient();
+      if (!client?.channel) {
+        dispatchRealtimeEvent('record-unavailable', { table: DASHBOARD_DATA_CONFIG.table });
+        return;
+      }
+
+      if (!RealtimeRuntime.dashboardChannel) {
+        const recordChannel = client
+          .channel(`moscatelli-record-${DASHBOARD_DATA_CONFIG.defaultChannel}`)
+          .on('postgres_changes', {
+            event: 'INSERT',
+            schema: 'public',
+            table: DASHBOARD_DATA_CONFIG.table,
+            filter: `channel=eq.${DASHBOARD_DATA_CONFIG.defaultChannel}`
+          }, payload => {
+            scheduleDashboardRealtimeRefresh('record-insert');
+            dispatchRealtimeEvent('record-insert', { postId: payload.new?.id || null });
+          })
+          .on('postgres_changes', {
+            event: 'UPDATE',
+            schema: 'public',
+            table: DASHBOARD_DATA_CONFIG.table,
+            filter: `channel=eq.${DASHBOARD_DATA_CONFIG.defaultChannel}`
+          }, payload => {
+            scheduleDashboardRealtimeRefresh('record-update');
+            dispatchRealtimeEvent('record-update', { postId: payload.new?.id || null });
+          })
+          .on('postgres_changes', {
+            event: 'DELETE',
+            schema: 'public',
+            table: DASHBOARD_DATA_CONFIG.table,
+            filter: `channel=eq.${DASHBOARD_DATA_CONFIG.defaultChannel}`
+          }, payload => {
+            const postId = payload.old?.id || null;
+            if (postId) removeDashboardPostById(postId);
+            scheduleDashboardRealtimeRefresh('record-delete');
+            dispatchRealtimeEvent('record-delete', { postId });
+          })
+          .subscribe(status => {
+            RealtimeRuntime.status = status;
+            dispatchRealtimeEvent('record-status', { status, channel: DASHBOARD_DATA_CONFIG.defaultChannel, table: DASHBOARD_DATA_CONFIG.table });
+          });
+
+        RealtimeRuntime.dashboardChannel = recordChannel;
+      }
+
+      if (!RealtimeRuntime.attachmentChannel) {
+        const attachmentChannel = client
+          .channel(`moscatelli-record-attachments-${DASHBOARD_DATA_CONFIG.defaultChannel}`)
+          .on('postgres_changes', {
+            event: '*',
+            schema: 'public',
+            table: DASHBOARD_DATA_CONFIG.attachmentsTable
+          }, payload => {
+            scheduleDashboardRealtimeRefresh('record-attachment-change');
+            dispatchRealtimeEvent('record-attachment-change', {
+              attachmentId: payload.new?.id || payload.old?.id || null,
+              postId: payload.new?.post_id || payload.old?.post_id || null
+            });
+          })
+          .subscribe(status => {
+            dispatchRealtimeEvent('record-attachments-status', { status, table: DASHBOARD_DATA_CONFIG.attachmentsTable });
+          });
+
+        RealtimeRuntime.attachmentChannel = attachmentChannel;
+      }
     }
 
     async function createDashboardPost() {
       if (!dashboardFeed) return null;
 
-      const payload = dashboardRecordFromComposer();
-      const attachments = await InternalData.attachments.fromComposer(payload.attachments);
+      try {
+        const payload = dashboardRecordFromComposer();
+        const attachments = await InternalData.attachments.fromComposer(payload.attachments);
 
-      const record = await InternalData.posts.create({
-        ...payload,
-        attachments
-      });
+        const record = await InternalData.posts.create({
+          ...payload,
+          attachments
+        });
 
-      renderDashboardPostRecord(record, { prepend: true });
-      sortDashboardPostsByDate();
-      setDashboardFilter(dashboardCurrentFilter);
+        if (!record) return null;
 
-      return record;
+        renderDashboardPostRecord(record, { prepend: true });
+        sortDashboardPostsByDate();
+        setDashboardFilter(dashboardCurrentFilter);
+        DashboardRuntime.loaded = true;
+
+        return record;
+      } catch (error) {
+        window.dispatchEvent(new CustomEvent('moscatelli:record-create-error', { detail: { error } }));
+        return null;
+      }
     }
 
     dashboardCommitEntry?.addEventListener('click', () => {
@@ -5180,7 +5784,7 @@
         const record = await createDashboardPost();
 
         if (record) {
-          resetDashboardComposer({ preserveAttachmentUrls: true });
+          resetDashboardComposer({ preserveAttachmentUrls: record.source === 'mock' });
           setCommitState('confirmed');
         } else {
           setCommitState('idle');
@@ -5256,7 +5860,9 @@
         blob,
         url: URL.createObjectURL(blob),
         originalSize: file.size,
-        resizedSize: blob?.size || file.size
+        resizedSize: blob?.size || file.size,
+        mimeType: blob?.type || 'image/jpeg',
+        fileName: file.name || 'plate.jpg'
       };
     }
 
@@ -5331,6 +5937,8 @@
             url: '',
             originalSize: file.size,
             resizedSize: file.size,
+            mimeType: file.type || 'image/jpeg',
+            fileName: file.name || 'plate.jpg',
             failedName: file.name
           });
         }
@@ -5340,6 +5948,53 @@
 
       if (dashboardAttachmentInput) dashboardAttachmentInput.value = '';
     });
+
+
+    function clearDeskThread() {
+      deskThread?.querySelectorAll('.desk-message').forEach(message => message.remove());
+      if (deskThread && deskEmpty && !deskThread.contains(deskEmpty)) deskThread.appendChild(deskEmpty);
+      DeskRuntime.loaded = false;
+    }
+
+    function clearInternalRuntimeViews() {
+      releaseAllRealtime();
+      clearDashboardPosts();
+      clearDeskThread();
+      updateDeskComposerState();
+    }
+
+    function loadVisibleInternalRuntimeViews({ force = false } = {}) {
+      if (!isInternalUserSignedIn()) return;
+
+      updateDeskComposerState();
+      prepareDashboardRealtimeHooks();
+      prepareDeskRealtimeHooks();
+
+      if (currentRoute === ROUTES.DASHBOARD) {
+        ensureDashboardRecordsLoaded({ force });
+      }
+
+      if (document.body.classList.contains('desk-open')) {
+        if (force) DeskRuntime.loaded = false;
+        loadDeskMessages();
+      }
+    }
+
+    window.addEventListener('moscatelli:internal-user', event => {
+      releaseAllRealtime();
+      DashboardRuntime.loaded = false;
+      DeskRuntime.loaded = false;
+      loadVisibleInternalRuntimeViews({ force: true });
+    });
+
+    window.addEventListener('moscatelli:internal-route-protection', event => {
+      if (event.detail?.signedIn) loadVisibleInternalRuntimeViews();
+    });
+
+    window.addEventListener('moscatelli:internal-sign-out', clearInternalRuntimeViews);
+    window.addEventListener('moscatelli:internal-inactive-user', clearInternalRuntimeViews);
+
+    queueMicrotask(() => loadVisibleInternalRuntimeViews());
 
     // ── Swipe-left to close nav on touch devices ──
     let touchStartX = 0;

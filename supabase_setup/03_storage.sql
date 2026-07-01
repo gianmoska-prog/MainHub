@@ -36,7 +36,7 @@ as $$
     select storage.foldername(object_name) as p
   )
   select coalesce(
-    array_length(p, 1) >= 3
+    array_length(p, 1) >= 2
     and exists (
       select 1
       from public.record_posts rp

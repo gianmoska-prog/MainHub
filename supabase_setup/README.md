@@ -46,3 +46,22 @@ Then run:
 The browser should only receive the Supabase project URL and public publishable/anon key.
 
 Never place the service-role key, secret key, database password, or private JWT secret in the website.
+
+
+## Patch 10 note
+
+Patch 10 connects The Record and The Desk frontend adapters to Supabase persistence. Existing Patch 9 projects should already have the required tables and RLS. If image attachment upload/delete fails because of Storage path validation, run:
+
+1. `09_patch10_persistence_support.sql`
+2. `07_validation_queries.sql`
+
+The expected Storage object path is `{created_by}/{post_id}/{filename}` inside the private `record-attachments` bucket.
+
+## Patch 11 note
+
+Patch 11 enables Supabase Realtime for The Record and The Desk. Existing Patch 10 projects should run:
+
+1. `10_patch11_realtime_support.sql`
+2. `07_validation_queries.sql`
+
+This adds `record_posts`, `record_attachments`, and `desk_messages` to the `supabase_realtime` publication and sets replica identity to `full` so delete events can be reflected accurately in the browser.
