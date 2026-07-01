@@ -3093,6 +3093,251 @@
       opacity: 0 !important;
     }
 
+
+
+    /* Patch 13 — Global Supabase threshold gate */
+    body:not([data-internal-auth='signed_in']) {
+      overflow: hidden;
+    }
+
+    body:not([data-internal-auth='signed_in']) header,
+    body:not([data-internal-auth='signed_in']) main,
+    body:not([data-internal-auth='signed_in']) footer,
+    body:not([data-internal-auth='signed_in']) .side-nav,
+    body:not([data-internal-auth='signed_in']) .desk-panel,
+    body:not([data-internal-auth='signed_in']) .desk-scrim,
+    body:not([data-internal-auth='signed_in']) .overlay {
+      filter: blur(22px) brightness(0.54) saturate(0.84);
+      transform: scale(1.012);
+      pointer-events: none !important;
+      user-select: none;
+      transition:
+        filter 700ms cubic-bezier(0.22, 1, 0.36, 1),
+        transform 700ms cubic-bezier(0.22, 1, 0.36, 1),
+        opacity 520ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    body[data-internal-auth='signed_in'] header,
+    body[data-internal-auth='signed_in'] main,
+    body[data-internal-auth='signed_in'] footer,
+    body[data-internal-auth='signed_in'] .side-nav,
+    body[data-internal-auth='signed_in'] .desk-panel,
+    body[data-internal-auth='signed_in'] .desk-scrim,
+    body[data-internal-auth='signed_in'] .overlay {
+      filter: none;
+      transform: none;
+    }
+
+    .global-auth-gate {
+      position: fixed;
+      inset: 0;
+      z-index: 2400;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: clamp(22px, 5vw, 64px);
+      background:
+        radial-gradient(circle at 50% 42%, rgba(184, 104, 48, 0.13), transparent 34%),
+        radial-gradient(circle at 50% 56%, rgba(242, 237, 228, 0.045), transparent 38%),
+        rgba(5, 3, 2, 0.36);
+      backdrop-filter: blur(28px) saturate(135%) brightness(0.82);
+      -webkit-backdrop-filter: blur(28px) saturate(135%) brightness(0.82);
+      opacity: 1;
+      pointer-events: auto;
+      transition:
+        opacity 560ms cubic-bezier(0.22, 1, 0.36, 1),
+        visibility 560ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    body[data-internal-auth='signed_in'] .global-auth-gate {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .global-auth-card {
+      position: relative;
+      width: min(100%, 440px);
+      padding: clamp(34px, 5vw, 48px) clamp(28px, 4.6vw, 44px) clamp(30px, 4.2vw, 40px);
+      border: 1px solid rgba(242, 237, 228, 0.115);
+      background:
+        linear-gradient(180deg, rgba(242, 237, 228, 0.070), rgba(242, 237, 228, 0.025)),
+        rgba(8, 5, 3, 0.70);
+      box-shadow:
+        0 44px 130px rgba(0, 0, 0, 0.48),
+        inset 0 1px 0 rgba(242, 237, 228, 0.060),
+        inset 0 -1px 0 rgba(184, 104, 48, 0.055);
+      text-align: center;
+      transform: translate3d(0, 0, 0);
+    }
+
+    .global-auth-card::before {
+      content: '';
+      position: absolute;
+      inset: 12px;
+      border: 1px solid rgba(242, 237, 228, 0.035);
+      pointer-events: none;
+    }
+
+    .global-auth-rule {
+      width: 82px;
+      height: 1px;
+      margin: 0 auto 22px;
+      background: linear-gradient(to right, transparent, rgba(232, 192, 122, 0.44), transparent);
+    }
+
+    .global-auth-kicker,
+    .global-auth-label,
+    .global-auth-button,
+    .global-auth-status {
+      font-family: 'Cinzel', serif;
+      font-weight: 300;
+      text-transform: uppercase;
+    }
+
+    .global-auth-kicker {
+      margin: 0 0 16px;
+      font-size: 7.5px;
+      letter-spacing: 0.42em;
+      color: rgba(196, 118, 54, 0.82);
+    }
+
+    .global-auth-title {
+      margin: 0 0 18px;
+      font-family: 'Cinzel', serif;
+      font-size: clamp(19px, 4.4vw, 28px);
+      font-weight: 300;
+      letter-spacing: 0.42em;
+      color: rgba(242, 237, 228, 0.86);
+    }
+
+    .global-auth-copy {
+      max-width: 312px;
+      margin: 0 auto 22px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 16px;
+      font-weight: 300;
+      line-height: 1.52;
+      letter-spacing: 0.045em;
+      color: rgba(242, 237, 228, 0.52);
+    }
+
+    .global-auth-status {
+      min-height: 15px;
+      margin-bottom: 18px;
+      font-size: 7px;
+      letter-spacing: 0.27em;
+      color: rgba(242, 237, 228, 0.34);
+    }
+
+    body[data-internal-auth='checking'] .global-auth-status {
+      color: rgba(232, 192, 122, 0.62);
+    }
+
+    body[data-internal-auth='auth_error'] .global-auth-status,
+    body[data-internal-auth='inactive'] .global-auth-status,
+    body[data-internal-auth='config_error'] .global-auth-status {
+      color: rgba(232, 192, 122, 0.70);
+    }
+
+    .global-auth-form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 100%;
+      margin: 0;
+    }
+
+    .global-auth-label {
+      align-self: flex-start;
+      font-size: 7px;
+      letter-spacing: 0.28em;
+      color: rgba(242, 237, 228, 0.42);
+    }
+
+    .global-auth-input {
+      width: 100%;
+      min-height: 38px;
+      border: 1px solid rgba(242, 237, 228, 0.10);
+      background: rgba(5, 3, 2, 0.34);
+      padding: 0 13px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 15.5px;
+      font-weight: 300;
+      letter-spacing: 0.045em;
+      color: rgba(242, 237, 228, 0.76);
+      outline: none;
+    }
+
+    .global-auth-input::placeholder {
+      color: rgba(242, 237, 228, 0.30);
+      font-style: italic;
+    }
+
+    .global-auth-input:focus {
+      border-color: rgba(232, 192, 122, 0.22);
+      background: rgba(5, 3, 2, 0.44);
+    }
+
+    .global-auth-button {
+      min-height: 38px;
+      margin-top: 4px;
+      border: 1px solid rgba(232, 192, 122, 0.18);
+      background: rgba(184, 104, 48, 0.070);
+      color: rgba(232, 192, 122, 0.74);
+      font-size: 7.8px;
+      letter-spacing: 0.30em;
+      cursor: pointer;
+      transition:
+        color 240ms cubic-bezier(0.22, 1, 0.36, 1),
+        border-color 240ms cubic-bezier(0.22, 1, 0.36, 1),
+        background 240ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .global-auth-button:hover,
+    .global-auth-button:focus-visible {
+      color: rgba(242, 237, 228, 0.84);
+      border-color: rgba(232, 192, 122, 0.30);
+      background: rgba(184, 104, 48, 0.105);
+      outline: none;
+    }
+
+    .global-auth-button:disabled {
+      cursor: wait;
+      opacity: 0.58;
+    }
+
+    .global-auth-feedback {
+      min-height: 14px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 12px;
+      font-style: italic;
+      letter-spacing: 0.035em;
+      color: rgba(232, 192, 122, 0.62);
+    }
+
+    /* The threshold is now global; inner feature gates remain inert. */
+    .route-view .internal-gate,
+    .desk-panel .internal-gate {
+      display: none !important;
+    }
+
+    body:not([data-internal-auth='signed_in']) .dashboard-entry-toggle,
+    body:not([data-internal-auth='signed_in']) .dashboard-entry,
+    body:not([data-internal-auth='signed_in']) .desk-trigger {
+      display: none !important;
+    }
+
+    @media (max-width: 640px) {
+      .global-auth-card {
+        width: min(100%, 390px);
+      }
+
+      .global-auth-title {
+        letter-spacing: 0.34em;
+      }
+    }
+
   </style>
 </head>
 <body data-internal-mode="supabase" data-internal-auth="signed_out" data-internal-ready="false" data-internal-route="public" data-internal-feature="public">
@@ -3107,6 +3352,27 @@
   </div>
 
   <div class="vignette"></div>
+
+  <section class="global-auth-gate" id="globalAuthGate" role="dialog" aria-modal="true" aria-labelledby="globalAuthTitle" aria-describedby="globalAuthCopy">
+    <div class="global-auth-card">
+      <div class="global-auth-rule" aria-hidden="true"></div>
+      <p class="global-auth-kicker i18n-text" data-i18n="global.kicker">Private Threshold</p>
+      <h1 class="global-auth-title" id="globalAuthTitle">MOSCATELLI</h1>
+      <p class="global-auth-copy i18n-text" id="globalAuthCopy" data-i18n="global.copy">Enter with your maison credentials to continue.</p>
+      <div class="global-auth-status" data-internal-status aria-live="polite">
+        <span class="i18n-text" data-i18n="internal.status.signedOut">Authentication required</span>
+      </div>
+      <form class="global-auth-form internal-auth-form" data-internal-auth-form novalidate>
+        <label class="global-auth-label i18n-text" data-i18n="internal.emailLabel">Email</label>
+        <input class="global-auth-input" type="email" inputmode="email" autocomplete="email" data-internal-email data-i18n-placeholder="internal.emailPlaceholder" placeholder="name@moscatelli.co" required>
+        <label class="global-auth-label i18n-text" data-i18n="internal.passwordLabel">Password</label>
+        <input class="global-auth-input" type="password" autocomplete="current-password" data-internal-password data-i18n-placeholder="internal.passwordPlaceholder" placeholder="Password" required>
+        <button class="global-auth-button i18n-text" type="submit" data-internal-auth-submit data-i18n="global.enter">Enter</button>
+        <div class="global-auth-feedback" data-internal-auth-feedback aria-live="polite"></div>
+      </form>
+    </div>
+  </section>
+
 
   <div class="overlay" id="overlay"></div>
 
@@ -4011,6 +4277,11 @@
         },
 
         async create(payload = {}) {
+          if (!isInternalUserSignedIn()) {
+            dataEvent('post-create-error', { error: 'not_signed_in' });
+            return null;
+          }
+
           const client = activeSupabaseClient();
 
           if (!client) {
@@ -4029,11 +4300,6 @@
             attachments.forEach(item => mockStore.attachments.set(item.id, item));
             dataEvent('post-created', { post, table: DASHBOARD_DATA_CONFIG.table });
             return post;
-          }
-
-          if (!isInternalUserSignedIn()) {
-            dataEvent('post-create-error', { error: 'not_signed_in' });
-            return null;
           }
 
           const postPayload = {
@@ -4376,6 +4642,9 @@
         'ui.desk': 'The Desk',
         'desk.kicker': 'Internal Correspondence',
         'desk.intro': 'A private place for correspondence, decisions, and the quiet work of the maison.',
+        'global.kicker': 'Private Threshold',
+        'global.copy': 'Enter with your maison credentials to continue.',
+        'global.enter': 'Enter',
         'internal.kicker': 'Private Access',
         'internal.recordTitle': 'The Record',
         'internal.recordIntro': 'This ledger belongs to the internal work of the maison.',
@@ -4467,6 +4736,9 @@
         'ui.desk': 'Correspondência',
         'desk.kicker': 'Correspondência Interna',
         'desk.intro': 'Um espaço privado para mensagens, decisões e o trabalho silencioso da maison.',
+        'global.kicker': 'Acesso Privado',
+        'global.copy': 'Entre com suas credenciais da maison para continuar.',
+        'global.enter': 'Entrar',
         'internal.kicker': 'Acesso Privado',
         'internal.recordTitle': 'O Registro',
         'internal.recordIntro': 'Este registro pertence ao trabalho interno da maison.',
@@ -4724,9 +4996,16 @@
     }
 
     function unlockInternalAreas() {
+      if (!isInternalUserSignedIn()) {
+        lockInternalAreas();
+        internalAccessEvent('unlock-blocked', { reason: 'not_signed_in' });
+        return false;
+      }
+
       document.body.classList.add('internal-unlocked');
       document.body.classList.remove('internal-locked');
       internalAccessEvent('unlock');
+      return true;
     }
 
     function lockInternalAreas() {
@@ -4877,12 +5156,7 @@
       isInternalRoute,
       featureForRoute: internalFeatureForRoute,
       applyRouteProtection: applyInternalRouteProtection,
-      unlock: unlockInternalAreas,
-      lock: lockInternalAreas,
-      releaseRealtime: releaseAllRealtime,
-      mockSignIn: mockSignInInternalUser,
-      mockSignOut: mockSignOutInternalUser,
-      clearUser: clearInternalUser
+      releaseRealtime: releaseAllRealtime
     });
 
     function internalStatusKey() {
@@ -4922,6 +5196,14 @@
       internalSessionLine?.setAttribute('aria-hidden', String(!isInternalUserSignedIn()));
       updateDeskComposerState();
       updateInternalGateVisibility();
+
+      if (!isInternalUserSignedIn() && InternalState.authStatus !== 'checking') {
+        const gate = document.getElementById('globalAuthGate');
+        const emailInput = gate?.querySelector('[data-internal-email]');
+        if (emailInput && document.activeElement === document.body) {
+          setTimeout(() => emailInput.focus(), 80);
+        }
+      }
     }
 
     async function requestInternalPasswordAccess(event) {
@@ -5741,6 +6023,12 @@
     }
 
     function openDesk() {
+      if (!isInternalUserSignedIn()) {
+        setInternalAuthStatus('signed_out');
+        updateInternalAccessUI();
+        return;
+      }
+
       applyInternalRouteProtection(currentRoute);
       updateDeskComposerState();
       prepareDeskRealtimeHooks();
@@ -5996,6 +6284,12 @@
     }
 
     function openDashboardComposer() {
+      if (!isInternalUserSignedIn()) {
+        setInternalAuthStatus('signed_out');
+        updateInternalAccessUI();
+        return;
+      }
+
       setDashboardComposerExpanded(true, { focus: true });
     }
 
@@ -6287,7 +6581,12 @@
     }
 
     async function createDashboardPost() {
-      if (!dashboardFeed) return null;
+      if (!dashboardFeed || !isInternalUserSignedIn()) {
+        setCommitState('idle');
+        setInternalAuthStatus('signed_out');
+        updateInternalAccessUI();
+        return null;
+      }
 
       try {
         const payload = dashboardRecordFromComposer();
