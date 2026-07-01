@@ -3338,6 +3338,17 @@
       }
     }
 
+
+
+    /* Patch 13B — restore closed side-nav position after global gate unlock */
+    body[data-internal-auth='signed_in'] .side-nav:not(.open) {
+      transform: translate3d(-100%, 0, 0);
+    }
+
+    body[data-internal-auth='signed_in'] .side-nav.open {
+      transform: translate3d(0, 0, 0);
+    }
+
   </style>
 </head>
 <body data-internal-mode="supabase" data-internal-auth="signed_out" data-internal-ready="false" data-internal-route="public" data-internal-feature="public">
