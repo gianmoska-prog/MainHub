@@ -3075,6 +3075,24 @@
       color: rgba(242, 237, 228, 0.30);
     }
 
+
+
+    /* Patch 12E — restore home monogram hover only */
+    @media (hover: hover) and (pointer: fine) {
+      body[data-route='home']:not(.desk-open) .hero-logo-glow-overlay {
+        display: block !important;
+      }
+
+      body[data-route='home']:not(.desk-open) .hero-logo-bg.visible + .hero-logo-glow-overlay.is-lit {
+        opacity: 1 !important;
+      }
+    }
+
+    body.desk-open .hero-logo-glow-overlay,
+    body:not([data-route='home']) .hero-logo-glow-overlay {
+      opacity: 0 !important;
+    }
+
   </style>
 </head>
 <body data-internal-mode="supabase" data-internal-auth="signed_out" data-internal-ready="false" data-internal-route="public" data-internal-feature="public">
@@ -5174,9 +5192,12 @@
       });
     }
 
-    // Patch 12B: pointer-following glow removed; the Desk/Record should remain still and institutional.
     if (routeHome && pageHint && monogramGlowOverlay && heroPointerGlow) {
-      monogramGlowOverlay.classList.remove('is-lit');
+      routeHome.addEventListener('pointermove', requestMonogramGlowUpdate);
+      routeHome.addEventListener('pointerleave', () => monogramGlowOverlay.classList.remove('is-lit'));
+      finePointerQuery.addEventListener?.('change', event => {
+        if (!event.matches && monogramGlowOverlay) monogramGlowOverlay.classList.remove('is-lit');
+      });
     }
 
     window.addEventListener('popstate', () => applyRoute(routeFromHash()));
