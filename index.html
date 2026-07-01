@@ -4051,6 +4051,69 @@
       }
     }
 
+
+
+    /* Patch 13H — stabilise auth inputs against browser/password-manager autofill */
+    .global-auth-input {
+      box-sizing: border-box;
+      padding-right: 52px;
+      background-clip: padding-box;
+      -webkit-background-clip: padding-box;
+      appearance: none;
+      -webkit-appearance: none;
+      transition:
+        border-color 240ms cubic-bezier(0.22, 1, 0.36, 1),
+        background-color 240ms cubic-bezier(0.22, 1, 0.36, 1),
+        box-shadow 240ms cubic-bezier(0.22, 1, 0.36, 1),
+        color 240ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .global-auth-input:hover,
+    .global-auth-input:focus,
+    .global-auth-input:focus-visible {
+      outline: none;
+      border-color: rgba(232, 192, 122, 0.22);
+      background:
+        linear-gradient(180deg, rgba(242, 237, 228, 0.026), rgba(242, 237, 228, 0.006)),
+        rgba(5, 3, 2, 0.46);
+      color: rgba(242, 237, 228, 0.78);
+      box-shadow:
+        inset 0 1px 0 rgba(242, 237, 228, 0.025),
+        0 0 0 1000px rgba(5, 3, 2, 0.00) inset;
+    }
+
+    .global-auth-input:-webkit-autofill,
+    .global-auth-input:-webkit-autofill:hover,
+    .global-auth-input:-webkit-autofill:focus,
+    .global-auth-input:-webkit-autofill:active {
+      -webkit-text-fill-color: rgba(242, 237, 228, 0.78) !important;
+      caret-color: rgba(242, 237, 228, 0.78);
+      border-color: rgba(232, 192, 122, 0.18) !important;
+      box-shadow:
+        0 0 0 1000px rgba(5, 3, 2, 0.50) inset,
+        inset 0 1px 0 rgba(242, 237, 228, 0.025) !important;
+      -webkit-box-shadow:
+        0 0 0 1000px rgba(5, 3, 2, 0.50) inset,
+        inset 0 1px 0 rgba(242, 237, 228, 0.025) !important;
+      transition:
+        background-color 999999s ease-in-out 0s,
+        color 240ms cubic-bezier(0.22, 1, 0.36, 1),
+        border-color 240ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .global-auth-input:autofill {
+      color: rgba(242, 237, 228, 0.78);
+      border-color: rgba(232, 192, 122, 0.18);
+      box-shadow:
+        0 0 0 1000px rgba(5, 3, 2, 0.50) inset,
+        inset 0 1px 0 rgba(242, 237, 228, 0.025);
+    }
+
+    /* Reserve space for extension icons so NordPass/Chrome overlays do not visually crush the input text. */
+    .global-auth-form {
+      isolation: isolate;
+    }
+
   </style>
 </head>
 <body data-internal-mode="supabase" data-internal-auth="signed_out" data-internal-ready="false" data-internal-route="public" data-internal-feature="public">
@@ -4077,7 +4140,7 @@
       </div>
       <form class="global-auth-form internal-auth-form" data-internal-auth-form novalidate>
         <label class="global-auth-label i18n-text" data-i18n="internal.emailLabel">Email</label>
-        <input class="global-auth-input" type="email" inputmode="email" autocomplete="email" data-internal-email data-i18n-placeholder="internal.emailPlaceholder" placeholder="name@moscatelli.co" required>
+        <input class="global-auth-input" type="email" inputmode="email" autocomplete="username" data-internal-email data-i18n-placeholder="internal.emailPlaceholder" placeholder="name@moscatelli.co" required>
         <label class="global-auth-label i18n-text" data-i18n="internal.passwordLabel">Password</label>
         <input class="global-auth-input" type="password" autocomplete="current-password" data-internal-password data-i18n-placeholder="internal.passwordPlaceholder" placeholder="Password" required>
         <button class="global-auth-button i18n-text" type="submit" data-internal-auth-submit data-i18n="global.enter">Enter</button>
