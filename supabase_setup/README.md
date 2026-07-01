@@ -65,3 +65,5 @@ Patch 11 enables Supabase Realtime for The Record and The Desk. Existing Patch 1
 2. `07_validation_queries.sql`
 
 This adds `record_posts`, `record_attachments`, and `desk_messages` to the `supabase_realtime` publication and sets replica identity to `full` so delete events can be reflected accurately in the browser.
+
+Patch 12D adds WhatsApp-style Desk soft deletion. Run `11_patch12d_desk_soft_delete.sql` once before testing deleted-message placeholders.

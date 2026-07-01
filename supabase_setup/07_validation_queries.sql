@@ -110,3 +110,12 @@ where oid in (
   'public.desk_messages'::regclass
 )
 order by relname;
+
+
+-- Patch 12D. Desk soft-delete columns
+select column_name, data_type, is_nullable
+from information_schema.columns
+where table_schema = 'public'
+  and table_name = 'desk_messages'
+  and column_name in ('deleted_at', 'deleted_by', 'deleted_by_display')
+order by column_name;
