@@ -1,3 +1,31 @@
+# MOSCATELLI Supabase Setup
+
+## Current deployment order after Patch 13J
+
+For an existing project that already has Auth users, run the numbered SQL files in this order:
+
+1. `01_schema.sql`
+2. `02_rls_policies.sql`
+3. `03_storage.sql`
+4. `09_patch10_persistence_support.sql`
+5. `10_patch11_realtime_support.sql`
+6. `11_patch12d_desk_soft_delete.sql`
+7. `12_patch13i_desk_shared_visibility.sql`
+8. `13_patch13j_security_deployment_hardening.sql`
+9. `04_seed_profiles_template.sql` after the Auth users exist and you have copied their UUIDs.
+10. `07_validation_queries.sql`
+
+Important: do not rely on `all_in_one_setup.sql` alone for the current build. It is retained as a legacy convenience file and does not represent the complete Patch 13J deployment unless regenerated.
+
+Patch notes:
+- Patch 12D adds Desk soft-delete columns: `deleted_at`, `deleted_by`, `deleted_by_display`.
+- Patch 13I makes The Desk reload from Supabase as the source of truth and resets shared Desk visibility.
+- Patch 13J removes browser hard-delete permission from `desk_messages`; Desk deletion should remain a soft-delete update only.
+
+---
+
+## Legacy notes from previous README
+
 # MOSCATELLI — Supabase Setup Pack
 
 Research date: 2026-06-29  

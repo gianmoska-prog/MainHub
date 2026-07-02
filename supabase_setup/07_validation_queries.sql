@@ -119,3 +119,39 @@ where table_schema = 'public'
   and table_name = 'desk_messages'
   and column_name in ('deleted_at', 'deleted_by', 'deleted_by_display')
 order by column_name;
+
+
+-- Patch 13I. Desk shared visibility diagnostic
+select
+  channel,
+  count(*) as total_messages,
+  count(*) filter (where deleted_at is null) as live_messages,
+  count(*) filter (where deleted_at is not null) as deleted_messages,
+  count(distinct created_by) as distinct_senders
+from public.desk_messages
+group by channel
+order by channel;
+
+
+-- Patch 13J. Desk should be soft-delete only for browser clients.
+select
+  grantee,
+  table_name,
+  privilege_type
+from information_schema.role_table_grants
+where table_schema = 'public'
+  and table_name = 'desk_messages'
+  and grantee = 'authenticated'
+order by privilege_type;
+
+select
+  policyname,
+  cmd,
+  roles,
+  qual,
+  with_check
+from pg_policies
+where schemaname = 'public'
+  and tablename = 'desk_messages'
+  and cmd = 'DELETE'
+order by policyname;

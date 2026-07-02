@@ -4684,6 +4684,7 @@
       dashboardChannel: null,
       attachmentChannel: null,
       dashboardRefreshTimer: null,
+      deskRefreshTimer: null,
       status: 'idle'
     };
 
@@ -5754,6 +5755,14 @@
         InternalState.user = null;
         InternalState.session = null;
         setInternalAuthStatus('inactive');
+
+        const client = createInternalSupabaseClient();
+        if (client?.auth?.signOut) {
+          Promise.resolve(client.auth.signOut()).catch(error => {
+            internalAccessEvent('inactive-signout-error', { error });
+          });
+        }
+
         internalAccessEvent('inactive-user', { user });
         return;
       }
@@ -5918,21 +5927,23 @@
     }
 
     window.MoscatelliInternal = Object.freeze({
-      config: INTERNAL_CONFIG,
-      state: InternalState,
-      data: InternalData,
-      getSupabaseClient: createInternalSupabaseClient,
-      dashboard: DASHBOARD_DATA_CONFIG,
-      desk: DESK_DATA_CONFIG,
-      realtime: RealtimeRuntime,
-      roles: INTERNAL_ROLES,
       getMode: getInternalMode,
-      getCurrentUser: getCurrentInternalUser,
       isSignedIn: isInternalUserSignedIn,
+      getCurrentUser: () => {
+        const user = getCurrentInternalUser();
+        return user ? Object.freeze({ ...user }) : null;
+      },
+      getStatus: () => Object.freeze({
+        authStatus: InternalState.authStatus,
+        ready: InternalState.ready,
+        route: currentRoute,
+        mode: getInternalMode(),
+        deskOpen: document.body.classList.contains('desk-open'),
+        deskLoaded: DeskRuntime.loaded,
+        realtimeStatus: RealtimeRuntime.status
+      }),
       isInternalRoute,
-      featureForRoute: internalFeatureForRoute,
-      applyRouteProtection: applyInternalRouteProtection,
-      releaseRealtime: releaseAllRealtime
+      featureForRoute: internalFeatureForRoute
     });
 
     function internalStatusKey() {
@@ -6624,17 +6635,39 @@
       return item;
     }
 
-    async function loadDeskMessages() {
-      if (!deskThread || DeskRuntime.loaded || !isInternalUserSignedIn()) return [];
+    async function loadDeskMessages({ force = false } = {}) {
+      if (!deskThread || !isInternalUserSignedIn()) return [];
+      if (DeskRuntime.loaded && !force) return [];
 
       try {
         const messages = await InternalData.messages.list({ channel: DESK_DATA_CONFIG.channel });
+
+        if (force) {
+          deskThread.querySelectorAll('.desk-message').forEach(message => message.remove());
+          if (deskEmpty && !deskThread.contains(deskEmpty)) deskThread.appendChild(deskEmpty);
+        }
+
         messages.forEach(message => renderDeskMessageRecord(message));
-        if (!messages.length && deskEmpty && !deskThread.contains(deskEmpty)) deskThread.appendChild(deskEmpty);
+
+        if (messages.length) {
+          deskEmpty?.remove();
+        } else if (deskEmpty && !deskThread.contains(deskEmpty)) {
+          deskThread.appendChild(deskEmpty);
+        }
 
         DeskRuntime.loaded = true;
+
+        window.dispatchEvent(new CustomEvent('moscatelli:desk-loaded', {
+          detail: {
+            count: messages.length,
+            channel: DESK_DATA_CONFIG.channel,
+            force
+          }
+        }));
+
         return messages;
       } catch (error) {
+        DeskRuntime.loaded = false;
         window.dispatchEvent(new CustomEvent('moscatelli:desk-load-error', { detail: { error } }));
         return [];
       }
@@ -6668,6 +6701,10 @@
 
     function releaseDeskRealtime() {
       releaseRealtimeChannel('deskChannel', 'desk');
+      if (RealtimeRuntime.deskRefreshTimer) {
+        clearTimeout(RealtimeRuntime.deskRefreshTimer);
+        RealtimeRuntime.deskRefreshTimer = null;
+      }
       DeskRuntime.subscribed = false;
     }
 
@@ -6696,9 +6733,30 @@
     }
 
     function updateDeskMessageFromRealtime(message) {
-      if (!message?.id || !deskThread || !DeskRuntime.loaded) return;
+      if (!message?.id || !deskThread) return;
       removeDeskMessageById(message.id);
       renderDeskMessageRecord(message);
+    }
+
+    function scheduleDeskRealtimeReload(reason = 'desk-change') {
+      if (!isInternalUserSignedIn()) return;
+
+      if (RealtimeRuntime.deskRefreshTimer) {
+        clearTimeout(RealtimeRuntime.deskRefreshTimer);
+      }
+
+      RealtimeRuntime.deskRefreshTimer = setTimeout(() => {
+        RealtimeRuntime.deskRefreshTimer = null;
+
+        if (!document.body.classList.contains('desk-open')) {
+          DeskRuntime.loaded = false;
+          return;
+        }
+
+        DeskRuntime.loaded = false;
+        loadDeskMessages({ force: true });
+        dispatchRealtimeEvent('desk-refresh', { reason });
+      }, 220);
     }
 
     function prepareDeskRealtimeHooks() {
@@ -6728,9 +6786,8 @@
           filter: `channel=eq.${DESK_DATA_CONFIG.channel}`
         }, payload => {
           const message = InternalData.messages.fromRealtime(payload.new);
-          if (!message || !DeskRuntime.loaded) return;
-          renderDeskMessageRecord(message);
-          dispatchRealtimeEvent('desk-insert', { messageId: message.id });
+          scheduleDeskRealtimeReload('desk-insert');
+          dispatchRealtimeEvent('desk-insert', { messageId: message?.id || payload.new?.id || null });
         })
         .on('postgres_changes', {
           event: 'UPDATE',
@@ -6739,8 +6796,8 @@
           filter: `channel=eq.${DESK_DATA_CONFIG.channel}`
         }, payload => {
           const message = InternalData.messages.fromRealtime(payload.new);
-          updateDeskMessageFromRealtime(message);
-          dispatchRealtimeEvent('desk-update', { messageId: message?.id || null });
+          scheduleDeskRealtimeReload('desk-update');
+          dispatchRealtimeEvent('desk-update', { messageId: message?.id || payload.new?.id || null });
         })
         .on('postgres_changes', {
           event: 'DELETE',
@@ -6749,7 +6806,7 @@
           filter: `channel=eq.${DESK_DATA_CONFIG.channel}`
         }, payload => {
           const messageId = payload.old?.id || null;
-          if (messageId) removeDeskMessageById(messageId);
+          scheduleDeskRealtimeReload('desk-delete');
           dispatchRealtimeEvent('desk-delete', { messageId });
         })
         .subscribe(status => {
@@ -6779,6 +6836,7 @@
 
         renderDeskMessageRecord(result.message);
         if (deskMessageInput) deskMessageInput.value = '';
+        scheduleDeskRealtimeReload('desk-send');
 
         return result.message;
       } catch (error) {
@@ -6808,7 +6866,8 @@
       applyInternalRouteProtection(currentRoute);
       updateDeskComposerState();
       prepareDeskRealtimeHooks();
-      loadDeskMessages();
+      DeskRuntime.loaded = false;
+      loadDeskMessages({ force: true });
       monogramGlowOverlay?.classList.remove('is-lit');
       setDeskOpenState(true);
     }
@@ -7587,7 +7646,7 @@
 
       if (document.body.classList.contains('desk-open')) {
         if (force) DeskRuntime.loaded = false;
-        loadDeskMessages();
+        loadDeskMessages({ force });
       }
     }
 

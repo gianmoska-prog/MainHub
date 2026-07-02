@@ -1,3 +1,18 @@
+-- WARNING — LEGACY FILE AFTER PATCH 13J
+-- This all-in-one setup file is retained for historical convenience only.
+-- It does NOT replace the numbered SQL migration order for the current build.
+-- For the current MOSCATELLI build, run:
+-- 01_schema.sql
+-- 02_rls_policies.sql
+-- 03_storage.sql
+-- 09_patch10_persistence_support.sql
+-- 10_patch11_realtime_support.sql
+-- 11_patch12d_desk_soft_delete.sql
+-- 12_patch13i_desk_shared_visibility.sql
+-- 13_patch13j_security_deployment_hardening.sql
+-- 04_seed_profiles_template.sql
+-- 07_validation_queries.sql
+--
 -- MOSCATELLI — All-in-one Supabase setup
 -- Prefer the separate numbered files for easier debugging.
 -- This file combines 01_schema.sql, 02_rls_policies.sql and 03_storage.sql.
