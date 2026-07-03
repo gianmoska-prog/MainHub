@@ -4676,7 +4676,9 @@
     const DeskRuntime = {
       loaded: false,
       subscribed: false,
-      channel: DESK_DATA_CONFIG.channel
+      channel: DESK_DATA_CONFIG.channel,
+      syncTimer: null,
+      lastSignature: ''
     };
 
     const RealtimeRuntime = {
@@ -5927,6 +5929,7 @@
     }
 
     window.MoscatelliInternal = Object.freeze({
+      getBuild: () => 'patch13k-desk-authoritative-sync',
       getMode: getInternalMode,
       isSignedIn: isInternalUserSignedIn,
       getCurrentUser: () => {
@@ -5940,7 +5943,9 @@
         mode: getInternalMode(),
         deskOpen: document.body.classList.contains('desk-open'),
         deskLoaded: DeskRuntime.loaded,
-        realtimeStatus: RealtimeRuntime.status
+        realtimeStatus: RealtimeRuntime.status,
+        build: 'patch13k-desk-authoritative-sync',
+        deskSignature: DeskRuntime.lastSignature
       }),
       isInternalRoute,
       featureForRoute: internalFeatureForRoute
@@ -6635,40 +6640,60 @@
       return item;
     }
 
-    async function loadDeskMessages({ force = false } = {}) {
+    function deskMessagesSignature(messages = []) {
+      return messages
+        .map(message => [
+          message.id,
+          message.created_by || '',
+          message.body || '',
+          message.deleted_at || '',
+          message.deleted_by_display || '',
+          message.updated_at || message.created_at || ''
+        ].join('|'))
+        .join('||');
+    }
+
+    async function loadDeskMessages({ force = false, reason = 'manual' } = {}) {
       if (!deskThread || !isInternalUserSignedIn()) return [];
       if (DeskRuntime.loaded && !force) return [];
 
       try {
         const messages = await InternalData.messages.list({ channel: DESK_DATA_CONFIG.channel });
+        const signature = deskMessagesSignature(messages);
+        const changed = signature !== DeskRuntime.lastSignature;
 
-        if (force) {
+        if (force && changed) {
           deskThread.querySelectorAll('.desk-message').forEach(message => message.remove());
           if (deskEmpty && !deskThread.contains(deskEmpty)) deskThread.appendChild(deskEmpty);
         }
 
-        messages.forEach(message => renderDeskMessageRecord(message));
+        if (!DeskRuntime.loaded || changed) {
+          messages.forEach(message => renderDeskMessageRecord(message));
 
-        if (messages.length) {
-          deskEmpty?.remove();
-        } else if (deskEmpty && !deskThread.contains(deskEmpty)) {
-          deskThread.appendChild(deskEmpty);
+          if (messages.length) {
+            deskEmpty?.remove();
+          } else if (deskEmpty && !deskThread.contains(deskEmpty)) {
+            deskThread.appendChild(deskEmpty);
+          }
         }
 
         DeskRuntime.loaded = true;
+        DeskRuntime.lastSignature = signature;
 
         window.dispatchEvent(new CustomEvent('moscatelli:desk-loaded', {
           detail: {
             count: messages.length,
             channel: DESK_DATA_CONFIG.channel,
-            force
+            force,
+            reason,
+            changed
           }
         }));
 
         return messages;
       } catch (error) {
         DeskRuntime.loaded = false;
-        window.dispatchEvent(new CustomEvent('moscatelli:desk-load-error', { detail: { error } }));
+        window.dispatchEvent(new CustomEvent('moscatelli:desk-load-error', { detail: { error, reason } }));
         return [];
       }
     }
@@ -6754,7 +6779,7 @@
         }
 
         DeskRuntime.loaded = false;
-        loadDeskMessages({ force: true });
+        loadDeskMessages({ force: true, reason });
         dispatchRealtimeEvent('desk-refresh', { reason });
       }, 220);
     }
@@ -6856,6 +6881,27 @@
       }));
     }
 
+    function stopDeskAuthoritativeSync() {
+      if (DeskRuntime.syncTimer) {
+        clearInterval(DeskRuntime.syncTimer);
+        DeskRuntime.syncTimer = null;
+      }
+    }
+
+    function syncDeskFromSource(reason = 'desk-sync') {
+      if (!isInternalUserSignedIn() || !document.body.classList.contains('desk-open')) return;
+      DeskRuntime.loaded = false;
+      loadDeskMessages({ force: true, reason });
+    }
+
+    function startDeskAuthoritativeSync() {
+      if (!isInternalUserSignedIn() || DeskRuntime.syncTimer) return;
+
+      DeskRuntime.syncTimer = setInterval(() => {
+        syncDeskFromSource('desk-poll');
+      }, 2600);
+    }
+
     function openDesk() {
       if (!isInternalUserSignedIn()) {
         setInternalAuthStatus('signed_out');
@@ -6867,13 +6913,15 @@
       updateDeskComposerState();
       prepareDeskRealtimeHooks();
       DeskRuntime.loaded = false;
-      loadDeskMessages({ force: true });
+      loadDeskMessages({ force: true, reason: 'desk-open' });
+      startDeskAuthoritativeSync();
       monogramGlowOverlay?.classList.remove('is-lit');
       setDeskOpenState(true);
     }
 
     function closeDesk() {
       setDeskOpenState(false);
+      stopDeskAuthoritativeSync();
       releaseTapFocus();
     }
 
@@ -7621,9 +7669,11 @@
 
 
     function clearDeskThread() {
+      stopDeskAuthoritativeSync();
       deskThread?.querySelectorAll('.desk-message').forEach(message => message.remove());
       if (deskThread && deskEmpty && !deskThread.contains(deskEmpty)) deskThread.appendChild(deskEmpty);
       DeskRuntime.loaded = false;
+      DeskRuntime.lastSignature = '';
     }
 
     function clearInternalRuntimeViews() {
@@ -7646,7 +7696,8 @@
 
       if (document.body.classList.contains('desk-open')) {
         if (force) DeskRuntime.loaded = false;
-        loadDeskMessages({ force });
+        loadDeskMessages({ force, reason: force ? 'visible-force' : 'visible' });
+        startDeskAuthoritativeSync();
       }
     }
 
@@ -7663,6 +7714,16 @@
 
     window.addEventListener('moscatelli:internal-sign-out', clearInternalRuntimeViews);
     window.addEventListener('moscatelli:internal-inactive-user', clearInternalRuntimeViews);
+
+    window.addEventListener('focus', () => {
+      syncDeskFromSource('window-focus');
+    });
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible') {
+        syncDeskFromSource('visibility-visible');
+      }
+    });
 
     queueMicrotask(() => loadVisibleInternalRuntimeViews());
 
