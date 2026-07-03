@@ -5205,7 +5205,7 @@
 
           if (error) {
             dataEvent('messages-list-error', { error, table: DESK_DATA_CONFIG.table });
-            return [];
+            throw error;
           }
 
           const rows = (data || [])
@@ -5938,7 +5938,7 @@
     }
 
     window.MoscatelliInternal = Object.freeze({
-      getBuild: () => 'patch13l-desk-request-sequence',
+      getBuild: () => 'patch13m-desk-non-destructive-reconcile',
       getMode: getInternalMode,
       isSignedIn: isInternalUserSignedIn,
       getCurrentUser: () => {
@@ -5953,7 +5953,7 @@
         deskOpen: document.body.classList.contains('desk-open'),
         deskLoaded: DeskRuntime.loaded,
         realtimeStatus: RealtimeRuntime.status,
-        build: 'patch13l-desk-request-sequence',
+        build: 'patch13m-desk-non-destructive-reconcile',
         deskSignature: DeskRuntime.lastSignature
       }),
       isInternalRoute,
@@ -6600,8 +6600,14 @@
       return template.replace('{user}', displayName);
     }
 
-    function renderDeskMessageRecord(message) {
-      if (!deskThread || !message || deskThread.querySelector(`[data-message-id="${message.id}"]`)) return null;
+    function renderDeskMessageRecord(message, { replace = false } = {}) {
+      if (!deskThread || !message || !message.id) return null;
+
+      const existingMessage = deskThread.querySelector(`[data-message-id="${message.id}"]`);
+      if (existingMessage) {
+        if (!replace) return null;
+        existingMessage.remove();
+      }
 
       deskEmpty?.remove();
 
@@ -6685,17 +6691,12 @@
         const signature = deskMessagesSignature(messages);
         const changed = signature !== DeskRuntime.lastSignature;
 
-        if (force && changed) {
-          deskThread.querySelectorAll('.desk-message').forEach(message => message.remove());
-          if (deskEmpty && !deskThread.contains(deskEmpty)) deskThread.appendChild(deskEmpty);
-        }
-
-        if (!DeskRuntime.loaded || changed) {
-          messages.forEach(message => renderDeskMessageRecord(message));
+        if (!DeskRuntime.loaded || changed || force) {
+          messages.forEach(message => renderDeskMessageRecord(message, { replace: true }));
 
           if (messages.length) {
             deskEmpty?.remove();
-          } else if (deskEmpty && !deskThread.contains(deskEmpty)) {
+          } else if (!deskThread.querySelector('.desk-message') && deskEmpty && !deskThread.contains(deskEmpty)) {
             deskThread.appendChild(deskEmpty);
           }
         }
