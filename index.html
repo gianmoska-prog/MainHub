@@ -4678,7 +4678,8 @@
       subscribed: false,
       channel: DESK_DATA_CONFIG.channel,
       syncTimer: null,
-      lastSignature: ''
+      lastSignature: '',
+      requestSeq: 0
     };
 
     const RealtimeRuntime = {
@@ -5199,7 +5200,7 @@
             .from(DESK_DATA_CONFIG.table)
             .select(supabaseFieldList(DESK_DATA_CONFIG.fields))
             .eq('channel', channel)
-            .order('created_at', { ascending: true })
+            .order('created_at', { ascending: false })
             .limit(SUPABASE_DESK_LIMIT);
 
           if (error) {
@@ -5207,7 +5208,15 @@
             return [];
           }
 
-          return (data || []).map(message => ({
+          const rows = (data || [])
+            .slice()
+            .sort((a, b) => {
+              const createdAt = String(a.created_at || '').localeCompare(String(b.created_at || ''));
+              if (createdAt) return createdAt;
+              return String(a.id || '').localeCompare(String(b.id || ''));
+            });
+
+          return rows.map(message => ({
             ...normaliseDeskMessagePayload(message),
             id: message.id,
             sender_display: message.sender_display || 'Member',
@@ -5929,7 +5938,7 @@
     }
 
     window.MoscatelliInternal = Object.freeze({
-      getBuild: () => 'patch13k-desk-authoritative-sync',
+      getBuild: () => 'patch13l-desk-request-sequence',
       getMode: getInternalMode,
       isSignedIn: isInternalUserSignedIn,
       getCurrentUser: () => {
@@ -5944,7 +5953,7 @@
         deskOpen: document.body.classList.contains('desk-open'),
         deskLoaded: DeskRuntime.loaded,
         realtimeStatus: RealtimeRuntime.status,
-        build: 'patch13k-desk-authoritative-sync',
+        build: 'patch13l-desk-request-sequence',
         deskSignature: DeskRuntime.lastSignature
       }),
       isInternalRoute,
@@ -6657,8 +6666,22 @@
       if (!deskThread || !isInternalUserSignedIn()) return [];
       if (DeskRuntime.loaded && !force) return [];
 
+      const requestSeq = ++DeskRuntime.requestSeq;
+
       try {
         const messages = await InternalData.messages.list({ channel: DESK_DATA_CONFIG.channel });
+
+        if (requestSeq !== DeskRuntime.requestSeq) {
+          window.dispatchEvent(new CustomEvent('moscatelli:desk-load-discarded', {
+            detail: {
+              reason,
+              requestSeq,
+              latestRequestSeq: DeskRuntime.requestSeq
+            }
+          }));
+          return [];
+        }
+
         const signature = deskMessagesSignature(messages);
         const changed = signature !== DeskRuntime.lastSignature;
 
@@ -6686,14 +6709,17 @@
             channel: DESK_DATA_CONFIG.channel,
             force,
             reason,
-            changed
+            changed,
+            requestSeq
           }
         }));
 
         return messages;
       } catch (error) {
-        DeskRuntime.loaded = false;
-        window.dispatchEvent(new CustomEvent('moscatelli:desk-load-error', { detail: { error, reason } }));
+        if (requestSeq === DeskRuntime.requestSeq) {
+          DeskRuntime.loaded = false;
+        }
+        window.dispatchEvent(new CustomEvent('moscatelli:desk-load-error', { detail: { error, reason, requestSeq } }));
         return [];
       }
     }
