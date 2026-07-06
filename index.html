@@ -1814,6 +1814,25 @@
       display: block;
     }
 
+    .dashboard-composer-feedback {
+      min-height: 16px;
+      margin-top: 8px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 13px;
+      font-weight: 300;
+      font-style: italic;
+      letter-spacing: 0.035em;
+      color: rgba(242, 237, 228, 0.30);
+    }
+
+    .dashboard-composer-feedback.is-error {
+      color: rgba(232, 192, 122, 0.66);
+    }
+
+    .dashboard-composer-feedback.is-warning {
+      color: rgba(232, 192, 122, 0.54);
+    }
+
     .dashboard-feed {
       flex: 1;
       min-height: 0;
@@ -1876,6 +1895,11 @@
       border-color: rgba(232, 192, 122, 0.16);
     }
 
+    .dashboard-commit:disabled {
+      cursor: wait;
+      opacity: 0.62;
+    }
+
     .dashboard-commit.is-confirmed {
       color: rgba(232, 192, 122, 0.62);
       border-color: rgba(232, 192, 122, 0.18);
@@ -1890,6 +1914,196 @@
 
     .dashboard-post-attachments .dashboard-attachment-remove {
       display: none;
+    }
+
+    .dashboard-post-attachments .dashboard-attachment {
+      appearance: none;
+      padding: 0;
+      border-radius: 0;
+      cursor: zoom-in;
+      text-align: left;
+    }
+
+    .dashboard-post-attachments .dashboard-attachment:focus-visible {
+      outline: 1px solid rgba(232, 192, 122, 0.38);
+      outline-offset: 3px;
+    }
+
+    .dashboard-attachment-placeholder {
+      min-height: 76px;
+      display: grid;
+      place-items: center;
+      font-family: 'Cinzel', serif;
+      font-size: 7px;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: rgba(242, 237, 228, 0.28);
+      background:
+        linear-gradient(135deg, rgba(242, 237, 228, 0.045), transparent 48%),
+        rgba(0, 0, 0, 0.18);
+    }
+
+    .dashboard-attachment.is-unavailable img {
+      opacity: 0.24;
+      filter: grayscale(0.8);
+    }
+
+    .record-lightbox[hidden] {
+      display: none !important;
+    }
+
+    .record-lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 70;
+      display: grid;
+      place-items: center;
+      padding: clamp(18px, 3vw, 38px);
+    }
+
+    .record-lightbox-scrim {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 50% 42%, rgba(184, 104, 48, 0.12), transparent 36%),
+        rgba(4, 3, 2, 0.84);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
+
+    .record-lightbox-panel {
+      position: relative;
+      width: min(980px, 100%);
+      max-height: min(86vh, 860px);
+      border: 1px solid rgba(242, 237, 228, 0.09);
+      background:
+        linear-gradient(150deg, rgba(242, 237, 228, 0.055), transparent 42%),
+        rgba(11, 8, 6, 0.82);
+      box-shadow: 0 32px 90px rgba(0, 0, 0, 0.52);
+      overflow: hidden;
+    }
+
+    .record-lightbox-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      min-height: 48px;
+      padding: 0 16px 0 18px;
+      border-bottom: 1px solid rgba(242, 237, 228, 0.065);
+    }
+
+    .record-lightbox-kicker {
+      font-family: 'Cinzel', serif;
+      font-size: 8px;
+      font-weight: 300;
+      letter-spacing: 0.34em;
+      text-transform: uppercase;
+      color: rgba(232, 192, 122, 0.54);
+    }
+
+    .record-lightbox-close,
+    .record-lightbox-nav {
+      appearance: none;
+      border: 1px solid rgba(242, 237, 228, 0.10);
+      background: rgba(242, 237, 228, 0.025);
+      color: rgba(242, 237, 228, 0.52);
+      cursor: pointer;
+      transition:
+        color 180ms cubic-bezier(0.22, 1, 0.36, 1),
+        border-color 180ms cubic-bezier(0.22, 1, 0.36, 1),
+        background 180ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .record-lightbox-close {
+      width: 28px;
+      height: 28px;
+      font-family: 'Cinzel', serif;
+      font-size: 15px;
+      line-height: 1;
+    }
+
+    .record-lightbox-close:hover,
+    .record-lightbox-nav:hover,
+    .record-lightbox-close:focus-visible,
+    .record-lightbox-nav:focus-visible {
+      color: rgba(232, 192, 122, 0.72);
+      border-color: rgba(232, 192, 122, 0.22);
+      background: rgba(184, 104, 48, 0.055);
+      outline: none;
+    }
+
+    .record-lightbox-figure {
+      margin: 0;
+      display: grid;
+      grid-template-rows: minmax(0, 1fr) auto;
+      max-height: calc(min(86vh, 860px) - 49px);
+    }
+
+    .record-lightbox-image-wrap {
+      min-height: 280px;
+      display: grid;
+      place-items: center;
+      padding: clamp(16px, 2.8vw, 34px);
+      background:
+        radial-gradient(circle at 50% 50%, rgba(242, 237, 228, 0.045), transparent 48%),
+        rgba(0, 0, 0, 0.20);
+    }
+
+    .record-lightbox-image {
+      display: block;
+      max-width: 100%;
+      max-height: min(66vh, 660px);
+      object-fit: contain;
+      box-shadow: 0 18px 58px rgba(0, 0, 0, 0.34);
+    }
+
+    .record-lightbox-caption {
+      display: flex;
+      justify-content: space-between;
+      gap: 24px;
+      padding: 14px 18px 16px;
+      border-top: 1px solid rgba(242, 237, 228, 0.065);
+      font-family: 'Cormorant Garamond', serif;
+      color: rgba(242, 237, 228, 0.44);
+    }
+
+    .record-lightbox-title {
+      font-size: 15px;
+      font-style: italic;
+      letter-spacing: 0.045em;
+    }
+
+    .record-lightbox-meta {
+      align-self: center;
+      font-family: 'Cinzel', serif;
+      font-size: 7px;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: rgba(232, 192, 122, 0.42);
+      white-space: nowrap;
+    }
+
+    .record-lightbox-nav {
+      position: absolute;
+      top: 50%;
+      width: 34px;
+      height: 44px;
+      transform: translateY(-50%);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 32px;
+      line-height: 1;
+    }
+
+    .record-lightbox-nav.is-prev { left: 14px; }
+    .record-lightbox-nav.is-next { right: 14px; }
+
+    .record-lightbox-nav[hidden] {
+      display: none;
+    }
+
+    body.record-lightbox-open {
+      overflow: hidden;
     }
 
     .dashboard-post-date {
@@ -2995,9 +3209,85 @@
     }
 
     @media (max-width: 640px) {
-      .dashboard-entry,
       .dashboard-entry-toggle {
-        display: none;
+        position: fixed;
+        right: 18px;
+        bottom: calc(18px + env(safe-area-inset-bottom));
+        z-index: 24;
+        display: inline-flex;
+        max-width: calc(100vw - 36px);
+      }
+
+      .dashboard-entry {
+        position: fixed;
+        left: 18px;
+        right: 18px;
+        bottom: calc(18px + env(safe-area-inset-bottom));
+        z-index: 25;
+        display: block;
+        width: auto;
+        max-width: none;
+        max-height: calc(100svh - 118px);
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        transform-origin: bottom center;
+      }
+
+      .dashboard-entry-grid {
+        display: block;
+      }
+
+      .dashboard-entry-grid .dashboard-input,
+      .dashboard-entry-grid .dashboard-category {
+        margin-bottom: 9px;
+      }
+
+      .dashboard-upload-row {
+        align-items: stretch;
+        flex-direction: column;
+        gap: 9px;
+      }
+
+      .dashboard-upload,
+      .dashboard-commit {
+        width: 100%;
+        min-height: 36px;
+      }
+
+      .dashboard-commit {
+        margin-left: 0;
+      }
+
+      .dashboard-upload-note {
+        text-align: center;
+      }
+
+      .dashboard-attachments {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .record-lightbox {
+        padding: 12px;
+      }
+
+      .record-lightbox-panel {
+        max-height: 88vh;
+      }
+
+      .record-lightbox-caption {
+        display: grid;
+        gap: 6px;
+      }
+
+      .record-lightbox-meta {
+        white-space: normal;
+      }
+
+      .record-lightbox-nav {
+        top: auto;
+        bottom: 68px;
+        transform: none;
+        background: rgba(8, 5, 3, 0.62);
       }
     }
 
@@ -4316,11 +4606,32 @@
           </div>
           <div class="dashboard-attachments" id="dashboardAttachments" aria-live="polite"></div>
           <div class="dashboard-attachment-limit i18n-text" id="dashboardAttachmentLimit" data-i18n="dashboard.attachLimit">Maximum four images.</div>
+          <div class="dashboard-composer-feedback" id="dashboardComposerFeedback" role="status" aria-live="polite"></div>
         </div>
 
         </div>
       </div>
     </section>
+    <div class="record-lightbox" id="recordAttachmentViewer" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="recordAttachmentViewerTitle" hidden>
+      <div class="record-lightbox-scrim" data-record-lightbox-close aria-hidden="true"></div>
+      <div class="record-lightbox-panel" role="document">
+        <div class="record-lightbox-bar">
+          <span class="record-lightbox-kicker i18n-text" id="recordAttachmentViewerTitle" data-i18n="dashboard.viewerTitle">Record Plate</span>
+          <button class="record-lightbox-close" id="recordAttachmentViewerClose" type="button" aria-label="Close attachment viewer">×</button>
+        </div>
+        <figure class="record-lightbox-figure">
+          <div class="record-lightbox-image-wrap">
+            <img class="record-lightbox-image" id="recordAttachmentViewerImage" alt="" decoding="async">
+          </div>
+          <figcaption class="record-lightbox-caption">
+            <span class="record-lightbox-title" id="recordAttachmentViewerCaption"></span>
+            <span class="record-lightbox-meta" id="recordAttachmentViewerMeta"></span>
+          </figcaption>
+        </figure>
+        <button class="record-lightbox-nav is-prev" id="recordAttachmentViewerPrev" type="button" aria-label="Previous plate">‹</button>
+        <button class="record-lightbox-nav is-next" id="recordAttachmentViewerNext" type="button" aria-label="Next plate">›</button>
+      </div>
+    </div>
     <section class="route-view route-divisions" data-view="divisions" aria-hidden="true">
       <div class="division-doors" id="divisionDoors" aria-label="Moscatelli divisions">
         <button class="division-door" type="button" data-route="divisions/marketing" data-division="marketing" aria-pressed="false">
@@ -5310,6 +5621,12 @@
           return items.map(item => normaliseAttachment(item));
         },
 
+        async refreshSignedUrl(path) {
+          const client = activeSupabaseClient();
+          if (!client || !path) return '';
+          return signedAttachmentUrl(client, path);
+        },
+
         async cleanupBlobUrls(urls = []) {
           urls.forEach(url => {
             if (typeof url === 'string' && url.startsWith('blob:')) URL.revokeObjectURL(url);
@@ -5358,6 +5675,15 @@
         'dashboard.commit': 'Enter into the Record',
         'dashboard.recording': 'Entering…',
         'dashboard.recorded': 'Entered into the Record',
+        'dashboard.feedback.empty': 'Add a title or note before entering the Record.',
+        'dashboard.feedback.auth': 'Sign in again before entering the Record.',
+        'dashboard.feedback.error': 'The entry could not be recorded. Please try again.',
+        'dashboard.feedback.attachErrors': 'Entry recorded, but one or more plates could not be attached.',
+        'dashboard.feedback.attachInvalid': 'Only image files may be attached.',
+        'dashboard.feedback.attachLimit': 'Only four plates may be attached.',
+        'dashboard.feedback.attachResize': 'One plate could not be prepared for preview.',
+        'dashboard.viewerTitle': 'Record Plate',
+        'dashboard.viewerUnavailable': 'This plate could not be re-opened. Refresh the Record and try again.',
         'dashboard.delete': 'Delete',
         'dashboard.deleted': 'Entry deleted',
         'dashboard.empty': 'No records in this index.',
@@ -5452,6 +5778,15 @@
         'dashboard.commit': 'Registrar no Livro',
         'dashboard.recording': 'Inscrevendo…',
         'dashboard.recorded': 'Registro inscrito',
+        'dashboard.feedback.empty': 'Adicione um título ou uma nota antes de registrar.',
+        'dashboard.feedback.auth': 'Entre novamente antes de registrar.',
+        'dashboard.feedback.error': 'Não foi possível registrar a entrada. Tente novamente.',
+        'dashboard.feedback.attachErrors': 'Registro salvo, mas uma ou mais pranchas não puderam ser anexadas.',
+        'dashboard.feedback.attachInvalid': 'Somente imagens podem ser anexadas.',
+        'dashboard.feedback.attachLimit': 'Somente quatro pranchas podem ser anexadas.',
+        'dashboard.feedback.attachResize': 'Uma prancha não pôde ser preparada para pré-visualização.',
+        'dashboard.viewerTitle': 'Prancha do Registro',
+        'dashboard.viewerUnavailable': 'Esta prancha não pôde ser reaberta. Atualize o Registro e tente novamente.',
         'dashboard.delete': 'Apagar',
         'dashboard.deleted': 'Entrada apagada',
         'dashboard.empty': 'Nenhum registro neste índice.',
@@ -5889,7 +6224,7 @@
     }
 
     window.MoscatelliInternal = Object.freeze({
-      getBuild: () => 'patch14-desk-retired-dashboard-focus',
+      getBuild: () => 'patch15b-record-attachment-viewer',
       getMode: getInternalMode,
       isSignedIn: isInternalUserSignedIn,
       getCurrentUser: () => {
@@ -5905,7 +6240,7 @@
         deskLoaded: DeskRuntime.loaded,
         deskRetired: true,
         realtimeStatus: RealtimeRuntime.status,
-        build: 'patch14-desk-retired-dashboard-focus',
+        build: 'patch15b-record-attachment-viewer',
         deskSignature: DeskRuntime.lastSignature
       }),
       isInternalRoute,
@@ -6923,6 +7258,7 @@
     const dashboardAttachmentInput = document.getElementById('dashboardAttachmentInput');
     const dashboardAttachments = document.getElementById('dashboardAttachments');
     const dashboardAttachmentLimit = document.getElementById('dashboardAttachmentLimit');
+    const dashboardComposerFeedback = document.getElementById('dashboardComposerFeedback');
     const dashboardEntryCategory = document.getElementById('dashboardEntryCategory');
     const dashboardEntryCategoryTrigger = document.getElementById('dashboardEntryCategoryTrigger');
     const dashboardEntryCategoryMenu = document.getElementById('dashboardEntryCategoryMenu');
@@ -6933,7 +7269,18 @@
     const dashboardEntryComposer = document.getElementById('dashboardEntryComposer');
     const dashboardEntryToggle = document.getElementById('dashboardEntryToggle');
     const dashboardEntryClose = document.getElementById('dashboardEntryClose');
+    const recordAttachmentViewer = document.getElementById('recordAttachmentViewer');
+    const recordAttachmentViewerImage = document.getElementById('recordAttachmentViewerImage');
+    const recordAttachmentViewerCaption = document.getElementById('recordAttachmentViewerCaption');
+    const recordAttachmentViewerMeta = document.getElementById('recordAttachmentViewerMeta');
+    const recordAttachmentViewerClose = document.getElementById('recordAttachmentViewerClose');
+    const recordAttachmentViewerPrev = document.getElementById('recordAttachmentViewerPrev');
+    const recordAttachmentViewerNext = document.getElementById('recordAttachmentViewerNext');
     let dashboardLocalAttachments = [];
+    let dashboardCommitInFlight = false;
+    let recordAttachmentViewerItems = [];
+    let recordAttachmentViewerIndex = 0;
+    let recordAttachmentViewerLastFocus = null;
 
     let dashboardCurrentFilter = 'all';
     const DashboardRuntime = { loaded: false, loading: false };
@@ -7077,11 +7424,23 @@
       const empty = document.getElementById('dashboardEmpty');
 
       posts
-        .sort((a, b) => String(b.dataset.date || '').localeCompare(String(a.dataset.date || '')))
+        .sort((a, b) => String(b.dataset.createdAt || b.dataset.date || '').localeCompare(String(a.dataset.createdAt || a.dataset.date || '')))
         .forEach(post => dashboardFeed.insertBefore(post, empty || null));
     }
 
-    function resetDashboardComposer({ preserveAttachmentUrls = false } = {}) {
+    function dashboardFeedbackText(key, fallback = '') {
+      return translations[currentLang]?.[key] || fallback || '';
+    }
+
+    function setDashboardComposerFeedback(message = '', tone = '') {
+      if (!dashboardComposerFeedback) return;
+
+      dashboardComposerFeedback.textContent = message;
+      dashboardComposerFeedback.classList.toggle('is-error', tone === 'error');
+      dashboardComposerFeedback.classList.toggle('is-warning', tone === 'warning');
+    }
+
+    function resetDashboardComposer({ preserveAttachmentUrls = false, preserveFeedback = false } = {}) {
       if (dashboardEntryTitle) dashboardEntryTitle.value = '';
       if (dashboardEntryBody) dashboardEntryBody.value = '';
       if (dashboardAttachmentInput) dashboardAttachmentInput.value = '';
@@ -7092,6 +7451,7 @@
 
       dashboardLocalAttachments = [];
       renderDashboardAttachments();
+      if (!preserveFeedback) setDashboardComposerFeedback('');
     }
 
     function setDashboardComposerExpanded(expanded, { focus = false, reset = false } = {}) {
@@ -7110,6 +7470,10 @@
       if (reset) {
         resetDashboardComposer();
         setCommitState('idle');
+      }
+
+      if (isExpanded) {
+        setDashboardComposerFeedback('');
       }
 
       if (isExpanded && focus) {
@@ -7145,18 +7509,22 @@
       if (!dashboardCommitEntry) return;
 
       dashboardCommitEntry.classList.remove('is-pending', 'is-confirmed');
+      dashboardCommitEntry.disabled = false;
 
       if (state === 'pending') {
+        dashboardCommitEntry.disabled = true;
         dashboardCommitEntry.classList.add('is-pending');
         dashboardCommitEntry.textContent = translations[currentLang]?.['dashboard.recording'] || 'Recording…';
         return;
       }
 
       if (state === 'confirmed') {
+        dashboardCommitEntry.disabled = true;
         dashboardCommitEntry.classList.add('is-confirmed');
         dashboardCommitEntry.textContent = translations[currentLang]?.['dashboard.recorded'] || 'Entry recorded';
 
         setTimeout(() => {
+          dashboardCommitEntry.disabled = false;
           dashboardCommitEntry.classList.remove('is-confirmed');
           dashboardCommitEntry.textContent = translations[currentLang]?.['dashboard.commit'] || 'Commit Entry';
         }, 1400);
@@ -7167,13 +7535,30 @@
     }
 
     function dashboardRecordFromComposer() {
+      const rawTitle = dashboardEntryTitle?.value.trim() || '';
+      const rawBody = dashboardEntryBody?.value.trim() || '';
+
       return {
         channel: DASHBOARD_DATA_CONFIG.defaultChannel,
         category: dashboardEntryCategory?.dataset.entryCategory || DASHBOARD_DATA_CONFIG.defaultCategory,
-        title: dashboardEntryTitle?.value.trim() || translations[currentLang]?.['dashboard.untitled'] || 'Untitled entry',
-        body: dashboardEntryBody?.value.trim() || '—',
+        title: rawTitle || translations[currentLang]?.['dashboard.untitled'] || 'Untitled entry',
+        body: rawBody || '—',
+        rawTitle,
+        rawBody,
         attachments: dashboardLocalAttachments.slice(0, DASHBOARD_DATA_CONFIG.maxAttachments)
       };
+    }
+
+    function validateDashboardRecord(payload) {
+      if (payload?.rawTitle || payload?.rawBody) return true;
+
+      setDashboardComposerFeedback(
+        dashboardFeedbackText('dashboard.feedback.empty', 'Add a title or note before entering the Record.'),
+        'error'
+      );
+      setCommitState('idle');
+      dashboardEntryTitle?.focus();
+      return false;
     }
 
     function dashboardRecordPermissions(record) {
@@ -7186,12 +7571,137 @@
       post.dataset.postId = record.id;
       post.dataset.category = record.category;
       post.dataset.date = ledgerDateIso(record.created_at);
+      post.dataset.createdAt = normaliseLedgerDate(record.created_at).toISOString();
       post.dataset.owned = String(permissions.owned);
       post.dataset.canDelete = String(permissions.can_delete);
       post.dataset.createdBy = record.created_by || '';
       post.dataset.recordSource = record.source || getInternalMode();
 
       return permissions;
+    }
+
+    function attachmentDataFromElement(element) {
+      if (!element) return null;
+
+      return {
+        id: element.dataset.attachmentId || '',
+        path: element.dataset.attachmentPath || '',
+        previewUrl: element.dataset.previewUrl || '',
+        fileName: element.dataset.fileName || '',
+        size: element.dataset.size || '',
+        recordTitle: element.dataset.recordTitle || '',
+        recordCategory: element.dataset.recordCategory || '',
+        recordDate: element.dataset.recordDate || ''
+      };
+    }
+
+    function setRecordAttachmentViewerNavigation() {
+      const hasMany = recordAttachmentViewerItems.length > 1;
+      if (recordAttachmentViewerPrev) recordAttachmentViewerPrev.hidden = !hasMany;
+      if (recordAttachmentViewerNext) recordAttachmentViewerNext.hidden = !hasMany;
+    }
+
+    async function refreshDashboardAttachmentPreview(attachmentElement) {
+      const path = attachmentElement?.dataset.attachmentPath;
+      const img = attachmentElement?.querySelector('img');
+      const currentUrl = attachmentElement?.dataset.previewUrl || img?.currentSrc || img?.src || '';
+      if (!path || attachmentElement.dataset.refreshing === 'true' || (currentUrl && attachmentElement.dataset.failedPreviewUrl === currentUrl)) return '';
+
+      attachmentElement.dataset.refreshing = 'true';
+      attachmentElement.dataset.failedPreviewUrl = currentUrl;
+      const signedUrl = await InternalData.attachments.refreshSignedUrl(path);
+      attachmentElement.dataset.refreshing = 'false';
+
+      if (!signedUrl) {
+        attachmentElement.classList.add('is-unavailable');
+        return '';
+      }
+
+      attachmentElement.dataset.previewUrl = signedUrl;
+      attachmentElement.classList.remove('is-unavailable');
+      if (img) img.src = signedUrl;
+
+      return signedUrl;
+    }
+
+    async function refreshRecordAttachmentViewerItem(item) {
+      if (!item?.path) return item?.previewUrl || '';
+
+      const signedUrl = await InternalData.attachments.refreshSignedUrl(item.path);
+      if (!signedUrl) return item.previewUrl || '';
+
+      item.previewUrl = signedUrl;
+      const matching = Array.from(dashboardFeed?.querySelectorAll('[data-attachment-path]') || [])
+        .find(element => element.dataset.attachmentPath === item.path);
+      if (matching) {
+        matching.dataset.previewUrl = signedUrl;
+        const img = matching.querySelector('img');
+        if (img) img.src = signedUrl;
+      }
+
+      return signedUrl;
+    }
+
+    async function renderRecordAttachmentViewer(index) {
+      if (!recordAttachmentViewer || !recordAttachmentViewerImage || !recordAttachmentViewerItems.length) return;
+
+      const count = recordAttachmentViewerItems.length;
+      recordAttachmentViewerIndex = ((index % count) + count) % count;
+      const item = recordAttachmentViewerItems[recordAttachmentViewerIndex];
+      const src = item.previewUrl || await refreshRecordAttachmentViewerItem(item);
+
+      recordAttachmentViewerImage.removeAttribute('src');
+      recordAttachmentViewerImage.alt = item.recordTitle || item.fileName || 'Record attachment';
+
+      if (src) {
+        recordAttachmentViewerImage.src = src;
+      } else {
+        recordAttachmentViewerImage.alt = translations[currentLang]?.['dashboard.viewerUnavailable'] || 'This plate could not be re-opened.';
+      }
+
+      if (recordAttachmentViewerCaption) {
+        recordAttachmentViewerCaption.textContent = item.recordTitle || item.fileName || translations[currentLang]?.['dashboard.viewerTitle'] || 'Record Plate';
+      }
+
+      if (recordAttachmentViewerMeta) {
+        const parts = [item.recordCategory, item.recordDate, item.size].filter(Boolean);
+        recordAttachmentViewerMeta.textContent = parts.join(' · ');
+      }
+
+      setRecordAttachmentViewerNavigation();
+    }
+
+    async function openRecordAttachmentViewer(items = [], index = 0, trigger = null) {
+      if (!recordAttachmentViewer || !recordAttachmentViewerImage || !items.length) return;
+
+      recordAttachmentViewerItems = items;
+      recordAttachmentViewerLastFocus = trigger || document.activeElement;
+      recordAttachmentViewer.hidden = false;
+      recordAttachmentViewer.setAttribute('aria-hidden', 'false');
+      document.body.classList.add('record-lightbox-open');
+      await renderRecordAttachmentViewer(index);
+      recordAttachmentViewerClose?.focus({ preventScroll: true });
+    }
+
+    function closeRecordAttachmentViewer({ restoreFocus = true } = {}) {
+      if (!recordAttachmentViewer || recordAttachmentViewer.hidden) return;
+
+      recordAttachmentViewer.hidden = true;
+      recordAttachmentViewer.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('record-lightbox-open');
+      if (recordAttachmentViewerImage) recordAttachmentViewerImage.removeAttribute('src');
+      recordAttachmentViewerItems = [];
+
+      if (restoreFocus && recordAttachmentViewerLastFocus?.focus) {
+        recordAttachmentViewerLastFocus.focus({ preventScroll: true });
+      }
+
+      recordAttachmentViewerLastFocus = null;
+    }
+
+    function moveRecordAttachmentViewer(direction = 1) {
+      if (!recordAttachmentViewerItems.length) return;
+      renderRecordAttachmentViewer(recordAttachmentViewerIndex + direction);
     }
 
     function renderDashboardPostRecord(record, { prepend = true } = {}) {
@@ -7205,6 +7715,7 @@
       post.className = record.source === 'mock' ? 'dashboard-post is-local' : 'dashboard-post';
       const permissions = hydrateDashboardPostElement(post, record);
       post.dataset.date = dateIso;
+      post.dataset.createdAt = createdAt.toISOString();
 
       const dateEl = document.createElement('div');
       dateEl.className = 'dashboard-post-date';
@@ -7246,16 +7757,33 @@
         const preview = document.createElement('div');
         preview.className = 'dashboard-attachments dashboard-post-attachments';
 
-        record.attachments.forEach(item => {
-          const attachment = document.createElement('div');
-          attachment.className = 'dashboard-attachment';
-          attachment.dataset.attachmentId = item.id;
+        record.attachments.forEach((item, index) => {
+          const attachment = document.createElement('button');
+          attachment.className = 'dashboard-attachment dashboard-attachment-open';
+          attachment.type = 'button';
+          attachment.dataset.attachmentId = item.id || '';
+          attachment.dataset.attachmentPath = item.path || '';
+          attachment.dataset.previewUrl = item.preview_url || '';
+          attachment.dataset.fileName = item.file_name || '';
+          attachment.dataset.size = formatBytes(item.resized_size);
+          attachment.dataset.recordTitle = record.title || '';
+          attachment.dataset.recordCategory = categoryLabel(record.category);
+          attachment.dataset.recordDate = formatLedgerDate(createdAt);
+          attachment.setAttribute('aria-label', `${translations[currentLang]?.['dashboard.viewerTitle'] || 'Record Plate'} ${index + 1}`);
 
           if (item.preview_url) {
             const img = document.createElement('img');
             img.src = item.preview_url;
             img.alt = '';
+            img.loading = 'lazy';
+            img.decoding = 'async';
+            img.addEventListener('error', () => refreshDashboardAttachmentPreview(attachment));
             attachment.appendChild(img);
+          } else {
+            const placeholder = document.createElement('div');
+            placeholder.className = 'dashboard-attachment-placeholder';
+            placeholder.textContent = translations[currentLang]?.['dashboard.viewerTitle'] || 'Record Plate';
+            attachment.appendChild(placeholder);
           }
 
           const label = document.createElement('span');
@@ -7414,16 +7942,19 @@
       }
     }
 
-    async function createDashboardPost() {
+    async function createDashboardPost(payload = dashboardRecordFromComposer()) {
       if (!dashboardFeed || !isInternalUserSignedIn()) {
         setCommitState('idle');
+        setDashboardComposerFeedback(
+          dashboardFeedbackText('dashboard.feedback.auth', 'Sign in again before entering the Record.'),
+          'error'
+        );
         setInternalAuthStatus('signed_out');
         updateInternalAccessUI();
         return null;
       }
 
       try {
-        const payload = dashboardRecordFromComposer();
         const attachments = await InternalData.attachments.fromComposer(payload.attachments);
 
         const record = await InternalData.posts.create({
@@ -7431,30 +7962,67 @@
           attachments
         });
 
-        if (!record) return null;
+        if (!record) {
+          setDashboardComposerFeedback(
+            dashboardFeedbackText('dashboard.feedback.error', 'The entry could not be recorded. Please try again.'),
+            'error'
+          );
+          return null;
+        }
 
         renderDashboardPostRecord(record, { prepend: true });
         sortDashboardPostsByDate();
         setDashboardFilter(dashboardCurrentFilter);
         DashboardRuntime.loaded = true;
 
+        if (record.attachment_errors?.length) {
+          setDashboardComposerFeedback(
+            dashboardFeedbackText('dashboard.feedback.attachErrors', 'Entry recorded, but one or more plates could not be attached.'),
+            'warning'
+          );
+        }
+
         return record;
       } catch (error) {
+        setDashboardComposerFeedback(
+          dashboardFeedbackText('dashboard.feedback.error', 'The entry could not be recorded. Please try again.'),
+          'error'
+        );
         window.dispatchEvent(new CustomEvent('moscatelli:record-create-error', { detail: { error } }));
         return null;
       }
     }
 
     dashboardCommitEntry?.addEventListener('click', () => {
+      if (dashboardCommitInFlight) return;
+
+      const payload = dashboardRecordFromComposer();
+      if (!validateDashboardRecord(payload)) return;
+
+      dashboardCommitInFlight = true;
+      setDashboardComposerFeedback('');
       setCommitState('pending');
 
       setTimeout(async () => {
-        const record = await createDashboardPost();
+        const record = await createDashboardPost(payload);
+        dashboardCommitInFlight = false;
 
         if (record) {
-          resetDashboardComposer({ preserveAttachmentUrls: record.source === 'mock' });
+          const hadAttachmentErrors = Boolean(record.attachment_errors?.length);
+          resetDashboardComposer({
+            preserveAttachmentUrls: record.source === 'mock',
+            preserveFeedback: hadAttachmentErrors
+          });
           setCommitState('confirmed');
-          setTimeout(() => closeDashboardComposer({ reset: false }), 520);
+
+          if (hadAttachmentErrors) {
+            setDashboardComposerFeedback(
+              dashboardFeedbackText('dashboard.feedback.attachErrors', 'Entry recorded, but one or more plates could not be attached.'),
+              'warning'
+            );
+          } else {
+            setTimeout(() => closeDashboardComposer({ reset: false }), 520);
+          }
         } else {
           setCommitState('idle');
         }
@@ -7570,7 +8138,7 @@
         dashboardAttachments.appendChild(item);
       });
 
-      dashboardAttachmentLimit?.classList.toggle('is-visible', dashboardLocalAttachments.length >= 4);
+      dashboardAttachmentLimit?.classList.toggle('is-visible', dashboardLocalAttachments.length >= DASHBOARD_DATA_CONFIG.maxAttachments);
     }
 
     function removeDashboardAttachment(index) {
@@ -7583,6 +8151,38 @@
       if (dashboardAttachmentInput) dashboardAttachmentInput.value = '';
     }
 
+    dashboardFeed?.addEventListener('click', async event => {
+      const trigger = event.target.closest('.dashboard-attachment-open');
+      if (!trigger) return;
+
+      const group = trigger.closest('.dashboard-post-attachments');
+      const buttons = Array.from(group?.querySelectorAll('.dashboard-attachment-open') || []);
+      const items = buttons.map(attachmentDataFromElement).filter(Boolean);
+      const index = Math.max(0, buttons.indexOf(trigger));
+
+      await openRecordAttachmentViewer(items, index, trigger);
+    });
+
+    recordAttachmentViewerClose?.addEventListener('click', () => closeRecordAttachmentViewer());
+    recordAttachmentViewer?.addEventListener('click', event => {
+      if (event.target.closest('[data-record-lightbox-close]')) closeRecordAttachmentViewer();
+    });
+    recordAttachmentViewerPrev?.addEventListener('click', () => moveRecordAttachmentViewer(-1));
+    recordAttachmentViewerNext?.addEventListener('click', () => moveRecordAttachmentViewer(1));
+    recordAttachmentViewerImage?.addEventListener('error', async () => {
+      const item = recordAttachmentViewerItems[recordAttachmentViewerIndex];
+      if (!item || item.refreshAttempted) return;
+      item.refreshAttempted = true;
+      const signedUrl = await refreshRecordAttachmentViewerItem(item);
+      if (signedUrl && recordAttachmentViewerImage) recordAttachmentViewerImage.src = signedUrl;
+    });
+    document.addEventListener('keydown', event => {
+      if (!recordAttachmentViewer || recordAttachmentViewer.hidden) return;
+      if (event.key === 'Escape') closeRecordAttachmentViewer();
+      if (event.key === 'ArrowLeft') moveRecordAttachmentViewer(-1);
+      if (event.key === 'ArrowRight') moveRecordAttachmentViewer(1);
+    });
+
     dashboardAttachments?.addEventListener('click', event => {
       const remove = event.target.closest('[data-remove-attachment]');
       if (!remove) return;
@@ -7591,25 +8191,49 @@
     });
 
     dashboardAttachmentInput?.addEventListener('change', async event => {
-      const files = Array.from(event.target.files || []).filter(file => file.type.startsWith('image/'));
-      if (!files.length || !dashboardAttachments) return;
+      const selectedFiles = Array.from(event.target.files || []);
+      const files = selectedFiles.filter(file => file.type.startsWith('image/'));
 
-      const remainingSlots = Math.max(0, 4 - dashboardLocalAttachments.length);
+      if (selectedFiles.length && files.length < selectedFiles.length) {
+        setDashboardComposerFeedback(
+          dashboardFeedbackText('dashboard.feedback.attachInvalid', 'Only image files may be attached.'),
+          'warning'
+        );
+      }
+
+      if (!files.length || !dashboardAttachments) {
+        if (dashboardAttachmentInput) dashboardAttachmentInput.value = '';
+        return;
+      }
+
+      const remainingSlots = Math.max(0, DASHBOARD_DATA_CONFIG.maxAttachments - dashboardLocalAttachments.length);
+      if (!remainingSlots) {
+        setDashboardComposerFeedback(
+          dashboardFeedbackText('dashboard.feedback.attachLimit', 'Only four plates may be attached.'),
+          'warning'
+        );
+        if (dashboardAttachmentInput) dashboardAttachmentInput.value = '';
+        return;
+      }
+
       const acceptedFiles = files.slice(0, remainingSlots);
+      if (files.length > acceptedFiles.length) {
+        setDashboardComposerFeedback(
+          dashboardFeedbackText('dashboard.feedback.attachLimit', 'Only four plates may be attached.'),
+          'warning'
+        );
+      }
 
       for (const file of acceptedFiles) {
         try {
           const resized = await resizeDashboardImage(file);
           dashboardLocalAttachments.push(resized);
-        } catch {
-          dashboardLocalAttachments.push({
-            url: '',
-            originalSize: file.size,
-            resizedSize: file.size,
-            mimeType: file.type || 'image/jpeg',
-            fileName: file.name || 'plate.jpg',
-            failedName: file.name
-          });
+        } catch (error) {
+          setDashboardComposerFeedback(
+            dashboardFeedbackText('dashboard.feedback.attachResize', 'One plate could not be prepared for preview.'),
+            'warning'
+          );
+          window.dispatchEvent(new CustomEvent('moscatelli:record-attachment-resize-error', { detail: { error, fileName: file.name } }));
         }
       }
 
@@ -7629,25 +8253,17 @@
 
     function clearInternalRuntimeViews() {
       releaseAllRealtime();
+      closeRecordAttachmentViewer({ restoreFocus: false });
       clearDashboardPosts();
-      clearDeskThread();
-      updateDeskComposerState();
     }
 
     function loadVisibleInternalRuntimeViews({ force = false } = {}) {
       if (!isInternalUserSignedIn()) return;
 
-      updateDeskComposerState();
       prepareDashboardRealtimeHooks();
 
       if (currentRoute === ROUTES.DASHBOARD) {
         ensureDashboardRecordsLoaded({ force });
-      }
-
-      if (document.body.classList.contains('desk-open')) {
-        if (force) DeskRuntime.loaded = false;
-        loadDeskMessages({ force, reason: force ? 'visible-force' : 'visible' });
-        startDeskAuthoritativeSync();
       }
     }
 
@@ -7664,16 +8280,6 @@
 
     window.addEventListener('moscatelli:internal-sign-out', clearInternalRuntimeViews);
     window.addEventListener('moscatelli:internal-inactive-user', clearInternalRuntimeViews);
-
-    window.addEventListener('focus', () => {
-      syncDeskFromSource('window-focus');
-    });
-
-    document.addEventListener('visibilitychange', () => {
-      if (document.visibilityState === 'visible') {
-        syncDeskFromSource('visibility-visible');
-      }
-    });
 
     queueMicrotask(() => loadVisibleInternalRuntimeViews());
 
