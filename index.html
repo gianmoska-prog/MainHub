@@ -3236,6 +3236,15 @@
       background: transparent;
     }
 
+    /* Patch 16H — hard suppression: the entry trigger must not render beneath the Index */
+    body.is-dashboard-filtering #dashboardEntryToggle,
+    #dashboardEntryToggle[hidden] {
+      display: none !important;
+      visibility: hidden !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+    }
+
     .dashboard-entry {
       position: relative;
       z-index: 7;
@@ -6820,7 +6829,7 @@
     }
 
     window.MoscatelliInternal = Object.freeze({
-      getBuild: () => 'patch16g-record-index-trigger-occlusion-fix',
+      getBuild: () => 'patch16h-record-entry-trigger-hard-suppression',
       getMode: getInternalMode,
       isSignedIn: isInternalUserSignedIn,
       getCurrentUser: () => {
@@ -6836,7 +6845,7 @@
         deskLoaded: DeskRuntime.loaded,
         deskRetired: true,
         realtimeStatus: RealtimeRuntime.status,
-        build: 'patch16g-record-index-trigger-occlusion-fix',
+        build: 'patch16h-record-entry-trigger-hard-suppression',
         deskSignature: DeskRuntime.lastSignature
       }),
       isInternalRoute,
@@ -7946,6 +7955,23 @@
       dashboardEntryCategoryTrigger?.setAttribute('aria-expanded', 'false');
     }
 
+    function setDashboardEntryTriggerSuppressed(suppressed) {
+      if (!dashboardEntryToggle) return;
+
+      const shouldSuppress = Boolean(suppressed);
+      dashboardEntryToggle.toggleAttribute('hidden', shouldSuppress);
+      dashboardEntryToggle.classList.toggle('is-hidden', shouldSuppress || dashboardEntryComposer?.classList.contains('is-expanded'));
+      dashboardEntryToggle.disabled = shouldSuppress;
+
+      if (shouldSuppress) {
+        dashboardEntryToggle.setAttribute('aria-hidden', 'true');
+        dashboardEntryToggle.setAttribute('tabindex', '-1');
+      } else {
+        dashboardEntryToggle.removeAttribute('aria-hidden');
+        dashboardEntryToggle.removeAttribute('tabindex');
+      }
+    }
+
     function closeDashboardFilter() {
       dashboardFilter?.classList.remove('is-open');
       dashboardFilterTrigger?.setAttribute('aria-expanded', 'false');
@@ -7955,21 +7981,19 @@
       document.body.classList.remove('is-dashboard-filtering');
 
       if (!dashboardEntryComposer?.classList.contains('is-expanded')) {
-        dashboardEntryToggle?.removeAttribute('aria-hidden');
-        dashboardEntryToggle?.removeAttribute('tabindex');
+        setDashboardEntryTriggerSuppressed(false);
       }
     }
 
     function openDashboardFilter() {
       closeEntryCategory();
+      setDashboardEntryTriggerSuppressed(true);
       dashboardFilterMenu?.removeAttribute('hidden');
       dashboardFilterMenu?.setAttribute('aria-hidden', 'false');
       dashboardFilter?.classList.add('is-open');
       dashboardFilterTrigger?.setAttribute('aria-expanded', 'true');
       dashboardShell?.classList.add('is-filtering');
       document.body.classList.add('is-dashboard-filtering');
-      dashboardEntryToggle?.setAttribute('aria-hidden', 'true');
-      dashboardEntryToggle?.setAttribute('tabindex', '-1');
     }
 
     function toggleEntryCategory() {
@@ -8113,13 +8137,17 @@
       dashboardEntryComposer.setAttribute('aria-hidden', String(!isExpanded));
       dashboardShell?.classList.toggle('is-composing', isExpanded);
       document.body.classList.toggle('is-dashboard-composing', isExpanded);
-      dashboardEntryToggle.classList.toggle('is-hidden', isExpanded);
       dashboardEntryToggle.setAttribute('aria-expanded', String(isExpanded));
 
       if (isExpanded) {
         closeDashboardFilter();
+        setDashboardEntryTriggerSuppressed(true);
+        dashboardEntryToggle.disabled = false;
       } else {
         closeEntryCategory();
+        if (!dashboardFilter?.classList.contains('is-open')) {
+          setDashboardEntryTriggerSuppressed(false);
+        }
       }
 
       if (reset) {
