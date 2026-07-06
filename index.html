@@ -1536,13 +1536,18 @@
       flex: 0 0 auto;
       margin-top: 18px;
       padding: 12px 14px 14px;
-      border: 1px solid rgba(242, 237, 228, 0.075);
-      background: rgba(242, 237, 228, 0.045);
-      backdrop-filter: blur(28px) saturate(170%) brightness(1.05);
-      -webkit-backdrop-filter: blur(28px) saturate(170%) brightness(1.05);
+      border: 1px solid rgba(242, 237, 228, 0.13);
+      background:
+        linear-gradient(180deg, rgba(242, 237, 228, 0.070), rgba(242, 237, 228, 0.020)),
+        radial-gradient(circle at 22% 0%, rgba(232, 192, 122, 0.080), transparent 48%),
+        rgba(12, 7, 4, 0.78);
+      backdrop-filter: blur(46px) saturate(145%) brightness(0.86);
+      -webkit-backdrop-filter: blur(46px) saturate(145%) brightness(0.86);
       box-shadow:
-        0 -1px 0 rgba(242, 237, 228, 0.055),
-        0 14px 38px rgba(0, 0, 0, 0.10);
+        0 -1px 0 rgba(242, 237, 228, 0.090),
+        0 30px 90px rgba(0, 0, 0, 0.44),
+        inset 0 1px 0 rgba(242, 237, 228, 0.080),
+        inset 0 0 0 999px rgba(8, 5, 3, 0.08);
     }
 
     .dashboard-entry-meta {
@@ -1552,11 +1557,12 @@
       margin-bottom: 9px;
       font-size: 7px;
       letter-spacing: 0.28em;
-      color: rgba(242, 237, 228, 0.34);
+      color: rgba(242, 237, 228, 0.60);
+      text-shadow: 0 1px 14px rgba(0, 0, 0, 0.72);
     }
 
     .dashboard-entry-note {
-      color: rgba(242, 237, 228, 0.18);
+      color: rgba(242, 237, 228, 0.48);
     }
 
     .dashboard-entry-grid {
@@ -1569,15 +1575,17 @@
     .dashboard-input,
     .dashboard-textarea {
       width: 100%;
-      border: 1px solid rgba(242, 237, 228, 0.07);
-      background: rgba(8, 5, 3, 0.26);
-      color: rgba(242, 237, 228, 0.56);
+      border: 1px solid rgba(242, 237, 228, 0.135);
+      background: rgba(8, 5, 3, 0.58);
+      color: rgba(242, 237, 228, 0.78);
       font-family: 'Cormorant Garamond', serif;
       font-size: 15px;
       font-weight: 300;
       letter-spacing: 0.045em;
       outline: none;
       border-radius: 0;
+      box-shadow: inset 0 1px 0 rgba(242, 237, 228, 0.030);
+      text-shadow: 0 1px 12px rgba(0, 0, 0, 0.70);
     }
 
     .dashboard-input {
@@ -1597,15 +1605,15 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      border: 1px solid rgba(242, 237, 228, 0.07);
-      background: rgba(8, 5, 3, 0.26);
+      border: 1px solid rgba(242, 237, 228, 0.135);
+      background: rgba(8, 5, 3, 0.58);
       padding: 0 11px;
       font-family: 'Cinzel', serif;
       font-size: 7px;
       font-weight: 300;
       letter-spacing: 0.22em;
       text-transform: uppercase;
-      color: rgba(242, 237, 228, 0.36);
+      color: rgba(242, 237, 228, 0.58);
       cursor: pointer;
       border-radius: 0;
       outline: none;
@@ -1689,7 +1697,7 @@
 
     .dashboard-input::placeholder,
     .dashboard-textarea::placeholder {
-      color: rgba(242, 237, 228, 0.22);
+      color: rgba(242, 237, 228, 0.44);
       font-style: italic;
     }
 
@@ -1707,14 +1715,14 @@
       justify-content: center;
       min-height: 26px;
       padding: 0 10px;
-      border: 1px solid rgba(242, 237, 228, 0.075);
-      background: rgba(242, 237, 228, 0.028);
+      border: 1px solid rgba(242, 237, 228, 0.135);
+      background: rgba(8, 5, 3, 0.46);
       font-family: 'Cinzel', serif;
       font-size: 7.5px;
       font-weight: 300;
       letter-spacing: 0.24em;
       text-transform: uppercase;
-      color: rgba(242, 237, 228, 0.34);
+      color: rgba(242, 237, 228, 0.58);
       cursor: pointer;
     }
 
@@ -1722,8 +1730,10 @@
 
     .dashboard-commit {
       margin-left: auto;
-      background: rgba(184, 104, 48, 0.045);
-      color: rgba(232, 192, 122, 0.42);
+      background: rgba(184, 104, 48, 0.12);
+      border-color: rgba(232, 192, 122, 0.20);
+      color: rgba(232, 192, 122, 0.72);
+      text-shadow: 0 1px 12px rgba(0, 0, 0, 0.72);
     }
 
     .dashboard-commit:focus {
@@ -1736,7 +1746,8 @@
       font-size: 12px;
       font-style: italic;
       letter-spacing: 0.035em;
-      color: rgba(242, 237, 228, 0.25);
+      color: rgba(242, 237, 228, 0.56);
+      text-shadow: 0 1px 14px rgba(0, 0, 0, 0.72);
     }
 
     .dashboard-attachments {
@@ -1822,7 +1833,8 @@
       font-weight: 300;
       font-style: italic;
       letter-spacing: 0.035em;
-      color: rgba(242, 237, 228, 0.30);
+      color: rgba(242, 237, 228, 0.56);
+      text-shadow: 0 1px 14px rgba(0, 0, 0, 0.72);
     }
 
     .dashboard-composer-feedback.is-error {
@@ -6454,7 +6466,7 @@
     }
 
     window.MoscatelliInternal = Object.freeze({
-      getBuild: () => 'patch15f-record-authorship-process-flicker-fix',
+      getBuild: () => 'patch15g-record-composer-readability',
       getMode: getInternalMode,
       isSignedIn: isInternalUserSignedIn,
       getCurrentUser: () => {
@@ -6470,7 +6482,7 @@
         deskLoaded: DeskRuntime.loaded,
         deskRetired: true,
         realtimeStatus: RealtimeRuntime.status,
-        build: 'patch15f-record-authorship-process-flicker-fix',
+        build: 'patch15g-record-composer-readability',
         deskSignature: DeskRuntime.lastSignature
       }),
       isInternalRoute,
