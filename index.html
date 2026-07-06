@@ -3577,6 +3577,12 @@
       outline: none;
     }
 
+    /* Patch 14 — The Desk retired; correspondence is handled outside the website. */
+    .desk-trigger,
+    .desk-scrim,
+    .desk-panel {
+      display: none !important;
+    }
 
 
     /* Patch 13E — wider modern private-threshold composition */
@@ -4414,52 +4420,7 @@
       <span class="internal-session-user" id="internalSessionUser"></span>
       <button class="internal-sign-out i18n-text" id="internalSignOut" type="button" data-i18n="internal.signOut">Sign out</button>
     </span>
-    <button class="desk-trigger i18n-text" id="deskTrigger" type="button" data-i18n="ui.desk" data-desk-trigger aria-label="The Desk" aria-expanded="false" aria-controls="deskPanel">The Desk</button>
   </footer>
-
-  <div class="desk-scrim" id="deskScrim" aria-hidden="true"></div>
-  <aside class="desk-panel" id="deskPanel" aria-hidden="true" aria-label="The Desk" data-desk-state="placeholder" data-provider="none">
-    <div class="desk-panel-inner">
-      <button class="desk-close" id="deskClose" type="button" aria-label="Close The Desk"></button>
-      <div class="internal-gate internal-gate-desk" data-internal-gate="desk" aria-hidden="true">
-        <div class="internal-gate-panel">
-          <div class="internal-gate-kicker i18n-text" data-i18n="internal.kicker">Private Access</div>
-          <h2 class="internal-gate-title i18n-text" data-i18n="internal.deskTitle">The Desk</h2>
-          <p class="internal-gate-copy i18n-text" data-i18n="internal.deskIntro">Internal correspondence is reserved for authenticated members of the maison.</p>
-          <div class="internal-gate-status" data-internal-status>
-            <span class="i18n-text" data-i18n="internal.status.signedOut">Authentication required</span>
-          </div>
-          <form class="internal-gate-actions internal-auth-form" data-internal-auth-form novalidate>
-              <label class="internal-auth-label i18n-text" data-i18n="internal.emailLabel">Email</label>
-              <input class="internal-auth-input" type="email" inputmode="email" autocomplete="email" data-internal-email data-i18n-placeholder="internal.emailPlaceholder" placeholder="name@moscatelli.co" required>
-              <label class="internal-auth-label i18n-text" data-i18n="internal.passwordLabel">Password</label>
-              <input class="internal-auth-input" type="password" autocomplete="current-password" data-internal-password data-i18n-placeholder="internal.passwordPlaceholder" placeholder="••••••••" required>
-              <button class="internal-access-button i18n-text" type="submit" data-internal-auth-submit data-i18n="internal.enter">Enter</button>
-              <div class="internal-auth-feedback" data-internal-auth-feedback aria-live="polite"></div>
-            </form>
-        </div>
-      </div>
-
-      <div class="desk-kicker i18n-text" data-i18n="desk.kicker">Internal Correspondence</div>
-      <h2 class="desk-title i18n-text" data-i18n="ui.desk">The Desk</h2>
-      <p class="desk-intro i18n-text" data-i18n="desk.intro">A private place for correspondence, decisions, and the quiet work of the maison.</p>
-
-      <div class="desk-thread-wrap" data-desk-thread-wrap>
-        <div class="desk-thread" id="deskThread" data-desk-thread aria-live="polite">
-          <div class="desk-empty i18n-text" id="deskEmpty" data-i18n="desk.empty">No correspondence yet.</div>
-        </div>
-      </div>
-
-      <form class="desk-composer" id="deskComposer" data-desk-composer aria-label="Desk message composer">
-        <label class="desk-composer-label i18n-text" for="deskMessageInput" data-i18n="desk.composer">Correspondence field</label>
-        <textarea class="desk-message-input" id="deskMessageInput" rows="2" data-desk-message-input data-i18n-placeholder="desk.placeholder" placeholder="Write a quiet correspondence…"></textarea>
-        <div class="desk-composer-row">
-          <span class="desk-composer-meta" id="deskComposerMeta" data-desk-composer-meta></span>
-          <button class="desk-send i18n-text" id="deskSendMessage" type="submit" data-i18n="desk.send">Send</button>
-        </div>
-      </form>
-    </div>
-  </aside>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
@@ -4535,10 +4496,10 @@
     });
 
     const DESK_CONFIG = Object.freeze({
-      provider: 'supabase',
-      state: 'realtime-ready',
+      provider: 'retired',
+      state: 'retired',
       futureProvider: null,
-      realtimeEnabled: true
+      realtimeEnabled: false
     });
 
     const DESK_DATA_CONFIG = Object.freeze({
@@ -4548,7 +4509,7 @@
       ownerKey: 'created_by',
       createdAtKey: 'created_at',
       realtimeEvent: 'postgres_changes',
-      realtimeEnabled: true,
+      realtimeEnabled: false,
       fields: Object.freeze([
         'id',
         'channel',
@@ -4606,24 +4567,24 @@
         canCreateRecord: true,
         canDeleteOwnRecord: true,
         canDeleteAnyRecord: true,
-        canUseDesk: true,
-        canSendDeskMessage: true
+        canUseDesk: false,
+        canSendDeskMessage: false
       }),
       partner: Object.freeze({
         canReadRecord: true,
         canCreateRecord: true,
         canDeleteOwnRecord: true,
         canDeleteAnyRecord: false,
-        canUseDesk: true,
-        canSendDeskMessage: true
+        canUseDesk: false,
+        canSendDeskMessage: false
       }),
       member: Object.freeze({
         canReadRecord: true,
         canCreateRecord: true,
         canDeleteOwnRecord: true,
         canDeleteAnyRecord: false,
-        canUseDesk: true,
-        canSendDeskMessage: true
+        canUseDesk: false,
+        canSendDeskMessage: false
       })
     });
 
@@ -4648,7 +4609,6 @@
       ]),
       protectedFeatures: Object.freeze([
         'record',
-        'desk',
         'division-pages'
       ]),
       dashboard: DASHBOARD_DATA_CONFIG,
@@ -4678,8 +4638,7 @@
       subscribed: false,
       channel: DESK_DATA_CONFIG.channel,
       syncTimer: null,
-      lastSignature: '',
-      requestSeq: 0
+      lastSignature: ''
     };
 
     const RealtimeRuntime = {
@@ -5200,23 +5159,15 @@
             .from(DESK_DATA_CONFIG.table)
             .select(supabaseFieldList(DESK_DATA_CONFIG.fields))
             .eq('channel', channel)
-            .order('created_at', { ascending: false })
+            .order('created_at', { ascending: true })
             .limit(SUPABASE_DESK_LIMIT);
 
           if (error) {
             dataEvent('messages-list-error', { error, table: DESK_DATA_CONFIG.table });
-            throw error;
+            return [];
           }
 
-          const rows = (data || [])
-            .slice()
-            .sort((a, b) => {
-              const createdAt = String(a.created_at || '').localeCompare(String(b.created_at || ''));
-              if (createdAt) return createdAt;
-              return String(a.id || '').localeCompare(String(b.id || ''));
-            });
-
-          return rows.map(message => ({
+          return (data || []).map(message => ({
             ...normaliseDeskMessagePayload(message),
             id: message.id,
             sender_display: message.sender_display || 'Member',
@@ -5938,7 +5889,7 @@
     }
 
     window.MoscatelliInternal = Object.freeze({
-      getBuild: () => 'patch13m-desk-non-destructive-reconcile',
+      getBuild: () => 'patch14-desk-retired-dashboard-focus',
       getMode: getInternalMode,
       isSignedIn: isInternalUserSignedIn,
       getCurrentUser: () => {
@@ -5952,8 +5903,9 @@
         mode: getInternalMode(),
         deskOpen: document.body.classList.contains('desk-open'),
         deskLoaded: DeskRuntime.loaded,
+        deskRetired: true,
         realtimeStatus: RealtimeRuntime.status,
-        build: 'patch13m-desk-non-destructive-reconcile',
+        build: 'patch14-desk-retired-dashboard-focus',
         deskSignature: DeskRuntime.lastSignature
       }),
       isInternalRoute,
@@ -6600,14 +6552,8 @@
       return template.replace('{user}', displayName);
     }
 
-    function renderDeskMessageRecord(message, { replace = false } = {}) {
-      if (!deskThread || !message || !message.id) return null;
-
-      const existingMessage = deskThread.querySelector(`[data-message-id="${message.id}"]`);
-      if (existingMessage) {
-        if (!replace) return null;
-        existingMessage.remove();
-      }
+    function renderDeskMessageRecord(message) {
+      if (!deskThread || !message || deskThread.querySelector(`[data-message-id="${message.id}"]`)) return null;
 
       deskEmpty?.remove();
 
@@ -6672,31 +6618,22 @@
       if (!deskThread || !isInternalUserSignedIn()) return [];
       if (DeskRuntime.loaded && !force) return [];
 
-      const requestSeq = ++DeskRuntime.requestSeq;
-
       try {
         const messages = await InternalData.messages.list({ channel: DESK_DATA_CONFIG.channel });
-
-        if (requestSeq !== DeskRuntime.requestSeq) {
-          window.dispatchEvent(new CustomEvent('moscatelli:desk-load-discarded', {
-            detail: {
-              reason,
-              requestSeq,
-              latestRequestSeq: DeskRuntime.requestSeq
-            }
-          }));
-          return [];
-        }
-
         const signature = deskMessagesSignature(messages);
         const changed = signature !== DeskRuntime.lastSignature;
 
-        if (!DeskRuntime.loaded || changed || force) {
-          messages.forEach(message => renderDeskMessageRecord(message, { replace: true }));
+        if (force && changed) {
+          deskThread.querySelectorAll('.desk-message').forEach(message => message.remove());
+          if (deskEmpty && !deskThread.contains(deskEmpty)) deskThread.appendChild(deskEmpty);
+        }
+
+        if (!DeskRuntime.loaded || changed) {
+          messages.forEach(message => renderDeskMessageRecord(message));
 
           if (messages.length) {
             deskEmpty?.remove();
-          } else if (!deskThread.querySelector('.desk-message') && deskEmpty && !deskThread.contains(deskEmpty)) {
+          } else if (deskEmpty && !deskThread.contains(deskEmpty)) {
             deskThread.appendChild(deskEmpty);
           }
         }
@@ -6710,17 +6647,14 @@
             channel: DESK_DATA_CONFIG.channel,
             force,
             reason,
-            changed,
-            requestSeq
+            changed
           }
         }));
 
         return messages;
       } catch (error) {
-        if (requestSeq === DeskRuntime.requestSeq) {
-          DeskRuntime.loaded = false;
-        }
-        window.dispatchEvent(new CustomEvent('moscatelli:desk-load-error', { detail: { error, reason, requestSeq } }));
+        DeskRuntime.loaded = false;
+        window.dispatchEvent(new CustomEvent('moscatelli:desk-load-error', { detail: { error, reason } }));
         return [];
       }
     }
@@ -6812,6 +6746,7 @@
     }
 
     function prepareDeskRealtimeHooks() {
+      return;
       if (DeskRuntime.subscribed || RealtimeRuntime.deskChannel) return;
 
       if (!DESK_DATA_CONFIG.realtimeEnabled || getInternalMode() !== 'supabase' || !isInternalUserSignedIn()) {
@@ -6930,20 +6865,9 @@
     }
 
     function openDesk() {
-      if (!isInternalUserSignedIn()) {
-        setInternalAuthStatus('signed_out');
-        updateInternalAccessUI();
-        return;
-      }
-
-      applyInternalRouteProtection(currentRoute);
-      updateDeskComposerState();
-      prepareDeskRealtimeHooks();
-      DeskRuntime.loaded = false;
-      loadDeskMessages({ force: true, reason: 'desk-open' });
-      startDeskAuthoritativeSync();
-      monogramGlowOverlay?.classList.remove('is-lit');
-      setDeskOpenState(true);
+      // Patch 14: The Desk has been retired from the website. Team correspondence now belongs in external tools.
+      closeDesk();
+      return;
     }
 
     function closeDesk() {
@@ -7715,7 +7639,6 @@
 
       updateDeskComposerState();
       prepareDashboardRealtimeHooks();
-      prepareDeskRealtimeHooks();
 
       if (currentRoute === ROUTES.DASHBOARD) {
         ensureDashboardRecordsLoaded({ force });
