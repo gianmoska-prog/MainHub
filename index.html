@@ -5012,6 +5012,24 @@
         };
       }
 
+      function isStoredImagePreview(value = '') {
+        return typeof value === 'string' && value.startsWith('data:image/');
+      }
+
+      function blobToDataUrl(blob) {
+        return new Promise((resolve, reject) => {
+          if (!blob) {
+            reject(new Error('No attachment blob was available.'));
+            return;
+          }
+
+          const reader = new FileReader();
+          reader.onload = () => resolve(String(reader.result || ''));
+          reader.onerror = () => reject(reader.error || new Error('Attachment preview could not be encoded.'));
+          reader.readAsDataURL(blob);
+        });
+      }
+
       function mockId(prefix) {
         return `${prefix}-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
       }
@@ -5151,15 +5169,16 @@
         const hydrated = [];
 
         for (const row of rows) {
-          const signedUrl = await signedAttachmentUrl(client, row.path);
+          const storedPreview = row.preview_url || '';
+          const signedUrl = isStoredImagePreview(storedPreview) ? '' : await signedAttachmentUrl(client, row.path);
           hydrated.push({
             ...normaliseAttachment(row, row.post_id),
             id: row.id,
             post_id: row.post_id,
             path: row.path,
-            preview_url: signedUrl || row.preview_url || '',
+            preview_url: signedUrl || storedPreview || '',
             blob: null,
-            source: 'supabase'
+            source: isStoredImagePreview(storedPreview) ? 'supabase-preview-fallback' : 'supabase'
           });
         }
 
@@ -5188,6 +5207,42 @@
         }, new Map());
       }
 
+      async function persistAttachmentPreviewFallback(client, post, item, path, failure) {
+        const previewUrl = await blobToDataUrl(item.blob);
+        const metadataPayload = {
+          post_id: post.id,
+          bucket: STORAGE_BUCKET,
+          path,
+          preview_url: previewUrl,
+          original_size: item.original_size || 0,
+          resized_size: item.resized_size || item.blob?.size || 0,
+          mime_type: item.mime_type || 'image/jpeg',
+          created_by: post?.created_by || currentOwnerId()
+        };
+
+        const { data, error } = await client
+          .from(DASHBOARD_DATA_CONFIG.attachmentsTable)
+          .insert(metadataPayload)
+          .select(supabaseFieldList(DASHBOARD_DATA_CONFIG.attachmentFields))
+          .single();
+
+        if (error || !data) {
+          throw error || new Error('Attachment fallback metadata was not returned.');
+        }
+
+        dataEvent('attachment-preview-fallback', {
+          path,
+          reason: failure?.message || attachmentErrorSummary(failure) || 'storage_upload_failed'
+        });
+
+        const [hydrated] = await hydrateAttachmentRows(client, [data]);
+        return {
+          ...hydrated,
+          preview_url: hydrated.preview_url || previewUrl,
+          source: 'supabase-preview-fallback'
+        };
+      }
+
       async function persistPostAttachments(client, post, items = []) {
         const ownerId = post?.created_by || currentOwnerId();
         const persisted = [];
@@ -5196,36 +5251,58 @@
 
         for (const [index, sourceItem] of items.entries()) {
           const item = normaliseAttachment(sourceItem, post.id);
-          if (!item.blob) continue;
-
           const path = `${ownerId}/${post.id}/${safeStorageFileName(item, index)}`;
+
+          if (!item.blob) {
+            const failure = attachmentErrorRecord('local_blob_missing', new Error('The selected plate was prepared for preview but no uploadable blob was found.'), path, 1);
+            errors.push(failure);
+            dataEvent('attachment-local-blob-missing', failure);
+            continue;
+          }
+
           let upload = null;
+          let uploadFailure = null;
 
           for (const [attemptIndex, delay] of retryDelays.entries()) {
             if (delay) await attachmentRetryDelay(delay);
 
-            upload = await client.storage
-              .from(STORAGE_BUCKET)
-              .upload(path, item.blob, {
-                cacheControl: '3600',
-                contentType: item.mime_type || 'image/jpeg',
-                upsert: false
-              });
+            try {
+              upload = await client.storage
+                .from(STORAGE_BUCKET)
+                .upload(path, item.blob, {
+                  cacheControl: '3600',
+                  contentType: item.mime_type || 'image/jpeg',
+                  upsert: false
+                });
+              uploadFailure = upload?.error || null;
+            } catch (error) {
+              uploadFailure = error;
+              upload = { error };
+            }
 
-            if (!upload.error) break;
+            if (!uploadFailure) break;
 
             dataEvent('attachment-upload-retry', {
               path,
               attempt: attemptIndex + 1,
-              error: attachmentErrorSummary(upload.error)
+              error: attachmentErrorSummary(uploadFailure)
             });
           }
 
-          if (upload?.error) {
-            const failure = attachmentErrorRecord('storage_upload', upload.error, path, retryDelays.length);
-            errors.push(failure);
-            dataEvent('attachment-upload-error', failure);
-            continue;
+          if (uploadFailure) {
+            const failure = attachmentErrorRecord('storage_upload', uploadFailure, path, retryDelays.length);
+
+            try {
+              const fallbackAttachment = await persistAttachmentPreviewFallback(client, post, item, path, failure);
+              persisted.push(fallbackAttachment);
+              continue;
+            } catch (fallbackError) {
+              const fallbackFailure = attachmentErrorRecord('metadata_preview_fallback', fallbackError, path, 1);
+              errors.push(failure, fallbackFailure);
+              dataEvent('attachment-upload-error', failure);
+              dataEvent('attachment-preview-fallback-error', fallbackFailure);
+              continue;
+            }
           }
 
           const metadataPayload = {
@@ -5240,31 +5317,48 @@
           };
 
           let metadata = null;
+          let metadataFailure = null;
 
           for (const [attemptIndex, delay] of retryDelays.entries()) {
             if (delay) await attachmentRetryDelay(delay);
 
-            metadata = await client
-              .from(DASHBOARD_DATA_CONFIG.attachmentsTable)
-              .insert(metadataPayload)
-              .select(supabaseFieldList(DASHBOARD_DATA_CONFIG.attachmentFields))
-              .single();
+            try {
+              metadata = await client
+                .from(DASHBOARD_DATA_CONFIG.attachmentsTable)
+                .insert(metadataPayload)
+                .select(supabaseFieldList(DASHBOARD_DATA_CONFIG.attachmentFields))
+                .single();
+              metadataFailure = metadata?.error || null;
+            } catch (error) {
+              metadataFailure = error;
+              metadata = { error };
+            }
 
-            if (!metadata.error) break;
+            if (!metadataFailure) break;
 
             dataEvent('attachment-metadata-retry', {
               path,
               attempt: attemptIndex + 1,
-              error: attachmentErrorSummary(metadata.error)
+              error: attachmentErrorSummary(metadataFailure)
             });
           }
 
-          if (metadata?.error) {
-            await client.storage.from(STORAGE_BUCKET).remove([path]);
-            const failure = attachmentErrorRecord('metadata_insert', metadata.error, path, retryDelays.length);
-            errors.push(failure);
-            dataEvent('attachment-metadata-error', failure);
-            continue;
+          if (metadataFailure) {
+            await client.storage.from(STORAGE_BUCKET).remove([path]).catch(() => null);
+            const failure = attachmentErrorRecord('metadata_insert', metadataFailure, path, retryDelays.length);
+
+            const fallbackPath = `${ownerId}/${post.id}/metadata-fallback-${safeStorageFileName(item, index)}`;
+            try {
+              const fallbackAttachment = await persistAttachmentPreviewFallback(client, post, item, fallbackPath, failure);
+              persisted.push(fallbackAttachment);
+              continue;
+            } catch (fallbackError) {
+              const fallbackFailure = attachmentErrorRecord('metadata_preview_fallback', fallbackError, fallbackPath, 1);
+              errors.push(failure, fallbackFailure);
+              dataEvent('attachment-metadata-error', failure);
+              dataEvent('attachment-preview-fallback-error', fallbackFailure);
+              continue;
+            }
           }
 
           const [hydrated] = await hydrateAttachmentRows(client, [metadata.data]);
@@ -6292,7 +6386,7 @@
     }
 
     window.MoscatelliInternal = Object.freeze({
-      getBuild: () => 'patch15d-record-attachment-retry-diagnostics',
+      getBuild: () => 'patch15e-record-attachment-db-preview-fallback',
       getMode: getInternalMode,
       isSignedIn: isInternalUserSignedIn,
       getCurrentUser: () => {
@@ -6308,7 +6402,7 @@
         deskLoaded: DeskRuntime.loaded,
         deskRetired: true,
         realtimeStatus: RealtimeRuntime.status,
-        build: 'patch15d-record-attachment-retry-diagnostics',
+        build: 'patch15e-record-attachment-db-preview-fallback',
         deskSignature: DeskRuntime.lastSignature
       }),
       isInternalRoute,
