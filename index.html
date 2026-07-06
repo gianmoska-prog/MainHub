@@ -4410,135 +4410,6 @@
       isolation: isolate;
     }
 
-
-
-    /* Patch 3A — Home composition and navigation polish */
-    body[data-route='home'] .route-home {
-      isolation: isolate;
-    }
-
-    body[data-route='home'] .route-home::before {
-      content: '';
-      position: absolute;
-      inset: clamp(18px, 4.2vw, 62px) clamp(18px, 5vw, 82px);
-      z-index: 0;
-      pointer-events: none;
-      background:
-        radial-gradient(ellipse at 50% 45%, rgba(242, 237, 228, 0.035), transparent 28%),
-        radial-gradient(ellipse at 50% 58%, rgba(184, 104, 48, 0.075), transparent 46%);
-      opacity: 0.78;
-    }
-
-    body[data-route='home'] .route-home::after {
-      content: '';
-      position: absolute;
-      left: clamp(44px, 18vw, 360px);
-      right: clamp(44px, 18vw, 360px);
-      top: 50%;
-      z-index: 0;
-      height: 1px;
-      pointer-events: none;
-      background: linear-gradient(to right, transparent, rgba(242, 237, 228, 0.035), transparent);
-      opacity: 0.72;
-      transform: translateY(-50%);
-    }
-
-    body[data-route='home'] .hero-logo-wrap {
-      z-index: 1;
-    }
-
-    body[data-route='home'] .hero-logo-wrap::before {
-      content: '';
-      position: absolute;
-      inset: -18% -22%;
-      pointer-events: none;
-      background: radial-gradient(ellipse at 50% 50%, rgba(232, 192, 122, 0.055), transparent 58%);
-      filter: blur(16px);
-      opacity: 0.70;
-    }
-
-    body[data-route='home'] .hero-logo-wrap::after {
-      content: 'ROMA';
-      position: absolute;
-      left: 50%;
-      bottom: -34px;
-      transform: translateX(-50%);
-      font-family: 'Cinzel', serif;
-      font-size: 7.5px;
-      font-weight: 300;
-      letter-spacing: 0.54em;
-      color: rgba(242, 237, 228, 0.18);
-      line-height: 1;
-      pointer-events: none;
-    }
-
-    body[data-route='home'] .hero-logo-bg.visible {
-      opacity: 0.092;
-      transform: translate3d(0, 0, 0) scale(1.012);
-    }
-
-    body[data-route='home'] .hero-logo-glow-overlay {
-      filter: drop-shadow(0 0 20px rgba(232, 192, 122, 0.11));
-    }
-
-    .side-nav::before {
-      content: '';
-      position: absolute;
-      inset: 12px 12px;
-      pointer-events: none;
-      border: 1px solid rgba(242, 237, 228, 0.026);
-      opacity: 0.86;
-    }
-
-    .side-nav nav a[aria-current='page'] {
-      color: rgba(242, 237, 228, 0.82);
-      border-bottom-color: rgba(232, 192, 122, 0.15);
-    }
-
-    .side-nav nav a[aria-current='page'] .num {
-      color: rgba(232, 192, 122, 0.92);
-    }
-
-    .side-nav nav a[aria-current='page'] .link-text {
-      text-shadow: 0 0 18px rgba(232, 192, 122, 0.10);
-    }
-
-    @media (hover: hover) and (pointer: fine) {
-      .side-nav nav a:hover {
-        color: rgba(242, 237, 228, 0.84);
-        border-bottom-color: rgba(232, 192, 122, 0.16);
-      }
-    }
-
-    @media (max-width: 640px) {
-      body[data-route='home'] .route-home::before {
-        inset: 18px 18px;
-        opacity: 0.62;
-      }
-
-      body[data-route='home'] .route-home::after {
-        left: 36px;
-        right: 36px;
-        opacity: 0.45;
-      }
-
-      body[data-route='home'] .hero-logo-bg.visible {
-        opacity: 0.078;
-        transform: translate3d(0, 0, 0) scale(1.006);
-      }
-
-      body[data-route='home'] .hero-logo-wrap::after {
-        bottom: -28px;
-        font-size: 7px;
-        letter-spacing: 0.46em;
-        color: rgba(242, 237, 228, 0.16);
-      }
-
-      .side-nav::before {
-        inset: 10px;
-      }
-    }
-
   </style>
 </head>
 <body data-internal-mode="supabase" data-internal-auth="signed_out" data-internal-ready="false" data-internal-route="public" data-internal-feature="public">
@@ -6353,7 +6224,7 @@
     }
 
     window.MoscatelliInternal = Object.freeze({
-      getBuild: () => 'patch3f-rollback-stable-visual-baseline',
+      getBuild: () => 'patch15b-record-attachment-viewer',
       getMode: getInternalMode,
       isSignedIn: isInternalUserSignedIn,
       getCurrentUser: () => {
@@ -6369,7 +6240,7 @@
         deskLoaded: DeskRuntime.loaded,
         deskRetired: true,
         realtimeStatus: RealtimeRuntime.status,
-        build: 'patch3f-rollback-stable-visual-baseline',
+        build: 'patch15b-record-attachment-viewer',
         deskSignature: DeskRuntime.lastSignature
       }),
       isInternalRoute,
