@@ -1533,19 +1533,23 @@
     }
 
     .dashboard-shell.is-composing .dashboard-filter {
-      opacity: 0.34;
-      pointer-events: none;
-      filter: saturate(0.82);
+      opacity: 0.62;
+      pointer-events: auto;
+      filter: saturate(0.86);
     }
 
     .dashboard-shell.is-composing .dashboard-filter-trigger {
-      cursor: default;
+      cursor: pointer;
       color: rgba(242, 237, 228, 0.24);
       border-color: rgba(242, 237, 228, 0.055);
       background: rgba(242, 237, 228, 0.018);
     }
 
-    .dashboard-shell.is-composing .dashboard-filter-menu {
+    .dashboard-shell.is-composing .dashboard-filter-menu,
+    body.is-dashboard-composing #dashboardFilterMenu,
+    .dashboard-filter-menu[hidden] {
+      display: none !important;
+      visibility: hidden !important;
       opacity: 0 !important;
       pointer-events: none !important;
       transform: translate3d(0, -6px, 0) !important;
@@ -6803,7 +6807,7 @@
     }
 
     window.MoscatelliInternal = Object.freeze({
-      getBuild: () => 'patch16e-record-filter-composer-overlap-fix',
+      getBuild: () => 'patch16f-record-dropdown-mutual-exclusion',
       getMode: getInternalMode,
       isSignedIn: isInternalUserSignedIn,
       getCurrentUser: () => {
@@ -6819,7 +6823,7 @@
         deskLoaded: DeskRuntime.loaded,
         deskRetired: true,
         realtimeStatus: RealtimeRuntime.status,
-        build: 'patch16e-record-filter-composer-overlap-fix',
+        build: 'patch16f-record-dropdown-mutual-exclusion',
         deskSignature: DeskRuntime.lastSignature
       }),
       isInternalRoute,
@@ -7907,8 +7911,7 @@
 
       updateDashboardEmptyState();
       dashboardFilterTrigger?.classList.toggle('is-filtered', nextCategory !== 'all');
-      dashboardFilter?.classList.remove('is-open');
-      dashboardFilterTrigger?.setAttribute('aria-expanded', 'false');
+      closeDashboardFilter();
       closeEntryCategory();
     }
 
@@ -7930,17 +7933,33 @@
       dashboardEntryCategoryTrigger?.setAttribute('aria-expanded', 'false');
     }
 
-    function toggleEntryCategory() {
-      const isOpen = dashboardEntryCategory?.classList.toggle('is-open');
-      dashboardEntryCategoryTrigger?.setAttribute('aria-expanded', String(Boolean(isOpen)));
+    function closeDashboardFilter() {
       dashboardFilter?.classList.remove('is-open');
       dashboardFilterTrigger?.setAttribute('aria-expanded', 'false');
+      dashboardFilterMenu?.setAttribute('hidden', '');
+      dashboardFilterMenu?.setAttribute('aria-hidden', 'true');
+    }
+
+    function openDashboardFilter() {
+      closeEntryCategory();
+      dashboardFilterMenu?.removeAttribute('hidden');
+      dashboardFilterMenu?.setAttribute('aria-hidden', 'false');
+      dashboardFilter?.classList.add('is-open');
+      dashboardFilterTrigger?.setAttribute('aria-expanded', 'true');
+    }
+
+    function toggleEntryCategory() {
+      closeDashboardFilter();
+      const isOpen = dashboardEntryCategory?.classList.toggle('is-open');
+      dashboardEntryCategoryTrigger?.setAttribute('aria-expanded', String(Boolean(isOpen)));
     }
 
     function closeEntryCategory() {
       dashboardEntryCategory?.classList.remove('is-open');
       dashboardEntryCategoryTrigger?.setAttribute('aria-expanded', 'false');
     }
+
+    closeDashboardFilter();
 
     dashboardEntryCategoryTrigger?.addEventListener('click', toggleEntryCategory);
 
@@ -8069,12 +8088,12 @@
       dashboardEntryComposer.classList.toggle('is-expanded', isExpanded);
       dashboardEntryComposer.setAttribute('aria-hidden', String(!isExpanded));
       dashboardShell?.classList.toggle('is-composing', isExpanded);
+      document.body.classList.toggle('is-dashboard-composing', isExpanded);
       dashboardEntryToggle.classList.toggle('is-hidden', isExpanded);
       dashboardEntryToggle.setAttribute('aria-expanded', String(isExpanded));
 
       if (isExpanded) {
-        dashboardFilter?.classList.remove('is-open');
-        dashboardFilterTrigger?.setAttribute('aria-expanded', 'false');
+        closeDashboardFilter();
       } else {
         closeEntryCategory();
       }
@@ -8086,8 +8105,7 @@
 
       if (isExpanded) {
         setDashboardComposerFeedback('');
-        dashboardFilter?.classList.remove('is-open');
-        dashboardFilterTrigger?.setAttribute('aria-expanded', 'false');
+        closeDashboardFilter();
       }
 
       if (isExpanded && focus) {
@@ -8819,16 +8837,20 @@
     });
 
     function toggleDashboardFilter() {
-      if (dashboardEntryComposer?.classList.contains('is-expanded')) {
-        dashboardFilter?.classList.remove('is-open');
-        dashboardFilterTrigger?.setAttribute('aria-expanded', 'false');
-        closeEntryCategory();
+      const shouldOpen = !dashboardFilter?.classList.contains('is-open');
+
+      if (!shouldOpen) {
+        closeDashboardFilter();
         return;
       }
 
-      const isOpen = dashboardFilter?.classList.toggle('is-open');
-      dashboardFilterTrigger?.setAttribute('aria-expanded', String(Boolean(isOpen)));
-      if (isOpen) closeEntryCategory();
+      closeEntryCategory();
+
+      if (dashboardEntryComposer?.classList.contains('is-expanded')) {
+        setDashboardComposerExpanded(false, { reset: false });
+      }
+
+      openDashboardFilter();
     }
 
     dashboardFilterTrigger?.addEventListener('click', toggleDashboardFilter);
@@ -8841,8 +8863,7 @@
 
     document.addEventListener('click', event => {
       if (!dashboardFilter?.contains(event.target)) {
-        dashboardFilter?.classList.remove('is-open');
-        dashboardFilterTrigger?.setAttribute('aria-expanded', 'false');
+        closeDashboardFilter();
       }
 
       if (!dashboardEntryCategory?.contains(event.target)) {
