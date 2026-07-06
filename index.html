@@ -4781,6 +4781,220 @@
       }
     }
 
+
+    /* Patch 17A — Dashboard adaptive viewport frame */
+    .route-dashboard {
+      --dashboard-edge-x: clamp(42px, 6vw, 150px);
+      --dashboard-shell-max: 1180px;
+      --dashboard-date-col: clamp(112px, 8.2vw, 150px);
+      --dashboard-post-gap: clamp(28px, 3.1vw, 52px);
+    }
+
+    .dashboard-shell {
+      width: min(calc(100vw - (var(--dashboard-edge-x) * 2)), var(--dashboard-shell-max));
+      height: min(100%, 940px);
+      padding-top: clamp(18px, 2.7vh, 34px);
+      padding-bottom: clamp(18px, 2.7vh, 34px);
+    }
+
+    .dashboard-title {
+      font-size: clamp(20px, 1.45vw, 30px);
+    }
+
+    .dashboard-head {
+      gap: clamp(28px, 4vw, 72px);
+    }
+
+    .dashboard-feed::before {
+      left: var(--dashboard-date-col);
+    }
+
+    .dashboard-post {
+      grid-template-columns: var(--dashboard-date-col) minmax(0, 1fr);
+      gap: var(--dashboard-post-gap);
+    }
+
+    .dashboard-post::before {
+      width: var(--dashboard-date-col);
+    }
+
+    .dashboard-post p {
+      max-width: min(760px, 100%);
+    }
+
+    .dashboard-post-attachments {
+      max-width: min(620px, 100%);
+    }
+
+    .dashboard-entry.is-expanded {
+      max-height: min(68vh, 680px);
+    }
+
+    @media (min-width: 1800px) {
+      .route-dashboard {
+        --dashboard-edge-x: clamp(96px, 12vw, 320px);
+        --dashboard-shell-max: 1320px;
+        --dashboard-date-col: clamp(136px, 7.2vw, 176px);
+        --dashboard-post-gap: clamp(40px, 3.4vw, 68px);
+      }
+
+      .dashboard-shell {
+        width: min(calc(100vw - (var(--dashboard-edge-x) * 2)), var(--dashboard-shell-max));
+      }
+
+      .dashboard-post p {
+        max-width: min(820px, 100%);
+      }
+
+      .dashboard-post-attachments {
+        max-width: min(700px, 100%);
+      }
+    }
+
+    @media (min-width: 2400px) and (min-aspect-ratio: 21/9) {
+      .route-dashboard {
+        --dashboard-edge-x: clamp(160px, 18vw, 560px);
+        --dashboard-shell-max: 1440px;
+      }
+
+      .dashboard-shell {
+        height: min(100%, 980px);
+      }
+    }
+
+    @media (max-height: 820px) and (min-width: 761px) {
+      .dashboard-shell {
+        height: 100%;
+        padding-top: clamp(12px, 2vh, 20px);
+        padding-bottom: clamp(12px, 2vh, 20px);
+      }
+
+      .dashboard-head {
+        margin-bottom: 10px;
+        padding-bottom: 12px;
+      }
+
+      .dashboard-kicker {
+        margin-bottom: 9px;
+      }
+
+      .dashboard-title {
+        font-size: clamp(18px, 1.45vw, 25px);
+      }
+
+      .dashboard-entry-toggle {
+        min-height: 30px;
+        margin-bottom: 10px;
+        padding-bottom: 5px;
+      }
+
+      .dashboard-entry.is-expanded {
+        max-height: min(58vh, 500px);
+      }
+
+      .dashboard-post {
+        padding-top: 20px;
+        padding-bottom: 22px;
+      }
+
+      .dashboard-feed {
+        padding-bottom: clamp(24px, 5vh, 46px);
+      }
+    }
+
+    @media (max-height: 700px) and (min-width: 761px) {
+      .dashboard-head {
+        margin-bottom: 8px;
+        padding-bottom: 10px;
+      }
+
+      .dashboard-entry.is-expanded {
+        max-height: min(54vh, 420px);
+      }
+
+      .dashboard-post {
+        padding-top: 16px;
+        padding-bottom: 18px;
+      }
+
+      .dashboard-post p {
+        line-height: 1.48;
+      }
+    }
+
+    @media (max-width: 1180px) and (min-width: 761px) {
+      .route-dashboard {
+        --dashboard-edge-x: clamp(34px, 5vw, 78px);
+        --dashboard-shell-max: 1060px;
+        --dashboard-date-col: clamp(104px, 12vw, 128px);
+        --dashboard-post-gap: clamp(24px, 3vw, 38px);
+      }
+
+      .dashboard-shell {
+        width: min(calc(100vw - (var(--dashboard-edge-x) * 2)), var(--dashboard-shell-max));
+      }
+    }
+
+    @media (max-width: 900px) {
+      .route-dashboard {
+        --dashboard-edge-x: clamp(24px, 5vw, 46px);
+      }
+
+      .dashboard-shell {
+        width: calc(100vw - (var(--dashboard-edge-x) * 2));
+        height: 100%;
+      }
+
+      .dashboard-head {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 18px;
+      }
+
+      .dashboard-filter {
+        align-self: flex-end;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .route-dashboard {
+        --dashboard-edge-x: clamp(18px, 6vw, 28px);
+      }
+
+      .dashboard-shell {
+        width: calc(100vw - (var(--dashboard-edge-x) * 2));
+        height: 100%;
+        padding-top: 24px;
+        padding-bottom: 24px;
+      }
+
+      .dashboard-head {
+        gap: 16px;
+        margin-bottom: 14px;
+        padding-bottom: 14px;
+      }
+
+      .dashboard-title {
+        font-size: clamp(20px, 8vw, 30px);
+        letter-spacing: clamp(0.22em, 2.4vw, 0.34em);
+      }
+
+      .dashboard-filter {
+        width: 100%;
+      }
+
+      .dashboard-filter-trigger,
+      .dashboard-filter-menu {
+        width: 100%;
+        min-width: 0;
+      }
+
+      .dashboard-filter-menu {
+        right: auto;
+        left: 0;
+      }
+    }
+
   </style>
 </head>
 <body data-internal-mode="supabase" data-internal-auth="signed_out" data-internal-ready="false" data-internal-route="public" data-internal-feature="public">
@@ -6829,7 +7043,7 @@
     }
 
     window.MoscatelliInternal = Object.freeze({
-      getBuild: () => 'patch16h-record-entry-trigger-hard-suppression',
+      getBuild: () => 'patch17a-dashboard-adaptive-viewport-frame',
       getMode: getInternalMode,
       isSignedIn: isInternalUserSignedIn,
       getCurrentUser: () => {
@@ -6845,7 +7059,7 @@
         deskLoaded: DeskRuntime.loaded,
         deskRetired: true,
         realtimeStatus: RealtimeRuntime.status,
-        build: 'patch16h-record-entry-trigger-hard-suppression',
+        build: 'patch17a-dashboard-adaptive-viewport-frame',
         deskSignature: DeskRuntime.lastSignature
       }),
       isInternalRoute,
