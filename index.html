@@ -1532,6 +1532,25 @@
       background: rgba(184, 104, 48, 0.08);
     }
 
+    .dashboard-shell.is-composing .dashboard-filter {
+      opacity: 0.34;
+      pointer-events: none;
+      filter: saturate(0.82);
+    }
+
+    .dashboard-shell.is-composing .dashboard-filter-trigger {
+      cursor: default;
+      color: rgba(242, 237, 228, 0.24);
+      border-color: rgba(242, 237, 228, 0.055);
+      background: rgba(242, 237, 228, 0.018);
+    }
+
+    .dashboard-shell.is-composing .dashboard-filter-menu {
+      opacity: 0 !important;
+      pointer-events: none !important;
+      transform: translate3d(0, -6px, 0) !important;
+    }
+
     .dashboard-entry {
       flex: 0 0 auto;
       margin-top: 18px;
@@ -1643,7 +1662,12 @@
       right: 0;
       top: calc(100% + 8px);
       bottom: auto;
-      z-index: 8;
+      z-index: 18;
+      max-height: min(232px, 38vh);
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(232, 192, 122, 0.22) rgba(8, 5, 3, 0.24);
       padding: 8px 0;
       border: 1px solid rgba(242, 237, 228, 0.09);
       background: rgba(8, 5, 3, 0.82);
@@ -3226,10 +3250,28 @@
       padding-bottom: 14px;
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(232, 192, 122, 0.24) rgba(8, 5, 3, 0.22);
       opacity: 1;
       pointer-events: auto;
       transform: translate3d(0, 0, 0);
       border-color: rgba(242, 237, 228, 0.13);
+    }
+
+    .dashboard-entry.is-expanded::-webkit-scrollbar,
+    .dashboard-category-menu::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .dashboard-entry.is-expanded::-webkit-scrollbar-track,
+    .dashboard-category-menu::-webkit-scrollbar-track {
+      background: rgba(8, 5, 3, 0.28);
+    }
+
+    .dashboard-entry.is-expanded::-webkit-scrollbar-thumb,
+    .dashboard-category-menu::-webkit-scrollbar-thumb {
+      background: rgba(232, 192, 122, 0.22);
+      border-radius: 999px;
     }
 
     .dashboard-entry.is-expanded::before {
@@ -6761,7 +6803,7 @@
     }
 
     window.MoscatelliInternal = Object.freeze({
-      getBuild: () => 'patch16d-record-empty-dropdown-bugfix',
+      getBuild: () => 'patch16e-record-filter-composer-overlap-fix',
       getMode: getInternalMode,
       isSignedIn: isInternalUserSignedIn,
       getCurrentUser: () => {
@@ -6777,7 +6819,7 @@
         deskLoaded: DeskRuntime.loaded,
         deskRetired: true,
         realtimeStatus: RealtimeRuntime.status,
-        build: 'patch16d-record-empty-dropdown-bugfix',
+        build: 'patch16e-record-filter-composer-overlap-fix',
         deskSignature: DeskRuntime.lastSignature
       }),
       isInternalRoute,
@@ -7804,6 +7846,7 @@
     const dashboardEntryTitle = document.getElementById('dashboardEntryTitle');
     const dashboardEntryBody = document.getElementById('dashboardEntryBody');
     const dashboardEntryComposer = document.getElementById('dashboardEntryComposer');
+    const dashboardShell = dashboardEntryComposer?.closest('.dashboard-shell');
     const dashboardEntryToggle = document.getElementById('dashboardEntryToggle');
     const dashboardEntryClose = document.getElementById('dashboardEntryClose');
     const recordAttachmentViewer = document.getElementById('recordAttachmentViewer');
@@ -8025,10 +8068,14 @@
       const isExpanded = Boolean(expanded);
       dashboardEntryComposer.classList.toggle('is-expanded', isExpanded);
       dashboardEntryComposer.setAttribute('aria-hidden', String(!isExpanded));
+      dashboardShell?.classList.toggle('is-composing', isExpanded);
       dashboardEntryToggle.classList.toggle('is-hidden', isExpanded);
       dashboardEntryToggle.setAttribute('aria-expanded', String(isExpanded));
 
-      if (!isExpanded) {
+      if (isExpanded) {
+        dashboardFilter?.classList.remove('is-open');
+        dashboardFilterTrigger?.setAttribute('aria-expanded', 'false');
+      } else {
         closeEntryCategory();
       }
 
@@ -8772,6 +8819,13 @@
     });
 
     function toggleDashboardFilter() {
+      if (dashboardEntryComposer?.classList.contains('is-expanded')) {
+        dashboardFilter?.classList.remove('is-open');
+        dashboardFilterTrigger?.setAttribute('aria-expanded', 'false');
+        closeEntryCategory();
+        return;
+      }
+
       const isOpen = dashboardFilter?.classList.toggle('is-open');
       dashboardFilterTrigger?.setAttribute('aria-expanded', String(Boolean(isOpen)));
       if (isOpen) closeEntryCategory();
