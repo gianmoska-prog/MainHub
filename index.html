@@ -4601,7 +4601,7 @@
               <input id="dashboardAttachmentInput" type="file" accept="image/*" multiple>
               <span class="i18n-text" data-i18n="dashboard.attach">Attach plates</span>
             </label>
-            <span class="dashboard-upload-note i18n-text" data-i18n="dashboard.resizeNote">Plates are resized locally before preview.</span>
+            <span class="dashboard-upload-note i18n-text" data-i18n="dashboard.resizeNote">Plates are compressed locally, then attached to the private Record. Keep this window open until the entry appears.</span>
             <button class="dashboard-commit i18n-text" id="dashboardCommitEntry" type="button" data-i18n="dashboard.commit">Enter into the Record</button>
           </div>
           <div class="dashboard-attachments" id="dashboardAttachments" aria-live="polite"></div>
@@ -4972,6 +4972,59 @@
         attachments: new Map()
       };
 
+      const profileCache = new Map();
+
+      function normaliseProfile(row = {}) {
+        const id = row.id || '';
+        return {
+          id,
+          displayName: row.display_name || row.displayName || row.email?.split('@')[0] || 'Member',
+          role: row.role || 'member',
+          division: row.division || 'all'
+        };
+      }
+
+      function currentProfileSnapshot() {
+        const user = getCurrentInternalUser() || INTERNAL_MOCK_USER;
+        return normaliseProfile({
+          id: user.id,
+          display_name: user.displayName,
+          role: user.role,
+          division: user.division
+        });
+      }
+
+      async function fetchProfilesForPostRows(client, rows = []) {
+        const ids = Array.from(new Set(
+          rows.map(row => row?.created_by).filter(Boolean)
+        ));
+
+        if (!client || !ids.length) return new Map();
+
+        const missingIds = ids.filter(id => !profileCache.has(id));
+        if (missingIds.length) {
+          const { data, error } = await client
+            .from('profiles')
+            .select('id,display_name,role,division')
+            .in('id', missingIds);
+
+          if (error) {
+            dataEvent('profiles-list-error', { error, table: 'profiles' });
+          } else {
+            (data || []).forEach(row => {
+              const profile = normaliseProfile(row);
+              if (profile.id) profileCache.set(profile.id, profile);
+            });
+          }
+        }
+
+        return ids.reduce((map, id) => {
+          const profile = profileCache.get(id);
+          if (profile) map.set(id, profile);
+          return map;
+        }, new Map());
+      }
+
       function dataEvent(type, detail = {}) {
         window.dispatchEvent(new CustomEvent(`moscatelli:data-${type}`, {
           detail: {
@@ -5125,15 +5178,20 @@
         };
       }
 
-      function hydratePost(row, attachments = []) {
+      function hydratePost(row, attachments = [], profile = null) {
         const post = normalisePostPayload(row);
+        const authorProfile = profile || profileCache.get(post.created_by) || (
+          post.created_by === currentOwnerId() ? currentProfileSnapshot() : null
+        );
 
         return {
           ...post,
           owned: post.created_by === currentOwnerId(),
           can_delete: canCurrentUserModifyRecord(post),
           source: 'supabase',
-          attachments
+          attachments,
+          author_display: authorProfile?.displayName || '',
+          author_role: authorProfile?.role || ''
         };
       }
 
@@ -5478,7 +5536,8 @@
 
           const rows = data || [];
           const attachmentsByPost = await fetchAttachmentsForPosts(client, rows.map(row => row.id));
-          return rows.map(row => hydratePost(row, attachmentsByPost.get(row.id) || []));
+          const profilesByAuthor = await fetchProfilesForPostRows(client, rows);
+          return rows.map(row => hydratePost(row, attachmentsByPost.get(row.id) || [], profilesByAuthor.get(row.created_by)));
         },
 
         async create(payload = {}) {
@@ -5493,12 +5552,15 @@
             const basePost = normalisePostPayload(payload);
             const attachments = (payload.attachments || []).map(item => normaliseAttachment(item, basePost.id));
 
+            const authorProfile = currentProfileSnapshot();
             const post = {
               ...basePost,
               owned: basePost.created_by === currentOwnerId(),
               can_delete: canCurrentUserModifyRecord(basePost),
               source: getInternalMode(),
-              attachments
+              attachments,
+              author_display: authorProfile.displayName,
+              author_role: authorProfile.role
             };
 
             mockStore.posts.set(post.id, post);
@@ -5530,7 +5592,7 @@
           if (selectedAttachments.length) await attachmentRetryDelay(220);
 
           const uploadResult = await persistPostAttachments(client, data, selectedAttachments);
-          const post = hydratePost(data, uploadResult.attachments);
+          const post = hydratePost(data, uploadResult.attachments, currentProfileSnapshot());
           post.attachment_errors = uploadResult.errors;
 
           dataEvent('post-created', { post, table: DASHBOARD_DATA_CONFIG.table, attachmentErrors: uploadResult.errors });
@@ -5842,6 +5904,8 @@
         'dashboard.feedback.attachInvalid': 'Only image files may be attached.',
         'dashboard.feedback.attachLimit': 'Only four plates may be attached.',
         'dashboard.feedback.attachResize': 'One plate could not be prepared for preview.',
+        'dashboard.feedback.processing': 'Entering the note into the private Record…',
+        'dashboard.feedback.processingAttachments': 'Preparing plates locally, compressing them, and attaching them to the private Record…',
         'dashboard.viewerTitle': 'Record Plate',
         'dashboard.viewerUnavailable': 'This plate could not be re-opened. Refresh the Record and try again.',
         'dashboard.delete': 'Delete',
@@ -5850,7 +5914,8 @@
         'dashboard.untitled': 'Untitled entry',
         'dashboard.authorLocal': 'Local draft · Not saved',
         'dashboard.authorSupabase': 'Recorded in the Record',
-        'dashboard.resizeNote': 'Plates are resized locally before preview.',
+        'dashboard.authorBy': 'Recorded by {name}',
+        'dashboard.resizeNote': 'Plates are compressed locally, then attached to the private Record. Keep this window open until the entry appears.',
         'dashboard.cat.meetings': 'Meetings',
         'dashboard.cat.ideas': 'Ideas',
         'dashboard.cat.decisions': 'Decisions',
@@ -5947,6 +6012,8 @@
         'dashboard.feedback.attachInvalid': 'Somente imagens podem ser anexadas.',
         'dashboard.feedback.attachLimit': 'Somente quatro pranchas podem ser anexadas.',
         'dashboard.feedback.attachResize': 'Uma prancha não pôde ser preparada para pré-visualização.',
+        'dashboard.feedback.processing': 'Registrando a nota no Record privado…',
+        'dashboard.feedback.processingAttachments': 'Preparando as imagens localmente, comprimindo-as e anexando-as ao Record privado…',
         'dashboard.viewerTitle': 'Prancha do Registro',
         'dashboard.viewerUnavailable': 'Esta prancha não pôde ser reaberta. Atualize o Registro e tente novamente.',
         'dashboard.delete': 'Apagar',
@@ -5955,7 +6022,8 @@
         'dashboard.untitled': 'Entrada sem título',
         'dashboard.authorLocal': 'Rascunho local · Não salvo',
         'dashboard.authorSupabase': 'Registrado no Record',
-        'dashboard.resizeNote': 'As imagens são redimensionadas localmente antes da pré-visualização.',
+        'dashboard.authorBy': 'Registrado por {name}',
+        'dashboard.resizeNote': 'As imagens são comprimidas localmente e anexadas ao Record privado. Mantenha esta janela aberta até a entrada aparecer.',
         'dashboard.cat.meetings': 'Reuniões',
         'dashboard.cat.ideas': 'Ideias',
         'dashboard.cat.decisions': 'Decisões',
@@ -6386,7 +6454,7 @@
     }
 
     window.MoscatelliInternal = Object.freeze({
-      getBuild: () => 'patch15e-record-attachment-db-preview-fallback',
+      getBuild: () => 'patch15f-record-authorship-process-flicker-fix',
       getMode: getInternalMode,
       isSignedIn: isInternalUserSignedIn,
       getCurrentUser: () => {
@@ -6402,7 +6470,7 @@
         deskLoaded: DeskRuntime.loaded,
         deskRetired: true,
         realtimeStatus: RealtimeRuntime.status,
-        build: 'patch15e-record-attachment-db-preview-fallback',
+        build: 'patch15f-record-authorship-process-flicker-fix',
         deskSignature: DeskRuntime.lastSignature
       }),
       isInternalRoute,
@@ -7449,7 +7517,8 @@
       loaded: false,
       loading: false,
       attachmentPersisting: false,
-      deferredRealtimeRefreshReason: ''
+      deferredRealtimeRefreshReason: '',
+      suppressRealtimeUntil: 0
     };
 
     function updateDashboardEmptyState() {
@@ -7763,6 +7832,7 @@
       post.dataset.owned = String(permissions.owned);
       post.dataset.canDelete = String(permissions.can_delete);
       post.dataset.createdBy = record.created_by || '';
+      post.dataset.authorDisplay = record.author_display || '';
       post.dataset.recordSource = record.source || getInternalMode();
 
       return permissions;
@@ -7892,6 +7962,23 @@
       renderRecordAttachmentViewer(recordAttachmentViewerIndex + direction);
     }
 
+    function dashboardAuthorLine(record = {}) {
+      if (record.source !== 'supabase') {
+        return translations[currentLang]?.['dashboard.authorLocal'] || 'Local draft · Not saved';
+      }
+
+      const authorName = record.author_display || (
+        record.created_by === getCurrentInternalUser()?.id ? getCurrentInternalUser()?.displayName : ''
+      );
+
+      if (!authorName) {
+        return translations[currentLang]?.['dashboard.authorSupabase'] || 'Recorded in the Record';
+      }
+
+      const template = translations[currentLang]?.['dashboard.authorBy'] || 'Recorded by {name}';
+      return template.replace('{name}', authorName);
+    }
+
     function renderDashboardPostRecord(record, { prepend = true, replace = false } = {}) {
       if (!dashboardFeed || !record) return null;
 
@@ -7933,9 +8020,7 @@
 
       const foot = document.createElement('div');
       foot.className = 'dashboard-post-foot';
-      foot.textContent = record.source === 'supabase'
-        ? (translations[currentLang]?.['dashboard.authorSupabase'] || 'Recorded in the Record')
-        : (translations[currentLang]?.['dashboard.authorLocal'] || 'Local draft · Not saved');
+      foot.textContent = dashboardAuthorLine(record);
 
       const actions = document.createElement('div');
       actions.className = 'dashboard-post-actions';
@@ -8009,9 +8094,18 @@
     }
 
     async function loadDashboardRecords(filters = {}) {
-      clearDashboardPosts({ resetLoaded: false });
       const records = await InternalData.posts.list(filters);
-      records.forEach(record => renderDashboardPostRecord(record, { prepend: false }));
+      const liveIds = new Set(records.map(record => String(record.id)).filter(Boolean));
+
+      records.forEach(record => renderDashboardPostRecord(record, { prepend: false, replace: true }));
+
+      dashboardFeed?.querySelectorAll('.dashboard-post').forEach(post => {
+        const postId = post.dataset.postId;
+        if (postId && post.dataset.recordSource === 'supabase' && !liveIds.has(postId)) {
+          post.remove();
+        }
+      });
+
       sortDashboardPostsByDate();
       setDashboardFilter(dashboardCurrentFilter);
       DashboardRuntime.loaded = true;
@@ -8047,6 +8141,11 @@
 
     function scheduleDashboardRealtimeRefresh(reason = 'record-change') {
       if (!isInternalUserSignedIn()) return;
+
+      if (Date.now() < DashboardRuntime.suppressRealtimeUntil) {
+        dispatchRealtimeEvent('record-refresh-suppressed', { reason });
+        return;
+      }
 
       if (DashboardRuntime.attachmentPersisting) {
         DashboardRuntime.deferredRealtimeRefreshReason = reason;
@@ -8160,6 +8259,7 @@
       }
 
       const expectedAttachmentCount = payload.attachments?.length || 0;
+      DashboardRuntime.suppressRealtimeUntil = Date.now() + (expectedAttachmentCount ? 4200 : 1800);
       if (expectedAttachmentCount) {
         DashboardRuntime.attachmentPersisting = true;
         DashboardRuntime.deferredRealtimeRefreshReason = '';
@@ -8231,7 +8331,7 @@
           DashboardRuntime.attachmentPersisting = false;
           DashboardRuntime.deferredRealtimeRefreshReason = '';
 
-          if (deferredReason && isInternalUserSignedIn()) {
+          if (deferredReason && isInternalUserSignedIn() && Date.now() >= DashboardRuntime.suppressRealtimeUntil) {
             scheduleDashboardRealtimeRefresh(`${deferredReason}-after-attachment-persist`);
           }
         }
@@ -8245,7 +8345,11 @@
       if (!validateDashboardRecord(payload)) return;
 
       dashboardCommitInFlight = true;
-      setDashboardComposerFeedback('');
+      setDashboardComposerFeedback(
+        payload.attachments?.length
+          ? dashboardFeedbackText('dashboard.feedback.processingAttachments', 'Preparing plates locally, compressing them, and attaching them to the private Record…')
+          : dashboardFeedbackText('dashboard.feedback.processing', 'Entering the note into the private Record…')
+      );
       setCommitState('pending');
 
       setTimeout(async () => {
