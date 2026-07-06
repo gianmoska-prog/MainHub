@@ -3223,6 +3223,19 @@
       overflow: hidden;
     }
 
+    /* Patch 16G — suppress the entry trigger while the Index is open */
+    .dashboard-shell.is-filtering .dashboard-entry-toggle {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transform: translate3d(0, -6px, 0);
+    }
+
+    .dashboard-shell.is-filtering .dashboard-entry-toggle-rule {
+      width: 0;
+      background: transparent;
+    }
+
     .dashboard-entry {
       position: relative;
       z-index: 7;
@@ -6807,7 +6820,7 @@
     }
 
     window.MoscatelliInternal = Object.freeze({
-      getBuild: () => 'patch16f-record-dropdown-mutual-exclusion',
+      getBuild: () => 'patch16g-record-index-trigger-occlusion-fix',
       getMode: getInternalMode,
       isSignedIn: isInternalUserSignedIn,
       getCurrentUser: () => {
@@ -6823,7 +6836,7 @@
         deskLoaded: DeskRuntime.loaded,
         deskRetired: true,
         realtimeStatus: RealtimeRuntime.status,
-        build: 'patch16f-record-dropdown-mutual-exclusion',
+        build: 'patch16g-record-index-trigger-occlusion-fix',
         deskSignature: DeskRuntime.lastSignature
       }),
       isInternalRoute,
@@ -7938,6 +7951,13 @@
       dashboardFilterTrigger?.setAttribute('aria-expanded', 'false');
       dashboardFilterMenu?.setAttribute('hidden', '');
       dashboardFilterMenu?.setAttribute('aria-hidden', 'true');
+      dashboardShell?.classList.remove('is-filtering');
+      document.body.classList.remove('is-dashboard-filtering');
+
+      if (!dashboardEntryComposer?.classList.contains('is-expanded')) {
+        dashboardEntryToggle?.removeAttribute('aria-hidden');
+        dashboardEntryToggle?.removeAttribute('tabindex');
+      }
     }
 
     function openDashboardFilter() {
@@ -7946,6 +7966,10 @@
       dashboardFilterMenu?.setAttribute('aria-hidden', 'false');
       dashboardFilter?.classList.add('is-open');
       dashboardFilterTrigger?.setAttribute('aria-expanded', 'true');
+      dashboardShell?.classList.add('is-filtering');
+      document.body.classList.add('is-dashboard-filtering');
+      dashboardEntryToggle?.setAttribute('aria-hidden', 'true');
+      dashboardEntryToggle?.setAttribute('tabindex', '-1');
     }
 
     function toggleEntryCategory() {
