@@ -4982,6 +4982,36 @@
         }));
       }
 
+      function attachmentRetryDelay(ms = 0) {
+        return new Promise(resolve => window.setTimeout(resolve, ms));
+      }
+
+      function attachmentErrorSummary(error = {}) {
+        if (!error) return 'Unknown attachment error';
+
+        const parts = [
+          error.message,
+          error.error_description,
+          error.details,
+          error.hint,
+          error.statusCode ? `status ${error.statusCode}` : '',
+          error.status ? `status ${error.status}` : '',
+          error.code ? `code ${error.code}` : ''
+        ].filter(Boolean);
+
+        return parts.length ? parts.join(' · ') : String(error);
+      }
+
+      function attachmentErrorRecord(stage, error = {}, path = '', attempt = 1) {
+        return {
+          stage,
+          path,
+          attempt,
+          message: attachmentErrorSummary(error),
+          code: error?.code || error?.statusCode || error?.status || error?.name || ''
+        };
+      }
+
       function mockId(prefix) {
         return `${prefix}-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
       }
@@ -5162,23 +5192,39 @@
         const ownerId = post?.created_by || currentOwnerId();
         const persisted = [];
         const errors = [];
+        const retryDelays = [0, 360, 920];
 
         for (const [index, sourceItem] of items.entries()) {
           const item = normaliseAttachment(sourceItem, post.id);
           if (!item.blob) continue;
 
           const path = `${ownerId}/${post.id}/${safeStorageFileName(item, index)}`;
-          const upload = await client.storage
-            .from(STORAGE_BUCKET)
-            .upload(path, item.blob, {
-              cacheControl: '3600',
-              contentType: item.mime_type || 'image/jpeg',
-              upsert: false
-            });
+          let upload = null;
 
-          if (upload.error) {
-            errors.push({ stage: 'storage_upload', path, error: upload.error });
-            dataEvent('attachment-upload-error', { error: upload.error, path });
+          for (const [attemptIndex, delay] of retryDelays.entries()) {
+            if (delay) await attachmentRetryDelay(delay);
+
+            upload = await client.storage
+              .from(STORAGE_BUCKET)
+              .upload(path, item.blob, {
+                cacheControl: '3600',
+                contentType: item.mime_type || 'image/jpeg',
+                upsert: false
+              });
+
+            if (!upload.error) break;
+
+            dataEvent('attachment-upload-retry', {
+              path,
+              attempt: attemptIndex + 1,
+              error: attachmentErrorSummary(upload.error)
+            });
+          }
+
+          if (upload?.error) {
+            const failure = attachmentErrorRecord('storage_upload', upload.error, path, retryDelays.length);
+            errors.push(failure);
+            dataEvent('attachment-upload-error', failure);
             continue;
           }
 
@@ -5193,20 +5239,35 @@
             created_by: ownerId
           };
 
-          const { data, error } = await client
-            .from(DASHBOARD_DATA_CONFIG.attachmentsTable)
-            .insert(metadataPayload)
-            .select(supabaseFieldList(DASHBOARD_DATA_CONFIG.attachmentFields))
-            .single();
+          let metadata = null;
 
-          if (error) {
+          for (const [attemptIndex, delay] of retryDelays.entries()) {
+            if (delay) await attachmentRetryDelay(delay);
+
+            metadata = await client
+              .from(DASHBOARD_DATA_CONFIG.attachmentsTable)
+              .insert(metadataPayload)
+              .select(supabaseFieldList(DASHBOARD_DATA_CONFIG.attachmentFields))
+              .single();
+
+            if (!metadata.error) break;
+
+            dataEvent('attachment-metadata-retry', {
+              path,
+              attempt: attemptIndex + 1,
+              error: attachmentErrorSummary(metadata.error)
+            });
+          }
+
+          if (metadata?.error) {
             await client.storage.from(STORAGE_BUCKET).remove([path]);
-            errors.push({ stage: 'metadata_insert', path, error });
-            dataEvent('attachment-metadata-error', { error, path });
+            const failure = attachmentErrorRecord('metadata_insert', metadata.error, path, retryDelays.length);
+            errors.push(failure);
+            dataEvent('attachment-metadata-error', failure);
             continue;
           }
 
-          const [hydrated] = await hydrateAttachmentRows(client, [data]);
+          const [hydrated] = await hydrateAttachmentRows(client, [metadata.data]);
           persisted.push({
             ...hydrated,
             preview_url: hydrated.preview_url || item.local_preview_url || ''
@@ -5371,7 +5432,10 @@
             return null;
           }
 
-          const uploadResult = await persistPostAttachments(client, data, payload.attachments || []);
+          const selectedAttachments = payload.attachments || [];
+          if (selectedAttachments.length) await attachmentRetryDelay(220);
+
+          const uploadResult = await persistPostAttachments(client, data, selectedAttachments);
           const post = hydratePost(data, uploadResult.attachments);
           post.attachment_errors = uploadResult.errors;
 
@@ -5680,6 +5744,7 @@
         'dashboard.feedback.error': 'The entry could not be recorded. Please try again.',
         'dashboard.feedback.attachErrors': 'Entry recorded, but one or more plates could not be attached.',
         'dashboard.feedback.attachRollback': 'The entry was not recorded because its plate could not be attached. Please try again.',
+        'dashboard.feedback.attachRollbackDetail': 'The entry was not recorded because its plate could not be attached.',
         'dashboard.feedback.attachInvalid': 'Only image files may be attached.',
         'dashboard.feedback.attachLimit': 'Only four plates may be attached.',
         'dashboard.feedback.attachResize': 'One plate could not be prepared for preview.',
@@ -5784,6 +5849,7 @@
         'dashboard.feedback.error': 'Não foi possível registrar a entrada. Tente novamente.',
         'dashboard.feedback.attachErrors': 'Registro salvo, mas uma ou mais pranchas não puderam ser anexadas.',
         'dashboard.feedback.attachRollback': 'A entrada não foi registrada porque a prancha não pôde ser anexada. Tente novamente.',
+        'dashboard.feedback.attachRollbackDetail': 'A entrada não foi registrada porque a prancha não pôde ser anexada.',
         'dashboard.feedback.attachInvalid': 'Somente imagens podem ser anexadas.',
         'dashboard.feedback.attachLimit': 'Somente quatro pranchas podem ser anexadas.',
         'dashboard.feedback.attachResize': 'Uma prancha não pôde ser preparada para pré-visualização.',
@@ -6226,7 +6292,7 @@
     }
 
     window.MoscatelliInternal = Object.freeze({
-      getBuild: () => 'patch15c-record-attachment-persistence-fix',
+      getBuild: () => 'patch15d-record-attachment-retry-diagnostics',
       getMode: getInternalMode,
       isSignedIn: isInternalUserSignedIn,
       getCurrentUser: () => {
@@ -6242,7 +6308,7 @@
         deskLoaded: DeskRuntime.loaded,
         deskRetired: true,
         realtimeStatus: RealtimeRuntime.status,
-        build: 'patch15c-record-attachment-persistence-fix',
+        build: 'patch15d-record-attachment-retry-diagnostics',
         deskSignature: DeskRuntime.lastSignature
       }),
       isInternalRoute,
@@ -7447,6 +7513,27 @@
       dashboardComposerFeedback.classList.toggle('is-warning', tone === 'warning');
     }
 
+    function formatDashboardAttachmentFailure(errors = []) {
+      const base = dashboardFeedbackText(
+        'dashboard.feedback.attachRollbackDetail',
+        'The entry was not recorded because its plate could not be attached.'
+      );
+
+      const first = Array.isArray(errors) ? errors.find(Boolean) : null;
+      if (!first) return `${base} Please try again.`;
+
+      const stage = first.stage === 'metadata_insert'
+        ? 'metadata'
+        : first.stage === 'storage_upload'
+          ? 'storage'
+          : first.stage || 'attachment';
+      const message = first.message ? String(first.message).replace(/\s+/g, ' ').trim() : '';
+
+      return message
+        ? `${base} (${stage}: ${message})`
+        : `${base} Please try again.`;
+    }
+
     function resetDashboardComposer({ preserveAttachmentUrls = false, preserveFeedback = false } = {}) {
       if (dashboardEntryTitle) dashboardEntryTitle.value = '';
       if (dashboardEntryBody) dashboardEntryBody.value = '';
@@ -8010,7 +8097,7 @@
 
           removeDashboardPostById(record.id);
           setDashboardComposerFeedback(
-            dashboardFeedbackText('dashboard.feedback.attachRollback', 'The entry was not recorded because its plate could not be attached. Please try again.'),
+            formatDashboardAttachmentFailure(record.attachment_errors || []),
             'error'
           );
           window.dispatchEvent(new CustomEvent('moscatelli:record-attachment-missing', {
