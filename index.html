@@ -5679,6 +5679,7 @@
         'dashboard.feedback.auth': 'Sign in again before entering the Record.',
         'dashboard.feedback.error': 'The entry could not be recorded. Please try again.',
         'dashboard.feedback.attachErrors': 'Entry recorded, but one or more plates could not be attached.',
+        'dashboard.feedback.attachRollback': 'The entry was not recorded because its plate could not be attached. Please try again.',
         'dashboard.feedback.attachInvalid': 'Only image files may be attached.',
         'dashboard.feedback.attachLimit': 'Only four plates may be attached.',
         'dashboard.feedback.attachResize': 'One plate could not be prepared for preview.',
@@ -5782,6 +5783,7 @@
         'dashboard.feedback.auth': 'Entre novamente antes de registrar.',
         'dashboard.feedback.error': 'Não foi possível registrar a entrada. Tente novamente.',
         'dashboard.feedback.attachErrors': 'Registro salvo, mas uma ou mais pranchas não puderam ser anexadas.',
+        'dashboard.feedback.attachRollback': 'A entrada não foi registrada porque a prancha não pôde ser anexada. Tente novamente.',
         'dashboard.feedback.attachInvalid': 'Somente imagens podem ser anexadas.',
         'dashboard.feedback.attachLimit': 'Somente quatro pranchas podem ser anexadas.',
         'dashboard.feedback.attachResize': 'Uma prancha não pôde ser preparada para pré-visualização.',
@@ -6224,7 +6226,7 @@
     }
 
     window.MoscatelliInternal = Object.freeze({
-      getBuild: () => 'patch15b-record-attachment-viewer',
+      getBuild: () => 'patch15c-record-attachment-persistence-fix',
       getMode: getInternalMode,
       isSignedIn: isInternalUserSignedIn,
       getCurrentUser: () => {
@@ -6240,7 +6242,7 @@
         deskLoaded: DeskRuntime.loaded,
         deskRetired: true,
         realtimeStatus: RealtimeRuntime.status,
-        build: 'patch15b-record-attachment-viewer',
+        build: 'patch15c-record-attachment-persistence-fix',
         deskSignature: DeskRuntime.lastSignature
       }),
       isInternalRoute,
@@ -7283,7 +7285,12 @@
     let recordAttachmentViewerLastFocus = null;
 
     let dashboardCurrentFilter = 'all';
-    const DashboardRuntime = { loaded: false, loading: false };
+    const DashboardRuntime = {
+      loaded: false,
+      loading: false,
+      attachmentPersisting: false,
+      deferredRealtimeRefreshReason: ''
+    };
 
     function updateDashboardEmptyState() {
       const empty = document.getElementById('dashboardEmpty');
@@ -7704,9 +7711,18 @@
       renderRecordAttachmentViewer(recordAttachmentViewerIndex + direction);
     }
 
-    function renderDashboardPostRecord(record, { prepend = true } = {}) {
+    function renderDashboardPostRecord(record, { prepend = true, replace = false } = {}) {
       if (!dashboardFeed || !record) return null;
-      if (record.id && dashboardFeed.querySelector(`[data-post-id="${record.id}"]`)) return null;
+
+      let replaceBefore = null;
+      if (record.id) {
+        const existingPost = dashboardFeed.querySelector(`[data-post-id="${record.id}"]`);
+        if (existingPost && !replace) return existingPost;
+        if (existingPost && replace) {
+          replaceBefore = existingPost.nextSibling;
+          existingPost.remove();
+        }
+      }
 
       const createdAt = normaliseLedgerDate(record.created_at);
       const dateIso = ledgerDateIso(record.created_at);
@@ -7800,7 +7816,9 @@
       post.append(dateEl, main);
 
       const empty = document.getElementById('dashboardEmpty');
-      if (prepend) {
+      if (replaceBefore) {
+        dashboardFeed.insertBefore(post, replaceBefore);
+      } else if (prepend) {
         dashboardFeed.insertBefore(post, empty || dashboardFeed.firstChild);
       } else {
         dashboardFeed.appendChild(post);
@@ -7848,6 +7866,12 @@
 
     function scheduleDashboardRealtimeRefresh(reason = 'record-change') {
       if (!isInternalUserSignedIn()) return;
+
+      if (DashboardRuntime.attachmentPersisting) {
+        DashboardRuntime.deferredRealtimeRefreshReason = reason;
+        dispatchRealtimeEvent('record-refresh-deferred', { reason });
+        return;
+      }
 
       if (RealtimeRuntime.dashboardRefreshTimer) {
         clearTimeout(RealtimeRuntime.dashboardRefreshTimer);
@@ -7954,6 +7978,12 @@
         return null;
       }
 
+      const expectedAttachmentCount = payload.attachments?.length || 0;
+      if (expectedAttachmentCount) {
+        DashboardRuntime.attachmentPersisting = true;
+        DashboardRuntime.deferredRealtimeRefreshReason = '';
+      }
+
       try {
         const attachments = await InternalData.attachments.fromComposer(payload.attachments);
 
@@ -7970,7 +8000,31 @@
           return null;
         }
 
-        renderDashboardPostRecord(record, { prepend: true });
+        const persistedAttachmentCount = record.attachments?.length || 0;
+        const missingSelectedAttachments = expectedAttachmentCount > persistedAttachmentCount;
+
+        if (missingSelectedAttachments) {
+          await InternalData.posts.remove(record.id).catch(error => {
+            window.dispatchEvent(new CustomEvent('moscatelli:record-attachment-rollback-error', { detail: { error, postId: record.id } }));
+          });
+
+          removeDashboardPostById(record.id);
+          setDashboardComposerFeedback(
+            dashboardFeedbackText('dashboard.feedback.attachRollback', 'The entry was not recorded because its plate could not be attached. Please try again.'),
+            'error'
+          );
+          window.dispatchEvent(new CustomEvent('moscatelli:record-attachment-missing', {
+            detail: {
+              postId: record.id,
+              expected: expectedAttachmentCount,
+              persisted: persistedAttachmentCount,
+              errors: record.attachment_errors || []
+            }
+          }));
+          return null;
+        }
+
+        renderDashboardPostRecord(record, { prepend: true, replace: true });
         sortDashboardPostsByDate();
         setDashboardFilter(dashboardCurrentFilter);
         DashboardRuntime.loaded = true;
@@ -7990,6 +8044,16 @@
         );
         window.dispatchEvent(new CustomEvent('moscatelli:record-create-error', { detail: { error } }));
         return null;
+      } finally {
+        if (expectedAttachmentCount) {
+          const deferredReason = DashboardRuntime.deferredRealtimeRefreshReason;
+          DashboardRuntime.attachmentPersisting = false;
+          DashboardRuntime.deferredRealtimeRefreshReason = '';
+
+          if (deferredReason && isInternalUserSignedIn()) {
+            scheduleDashboardRealtimeRefresh(`${deferredReason}-after-attachment-persist`);
+          }
+        }
       }
     }
 
