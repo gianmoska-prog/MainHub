@@ -1941,6 +1941,12 @@
       outline-offset: 3px;
     }
 
+    .dashboard-post-attachments .dashboard-attachment span {
+      color: rgba(232, 192, 122, 0.54);
+      letter-spacing: 0.19em;
+      text-transform: uppercase;
+    }
+
     .dashboard-attachment-placeholder {
       min-height: 76px;
       display: grid;
@@ -2132,6 +2138,37 @@
       font-size: 7.5px;
       letter-spacing: 0.28em;
       color: rgba(184, 104, 48, 0.58);
+    }
+
+    .dashboard-post-meta-line {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px 14px;
+      margin-bottom: 12px;
+    }
+
+    .dashboard-post-meta-line .dashboard-post-category {
+      margin-bottom: 0;
+    }
+
+    .dashboard-post-author {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-family: 'Cinzel', serif;
+      font-size: 7px;
+      font-weight: 300;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: rgba(242, 237, 228, 0.28);
+    }
+
+    .dashboard-post-author::before {
+      content: '';
+      width: 18px;
+      height: 1px;
+      background: rgba(242, 237, 228, 0.14);
     }
 
     .dashboard-post h2 {
@@ -2925,6 +2962,12 @@
       color: rgba(242, 237, 228, 0.34);
     }
 
+    .dashboard-post-author {
+      font-size: 6.5px;
+      letter-spacing: 0.20em;
+      color: rgba(242, 237, 228, 0.42);
+    }
+
     .internal-gate-status {
       color: rgba(242, 237, 228, 0.42);
     }
@@ -3082,37 +3125,32 @@
 
 
 
-    /* Patch 12 — Floating expandable Record composer */
+    /* Patch 16B — Ledger-style Record composer trigger and inline composer */
     .dashboard-shell {
       position: relative;
     }
 
     .dashboard-entry-toggle {
-      position: absolute;
-      right: 0;
-      bottom: clamp(26px, 5vh, 54px);
-      z-index: 8;
+      position: relative;
+      z-index: 6;
+      align-self: flex-end;
       display: inline-flex;
       align-items: center;
-      gap: 12px;
-      min-height: 38px;
-      padding: 0 18px 0 14px;
-      border: 1px solid rgba(232, 192, 122, 0.16);
-      background:
-        linear-gradient(180deg, rgba(242, 237, 228, 0.055), rgba(242, 237, 228, 0.018)),
-        rgba(8, 5, 3, 0.54);
-      backdrop-filter: blur(30px) saturate(165%) brightness(1.04);
-      -webkit-backdrop-filter: blur(30px) saturate(165%) brightness(1.04);
-      box-shadow:
-        0 22px 70px rgba(0, 0, 0, 0.28),
-        inset 0 1px 0 rgba(242, 237, 228, 0.045);
+      gap: 13px;
+      min-height: 34px;
+      margin: 0 0 16px auto;
+      padding: 0 2px 7px 0;
+      border: 0;
+      border-bottom: 1px solid rgba(232, 192, 122, 0.18);
+      background: transparent;
+      box-shadow: none;
       font-family: 'Cinzel', serif;
       font-size: 7.5px;
       font-weight: 300;
-      letter-spacing: 0.28em;
+      letter-spacing: 0.30em;
       line-height: 1;
       text-transform: uppercase;
-      color: rgba(232, 192, 122, 0.70);
+      color: rgba(232, 192, 122, 0.68);
       cursor: pointer;
       transform: translate3d(0, 0, 0);
       transition:
@@ -3122,56 +3160,86 @@
         color 280ms cubic-bezier(0.22, 1, 0.36, 1);
     }
 
-    .dashboard-entry-toggle-mark {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 16px;
-      height: 16px;
-      border: 1px solid rgba(232, 192, 122, 0.16);
-      border-radius: 50%;
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 15px;
-      line-height: 1;
-      letter-spacing: 0;
-      color: rgba(242, 237, 228, 0.66);
+    .dashboard-entry-toggle-rule {
+      width: 28px;
+      height: 1px;
+      display: inline-block;
+      background: rgba(232, 192, 122, 0.28);
+      transform-origin: right center;
+      transition:
+        width 320ms cubic-bezier(0.22, 1, 0.36, 1),
+        background 280ms cubic-bezier(0.22, 1, 0.36, 1);
     }
 
     .dashboard-entry-toggle:hover,
     .dashboard-entry-toggle:focus-visible {
-      color: rgba(242, 237, 228, 0.78);
-      border-color: rgba(232, 192, 122, 0.24);
-      transform: translate3d(0, -2px, 0);
+      color: rgba(242, 237, 228, 0.80);
+      border-color: rgba(232, 192, 122, 0.34);
+      transform: translate3d(-2px, 0, 0);
       outline: none;
+    }
+
+    .dashboard-entry-toggle:hover .dashboard-entry-toggle-rule,
+    .dashboard-entry-toggle:focus-visible .dashboard-entry-toggle-rule {
+      width: 40px;
+      background: rgba(242, 237, 228, 0.46);
     }
 
     .dashboard-entry-toggle.is-hidden {
       opacity: 0;
       pointer-events: none;
-      transform: translate3d(0, 10px, 0);
+      transform: translate3d(0, -6px, 0);
+      max-height: 0;
+      margin-bottom: 0;
+      overflow: hidden;
     }
 
     .dashboard-entry {
-      position: absolute;
-      right: 0;
-      bottom: clamp(28px, 5vh, 56px);
-      z-index: 9;
-      width: min(660px, 58vw);
-      max-width: calc(100vw - 56px);
-      margin-top: 0;
+      position: relative;
+      z-index: 7;
+      width: 100%;
+      max-width: none;
+      margin: 0;
+      max-height: 0;
+      padding-top: 0;
+      padding-bottom: 0;
+      overflow: hidden;
       opacity: 0;
       pointer-events: none;
-      transform: translate3d(0, 18px, 0) scale(0.985);
-      transform-origin: bottom right;
+      transform: translate3d(0, -10px, 0);
+      transform-origin: top center;
+      border-color: transparent;
       transition:
-        opacity 340ms cubic-bezier(0.22, 1, 0.36, 1),
+        opacity 320ms cubic-bezier(0.22, 1, 0.36, 1),
+        max-height 460ms cubic-bezier(0.22, 1, 0.36, 1),
+        margin 360ms cubic-bezier(0.22, 1, 0.36, 1),
+        padding 360ms cubic-bezier(0.22, 1, 0.36, 1),
+        border-color 320ms cubic-bezier(0.22, 1, 0.36, 1),
         transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
     }
 
     .dashboard-entry.is-expanded {
+      max-height: min(64vh, 620px);
+      margin: 0 0 20px;
+      padding-top: 12px;
+      padding-bottom: 14px;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
       opacity: 1;
       pointer-events: auto;
-      transform: translate3d(0, 0, 0) scale(1);
+      transform: translate3d(0, 0, 0);
+      border-color: rgba(242, 237, 228, 0.13);
+    }
+
+    .dashboard-entry.is-expanded::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 18px;
+      right: 18px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(232, 192, 122, 0.20), transparent);
+      pointer-events: none;
     }
 
     .dashboard-entry-meta {
@@ -3204,45 +3272,48 @@
     }
 
     .dashboard-feed {
-      padding-bottom: clamp(76px, 13vh, 132px);
+      padding-bottom: clamp(34px, 7vh, 78px);
     }
 
     @media (max-width: 980px) {
-      .dashboard-entry {
-        left: 0;
-        right: 0;
-        width: 100%;
-        max-width: none;
+      .dashboard-entry-toggle {
+        align-self: flex-start;
+        margin-left: 0;
       }
 
-      .dashboard-entry-toggle {
-        right: 0;
+      .dashboard-entry.is-expanded {
+        max-height: none;
+        overflow: visible;
       }
     }
 
     @media (max-width: 640px) {
       .dashboard-entry-toggle {
-        position: fixed;
-        right: 18px;
-        bottom: calc(18px + env(safe-area-inset-bottom));
-        z-index: 24;
         display: inline-flex;
-        max-width: calc(100vw - 36px);
+        align-self: stretch;
+        justify-content: center;
+        max-width: none;
+        min-height: 38px;
+        margin: 0 0 14px;
+        padding: 0 0 8px;
+      }
+
+      .dashboard-entry-toggle.is-hidden {
+        max-height: 0;
+        margin-bottom: 0;
+        padding: 0;
       }
 
       .dashboard-entry {
-        position: fixed;
-        left: 18px;
-        right: 18px;
-        bottom: calc(18px + env(safe-area-inset-bottom));
-        z-index: 25;
         display: block;
-        width: auto;
+        width: 100%;
         max-width: none;
-        max-height: calc(100svh - 118px);
-        overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
-        transform-origin: bottom center;
+      }
+
+      .dashboard-entry.is-expanded {
+        max-height: none;
+        margin-bottom: 18px;
+        overflow: visible;
       }
 
       .dashboard-entry-grid {
@@ -4422,6 +4493,225 @@
       isolation: isolate;
     }
 
+
+    /* Patch 16C — Ledger structure and archive presence */
+    .dashboard-filter-trigger {
+      position: relative;
+      min-width: 164px;
+      border-color: rgba(242, 237, 228, 0.115);
+      background:
+        linear-gradient(180deg, rgba(242, 237, 228, 0.048), rgba(242, 237, 228, 0.018)),
+        rgba(8, 5, 3, 0.32);
+      box-shadow:
+        inset 0 1px 0 rgba(242, 237, 228, 0.035),
+        0 10px 36px rgba(0, 0, 0, 0.16);
+    }
+
+    .dashboard-filter-trigger::before,
+    .dashboard-filter-trigger::after {
+      content: '';
+      position: absolute;
+      left: 14px;
+      right: 14px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(232, 192, 122, 0.18), transparent);
+      pointer-events: none;
+    }
+
+    .dashboard-filter-trigger::before { top: 6px; }
+    .dashboard-filter-trigger::after { bottom: 6px; }
+
+    .dashboard-filter-menu {
+      border-color: rgba(242, 237, 228, 0.115);
+      background:
+        linear-gradient(180deg, rgba(242, 237, 228, 0.038), rgba(242, 237, 228, 0.012)),
+        rgba(8, 5, 3, 0.82);
+    }
+
+    .dashboard-feed {
+      position: relative;
+      border-top: 1px solid rgba(242, 237, 228, 0.055);
+    }
+
+    .dashboard-feed::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: clamp(34px, 7vh, 78px);
+      left: 124px;
+      width: 1px;
+      background: linear-gradient(180deg, rgba(232, 192, 122, 0.12), rgba(242, 237, 228, 0.035) 42%, transparent);
+      pointer-events: none;
+    }
+
+    .dashboard-post {
+      position: relative;
+      grid-template-columns: 124px minmax(0, 1fr);
+      gap: 38px;
+      padding: 30px 0 32px;
+      border-top-color: rgba(242, 237, 228, 0.105);
+    }
+
+    .dashboard-post:first-of-type {
+      border-top-color: transparent;
+    }
+
+    .dashboard-post::before {
+      content: '';
+      position: absolute;
+      top: -1px;
+      left: 0;
+      width: 124px;
+      height: 1px;
+      background: linear-gradient(90deg, rgba(232, 192, 122, 0.20), transparent);
+      pointer-events: none;
+    }
+
+    .dashboard-post-main {
+      position: relative;
+      min-width: 0;
+      padding-left: 22px;
+    }
+
+    .dashboard-post-main::before {
+      content: '';
+      position: absolute;
+      top: 3px;
+      bottom: 5px;
+      left: 0;
+      width: 1px;
+      background: linear-gradient(180deg, rgba(232, 192, 122, 0.22), rgba(242, 237, 228, 0.045) 44%, transparent);
+      pointer-events: none;
+    }
+
+    .dashboard-post-date {
+      position: relative;
+      padding-top: 7px;
+      color: rgba(242, 237, 228, 0.32);
+    }
+
+    .dashboard-post-date::after {
+      content: '';
+      display: block;
+      width: 26px;
+      height: 1px;
+      margin-top: 11px;
+      background: rgba(232, 192, 122, 0.20);
+    }
+
+    .dashboard-post-meta-line {
+      margin-bottom: 14px;
+    }
+
+    .dashboard-post-category {
+      color: rgba(184, 104, 48, 0.68);
+    }
+
+    .dashboard-post[data-category='decisions'] .dashboard-post-category {
+      color: rgba(232, 192, 122, 0.74);
+    }
+
+    .dashboard-post[data-category='decisions'] .dashboard-post-main::before {
+      background: linear-gradient(180deg, rgba(232, 192, 122, 0.36), rgba(242, 237, 228, 0.070) 48%, transparent);
+    }
+
+    .dashboard-post h2 {
+      margin-bottom: 12px;
+      letter-spacing: 0.255em;
+      color: rgba(242, 237, 228, 0.72);
+    }
+
+    .dashboard-post p {
+      max-width: 650px;
+      line-height: 1.68;
+      white-space: pre-line;
+      color: rgba(242, 237, 228, 0.58);
+    }
+
+    .dashboard-post-attachments {
+      max-width: 500px;
+      gap: 10px;
+      margin: 8px 0 18px;
+    }
+
+    .dashboard-post-attachments .dashboard-attachment {
+      min-height: 86px;
+      border-color: rgba(242, 237, 228, 0.115);
+      background:
+        linear-gradient(180deg, rgba(242, 237, 228, 0.035), rgba(242, 237, 228, 0.010)),
+        rgba(0, 0, 0, 0.20);
+      box-shadow:
+        inset 0 0 0 1px rgba(0, 0, 0, 0.24),
+        0 10px 30px rgba(0, 0, 0, 0.16);
+    }
+
+    .dashboard-post-attachments .dashboard-attachment img {
+      min-height: 86px;
+      opacity: 0.88;
+      transform: scale(1.001);
+      transition:
+        opacity 220ms cubic-bezier(0.22, 1, 0.36, 1),
+        transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .dashboard-post-attachments .dashboard-attachment:hover img,
+    .dashboard-post-attachments .dashboard-attachment:focus-visible img {
+      opacity: 0.96;
+      transform: scale(1.018);
+    }
+
+    .dashboard-post-attachments .dashboard-attachment span {
+      left: 9px;
+      bottom: 8px;
+      padding: 4px 6px 3px;
+      background: rgba(8, 5, 3, 0.58);
+      border: 1px solid rgba(242, 237, 228, 0.07);
+      color: rgba(232, 192, 122, 0.68);
+      text-shadow: 0 1px 10px rgba(0, 0, 0, 0.82);
+    }
+
+    .dashboard-empty {
+      max-width: 520px;
+      margin: 54px auto 0;
+      padding: 24px 28px;
+      border: 1px solid rgba(242, 237, 228, 0.075);
+      background:
+        radial-gradient(circle at 50% 0%, rgba(232, 192, 122, 0.045), transparent 54%),
+        rgba(8, 5, 3, 0.18);
+      color: rgba(242, 237, 228, 0.34);
+    }
+
+    @media (max-width: 760px) {
+      .dashboard-feed::before,
+      .dashboard-post::before,
+      .dashboard-post-main::before,
+      .dashboard-post-date::after {
+        display: none;
+      }
+
+      .dashboard-feed {
+        border-top-color: rgba(242, 237, 228, 0.07);
+      }
+
+      .dashboard-post {
+        display: block;
+        padding: 26px 0 28px;
+      }
+
+      .dashboard-post-main {
+        padding-left: 0;
+      }
+
+      .dashboard-post-date {
+        margin-bottom: 14px;
+      }
+
+      .dashboard-post-attachments {
+        max-width: none;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
   </style>
 </head>
 <body data-internal-mode="supabase" data-internal-auth="signed_out" data-internal-ready="false" data-internal-route="public" data-internal-feature="public">
@@ -4574,13 +4864,9 @@
           </div>
         </div>
 
-        <div class="dashboard-feed" id="dashboardFeed" aria-live="polite">
-          <p class="dashboard-empty i18n-text" id="dashboardEmpty" data-i18n="dashboard.empty">No entries in this category.</p>
-        </div>
-
         <button class="dashboard-entry-toggle" id="dashboardEntryToggle" type="button" aria-expanded="false" aria-controls="dashboardEntryComposer">
-          <span class="dashboard-entry-toggle-mark" aria-hidden="true">+</span>
-          <span class="i18n-text" data-i18n="dashboard.newEntry">New Record</span>
+          <span class="dashboard-entry-toggle-rule" aria-hidden="true"></span>
+          <span class="i18n-text" data-i18n="dashboard.openEntry">Open New Entry</span>
         </button>
 
         <div class="dashboard-entry" id="dashboardEntryComposer" aria-hidden="true">
@@ -4613,12 +4899,16 @@
               <input id="dashboardAttachmentInput" type="file" accept="image/*" multiple>
               <span class="i18n-text" data-i18n="dashboard.attach">Attach plates</span>
             </label>
-            <span class="dashboard-upload-note i18n-text" data-i18n="dashboard.resizeNote">Plates are compressed locally, then attached to the private Record. Keep this window open until the entry appears.</span>
+            <span class="dashboard-upload-note i18n-text" data-i18n="dashboard.resizeNote">Plates are prepared on this device before being attached to the private Record.</span>
             <button class="dashboard-commit i18n-text" id="dashboardCommitEntry" type="button" data-i18n="dashboard.commit">Enter into the Record</button>
           </div>
           <div class="dashboard-attachments" id="dashboardAttachments" aria-live="polite"></div>
-          <div class="dashboard-attachment-limit i18n-text" id="dashboardAttachmentLimit" data-i18n="dashboard.attachLimit">Maximum four images.</div>
+          <div class="dashboard-attachment-limit i18n-text" id="dashboardAttachmentLimit" data-i18n="dashboard.attachLimit">Up to four plates may be attached.</div>
           <div class="dashboard-composer-feedback" id="dashboardComposerFeedback" role="status" aria-live="polite"></div>
+        </div>
+
+        <div class="dashboard-feed" id="dashboardFeed" aria-live="polite">
+          <p class="dashboard-empty i18n-text" id="dashboardEmpty" data-i18n="dashboard.empty">This index holds no entries yet.</p>
         </div>
 
         </div>
@@ -5899,11 +6189,12 @@
         'dashboard.filter': 'Index',
         'dashboard.all': 'All',
         'dashboard.newEntry': 'New Record',
+        'dashboard.openEntry': 'Open New Entry',
         'dashboard.localOnly': 'Private Note',
         'dashboard.titlePlaceholder': 'Title',
         'dashboard.bodyPlaceholder': 'Write a measured internal note...',
         'dashboard.attach': 'Attach plates',
-        'dashboard.attachLimit': 'Maximum four images.',
+        'dashboard.attachLimit': 'Up to four plates may be attached.',
         'dashboard.commit': 'Enter into the Record',
         'dashboard.recording': 'Entering…',
         'dashboard.recorded': 'Entered into the Record',
@@ -5917,17 +6208,18 @@
         'dashboard.feedback.attachLimit': 'Only four plates may be attached.',
         'dashboard.feedback.attachResize': 'One plate could not be prepared for preview.',
         'dashboard.feedback.processing': 'Entering the note into the private Record…',
-        'dashboard.feedback.processingAttachments': 'Preparing plates locally, compressing them, and attaching them to the private Record…',
+        'dashboard.feedback.processingAttachments': 'Preparing the plates and attaching them to the private Record…',
         'dashboard.viewerTitle': 'Record Plate',
+        'dashboard.plate': 'Plate',
         'dashboard.viewerUnavailable': 'This plate could not be re-opened. Refresh the Record and try again.',
         'dashboard.delete': 'Delete',
         'dashboard.deleted': 'Entry deleted',
-        'dashboard.empty': 'No records in this index.',
+        'dashboard.empty': 'This index holds no entries yet.',
         'dashboard.untitled': 'Untitled entry',
         'dashboard.authorLocal': 'Local draft · Not saved',
-        'dashboard.authorSupabase': 'Recorded in the Record',
+        'dashboard.authorSupabase': 'Entered into the Record',
         'dashboard.authorBy': 'Recorded by {name}',
-        'dashboard.resizeNote': 'Plates are compressed locally, then attached to the private Record. Keep this window open until the entry appears.',
+        'dashboard.resizeNote': 'Plates are prepared on this device before being attached to the private Record.',
         'dashboard.cat.meetings': 'Meetings',
         'dashboard.cat.ideas': 'Ideas',
         'dashboard.cat.decisions': 'Decisions',
@@ -6007,11 +6299,12 @@
         'dashboard.filter': 'Filtrar',
         'dashboard.all': 'Tudo',
         'dashboard.newEntry': 'Nova Entrada',
+        'dashboard.openEntry': 'Abrir nova entrada',
         'dashboard.localOnly': 'Nota privada',
         'dashboard.titlePlaceholder': 'Título',
         'dashboard.bodyPlaceholder': 'Escreva uma breve nota interna...',
         'dashboard.attach': 'Anexar pranchas',
-        'dashboard.attachLimit': 'Máximo de quatro imagens.',
+        'dashboard.attachLimit': 'Até quatro pranchas podem ser anexadas.',
         'dashboard.commit': 'Registrar no Livro',
         'dashboard.recording': 'Inscrevendo…',
         'dashboard.recorded': 'Registro inscrito',
@@ -6025,17 +6318,18 @@
         'dashboard.feedback.attachLimit': 'Somente quatro pranchas podem ser anexadas.',
         'dashboard.feedback.attachResize': 'Uma prancha não pôde ser preparada para pré-visualização.',
         'dashboard.feedback.processing': 'Registrando a nota no Record privado…',
-        'dashboard.feedback.processingAttachments': 'Preparando as imagens localmente, comprimindo-as e anexando-as ao Record privado…',
+        'dashboard.feedback.processingAttachments': 'Preparando as pranchas e anexando-as ao Record privado…',
         'dashboard.viewerTitle': 'Prancha do Registro',
+        'dashboard.plate': 'Prancha',
         'dashboard.viewerUnavailable': 'Esta prancha não pôde ser reaberta. Atualize o Registro e tente novamente.',
         'dashboard.delete': 'Apagar',
         'dashboard.deleted': 'Entrada apagada',
-        'dashboard.empty': 'Nenhum registro neste índice.',
+        'dashboard.empty': 'Este índice ainda não possui entradas.',
         'dashboard.untitled': 'Entrada sem título',
         'dashboard.authorLocal': 'Rascunho local · Não salvo',
-        'dashboard.authorSupabase': 'Registrado no Record',
+        'dashboard.authorSupabase': 'Inscrito no Record',
         'dashboard.authorBy': 'Registrado por {name}',
-        'dashboard.resizeNote': 'As imagens são comprimidas localmente e anexadas ao Record privado. Mantenha esta janela aberta até a entrada aparecer.',
+        'dashboard.resizeNote': 'As pranchas são preparadas neste dispositivo antes de serem anexadas ao Record privado.',
         'dashboard.cat.meetings': 'Reuniões',
         'dashboard.cat.ideas': 'Ideias',
         'dashboard.cat.decisions': 'Decisões',
@@ -6466,7 +6760,7 @@
     }
 
     window.MoscatelliInternal = Object.freeze({
-      getBuild: () => 'patch15g-record-composer-readability',
+      getBuild: () => 'patch16c-ledger-structure-archive-presence',
       getMode: getInternalMode,
       isSignedIn: isInternalUserSignedIn,
       getCurrentUser: () => {
@@ -6482,7 +6776,7 @@
         deskLoaded: DeskRuntime.loaded,
         deskRetired: true,
         realtimeStatus: RealtimeRuntime.status,
-        build: 'patch15g-record-composer-readability',
+        build: 'patch16c-ledger-structure-archive-presence',
         deskSignature: DeskRuntime.lastSignature
       }),
       isInternalRoute,
@@ -7974,6 +8268,26 @@
       renderRecordAttachmentViewer(recordAttachmentViewerIndex + direction);
     }
 
+    function romanNumeral(value = 1) {
+      const numerals = [
+        [10, 'X'], [9, 'IX'], [5, 'V'], [4, 'IV'], [1, 'I']
+      ];
+      let number = Math.max(1, Math.min(99, Number(value) || 1));
+      let output = '';
+      numerals.forEach(([decimal, numeral]) => {
+        while (number >= decimal) {
+          output += numeral;
+          number -= decimal;
+        }
+      });
+      return output || 'I';
+    }
+
+    function formatPlateLabel(index = 0) {
+      const plate = translations[currentLang]?.['dashboard.plate'] || 'Plate';
+      return `${plate} ${romanNumeral(index + 1)}`;
+    }
+
     function dashboardAuthorLine(record = {}) {
       if (record.source !== 'supabase') {
         return translations[currentLang]?.['dashboard.authorLocal'] || 'Local draft · Not saved';
@@ -8030,9 +8344,14 @@
       const bodyEl = document.createElement('p');
       bodyEl.textContent = record.body;
 
-      const foot = document.createElement('div');
-      foot.className = 'dashboard-post-foot';
-      foot.textContent = dashboardAuthorLine(record);
+      const metaLine = document.createElement('div');
+      metaLine.className = 'dashboard-post-meta-line';
+
+      const authorEl = document.createElement('span');
+      authorEl.className = 'dashboard-post-author';
+      authorEl.textContent = dashboardAuthorLine(record);
+
+      metaLine.append(categoryEl, authorEl);
 
       const actions = document.createElement('div');
       actions.className = 'dashboard-post-actions';
@@ -8044,14 +8363,15 @@
       deleteButton.textContent = translations[currentLang]?.['dashboard.delete'] || 'Delete';
       deleteButton.hidden = !permissions.can_delete;
 
-      actions.append(foot, deleteButton);
-      main.append(categoryEl, titleEl, bodyEl);
+      actions.append(deleteButton);
+      main.append(metaLine, titleEl, bodyEl);
 
       if (record.attachments?.length) {
         const preview = document.createElement('div');
         preview.className = 'dashboard-attachments dashboard-post-attachments';
 
         record.attachments.forEach((item, index) => {
+          const plateLabel = formatPlateLabel(index);
           const attachment = document.createElement('button');
           attachment.className = 'dashboard-attachment dashboard-attachment-open';
           attachment.type = 'button';
@@ -8059,11 +8379,11 @@
           attachment.dataset.attachmentPath = item.path || '';
           attachment.dataset.previewUrl = item.preview_url || '';
           attachment.dataset.fileName = item.file_name || '';
-          attachment.dataset.size = formatBytes(item.resized_size);
+          attachment.dataset.size = plateLabel;
           attachment.dataset.recordTitle = record.title || '';
           attachment.dataset.recordCategory = categoryLabel(record.category);
           attachment.dataset.recordDate = formatLedgerDate(createdAt);
-          attachment.setAttribute('aria-label', `${translations[currentLang]?.['dashboard.viewerTitle'] || 'Record Plate'} ${index + 1}`);
+          attachment.setAttribute('aria-label', plateLabel);
 
           if (item.preview_url) {
             const img = document.createElement('img');
@@ -8081,7 +8401,7 @@
           }
 
           const label = document.createElement('span');
-          label.textContent = formatBytes(item.resized_size);
+          label.textContent = plateLabel;
 
           attachment.appendChild(label);
           preview.appendChild(attachment);
@@ -8359,7 +8679,7 @@
       dashboardCommitInFlight = true;
       setDashboardComposerFeedback(
         payload.attachments?.length
-          ? dashboardFeedbackText('dashboard.feedback.processingAttachments', 'Preparing plates locally, compressing them, and attaching them to the private Record…')
+          ? dashboardFeedbackText('dashboard.feedback.processingAttachments', 'Preparing the plates and attaching them to the private Record…')
           : dashboardFeedbackText('dashboard.feedback.processing', 'Entering the note into the private Record…')
       );
       setCommitState('pending');
