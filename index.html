@@ -1641,16 +1641,17 @@
       position: absolute;
       left: 0;
       right: 0;
-      bottom: calc(100% + 8px);
+      top: calc(100% + 8px);
+      bottom: auto;
       z-index: 8;
       padding: 8px 0;
       border: 1px solid rgba(242, 237, 228, 0.09);
-      background: rgba(8, 5, 3, 0.78);
+      background: rgba(8, 5, 3, 0.82);
       backdrop-filter: blur(32px) saturate(160%) brightness(1.03);
       -webkit-backdrop-filter: blur(32px) saturate(160%) brightness(1.03);
-      box-shadow: 0 -20px 60px rgba(0, 0, 0, 0.30);
+      box-shadow: 0 22px 64px rgba(0, 0, 0, 0.34);
       opacity: 0;
-      transform: translate3d(0, 6px, 0);
+      transform: translate3d(0, -6px, 0);
       pointer-events: none;
       transition:
         opacity 260ms cubic-bezier(0.22, 1, 0.36, 1),
@@ -6760,7 +6761,7 @@
     }
 
     window.MoscatelliInternal = Object.freeze({
-      getBuild: () => 'patch16c-ledger-structure-archive-presence',
+      getBuild: () => 'patch16d-record-empty-dropdown-bugfix',
       getMode: getInternalMode,
       isSignedIn: isInternalUserSignedIn,
       getCurrentUser: () => {
@@ -6776,7 +6777,7 @@
         deskLoaded: DeskRuntime.loaded,
         deskRetired: true,
         realtimeStatus: RealtimeRuntime.status,
-        build: 'patch16c-ledger-structure-archive-presence',
+        build: 'patch16d-record-empty-dropdown-bugfix',
         deskSignature: DeskRuntime.lastSignature
       }),
       isInternalRoute,
@@ -7865,6 +7866,7 @@
       dashboardFilterTrigger?.classList.toggle('is-filtered', nextCategory !== 'all');
       dashboardFilter?.classList.remove('is-open');
       dashboardFilterTrigger?.setAttribute('aria-expanded', 'false');
+      closeEntryCategory();
     }
 
     function setEntryCategory(category) {
@@ -8037,6 +8039,8 @@
 
       if (isExpanded) {
         setDashboardComposerFeedback('');
+        dashboardFilter?.classList.remove('is-open');
+        dashboardFilterTrigger?.setAttribute('aria-expanded', 'false');
       }
 
       if (isExpanded && focus) {
@@ -8305,12 +8309,43 @@
       return template.replace('{name}', authorName);
     }
 
+    function normaliseDashboardText(value = '') {
+      return String(value || '').replace(/\s+/g, ' ').trim();
+    }
+
+    function isLegacyEmptyDashboardValue(title = '', body = '') {
+      const normalisedTitle = normaliseDashboardText(title).toLowerCase();
+      const normalisedBody = normaliseDashboardText(body);
+      return normalisedTitle === 'untitled entry' && (!normalisedBody || normalisedBody === '—' || normalisedBody === '-');
+    }
+
+    function hasDashboardRecordSubstance(record = {}) {
+      const title = normaliseDashboardText(record.title);
+      const body = normaliseDashboardText(record.body);
+      const hasAttachments = Array.isArray(record.attachments) && record.attachments.length > 0;
+
+      if (hasAttachments) return true;
+      if (isLegacyEmptyDashboardValue(title, body)) return false;
+      return Boolean(title || (body && body !== '—' && body !== '-'));
+    }
+
     function renderDashboardPostRecord(record, { prepend = true, replace = false } = {}) {
       if (!dashboardFeed || !record) return null;
 
+      const titleText = normaliseDashboardText(record.title);
+      const bodyText = normaliseDashboardText(record.body);
+      const recordSelector = record.id ? `[data-post-id="${record.id}"]` : '';
+
+      if (!hasDashboardRecordSubstance(record)) {
+        if (recordSelector) dashboardFeed.querySelector(recordSelector)?.remove();
+        window.dispatchEvent(new CustomEvent('moscatelli:record-skipped-empty', { detail: { id: record.id || null } }));
+        updateDashboardEmptyState();
+        return null;
+      }
+
       let replaceBefore = null;
       if (record.id) {
-        const existingPost = dashboardFeed.querySelector(`[data-post-id="${record.id}"]`);
+        const existingPost = dashboardFeed.querySelector(recordSelector);
         if (existingPost && !replace) return existingPost;
         if (existingPost && replace) {
           replaceBefore = existingPost.nextSibling;
@@ -8339,10 +8374,10 @@
       categoryEl.textContent = categoryLabel(record.category);
 
       const titleEl = document.createElement('h2');
-      titleEl.textContent = record.title;
+      titleEl.textContent = titleText;
 
       const bodyEl = document.createElement('p');
-      bodyEl.textContent = record.body;
+      bodyEl.textContent = bodyText;
 
       const metaLine = document.createElement('div');
       metaLine.className = 'dashboard-post-meta-line';
@@ -8364,7 +8399,9 @@
       deleteButton.hidden = !permissions.can_delete;
 
       actions.append(deleteButton);
-      main.append(metaLine, titleEl, bodyEl);
+      main.appendChild(metaLine);
+      if (titleText) main.appendChild(titleEl);
+      if (bodyText && bodyText !== '—' && bodyText !== '-') main.appendChild(bodyEl);
 
       if (record.attachments?.length) {
         const preview = document.createElement('div');
@@ -8737,6 +8774,7 @@
     function toggleDashboardFilter() {
       const isOpen = dashboardFilter?.classList.toggle('is-open');
       dashboardFilterTrigger?.setAttribute('aria-expanded', String(Boolean(isOpen)));
+      if (isOpen) closeEntryCategory();
     }
 
     dashboardFilterTrigger?.addEventListener('click', toggleDashboardFilter);
