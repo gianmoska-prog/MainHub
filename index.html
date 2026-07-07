@@ -5079,7 +5079,7 @@
       <div class="global-auth-rule" aria-hidden="true"></div>
       <p class="global-auth-kicker i18n-text" data-i18n="global.kicker">Private Threshold</p>
       <h1 class="global-auth-title" id="globalAuthTitle">MOSCATELLI</h1>
-      <p class="global-auth-copy i18n-text" id="globalAuthCopy" data-i18n="global.copy">Enter with your maison credentials to continue.</p>
+      <p class="global-auth-copy i18n-text" id="globalAuthCopy" data-i18n="global.copy">Sign in with your account to continue.</p>
       <div class="global-auth-status" data-internal-status aria-live="polite">
         <span class="i18n-text" data-i18n="internal.status.signedOut">Authentication required</span>
       </div>
@@ -5177,8 +5177,8 @@
         <div class="internal-gate internal-gate-record" data-internal-gate="record" aria-hidden="true">
           <div class="internal-gate-panel">
             <div class="internal-gate-kicker i18n-text" data-i18n="internal.kicker">Private Access</div>
-            <h2 class="internal-gate-title i18n-text" data-i18n="internal.recordTitle">The Record</h2>
-            <p class="internal-gate-copy i18n-text" data-i18n="internal.recordIntro">This ledger belongs to the internal work of the maison.</p>
+            <h2 class="internal-gate-title i18n-text" data-i18n="internal.recordTitle">Records</h2>
+            <p class="internal-gate-copy i18n-text" data-i18n="internal.recordIntro">This area is for internal notes, decisions, and updates.</p>
             <div class="internal-gate-status" data-internal-status>
               <span class="i18n-text" data-i18n="internal.status.signedOut">Authentication required</span>
             </div>
@@ -5195,12 +5195,12 @@
 
         <div class="dashboard-head">
           <div>
-            <div class="dashboard-kicker i18n-text" data-i18n="dashboard.kicker">Internal Ledger</div>
-            <h1 class="dashboard-title i18n-text" data-i18n="dashboard.title">The Record</h1>
+            <div class="dashboard-kicker i18n-text" data-i18n="dashboard.kicker">Dashboard</div>
+            <h1 class="dashboard-title i18n-text" data-i18n="dashboard.title">Records</h1>
           </div>
           <div class="dashboard-filter" id="dashboardFilter">
             <button class="dashboard-filter-trigger" id="dashboardFilterTrigger" type="button" aria-haspopup="listbox" aria-expanded="false">
-              <span class="i18n-text" data-i18n="dashboard.filter">Index</span>
+              <span class="i18n-text" data-i18n="dashboard.filter">Filter</span>
               <span class="dashboard-filter-value i18n-text" id="dashboardFilterValue" data-i18n="dashboard.all">All</span>
             </button>
             <div class="dashboard-filter-menu" id="dashboardFilterMenu" role="listbox" aria-label="Dashboard filter">
@@ -5219,14 +5219,14 @@
 
         <button class="dashboard-entry-toggle" id="dashboardEntryToggle" type="button" aria-expanded="false" aria-controls="dashboardEntryComposer">
           <span class="dashboard-entry-toggle-rule" aria-hidden="true"></span>
-          <span class="i18n-text" data-i18n="dashboard.openEntry">Open New Entry</span>
+          <span class="i18n-text" data-i18n="dashboard.openEntry">New entry</span>
         </button>
 
         <div class="dashboard-entry" id="dashboardEntryComposer" aria-hidden="true">
           <div class="dashboard-entry-meta">
-            <span class="i18n-text" data-i18n="dashboard.newEntry">New Record</span>
+            <span class="i18n-text" data-i18n="dashboard.newEntry">New entry</span>
             <button class="dashboard-entry-close" id="dashboardEntryClose" type="button" aria-label="Close new record composer">×</button>
-            <span class="dashboard-entry-note i18n-text" data-i18n="dashboard.localOnly">Private Note</span>
+            <span class="dashboard-entry-note i18n-text" data-i18n="dashboard.localOnly">Private note</span>
           </div>
           <div class="dashboard-entry-grid">
             <input class="dashboard-input" id="dashboardEntryTitle" type="text" data-i18n-placeholder="dashboard.titlePlaceholder" placeholder="Title">
@@ -5246,22 +5246,22 @@
               </div>
             </div>
           </div>
-          <textarea class="dashboard-textarea" id="dashboardEntryBody" data-i18n-placeholder="dashboard.bodyPlaceholder" placeholder="Write a measured internal note..."></textarea>
+          <textarea class="dashboard-textarea" id="dashboardEntryBody" data-i18n-placeholder="dashboard.bodyPlaceholder" placeholder="Write an internal note..."></textarea>
           <div class="dashboard-upload-row">
             <label class="dashboard-upload">
               <input id="dashboardAttachmentInput" type="file" accept="image/*" multiple>
-              <span class="i18n-text" data-i18n="dashboard.attach">Attach plates</span>
+              <span class="i18n-text" data-i18n="dashboard.attach">Attach images</span>
             </label>
-            <span class="dashboard-upload-note i18n-text" data-i18n="dashboard.resizeNote">Plates are prepared on this device before being attached to the private Record.</span>
-            <button class="dashboard-commit i18n-text" id="dashboardCommitEntry" type="button" data-i18n="dashboard.commit">Enter into the Record</button>
+            <span class="dashboard-upload-note i18n-text" data-i18n="dashboard.resizeNote">Images may be resized before upload and then attached to the entry.</span>
+            <button class="dashboard-commit i18n-text" id="dashboardCommitEntry" type="button" data-i18n="dashboard.commit">Send</button>
           </div>
           <div class="dashboard-attachments" id="dashboardAttachments" aria-live="polite"></div>
-          <div class="dashboard-attachment-limit i18n-text" id="dashboardAttachmentLimit" data-i18n="dashboard.attachLimit">Up to four plates may be attached.</div>
+          <div class="dashboard-attachment-limit i18n-text" id="dashboardAttachmentLimit" data-i18n="dashboard.attachLimit">Up to four attachments may be added.</div>
           <div class="dashboard-composer-feedback" id="dashboardComposerFeedback" role="status" aria-live="polite"></div>
         </div>
 
         <div class="dashboard-feed" id="dashboardFeed" aria-live="polite">
-          <p class="dashboard-empty i18n-text" id="dashboardEmpty" data-i18n="dashboard.empty">This index holds no entries yet.</p>
+          <p class="dashboard-empty i18n-text" id="dashboardEmpty" data-i18n="dashboard.empty">No entries yet.</p>
         </div>
 
         </div>
@@ -5271,7 +5271,7 @@
       <div class="record-lightbox-scrim" data-record-lightbox-close aria-hidden="true"></div>
       <div class="record-lightbox-panel" role="document">
         <div class="record-lightbox-bar">
-          <span class="record-lightbox-kicker i18n-text" id="recordAttachmentViewerTitle" data-i18n="dashboard.viewerTitle">Record Plate</span>
+          <span class="record-lightbox-kicker i18n-text" id="recordAttachmentViewerTitle" data-i18n="dashboard.viewerTitle">Attachment</span>
           <button class="record-lightbox-close" id="recordAttachmentViewerClose" type="button" aria-label="Close attachment viewer">×</button>
         </div>
         <figure class="record-lightbox-figure">
@@ -5283,8 +5283,8 @@
             <span class="record-lightbox-meta" id="recordAttachmentViewerMeta"></span>
           </figcaption>
         </figure>
-        <button class="record-lightbox-nav is-prev" id="recordAttachmentViewerPrev" type="button" aria-label="Previous plate">‹</button>
-        <button class="record-lightbox-nav is-next" id="recordAttachmentViewerNext" type="button" aria-label="Next plate">›</button>
+        <button class="record-lightbox-nav is-prev" id="recordAttachmentViewerPrev" type="button" aria-label="Previous attachment">‹</button>
+        <button class="record-lightbox-nav is-next" id="recordAttachmentViewerNext" type="button" aria-label="Next attachment">›</button>
       </div>
     </div>
     <section class="route-view route-divisions" data-view="divisions" aria-hidden="true">
@@ -5314,7 +5314,7 @@
         <div class="internal-gate-panel">
           <div class="internal-gate-kicker i18n-text" data-i18n="internal.kicker">Private Access</div>
           <h2 class="internal-gate-title i18n-text" data-i18n="divisions.marketing">Marketing</h2>
-          <p class="internal-gate-copy i18n-text" data-i18n="internal.divisionIntro">This division page is reserved for authenticated members of the maison.</p>
+          <p class="internal-gate-copy i18n-text" data-i18n="internal.divisionIntro">This page is reserved for authenticated team members.</p>
           <div class="internal-gate-status" data-internal-status>
             <span class="i18n-text" data-i18n="internal.status.signedOut">Authentication required</span>
           </div>
@@ -5334,7 +5334,7 @@
         <div class="internal-gate-panel">
           <div class="internal-gate-kicker i18n-text" data-i18n="internal.kicker">Private Access</div>
           <h2 class="internal-gate-title i18n-text" data-i18n="divisions.finance">Finance</h2>
-          <p class="internal-gate-copy i18n-text" data-i18n="internal.divisionIntro">This division page is reserved for authenticated members of the maison.</p>
+          <p class="internal-gate-copy i18n-text" data-i18n="internal.divisionIntro">This page is reserved for authenticated team members.</p>
           <div class="internal-gate-status" data-internal-status>
             <span class="i18n-text" data-i18n="internal.status.signedOut">Authentication required</span>
           </div>
@@ -5354,7 +5354,7 @@
         <div class="internal-gate-panel">
           <div class="internal-gate-kicker i18n-text" data-i18n="internal.kicker">Private Access</div>
           <h2 class="internal-gate-title i18n-text" data-i18n="divisions.operations">Operations</h2>
-          <p class="internal-gate-copy i18n-text" data-i18n="internal.divisionIntro">This division page is reserved for authenticated members of the maison.</p>
+          <p class="internal-gate-copy i18n-text" data-i18n="internal.divisionIntro">This page is reserved for authenticated team members.</p>
           <div class="internal-gate-status" data-internal-status>
             <span class="i18n-text" data-i18n="internal.status.signedOut">Authentication required</span>
           </div>
@@ -5847,14 +5847,14 @@
       }
 
       function safeStorageFileName(item, index = 0) {
-        const raw = item.file_name || item.name || `plate-${index + 1}.jpg`;
+        const raw = item.file_name || item.name || `attachment-${index + 1}.jpg`;
         const base = String(raw)
           .replace(/\.[a-z0-9]{2,5}$/i, '')
           .normalize('NFD')
           .replace(/[\u0300-\u036f]/g, '')
           .replace(/[^a-z0-9_-]+/gi, '-')
           .replace(/^-+|-+$/g, '')
-          .slice(0, 54) || `plate-${index + 1}`;
+          .slice(0, 54) || `attachment-${index + 1}`;
 
         return `${Date.now()}-${index + 1}-${base}.jpg`;
       }
@@ -5963,7 +5963,7 @@
           const path = `${ownerId}/${post.id}/${safeStorageFileName(item, index)}`;
 
           if (!item.blob) {
-            const failure = attachmentErrorRecord('local_blob_missing', new Error('The selected plate was prepared for preview but no uploadable blob was found.'), path, 1);
+            const failure = attachmentErrorRecord('local_blob_missing', new Error('The selected attachment was prepared for preview but no uploadable blob was found.'), path, 1);
             errors.push(failure);
             dataEvent('attachment-local-blob-missing', failure);
             continue;
@@ -6533,42 +6533,42 @@
         'nav.atelier': 'Atelier',
         'nav.gallery': 'Gallery',
         'nav.dashboard': 'Dashboard',
-        'dashboard.title': 'The Record',
-        'dashboard.kicker': 'Internal Ledger',
-        'dashboard.filter': 'Index',
+        'dashboard.title': 'Records',
+        'dashboard.kicker': 'Dashboard',
+        'dashboard.filter': 'Filter',
         'dashboard.all': 'All',
-        'dashboard.newEntry': 'New Record',
-        'dashboard.openEntry': 'Open New Entry',
-        'dashboard.localOnly': 'Private Note',
+        'dashboard.newEntry': 'New entry',
+        'dashboard.openEntry': 'New entry',
+        'dashboard.localOnly': 'Private note',
         'dashboard.titlePlaceholder': 'Title',
-        'dashboard.bodyPlaceholder': 'Write a measured internal note...',
-        'dashboard.attach': 'Attach plates',
-        'dashboard.attachLimit': 'Up to four plates may be attached.',
-        'dashboard.commit': 'Enter into the Record',
-        'dashboard.recording': 'Entering…',
-        'dashboard.recorded': 'Entered into the Record',
-        'dashboard.feedback.empty': 'Add a title or note before entering the Record.',
-        'dashboard.feedback.auth': 'Sign in again before entering the Record.',
-        'dashboard.feedback.error': 'The entry could not be recorded. Please try again.',
-        'dashboard.feedback.attachErrors': 'Entry recorded, but one or more plates could not be attached.',
-        'dashboard.feedback.attachRollback': 'The entry was not recorded because its plate could not be attached. Please try again.',
-        'dashboard.feedback.attachRollbackDetail': 'The entry was not recorded because its plate could not be attached.',
+        'dashboard.bodyPlaceholder': 'Write an internal note...',
+        'dashboard.attach': 'Attach images',
+        'dashboard.attachLimit': 'Up to four attachments may be added.',
+        'dashboard.commit': 'Send',
+        'dashboard.recording': 'Sending…',
+        'dashboard.recorded': 'Sent',
+        'dashboard.feedback.empty': 'Add a title or note before sending.',
+        'dashboard.feedback.auth': 'Sign in again before sending.',
+        'dashboard.feedback.error': 'The entry could not be saved. Please try again.',
+        'dashboard.feedback.attachErrors': 'Entry saved, but one or more attachments could not be added.',
+        'dashboard.feedback.attachRollback': 'The entry was not saved because its attachment could not be added. Please try again.',
+        'dashboard.feedback.attachRollbackDetail': 'The entry was not saved because its attachment could not be added.',
         'dashboard.feedback.attachInvalid': 'Only image files may be attached.',
-        'dashboard.feedback.attachLimit': 'Only four plates may be attached.',
-        'dashboard.feedback.attachResize': 'One plate could not be prepared for preview.',
-        'dashboard.feedback.processing': 'Entering the note into the private Record…',
-        'dashboard.feedback.processingAttachments': 'Preparing the plates and attaching them to the private Record…',
-        'dashboard.viewerTitle': 'Record Plate',
-        'dashboard.plate': 'Plate',
-        'dashboard.viewerUnavailable': 'This plate could not be re-opened. Refresh the Record and try again.',
+        'dashboard.feedback.attachLimit': 'Only four attachments may be added.',
+        'dashboard.feedback.attachResize': 'One attachment could not be prepared for preview.',
+        'dashboard.feedback.processing': 'Sending the note…',
+        'dashboard.feedback.processingAttachments': 'Uploading attachments…',
+        'dashboard.viewerTitle': 'Attachment',
+        'dashboard.attachmentLabel': 'Attachment',
+        'dashboard.viewerUnavailable': 'This attachment could not be opened. Refresh the page and try again.',
         'dashboard.delete': 'Delete',
         'dashboard.deleted': 'Entry deleted',
-        'dashboard.empty': 'This index holds no entries yet.',
+        'dashboard.empty': 'No entries yet.',
         'dashboard.untitled': 'Untitled entry',
         'dashboard.authorLocal': 'Local draft · Not saved',
-        'dashboard.authorSupabase': 'Entered into the Record',
-        'dashboard.authorBy': 'Recorded by {name}',
-        'dashboard.resizeNote': 'Plates are prepared on this device before being attached to the private Record.',
+        'dashboard.authorSupabase': 'Sent',
+        'dashboard.authorBy': 'Posted by {name}',
+        'dashboard.resizeNote': 'Images may be resized before upload and then attached to the entry.',
         'dashboard.cat.meetings': 'Meetings',
         'dashboard.cat.ideas': 'Ideas',
         'dashboard.cat.decisions': 'Decisions',
@@ -6584,16 +6584,16 @@
         'ui.return': 'Return',
         'ui.desk': 'The Desk',
         'desk.kicker': 'Internal Correspondence',
-        'desk.intro': 'A private place for correspondence, decisions, and the quiet work of the maison.',
+        'desk.intro': 'A private place for correspondence, decisions, and internal work.',
         'global.kicker': 'Private Threshold',
-        'global.copy': 'Enter with your maison credentials to continue.',
+        'global.copy': 'Sign in with your account to continue.',
         'global.enter': 'Enter',
         'internal.kicker': 'Private Access',
-        'internal.recordTitle': 'The Record',
-        'internal.recordIntro': 'This ledger belongs to the internal work of the maison.',
+        'internal.recordTitle': 'Records',
+        'internal.recordIntro': 'This area is for internal notes, decisions, and updates.',
         'internal.deskTitle': 'The Desk',
-        'internal.deskIntro': 'Internal correspondence is reserved for authenticated members of the maison.',
-        'internal.divisionIntro': 'This division page is reserved for authenticated members of the maison.',
+        'internal.deskIntro': 'Internal correspondence is reserved for authenticated team members.',
+        'internal.divisionIntro': 'This page is reserved for authenticated team members.',
         'internal.route.public': 'Public area',
         'internal.route.protected': 'Private area',
         'internal.dataMode': 'Mock data layer',
@@ -6643,42 +6643,42 @@
         'nav.atelier': 'Ateliê',
         'nav.gallery': 'Galeria',
         'nav.dashboard': 'Painel',
-        'dashboard.title': 'O Registro',
-        'dashboard.kicker': 'Registro Interno',
+        'dashboard.title': 'Registros',
+        'dashboard.kicker': 'Dashboard',
         'dashboard.filter': 'Filtrar',
         'dashboard.all': 'Tudo',
-        'dashboard.newEntry': 'Nova Entrada',
-        'dashboard.openEntry': 'Abrir nova entrada',
+        'dashboard.newEntry': 'Nova entrada',
+        'dashboard.openEntry': 'Nova entrada',
         'dashboard.localOnly': 'Nota privada',
         'dashboard.titlePlaceholder': 'Título',
-        'dashboard.bodyPlaceholder': 'Escreva uma breve nota interna...',
-        'dashboard.attach': 'Anexar pranchas',
-        'dashboard.attachLimit': 'Até quatro pranchas podem ser anexadas.',
-        'dashboard.commit': 'Registrar no Livro',
-        'dashboard.recording': 'Inscrevendo…',
-        'dashboard.recorded': 'Registro inscrito',
-        'dashboard.feedback.empty': 'Adicione um título ou uma nota antes de registrar.',
-        'dashboard.feedback.auth': 'Entre novamente antes de registrar.',
-        'dashboard.feedback.error': 'Não foi possível registrar a entrada. Tente novamente.',
-        'dashboard.feedback.attachErrors': 'Registro salvo, mas uma ou mais pranchas não puderam ser anexadas.',
-        'dashboard.feedback.attachRollback': 'A entrada não foi registrada porque a prancha não pôde ser anexada. Tente novamente.',
-        'dashboard.feedback.attachRollbackDetail': 'A entrada não foi registrada porque a prancha não pôde ser anexada.',
+        'dashboard.bodyPlaceholder': 'Escreva uma nota interna...',
+        'dashboard.attach': 'Anexar imagens',
+        'dashboard.attachLimit': 'Até quatro anexos podem ser adicionados.',
+        'dashboard.commit': 'Enviar',
+        'dashboard.recording': 'Enviando…',
+        'dashboard.recorded': 'Enviado',
+        'dashboard.feedback.empty': 'Adicione um título ou uma nota antes de enviar.',
+        'dashboard.feedback.auth': 'Entre novamente antes de enviar.',
+        'dashboard.feedback.error': 'Não foi possível salvar a entrada. Tente novamente.',
+        'dashboard.feedback.attachErrors': 'Entrada salva, mas um ou mais anexos não puderam ser adicionados.',
+        'dashboard.feedback.attachRollback': 'A entrada não foi salva porque o anexo não pôde ser adicionado. Tente novamente.',
+        'dashboard.feedback.attachRollbackDetail': 'A entrada não foi salva porque o anexo não pôde ser adicionado.',
         'dashboard.feedback.attachInvalid': 'Somente imagens podem ser anexadas.',
-        'dashboard.feedback.attachLimit': 'Somente quatro pranchas podem ser anexadas.',
-        'dashboard.feedback.attachResize': 'Uma prancha não pôde ser preparada para pré-visualização.',
-        'dashboard.feedback.processing': 'Registrando a nota no Record privado…',
-        'dashboard.feedback.processingAttachments': 'Preparando as pranchas e anexando-as ao Record privado…',
-        'dashboard.viewerTitle': 'Prancha do Registro',
-        'dashboard.plate': 'Prancha',
-        'dashboard.viewerUnavailable': 'Esta prancha não pôde ser reaberta. Atualize o Registro e tente novamente.',
+        'dashboard.feedback.attachLimit': 'Somente quatro anexos podem ser adicionados.',
+        'dashboard.feedback.attachResize': 'Um anexo não pôde ser preparado para pré-visualização.',
+        'dashboard.feedback.processing': 'Enviando a nota…',
+        'dashboard.feedback.processingAttachments': 'Enviando anexos…',
+        'dashboard.viewerTitle': 'Anexo',
+        'dashboard.attachmentLabel': 'Anexo',
+        'dashboard.viewerUnavailable': 'Este anexo não pôde ser aberto. Atualize a página e tente novamente.',
         'dashboard.delete': 'Apagar',
         'dashboard.deleted': 'Entrada apagada',
-        'dashboard.empty': 'Este índice ainda não possui entradas.',
+        'dashboard.empty': 'Ainda não há entradas.',
         'dashboard.untitled': 'Entrada sem título',
         'dashboard.authorLocal': 'Rascunho local · Não salvo',
-        'dashboard.authorSupabase': 'Inscrito no Record',
-        'dashboard.authorBy': 'Registrado por {name}',
-        'dashboard.resizeNote': 'As pranchas são preparadas neste dispositivo antes de serem anexadas ao Record privado.',
+        'dashboard.authorSupabase': 'Salvo',
+        'dashboard.authorBy': 'Publicado por {name}',
+        'dashboard.resizeNote': 'As imagens podem ser redimensionadas antes do envio e depois anexadas à entrada.',
         'dashboard.cat.meetings': 'Reuniões',
         'dashboard.cat.ideas': 'Ideias',
         'dashboard.cat.decisions': 'Decisões',
@@ -6694,16 +6694,16 @@
         'ui.return': 'Voltar',
         'ui.desk': 'Correspondência',
         'desk.kicker': 'Correspondência Interna',
-        'desk.intro': 'Um espaço privado para mensagens, decisões e o trabalho silencioso da maison.',
+        'desk.intro': 'Um espaço privado para mensagens, decisões e trabalho interno.',
         'global.kicker': 'Acesso Privado',
-        'global.copy': 'Entre com suas credenciais da maison para continuar.',
+        'global.copy': 'Entre com sua conta para continuar.',
         'global.enter': 'Entrar',
         'internal.kicker': 'Acesso Privado',
-        'internal.recordTitle': 'O Registro',
-        'internal.recordIntro': 'Este registro pertence ao trabalho interno da maison.',
+        'internal.recordTitle': 'Registros',
+        'internal.recordIntro': 'Esta área é para notas, decisões e atualizações internas.',
         'internal.deskTitle': 'Correspondência',
-        'internal.deskIntro': 'A correspondência interna é reservada aos membros autenticados da maison.',
-        'internal.divisionIntro': 'Esta divisão é reservada aos membros autenticados da maison.',
+        'internal.deskIntro': 'A correspondência interna é reservada a membros autenticados da equipe.',
+        'internal.divisionIntro': 'Esta página é reservada a membros autenticados da equipe.',
         'internal.route.public': 'Área pública',
         'internal.route.protected': 'Área privada',
         'internal.dataMode': 'Camada de dados local',
@@ -7109,7 +7109,7 @@
     }
 
     window.MoscatelliInternal = Object.freeze({
-      getBuild: () => 'patch17b-header-session-controls',
+      getBuild: () => 'patch17c-plain-language-record-labels',
       getMode: getInternalMode,
       isSignedIn: isInternalUserSignedIn,
       getCurrentUser: () => {
@@ -7125,7 +7125,7 @@
         deskLoaded: DeskRuntime.loaded,
         deskRetired: true,
         realtimeStatus: RealtimeRuntime.status,
-        build: 'patch17b-header-session-controls',
+        build: 'patch17c-plain-language-record-labels',
         deskSignature: DeskRuntime.lastSignature
       }),
       isInternalRoute,
@@ -8376,7 +8376,7 @@
     function formatDashboardAttachmentFailure(errors = []) {
       const base = dashboardFeedbackText(
         'dashboard.feedback.attachRollbackDetail',
-        'The entry was not recorded because its plate could not be attached.'
+        'The entry was not saved because its attachment could not be added.'
       );
 
       const first = Array.isArray(errors) ? errors.find(Boolean) : null;
@@ -8477,14 +8477,14 @@
       if (state === 'pending') {
         dashboardCommitEntry.disabled = true;
         dashboardCommitEntry.classList.add('is-pending');
-        dashboardCommitEntry.textContent = translations[currentLang]?.['dashboard.recording'] || 'Recording…';
+        dashboardCommitEntry.textContent = translations[currentLang]?.['dashboard.recording'] || 'Sending…';
         return;
       }
 
       if (state === 'confirmed') {
         dashboardCommitEntry.disabled = true;
         dashboardCommitEntry.classList.add('is-confirmed');
-        dashboardCommitEntry.textContent = translations[currentLang]?.['dashboard.recorded'] || 'Entry recorded';
+        dashboardCommitEntry.textContent = translations[currentLang]?.['dashboard.recorded'] || 'Sent';
 
         setTimeout(() => {
           dashboardCommitEntry.disabled = false;
@@ -8516,7 +8516,7 @@
       if (payload?.rawTitle || payload?.rawBody) return true;
 
       setDashboardComposerFeedback(
-        dashboardFeedbackText('dashboard.feedback.empty', 'Add a title or note before entering the Record.'),
+        dashboardFeedbackText('dashboard.feedback.empty', 'Add a title or note before sending.'),
         'error'
       );
       setCommitState('idle');
@@ -8620,11 +8620,11 @@
       if (src) {
         recordAttachmentViewerImage.src = src;
       } else {
-        recordAttachmentViewerImage.alt = translations[currentLang]?.['dashboard.viewerUnavailable'] || 'This plate could not be re-opened.';
+        recordAttachmentViewerImage.alt = translations[currentLang]?.['dashboard.viewerUnavailable'] || 'This attachment could not be opened.';
       }
 
       if (recordAttachmentViewerCaption) {
-        recordAttachmentViewerCaption.textContent = item.recordTitle || item.fileName || translations[currentLang]?.['dashboard.viewerTitle'] || 'Record Plate';
+        recordAttachmentViewerCaption.textContent = item.recordTitle || item.fileName || translations[currentLang]?.['dashboard.viewerTitle'] || 'Attachment';
       }
 
       if (recordAttachmentViewerMeta) {
@@ -8683,9 +8683,9 @@
       return output || 'I';
     }
 
-    function formatPlateLabel(index = 0) {
-      const plate = translations[currentLang]?.['dashboard.plate'] || 'Plate';
-      return `${plate} ${romanNumeral(index + 1)}`;
+    function formatAttachmentLabel(index = 0) {
+      const attachment = translations[currentLang]?.['dashboard.attachmentLabel'] || 'Attachment';
+      return `${attachment} ${index + 1}`;
     }
 
     function dashboardAuthorLine(record = {}) {
@@ -8698,10 +8698,10 @@
       );
 
       if (!authorName) {
-        return translations[currentLang]?.['dashboard.authorSupabase'] || 'Recorded in the Record';
+        return translations[currentLang]?.['dashboard.authorSupabase'] || 'Saved';
       }
 
-      const template = translations[currentLang]?.['dashboard.authorBy'] || 'Recorded by {name}';
+      const template = translations[currentLang]?.['dashboard.authorBy'] || 'Posted by {name}';
       return template.replace('{name}', authorName);
     }
 
@@ -8804,7 +8804,7 @@
         preview.className = 'dashboard-attachments dashboard-post-attachments';
 
         record.attachments.forEach((item, index) => {
-          const plateLabel = formatPlateLabel(index);
+          const attachmentLabel = formatAttachmentLabel(index);
           const attachment = document.createElement('button');
           attachment.className = 'dashboard-attachment dashboard-attachment-open';
           attachment.type = 'button';
@@ -8812,11 +8812,11 @@
           attachment.dataset.attachmentPath = item.path || '';
           attachment.dataset.previewUrl = item.preview_url || '';
           attachment.dataset.fileName = item.file_name || '';
-          attachment.dataset.size = plateLabel;
+          attachment.dataset.size = attachmentLabel;
           attachment.dataset.recordTitle = record.title || '';
           attachment.dataset.recordCategory = categoryLabel(record.category);
           attachment.dataset.recordDate = formatLedgerDate(createdAt);
-          attachment.setAttribute('aria-label', plateLabel);
+          attachment.setAttribute('aria-label', attachmentLabel);
 
           if (item.preview_url) {
             const img = document.createElement('img');
@@ -8829,12 +8829,12 @@
           } else {
             const placeholder = document.createElement('div');
             placeholder.className = 'dashboard-attachment-placeholder';
-            placeholder.textContent = translations[currentLang]?.['dashboard.viewerTitle'] || 'Record Plate';
+            placeholder.textContent = translations[currentLang]?.['dashboard.viewerTitle'] || 'Attachment';
             attachment.appendChild(placeholder);
           }
 
           const label = document.createElement('span');
-          label.textContent = plateLabel;
+          label.textContent = attachmentLabel;
 
           attachment.appendChild(label);
           preview.appendChild(attachment);
@@ -9015,7 +9015,7 @@
       if (!dashboardFeed || !isInternalUserSignedIn()) {
         setCommitState('idle');
         setDashboardComposerFeedback(
-          dashboardFeedbackText('dashboard.feedback.auth', 'Sign in again before entering the Record.'),
+          dashboardFeedbackText('dashboard.feedback.auth', 'Sign in again before sending.'),
           'error'
         );
         setInternalAuthStatus('signed_out');
@@ -9040,7 +9040,7 @@
 
         if (!record) {
           setDashboardComposerFeedback(
-            dashboardFeedbackText('dashboard.feedback.error', 'The entry could not be recorded. Please try again.'),
+            dashboardFeedbackText('dashboard.feedback.error', 'The entry could not be saved. Please try again.'),
             'error'
           );
           return null;
@@ -9077,7 +9077,7 @@
 
         if (record.attachment_errors?.length) {
           setDashboardComposerFeedback(
-            dashboardFeedbackText('dashboard.feedback.attachErrors', 'Entry recorded, but one or more plates could not be attached.'),
+            dashboardFeedbackText('dashboard.feedback.attachErrors', 'Entry saved, but one or more attachments could not be added.'),
             'warning'
           );
         }
@@ -9085,7 +9085,7 @@
         return record;
       } catch (error) {
         setDashboardComposerFeedback(
-          dashboardFeedbackText('dashboard.feedback.error', 'The entry could not be recorded. Please try again.'),
+          dashboardFeedbackText('dashboard.feedback.error', 'The entry could not be saved. Please try again.'),
           'error'
         );
         window.dispatchEvent(new CustomEvent('moscatelli:record-create-error', { detail: { error } }));
@@ -9112,8 +9112,8 @@
       dashboardCommitInFlight = true;
       setDashboardComposerFeedback(
         payload.attachments?.length
-          ? dashboardFeedbackText('dashboard.feedback.processingAttachments', 'Preparing the plates and attaching them to the private Record…')
-          : dashboardFeedbackText('dashboard.feedback.processing', 'Entering the note into the private Record…')
+          ? dashboardFeedbackText('dashboard.feedback.processingAttachments', 'Uploading attachments…')
+          : dashboardFeedbackText('dashboard.feedback.processing', 'Sending the note…')
       );
       setCommitState('pending');
 
@@ -9131,7 +9131,7 @@
 
           if (hadAttachmentErrors) {
             setDashboardComposerFeedback(
-              dashboardFeedbackText('dashboard.feedback.attachErrors', 'Entry recorded, but one or more plates could not be attached.'),
+              dashboardFeedbackText('dashboard.feedback.attachErrors', 'Entry saved, but one or more attachments could not be added.'),
               'warning'
             );
           } else {
@@ -9224,7 +9224,7 @@
         originalSize: file.size,
         resizedSize: blob?.size || file.size,
         mimeType: blob?.type || 'image/jpeg',
-        fileName: file.name || 'plate.jpg'
+        fileName: file.name || 'attachment.jpg'
       };
     }
 
@@ -9334,7 +9334,7 @@
       const remainingSlots = Math.max(0, DASHBOARD_DATA_CONFIG.maxAttachments - dashboardLocalAttachments.length);
       if (!remainingSlots) {
         setDashboardComposerFeedback(
-          dashboardFeedbackText('dashboard.feedback.attachLimit', 'Only four plates may be attached.'),
+          dashboardFeedbackText('dashboard.feedback.attachLimit', 'Only four attachments may be added.'),
           'warning'
         );
         if (dashboardAttachmentInput) dashboardAttachmentInput.value = '';
@@ -9344,7 +9344,7 @@
       const acceptedFiles = files.slice(0, remainingSlots);
       if (files.length > acceptedFiles.length) {
         setDashboardComposerFeedback(
-          dashboardFeedbackText('dashboard.feedback.attachLimit', 'Only four plates may be attached.'),
+          dashboardFeedbackText('dashboard.feedback.attachLimit', 'Only four attachments may be added.'),
           'warning'
         );
       }
@@ -9355,7 +9355,7 @@
           dashboardLocalAttachments.push(resized);
         } catch (error) {
           setDashboardComposerFeedback(
-            dashboardFeedbackText('dashboard.feedback.attachResize', 'One plate could not be prepared for preview.'),
+            dashboardFeedbackText('dashboard.feedback.attachResize', 'One attachment could not be prepared for preview.'),
             'warning'
           );
           window.dispatchEvent(new CustomEvent('moscatelli:record-attachment-resize-error', { detail: { error, fileName: file.name } }));
