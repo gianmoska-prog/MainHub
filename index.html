@@ -6404,6 +6404,210 @@
     }
 
 
+
+
+    /* Patch 18G — Finance frame and header collision corrections
+       Tightens the Finance division after 18F: the Finance header now reserves
+       real vertical space, the ledger panel no longer rises behind the title,
+       and division Return/session controls cannot collide in the top-right. */
+    body:not([data-route='divisions/marketing']):not([data-route='divisions/finance']):not([data-route='divisions/operations']) .division-return {
+      opacity: 0 !important;
+      pointer-events: none !important;
+    }
+
+    body.internal-unlocked[data-route^='divisions'] .internal-session-line {
+      right: clamp(18px, 2vw, 32px) !important;
+      max-width: clamp(205px, 21vw, 300px) !important;
+      min-height: 30px !important;
+      padding: 0 10px 0 12px !important;
+      gap: 8px !important;
+      z-index: 225 !important;
+      overflow: hidden !important;
+    }
+
+    body.internal-unlocked[data-route^='divisions'] .internal-session-context {
+      display: none !important;
+    }
+
+    body.internal-unlocked[data-route^='divisions'] .internal-session-user {
+      max-width: clamp(82px, 10vw, 140px) !important;
+    }
+
+    body.internal-unlocked[data-route='divisions/marketing'] .division-return,
+    body.internal-unlocked[data-route='divisions/finance'] .division-return,
+    body.internal-unlocked[data-route='divisions/operations'] .division-return {
+      right: calc(clamp(18px, 2vw, 32px) + clamp(205px, 21vw, 300px) + clamp(28px, 3vw, 54px)) !important;
+      z-index: 224 !important;
+      max-width: 132px !important;
+      overflow: hidden !important;
+      text-overflow: ellipsis !important;
+      white-space: nowrap !important;
+    }
+
+    body[data-route='divisions/finance'] .route-division-finance.is-active {
+      align-items: center !important;
+      justify-content: flex-start !important;
+      padding: 0 !important;
+      overflow: hidden !important;
+    }
+
+    body[data-route='divisions/finance'][data-internal-auth='signed_in'] .route-division-finance.is-active .finance-workspace,
+    body.internal-unlocked[data-route='divisions/finance'] .route-division-finance.is-active .finance-workspace {
+      width: min(84vw, 1440px) !important;
+      height: calc(100dvh - var(--header-h) - var(--footer-h) - clamp(52px, 7vh, 96px)) !important;
+      max-height: calc(100dvh - var(--header-h) - var(--footer-h) - clamp(52px, 7vh, 96px)) !important;
+      margin: clamp(30px, 4.5vh, 58px) auto 0 !important;
+      padding: 0 !important;
+      gap: clamp(22px, 2.3vh, 34px) !important;
+      overflow-x: hidden !important;
+      overflow-y: auto !important;
+    }
+
+    body[data-route='divisions/finance'] .finance-header {
+      display: block !important;
+      width: 100% !important;
+      padding: 0 0 clamp(22px, 2.5vh, 34px) !important;
+      margin: 0 !important;
+      border-bottom: 1px solid var(--glass-border) !important;
+      overflow: visible !important;
+    }
+
+    body[data-route='divisions/finance'] .finance-kicker {
+      margin: 0 0 10px !important;
+      white-space: nowrap !important;
+    }
+
+    body[data-route='divisions/finance'] .finance-title {
+      display: block !important;
+      margin: 0 !important;
+      max-width: 100% !important;
+      font-size: clamp(34px, 2.8vw, 48px) !important;
+      line-height: 1.08 !important;
+      letter-spacing: clamp(0.13em, 0.55vw, 0.20em) !important;
+      white-space: normal !important;
+      overflow: visible !important;
+      text-overflow: clip !important;
+      text-indent: 0 !important;
+    }
+
+    body[data-route='divisions/finance'] .finance-intro {
+      max-width: min(760px, 100%) !important;
+      margin-top: clamp(12px, 1.4vh, 18px) !important;
+      padding: 0 !important;
+    }
+
+    body[data-route='divisions/finance'] .finance-tabs {
+      width: min(430px, 100%) !important;
+      min-width: 0 !important;
+      margin-top: clamp(20px, 2.4vh, 30px) !important;
+      align-self: auto !important;
+      justify-self: start !important;
+    }
+
+    body[data-route='divisions/finance'] .finance-panel {
+      width: 100% !important;
+      margin: 0 !important;
+      flex: 1 1 auto !important;
+      min-height: 0 !important;
+    }
+
+    body[data-route='divisions/finance'] .finance-totals {
+      grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    }
+
+    body[data-route='divisions/finance'] .finance-total {
+      min-height: 78px !important;
+      padding: clamp(16px, 1.4vw, 24px) clamp(16px, 1.7vw, 26px) !important;
+    }
+
+    body[data-route='divisions/finance'] .finance-total-label {
+      min-height: 0 !important;
+      margin-bottom: 9px !important;
+      line-height: 1.35 !important;
+      letter-spacing: 0.18em !important;
+      overflow-wrap: normal !important;
+    }
+
+    body[data-route='divisions/finance'] .finance-table-scroll {
+      max-height: clamp(96px, 18vh, 190px) !important;
+      flex: 0 1 auto !important;
+    }
+
+    body[data-route='divisions/finance'] .finance-form {
+      grid-template-columns: repeat(12, minmax(0, 1fr)) !important;
+      flex: 0 0 auto !important;
+    }
+
+    body[data-route='divisions/finance'] .finance-form label,
+    body[data-route='divisions/finance'] .finance-submit-wrap {
+      padding: 15px 16px !important;
+    }
+
+    @media (max-width: 1180px) {
+      body.internal-unlocked[data-route^='divisions'] .internal-session-line {
+        max-width: 188px !important;
+      }
+
+      body.internal-unlocked[data-route^='divisions'] .internal-session-user {
+        max-width: 92px !important;
+      }
+
+      body.internal-unlocked[data-route^='divisions'] .division-return {
+        right: calc(clamp(18px, 2vw, 32px) + 188px + 30px) !important;
+      }
+
+      body[data-route='divisions/finance'] .finance-totals {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+      }
+
+      body[data-route='divisions/finance'] .finance-total:nth-child(3) {
+        border-left: 0 !important;
+        border-top: 1px solid var(--glass-border) !important;
+      }
+
+      body[data-route='divisions/finance'] .finance-total:nth-child(4) {
+        border-top: 1px solid var(--glass-border) !important;
+      }
+    }
+
+    @media (max-width: 720px) {
+      body.internal-unlocked[data-route^='divisions'] .internal-session-line {
+        right: 12px !important;
+        max-width: 118px !important;
+      }
+
+      body.internal-unlocked[data-route^='divisions'] .internal-session-user {
+        max-width: 70px !important;
+      }
+
+      body.internal-unlocked[data-route^='divisions'] .division-return {
+        left: 72px !important;
+        right: auto !important;
+        max-width: 118px !important;
+      }
+
+      body[data-route='divisions/finance'][data-internal-auth='signed_in'] .route-division-finance.is-active .finance-workspace,
+      body.internal-unlocked[data-route='divisions/finance'] .route-division-finance.is-active .finance-workspace {
+        width: calc(100vw - 32px) !important;
+        height: calc(100dvh - var(--header-h) - var(--footer-h) - 30px) !important;
+        max-height: calc(100dvh - var(--header-h) - var(--footer-h) - 30px) !important;
+        margin-top: 16px !important;
+      }
+
+      body[data-route='divisions/finance'] .finance-title {
+        font-size: clamp(28px, 9vw, 38px) !important;
+      }
+
+      body[data-route='divisions/finance'] .finance-tabs {
+        width: 100% !important;
+      }
+
+      body[data-route='divisions/finance'] .finance-totals,
+      body[data-route='divisions/finance'] .finance-form {
+        grid-template-columns: 1fr !important;
+      }
+    }
+
   </style>
 </head>
 <body data-internal-mode="supabase" data-internal-auth="signed_out" data-internal-ready="false" data-internal-route="public" data-internal-feature="public">
@@ -8816,7 +9020,7 @@
     }
 
     window.MoscatelliInternal = Object.freeze({
-      getBuild: () => 'patch18f-finance-layout-recovery',
+      getBuild: () => 'patch18g-finance-frame-header-correction',
       getMode: getInternalMode,
       isSignedIn: isInternalUserSignedIn,
       getCurrentUser: () => {
