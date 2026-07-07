@@ -8,7 +8,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@300;400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet" />
 
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    *,
+*::before,
+*::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
       --cream:        #F2EDE4;
@@ -22,19 +24,30 @@
 
       --header-h: 68px;
       --footer-h: 48px;
+      --session-plaque-w: clamp(286px, 18vw, 360px);
+      --session-plaque-gap: clamp(18px, 2vw, 28px);
     }
 
-    html, body {
+    html,
+body {
       height: 100%;
       height: 100dvh;
       overflow: hidden;
       background: var(--dark-base);
-      font-family: 'Cormorant Garamond', serif;
+      font-family: "Cormorant Garamond", serif;
       color: var(--cream);
       overscroll-behavior: none;
     }
 
-    a, button, .hamburger, .hamburger *, .overlay, .side-nav, .side-nav *, .language-toggle, .language-toggle * {
+    a,
+button,
+.hamburger,
+.hamburger *,
+.overlay,
+.side-nav,
+.side-nav *,
+.language-toggle,
+.language-toggle * {
       -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
     }
     button {
@@ -43,7 +56,7 @@
     }
 
     body::after {
-      content: '';
+      content: "";
       position: fixed;
       inset: 0;
       z-index: 999;
@@ -143,15 +156,13 @@
     @keyframes drift5 { to { transform: translate(-5vw, 4vh) scale(0.95); } }
     @keyframes drift6 { to { transform: translate(3vw, -7vh) scale(1.08); } }
 
-    body.desk-open .orb,
-    body[data-route='gallery'] .orb,
-    body[data-route='dashboard'] .orb,
-    body[data-route^='divisions'] .orb {
+    body[data-route="gallery"] .orb,
+body[data-route="dashboard"] .orb,
+body[data-route^="divisions"] .orb {
       animation-play-state: paused;
     }
 
-    body.desk-open .hero-logo-glow-overlay,
-    body:not([data-route='home']) .hero-logo-glow-overlay {
+    body:not([data-route="home"]) .hero-logo-glow-overlay {
       opacity: 0 !important;
     }
 
@@ -212,8 +223,8 @@
       appearance: none;
     }
     .hamburger:active,
-    .hamburger:focus,
-    .hamburger:focus-visible {
+.hamburger:focus,
+.hamburger:focus-visible {
       outline: none;
       box-shadow: none;
       background: transparent;
@@ -236,7 +247,7 @@
       background: transparent;
       appearance: none;
       -webkit-appearance: none;
-      font-family: 'Cinzel', serif;
+      font-family: "Cinzel", serif;
       font-size: 8.5px;
       font-weight: 300;
       letter-spacing: 0.32em;
@@ -258,7 +269,7 @@
     }
 
     .division-return::after {
-      content: '';
+      content: "";
       position: absolute;
       left: 12px;
       right: 0;
@@ -273,16 +284,16 @@
         opacity 300ms cubic-bezier(0.22, 1, 0.36, 1);
     }
 
-    body[data-route='divisions/marketing'] .division-return,
-    body[data-route='divisions/finance'] .division-return,
-    body[data-route='divisions/operations'] .division-return {
+    body[data-route="divisions/marketing"] .division-return,
+body[data-route="divisions/finance"] .division-return,
+body[data-route="divisions/operations"] .division-return {
       opacity: 1;
       pointer-events: auto;
     }
 
     .division-return:active,
-    .division-return:focus,
-    .division-return:focus-visible {
+.division-return:focus,
+.division-return:focus-visible {
       outline: none;
       box-shadow: none;
       background: transparent;
@@ -333,7 +344,7 @@
       background: linear-gradient(to left, transparent, rgba(242,237,228,0.25));
     }
     .logo-mark span {
-      font-family: 'Cinzel', serif;
+      font-family: "Cinzel", serif;
       font-size: 10.5px;
       font-weight: 300;
       letter-spacing: 0.38em;
@@ -366,7 +377,7 @@
     .side-nav.open { transform: translate3d(0, 0, 0); }
 
     .side-nav .nav-label {
-      font-family: 'Cinzel', serif;
+      font-family: "Cinzel", serif;
       font-size: 8px;
       letter-spacing: 0.5em;
       text-transform: uppercase;
@@ -379,8 +390,8 @@
       flex-direction: column;
     }
     .side-nav nav a,
-    .side-nav nav .nav-reserved {
-      font-family: 'Cinzel', serif;
+.side-nav nav .nav-reserved {
+      font-family: "Cinzel", serif;
       font-size: 12.5px;
       font-weight: 300;
       letter-spacing: 0.22em;
@@ -405,15 +416,15 @@
     }
 
     .side-nav nav a .num,
-    .side-nav nav .nav-reserved .num {
+.side-nav nav .nav-reserved .num {
       font-size: 9px;
       color: rgba(196, 110, 40, 0.5);
       letter-spacing: 0.1em;
-      font-family: 'Cormorant Garamond', serif;
+      font-family: "Cormorant Garamond", serif;
       font-style: italic;
     }
     .side-nav.open nav a,
-    .side-nav.open nav .nav-reserved {
+.side-nav.open nav .nav-reserved {
       opacity: 1;
       transform: translate3d(0, 0, 0);
       transition-delay: 0s;
@@ -432,7 +443,7 @@
 
     .side-nav .nav-footer {
       margin-top: auto;
-      font-family: 'Cormorant Garamond', serif;
+      font-family: "Cormorant Garamond", serif;
       font-style: italic;
       font-size: 11px;
       color: rgba(242, 237, 228, 0.18);
@@ -442,7 +453,7 @@
 
     .language-toggle {
       display: none;
-      font-family: 'Cinzel', serif;
+      font-family: "Cinzel", serif;
       font-size: 8px;
       font-weight: 300;
       letter-spacing: 0.28em;
@@ -489,8 +500,8 @@
       transition: color 0.22s cubic-bezier(0.22, 1, 0.36, 1);
     }
     .language-toggle .lang-option:active,
-    .language-toggle .lang-option:focus,
-    .language-toggle .lang-option:focus-visible {
+.language-toggle .lang-option:focus,
+.language-toggle .lang-option:focus-visible {
       outline: none;
       box-shadow: none !important;
       background: transparent !important;
@@ -525,363 +536,77 @@
       color: rgba(242, 237, 228, 0.10);
     }
 
-    .desk-trigger {
-      position: absolute;
-      right: 22px;
-      top: 50%;
-      z-index: 2;
-      transform: translateY(-50%);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 28px;
-      padding: 6px 0 6px 12px;
-      border: 0;
-      border-radius: 0;
-      background: transparent;
-      appearance: none;
-      -webkit-appearance: none;
-      font-family: 'Cinzel', serif;
-      font-size: 8px;
-      font-weight: 300;
-      letter-spacing: 0.30em;
-      line-height: 1;
-      text-transform: uppercase;
-      color: rgba(242, 237, 228, 0.24);
-      cursor: pointer;
-      -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-      -webkit-touch-callout: none;
-      -webkit-user-select: none;
-      user-select: none;
-      touch-action: manipulation;
-      transition:
-        color 280ms cubic-bezier(0.22, 1, 0.36, 1),
-        transform 340ms cubic-bezier(0.22, 1, 0.36, 1);
-    }
+    
 
-    .desk-trigger::before {
-      content: '';
-      width: 5px;
-      height: 5px;
-      margin-right: 10px;
-      border-radius: 50%;
-      background: rgba(184, 104, 48, 0.38);
-      box-shadow: 0 0 14px rgba(184, 104, 48, 0.16);
-      transition:
-        background 280ms cubic-bezier(0.22, 1, 0.36, 1),
-        box-shadow 280ms cubic-bezier(0.22, 1, 0.36, 1);
-    }
+    
 
-    .desk-trigger::after {
-      content: '';
-      position: absolute;
-      left: 12px;
-      right: 0;
-      bottom: 4px;
-      height: 1px;
-      background: rgba(184, 104, 48, 0.48);
-      opacity: 0;
-      transform: scaleX(0);
-      transform-origin: right;
-      transition:
-        opacity 300ms cubic-bezier(0.22, 1, 0.36, 1),
-        transform 300ms cubic-bezier(0.22, 1, 0.36, 1);
-    }
+    
 
-    .desk-trigger:active,
-    .desk-trigger:focus,
-    .desk-trigger:focus-visible {
-      outline: none;
-      box-shadow: none;
-      background: transparent;
-      -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-    }
+    
 
-    .desk-scrim {
-      position: fixed;
-      inset: var(--header-h) 0 var(--footer-h) 0;
-      z-index: 118;
-      background: rgba(4, 2, 1, 0.26);
-      opacity: 0;
-      pointer-events: none;
-      will-change: opacity;
-      transition: opacity 520ms cubic-bezier(0.22, 1, 0.36, 1);
-    }
+    
 
-    .desk-panel {
-      position: fixed;
-      top: var(--header-h);
-      right: 0;
-      bottom: var(--footer-h);
-      z-index: 119;
-      width: min(420px, 34vw);
-      min-width: 360px;
-      border-left: 1px solid rgba(242, 237, 228, 0.09);
-      background:
-        radial-gradient(circle at 30% 0%, rgba(232, 192, 122, 0.055), transparent 38%),
-        rgba(8, 5, 3, 0.66);
-      backdrop-filter: blur(40px) saturate(160%) brightness(1.03);
-      -webkit-backdrop-filter: blur(40px) saturate(160%) brightness(1.03);
-      box-shadow: -26px 0 90px rgba(0, 0, 0, 0.46), inset 1px 0 0 rgba(242, 237, 228, 0.035);
-      opacity: 0;
-      pointer-events: none;
-      transform: translate3d(28px, 0, 0);
-      clip-path: inset(0 0 0 100%);
-      contain: layout paint style;
-      will-change: clip-path, transform, opacity;
-      transition:
-        clip-path 680ms cubic-bezier(0.22, 1, 0.36, 1),
-        transform 680ms cubic-bezier(0.22, 1, 0.36, 1),
-        opacity 520ms cubic-bezier(0.22, 1, 0.36, 1);
-    }
+    
 
-    body.desk-open .desk-scrim {
-      opacity: 1;
-      pointer-events: auto;
-    }
+    
 
-    body.desk-open .desk-panel {
-      opacity: 1;
-      pointer-events: auto;
-      transform: translate3d(0, 0, 0);
-      clip-path: inset(0 0 0 0);
-    }
+    
 
-    .desk-panel-inner {
-      position: relative;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      padding: 44px 40px 34px;
-      overflow: hidden;
-    }
+    
 
-    .desk-close {
-      position: absolute;
-      top: 28px;
-      right: 28px;
-      width: 24px;
-      height: 24px;
-      border: 0;
-      background: transparent;
-      cursor: pointer;
-      -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-    }
+    
 
-    .desk-close::before,
-    .desk-close::after {
-      content: '';
-      position: absolute;
-      left: 5px;
-      right: 5px;
-      top: 50%;
-      height: 1px;
-      background: rgba(242, 237, 228, 0.34);
-      transition:
-        background 280ms cubic-bezier(0.22, 1, 0.36, 1),
-        transform 280ms cubic-bezier(0.22, 1, 0.36, 1);
-    }
+    
 
-    .desk-close::before { transform: rotate(45deg); }
-    .desk-close::after { transform: rotate(-45deg); }
-    .desk-close:focus { outline: none; box-shadow: none; }
+    
+    
+    
 
-    .desk-kicker {
-      font-family: 'Cinzel', serif;
-      font-size: 8px;
-      font-weight: 300;
-      letter-spacing: 0.38em;
-      text-transform: uppercase;
-      color: rgba(184, 104, 48, 0.56);
-      margin-bottom: 18px;
-    }
+    
 
-    .desk-title {
-      font-family: 'Cinzel', serif;
-      font-size: 17px;
-      font-weight: 300;
-      letter-spacing: 0.34em;
-      text-transform: uppercase;
-      color: rgba(242, 237, 228, 0.76);
-      margin: 0 0 18px;
-    }
+    
 
-    .desk-intro {
-      max-width: 280px;
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 15px;
-      font-weight: 300;
-      font-style: italic;
-      line-height: 1.55;
-      letter-spacing: 0.045em;
-      color: rgba(242, 237, 228, 0.34);
-      margin-bottom: 34px;
-    }
+    
 
-    .desk-thread-wrap {
-      position: relative;
-      flex: 1;
-      min-height: 0;
-      border-top: 1px solid rgba(242, 237, 228, 0.07);
-      border-bottom: 1px solid rgba(242, 237, 228, 0.06);
-      padding: 28px 0;
-      overflow: hidden auto;
-      contain: layout paint style;
-      scrollbar-width: thin;
-      scrollbar-color: rgba(242, 237, 228, 0.12) transparent;
-    }
+    
 
-    .desk-thread-wrap::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background:
-        linear-gradient(to bottom, rgba(242, 237, 228, 0.025), transparent 18%, transparent 82%, rgba(242, 237, 228, 0.018)),
-        radial-gradient(circle at 70% 22%, rgba(184, 104, 48, 0.06), transparent 34%);
-      pointer-events: none;
-    }
+    
 
-    .desk-thread-wrap::-webkit-scrollbar { width: 3px; }
-    .desk-thread-wrap::-webkit-scrollbar-track { background: transparent; }
-    .desk-thread-wrap::-webkit-scrollbar-thumb { background: rgba(242, 237, 228, 0.12); }
+    
+    
+    
 
-    .desk-thread {
-      position: relative;
-      z-index: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-      min-height: 100%;
-    }
+    
 
-    .desk-empty {
-      margin: auto;
-      font-family: 'Cinzel', serif;
-      font-size: 7.5px;
-      font-weight: 300;
-      letter-spacing: 0.26em;
-      text-transform: uppercase;
-      color: rgba(242, 237, 228, 0.20);
-      text-align: center;
-    }
+    
 
-    .desk-message {
-      width: 82%;
-      padding: 14px 16px 15px;
-      background: rgba(242, 237, 228, 0.045);
-      border: 1px solid rgba(242, 237, 228, 0.075);
-      box-shadow: 0 14px 36px rgba(0, 0, 0, 0.14);
-    }
+    
 
-    .desk-message.is-sent {
-      align-self: flex-end;
-      background: rgba(184, 104, 48, 0.065);
-      border-color: rgba(232, 192, 122, 0.10);
-    }
+    
 
-    .desk-message-name,
-    .desk-message-time,
-    .desk-composer-label,
-    .desk-composer-meta,
-    .desk-send {
-      font-family: 'Cinzel', serif;
-      font-weight: 300;
-      text-transform: uppercase;
-    }
+    
 
-    .desk-message-name {
-      display: block;
-      margin-bottom: 9px;
-      font-size: 7.5px;
-      letter-spacing: 0.28em;
-      color: rgba(242, 237, 228, 0.34);
-    }
+    
 
-    .desk-message-body {
-      margin: 0;
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 15px;
-      font-weight: 300;
-      line-height: 1.42;
-      letter-spacing: 0.035em;
-      color: rgba(242, 237, 228, 0.52);
-      white-space: pre-wrap;
-    }
+    
 
-    .desk-message-time {
-      display: block;
-      margin-top: 10px;
-      font-size: 6.4px;
-      letter-spacing: 0.22em;
-      color: rgba(242, 237, 228, 0.18);
-    }
+    
 
-    .desk-composer {
-      margin-top: 22px;
-      display: flex;
-      flex-direction: column;
-      gap: 9px;
-      padding: 12px 14px 13px;
-      border: 1px solid rgba(242, 237, 228, 0.075);
-      background: rgba(242, 237, 228, 0.035);
-    }
+    
 
-    .desk-composer-label {
-      font-size: 7px;
-      letter-spacing: 0.26em;
-      color: rgba(242, 237, 228, 0.22);
-    }
+    
 
-    .desk-message-input {
-      width: 100%;
-      min-height: 54px;
-      max-height: 124px;
-      border: 0;
-      background: transparent;
-      resize: none;
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 16px;
-      font-weight: 300;
-      line-height: 1.38;
-      letter-spacing: 0.035em;
-      color: rgba(242, 237, 228, 0.58);
-      outline: none;
-    }
+    
 
-    .desk-message-input::placeholder {
-      color: rgba(242, 237, 228, 0.20);
-      font-style: italic;
-    }
+    
 
-    .desk-composer-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-    }
+    
 
-    .desk-composer-meta {
-      min-height: 10px;
-      font-size: 6.5px;
-      letter-spacing: 0.20em;
-      color: rgba(242, 237, 228, 0.18);
-    }
+    
 
-    .desk-send {
-      border: 0;
-      background: transparent;
-      padding: 0;
-      font-size: 7px;
-      letter-spacing: 0.25em;
-      color: rgba(232, 192, 122, 0.40);
-      cursor: pointer;
-    }
+    
 
-    .desk-send:disabled,
-    .desk-message-input:disabled {
-      cursor: default;
-      opacity: 0.45;
-    }
+    
 
     .i18n-text {
       transition: color 0.16s cubic-bezier(0.22, 1, 0.36, 1);
@@ -906,8 +631,8 @@
       touch-action: manipulation;
     }
     .overlay:active,
-    .overlay:focus,
-    .overlay:focus-visible {
+.overlay:focus,
+.overlay:focus-visible {
       outline: none;
       box-shadow: none;
       -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
@@ -1083,7 +808,7 @@
     .gallery-panel:not(.is-image-loaded) img { opacity: 0 !important; }
 
     .gallery-panel::before {
-      content: '';
+      content: "";
       position: absolute;
       inset: 0;
       z-index: 1;
@@ -1097,7 +822,7 @@
     }
 
     .gallery-panel::after {
-      content: '';
+      content: "";
       position: absolute;
       inset: 0;
       z-index: 2;
@@ -1137,7 +862,7 @@
       bottom: max(24px, calc((100% - var(--image-h, 100%)) / 2 + 24px));
       z-index: 4;
       max-width: calc(var(--active-w, 62vw) - 48px);
-      font-family: 'Cormorant Garamond', serif;
+      font-family: "Cormorant Garamond", serif;
       font-size: clamp(13.5px, 0.95vw, 16px);
       font-weight: 300;
       line-height: 1.35;
@@ -1159,7 +884,7 @@
     }
 
     .gallery-caption::before {
-      content: '';
+      content: "";
       position: absolute;
       z-index: -1;
       inset: -16px -22px -14px -20px;
@@ -1251,7 +976,7 @@
     }
 
     .division-door::before {
-      content: '';
+      content: "";
       position: absolute;
       inset: 0;
       pointer-events: none;
@@ -1270,7 +995,7 @@
     }
 
     .division-door::after {
-      content: '';
+      content: "";
       position: absolute;
       top: 18%;
       bottom: 18%;
@@ -1308,7 +1033,7 @@
 
     .division-door-title {
       display: block;
-      font-family: 'Cinzel', serif;
+      font-family: "Cinzel", serif;
       font-size: clamp(8.6px, 0.62vw, 10.2px);
       font-weight: 300;
       letter-spacing: 0.25em;
@@ -1324,7 +1049,7 @@
 
     .division-door .roman {
       display: block;
-      font-family: 'Cormorant Garamond', serif;
+      font-family: "Cormorant Garamond", serif;
       font-style: italic;
       font-size: 13px;
       line-height: 1;
@@ -1342,13 +1067,13 @@
     }
 
     .division-doors:has(.division-door:hover) .division-door:not(:hover),
-    .division-doors.has-selected .division-door:not(.is-selected) {
+.division-doors.has-selected .division-door:not(.is-selected) {
       opacity: 0.64;
     }
 
     @media (hover: hover) and (pointer: fine) {
       .division-door:hover,
-      .division-door.is-selected {
+.division-door.is-selected {
         flex-basis: clamp(122px, 11.2vw, 168px);
         color: rgba(242, 237, 228, 0.88);
         transform: translate3d(0, -2px, 0);
@@ -1363,29 +1088,29 @@
       }
 
       .division-door:hover::before,
-      .division-door.is-selected::before {
+.division-door.is-selected::before {
         opacity: 1;
         transform: translateX(32%);
       }
 
       .division-door:hover::after,
-      .division-door.is-selected::after {
+.division-door.is-selected::after {
         opacity: 0.28;
         transform: translateX(-50%) scaleY(0.82);
       }
 
       .division-door:hover .division-door-inner,
-      .division-door.is-selected .division-door-inner {
+.division-door.is-selected .division-door-inner {
         transform: translate3d(0, -2px, 0);
       }
 
       .division-door:hover .division-door-title,
-      .division-door.is-selected .division-door-title {
+.division-door.is-selected .division-door-title {
         letter-spacing: 0.29em;
       }
 
       .division-door:hover .roman,
-      .division-door.is-selected .roman {
+.division-door.is-selected .roman {
         color: rgba(232, 192, 122, 0.72);
         transform: translateY(-1px);
       }
@@ -1417,11 +1142,11 @@
     }
 
     .dashboard-kicker,
-    .dashboard-entry-meta,
-    .dashboard-post-category,
-    .dashboard-post-date,
-    .dashboard-post-foot {
-      font-family: 'Cinzel', serif;
+.dashboard-entry-meta,
+.dashboard-post-category,
+.dashboard-post-date,
+.dashboard-post-foot {
+      font-family: "Cinzel", serif;
       font-weight: 300;
       text-transform: uppercase;
     }
@@ -1435,7 +1160,7 @@
 
     .dashboard-title {
       margin: 0;
-      font-family: 'Cinzel', serif;
+      font-family: "Cinzel", serif;
       font-size: clamp(18px, 2vw, 26px);
       font-weight: 300;
       letter-spacing: 0.34em;
@@ -1460,7 +1185,7 @@
       background: rgba(242, 237, 228, 0.038);
       backdrop-filter: blur(28px) saturate(170%) brightness(1.05);
       -webkit-backdrop-filter: blur(28px) saturate(170%) brightness(1.05);
-      font-family: 'Cinzel', serif;
+      font-family: "Cinzel", serif;
       font-size: 7.5px;
       font-weight: 300;
       letter-spacing: 0.24em;
@@ -1517,7 +1242,7 @@
       border: 0;
       background: transparent;
       padding: 0 14px;
-      font-family: 'Cinzel', serif;
+      font-family: "Cinzel", serif;
       font-size: 7.5px;
       font-weight: 300;
       letter-spacing: 0.22em;
@@ -1546,8 +1271,8 @@
     }
 
     .dashboard-shell.is-composing .dashboard-filter-menu,
-    body.is-dashboard-composing #dashboardFilterMenu,
-    .dashboard-filter-menu[hidden] {
+body.is-dashboard-composing #dashboardFilterMenu,
+.dashboard-filter-menu[hidden] {
       display: none !important;
       visibility: hidden !important;
       opacity: 0 !important;
@@ -1596,12 +1321,12 @@
     }
 
     .dashboard-input,
-    .dashboard-textarea {
+.dashboard-textarea {
       width: 100%;
       border: 1px solid rgba(242, 237, 228, 0.135);
       background: rgba(8, 5, 3, 0.58);
       color: rgba(242, 237, 228, 0.78);
-      font-family: 'Cormorant Garamond', serif;
+      font-family: "Cormorant Garamond", serif;
       font-size: 15px;
       font-weight: 300;
       letter-spacing: 0.045em;
@@ -1631,7 +1356,7 @@
       border: 1px solid rgba(242, 237, 228, 0.135);
       background: rgba(8, 5, 3, 0.58);
       padding: 0 11px;
-      font-family: 'Cinzel', serif;
+      font-family: "Cinzel", serif;
       font-size: 7px;
       font-weight: 300;
       letter-spacing: 0.22em;
@@ -1647,7 +1372,7 @@
     }
 
     .dashboard-category-trigger::after {
-      content: '';
+      content: "";
       width: 4px;
       height: 4px;
       border-right: 1px solid rgba(232, 192, 122, 0.42);
@@ -1698,7 +1423,7 @@
       border: 0;
       background: transparent;
       padding: 0 12px;
-      font-family: 'Cinzel', serif;
+      font-family: "Cinzel", serif;
       font-size: 7px;
       font-weight: 300;
       letter-spacing: 0.22em;
@@ -1725,7 +1450,7 @@
     }
 
     .dashboard-input::placeholder,
-    .dashboard-textarea::placeholder {
+.dashboard-textarea::placeholder {
       color: rgba(242, 237, 228, 0.44);
       font-style: italic;
     }
@@ -1738,7 +1463,7 @@
     }
 
     .dashboard-upload,
-    .dashboard-commit {
+.dashboard-commit {
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -1746,7 +1471,7 @@
       padding: 0 10px;
       border: 1px solid rgba(242, 237, 228, 0.135);
       background: rgba(8, 5, 3, 0.46);
-      font-family: 'Cinzel', serif;
+      font-family: "Cinzel", serif;
       font-size: 7.5px;
       font-weight: 300;
       letter-spacing: 0.24em;
@@ -1771,7 +1496,7 @@
     }
 
     .dashboard-upload-note {
-      font-family: 'Cormorant Garamond', serif;
+      font-family: "Cormorant Garamond", serif;
       font-size: 12px;
       font-style: italic;
       letter-spacing: 0.035em;
@@ -1806,7 +1531,7 @@
       position: absolute;
       left: 8px;
       bottom: 7px;
-      font-family: 'Cinzel', serif;
+      font-family: "Cinzel", serif;
       font-size: 8px;
       letter-spacing: 0.085em;
       color: rgba(242, 237, 228, 0.58);
@@ -1822,7 +1547,7 @@
       border: 1px solid rgba(242, 237, 228, 0.14);
       background: rgba(8, 5, 3, 0.62);
       color: rgba(242, 237, 228, 0.48);
-      font-family: 'Cinzel', serif;
+      font-family: "Cinzel", serif;
       font-size: 10px;
       font-weight: 300;
       line-height: 1;
@@ -1835,14 +1560,14 @@
     }
 
     .dashboard-attachment:hover .dashboard-attachment-remove,
-    .dashboard-attachment:focus-within .dashboard-attachment-remove {
+.dashboard-attachment:focus-within .dashboard-attachment-remove {
       opacity: 1;
     }
 
     .dashboard-attachment-limit {
       display: none;
       margin-top: 8px;
-      font-family: 'Cormorant Garamond', serif;
+      font-family: "Cormorant Garamond", serif;
       font-size: 13px;
       font-weight: 300;
       font-style: italic;
@@ -1857,7 +1582,7 @@
     .dashboard-composer-feedback {
       min-height: 16px;
       margin-top: 8px;
-      font-family: 'Cormorant Garamond', serif;
+      font-family: "Cormorant Garamond", serif;
       font-size: 13px;
       font-weight: 300;
       font-style: italic;
@@ -1919,7 +1644,7 @@
       display: none;
       margin: 42px 0 0;
       text-align: center;
-      font-family: 'Cormorant Garamond', serif;
+      font-family: "Cormorant Garamond", serif;
       font-size: 15px;
       font-weight: 300;
       font-style: italic;
@@ -1980,7 +1705,7 @@
       min-height: 76px;
       display: grid;
       place-items: center;
-      font-family: 'Cinzel', serif;
+      font-family: "Cinzel", serif;
       font-size: 7px;
       letter-spacing: 0.24em;
       text-transform: uppercase;
@@ -2041,7 +1766,7 @@
     }
 
     .record-lightbox-kicker {
-      font-family: 'Cinzel', serif;
+      font-family: "Cinzel", serif;
       font-size: 8px;
       font-weight: 300;
       letter-spacing: 0.34em;
@@ -2050,7 +1775,7 @@
     }
 
     .record-lightbox-close,
-    .record-lightbox-nav {
+.record-lightbox-nav {
       appearance: none;
       border: 1px solid rgba(242, 237, 228, 0.10);
       background: rgba(242, 237, 228, 0.025);
@@ -2065,15 +1790,15 @@
     .record-lightbox-close {
       width: 28px;
       height: 28px;
-      font-family: 'Cinzel', serif;
+      font-family: "Cinzel", serif;
       font-size: 15px;
       line-height: 1;
     }
 
     .record-lightbox-close:hover,
-    .record-lightbox-nav:hover,
-    .record-lightbox-close:focus-visible,
-    .record-lightbox-nav:focus-visible {
+.record-lightbox-nav:hover,
+.record-lightbox-close:focus-visible,
+.record-lightbox-nav:focus-visible {
       color: rgba(232, 192, 122, 0.72);
       border-color: rgba(232, 192, 122, 0.22);
       background: rgba(184, 104, 48, 0.055);
@@ -2111,7 +1836,7 @@
       gap: 24px;
       padding: 14px 18px 16px;
       border-top: 1px solid rgba(242, 237, 228, 0.065);
-      font-family: 'Cormorant Garamond', serif;
+      font-family: "Cormorant Garamond", serif;
       color: rgba(242, 237, 228, 0.44);
     }
 
@@ -2123,7 +1848,7 @@
 
     .record-lightbox-meta {
       align-self: center;
-      font-family: 'Cinzel', serif;
+      font-family: "Cinzel", serif;
       font-size: 7px;
       letter-spacing: 0.24em;
       text-transform: uppercase;
@@ -2137,7 +1862,7 @@
       width: 34px;
       height: 44px;
       transform: translateY(-50%);
-      font-family: 'Cormorant Garamond', serif;
+      font-family: "Cormorant Garamond", serif;
       font-size: 32px;
       line-height: 1;
     }
@@ -2185,7 +1910,7 @@
       display: inline-flex;
       align-items: center;
       gap: 10px;
-      font-family: 'Cinzel', serif;
+      font-family: "Cinzel", serif;
       font-size: 7px;
       font-weight: 300;
       letter-spacing: 0.24em;
@@ -2194,7 +1919,7 @@
     }
 
     .dashboard-post-author::before {
-      content: '';
+      content: "";
       width: 18px;
       height: 1px;
       background: rgba(242, 237, 228, 0.14);
@@ -2202,7 +1927,7 @@
 
     .dashboard-post h2 {
       margin: 0 0 10px;
-      font-family: 'Cinzel', serif;
+      font-family: "Cinzel", serif;
       font-size: 12px;
       font-weight: 300;
       letter-spacing: 0.24em;
@@ -2213,7 +1938,7 @@
     .dashboard-post p {
       max-width: 680px;
       margin: 0 0 14px;
-      font-family: 'Cormorant Garamond', serif;
+      font-family: "Cormorant Garamond", serif;
       font-size: 16px;
       font-weight: 300;
       line-height: 1.55;
@@ -2239,7 +1964,7 @@
       border: 0;
       background: transparent;
       padding: 0;
-      font-family: 'Cinzel', serif;
+      font-family: "Cinzel", serif;
       font-size: 7px;
       font-weight: 300;
       letter-spacing: 0.25em;
@@ -2251,7 +1976,7 @@
         opacity 220ms cubic-bezier(0.22, 1, 0.36, 1);
     }
 
-    .dashboard-post[data-can-delete='true'] .dashboard-delete-entry {
+    .dashboard-post[data-can-delete="true"] .dashboard-delete-entry {
       display: inline-flex;
     }
 
@@ -2261,11 +1986,10 @@
     }
 
 
-
     /* Patch 18I — Finance CSS consolidation
        Consolidates the Finance division into one normal-flow rule set. Earlier
        Finance repair layers are removed to prevent cascade conflicts. */
-    body[data-route='divisions/finance'] .route-division-finance.is-active {
+    body[data-route="divisions/finance"] .route-division-finance.is-active {
       align-items: stretch;
       justify-content: flex-start;
       overflow-x: hidden;
@@ -2287,8 +2011,8 @@
       scrollbar-color: var(--glass-border) transparent;
     }
 
-    body[data-route='divisions/finance'][data-internal-auth='signed_in'] .route-division-finance.is-active .finance-workspace,
-    body.internal-unlocked[data-route='divisions/finance'] .route-division-finance.is-active .finance-workspace {
+    body[data-route="divisions/finance"][data-internal-auth="signed_in"] .route-division-finance.is-active .finance-workspace,
+body.internal-unlocked[data-route="divisions/finance"] .route-division-finance.is-active .finance-workspace {
       display: block;
       visibility: visible;
       opacity: 1;
@@ -2296,24 +2020,24 @@
     }
 
     .finance-workspace,
-    .finance-workspace * {
+.finance-workspace * {
       box-sizing: border-box;
       border-radius: 0;
     }
 
     .finance-table-scroll::-webkit-scrollbar,
-    .finance-form textarea::-webkit-scrollbar {
+.finance-form textarea::-webkit-scrollbar {
       width: 6px;
       height: 6px;
     }
 
     .finance-table-scroll::-webkit-scrollbar-track,
-    .finance-form textarea::-webkit-scrollbar-track {
+.finance-form textarea::-webkit-scrollbar-track {
       background: transparent;
     }
 
     .finance-table-scroll::-webkit-scrollbar-thumb,
-    .finance-form textarea::-webkit-scrollbar-thumb {
+.finance-form textarea::-webkit-scrollbar-thumb {
       background: var(--glass-border);
     }
 
@@ -2327,17 +2051,17 @@
     }
 
     .finance-kicker,
-    .finance-title,
-    .finance-tabs button,
-    .finance-total-label,
-    .finance-total-value,
-    .finance-table th,
-    .finance-status,
-    .finance-submit,
-    .finance-reserved-title,
-    .finance-empty,
-    .finance-feedback {
-      font-family: 'Cinzel', serif;
+.finance-title,
+.finance-tabs button,
+.finance-total-label,
+.finance-total-value,
+.finance-table th,
+.finance-status,
+.finance-submit,
+.finance-reserved-title,
+.finance-empty,
+.finance-feedback {
+      font-family: "Cinzel", serif;
       text-transform: uppercase;
     }
 
@@ -2369,7 +2093,7 @@
     .finance-intro {
       max-width: 780px;
       margin: clamp(12px, 1.4vh, 18px) 0 0;
-      font-family: 'Cormorant Garamond', serif;
+      font-family: "Cormorant Garamond", serif;
       font-size: clamp(16px, 0.98vw, 19px);
       font-weight: 400;
       line-height: 1.62;
@@ -2493,7 +2217,7 @@
     }
 
     .finance-table th,
-    .finance-table td {
+.finance-table td {
       border-bottom: 1px solid var(--glass-border);
       vertical-align: top;
       text-align: left;
@@ -2516,7 +2240,7 @@
 
     .finance-table td {
       padding: 21px 18px;
-      font-family: 'Cormorant Garamond', serif;
+      font-family: "Cormorant Garamond", serif;
       font-size: clamp(16.5px, 0.92vw, 18px);
       font-weight: 400;
       line-height: 1.45;
@@ -2526,8 +2250,8 @@
     }
 
     .finance-table .is-numeric,
-    .finance-money {
-      font-family: 'Cinzel', serif;
+.finance-money {
+      font-family: "Cinzel", serif;
       font-size: 13px;
       letter-spacing: 0.12em;
       white-space: nowrap;
@@ -2544,7 +2268,7 @@
     .finance-note {
       display: block;
       margin-top: 7px;
-      font-family: 'Cormorant Garamond', serif;
+      font-family: "Cormorant Garamond", serif;
       font-style: italic;
       font-weight: 400;
       line-height: 1.62;
@@ -2562,26 +2286,26 @@
       line-height: 1.55;
     }
 
-    .finance-status[data-status='quoted'] {
+    .finance-status[data-status="quoted"] {
       font-style: italic;
       letter-spacing: 0.30em;
     }
 
-    .finance-status[data-status='committed'] {
+    .finance-status[data-status="committed"] {
       color: var(--amber-core);
       opacity: 0.88;
       font-weight: 400;
       letter-spacing: 0.34em;
     }
 
-    .finance-status[data-status='paid'] {
+    .finance-status[data-status="paid"] {
       font-weight: 400;
       letter-spacing: 0.22em;
       opacity: 0.78;
     }
 
     .finance-empty,
-    .finance-feedback {
+.finance-feedback {
       width: 100%;
       padding: 22px 24px;
       font-size: clamp(8.8px, 0.48vw, 10.4px);
@@ -2608,7 +2332,7 @@
     }
 
     .finance-form label,
-    .finance-submit-wrap {
+.finance-submit-wrap {
       min-width: 0;
       padding: 17px 18px;
       border-left: 1px solid var(--glass-border);
@@ -2620,7 +2344,7 @@
       display: flex;
       flex-direction: column;
       gap: 9px;
-      font-family: 'Cormorant Garamond', serif;
+      font-family: "Cormorant Garamond", serif;
       font-size: clamp(14px, 0.78vw, 15.5px);
       font-weight: 400;
       font-style: italic;
@@ -2631,7 +2355,7 @@
     }
 
     .finance-form label:nth-child(1),
-    .finance-form label:nth-child(5) {
+.finance-form label:nth-child(5) {
       border-left: 0;
     }
 
@@ -2645,15 +2369,15 @@
     .finance-form label:nth-child(8) { grid-column: 8 / span 3; }
 
     .finance-form input,
-    .finance-form select,
-    .finance-form textarea {
+.finance-form select,
+.finance-form textarea {
       width: 100%;
       min-height: 34px;
       border: 0;
       border-top: 1px solid var(--glass-border);
       background: transparent;
       color: var(--cream);
-      font-family: 'Cormorant Garamond', serif;
+      font-family: "Cormorant Garamond", serif;
       font-size: clamp(16.5px, 0.92vw, 18px);
       font-weight: 400;
       line-height: 1.45;
@@ -2664,8 +2388,32 @@
     }
 
     .finance-form select,
-    .finance-form input[type='date'] {
+.finance-form input[type="date"] {
       color-scheme: dark;
+    }
+
+    .finance-form select {
+      background-color: var(--dark-base);
+      color: var(--cream);
+      cursor: pointer;
+    }
+
+    .finance-form select:focus {
+      background-color: var(--dark-base);
+      color: var(--cream);
+    }
+
+    .finance-form select option,
+.finance-form select optgroup {
+      background-color: var(--dark-base);
+      color: var(--cream);
+      font-family: "Cormorant Garamond", serif;
+      font-size: 18px;
+    }
+
+    .finance-form select option:checked {
+      background-color: var(--dark-mid);
+      color: var(--amber-pale);
     }
 
     .finance-form textarea {
@@ -2674,7 +2422,7 @@
     }
 
     .finance-form input::placeholder,
-    .finance-form textarea::placeholder {
+.finance-form textarea::placeholder {
       color: var(--cream);
       opacity: 0.46;
     }
@@ -2720,13 +2468,13 @@
 
     @media (hover: hover) and (pointer: fine) {
       .finance-tabs button:not(.is-disabled):hover,
-      .finance-submit:not(:disabled):hover {
+.finance-submit:not(:disabled):hover {
         opacity: 0.88;
       }
     }
 
     @media (max-width: 1080px) {
-      body[data-route='divisions/finance'] .route-division-finance.is-active {
+      body[data-route="divisions/finance"] .route-division-finance.is-active {
         padding: 26px 0 64px;
       }
 
@@ -2752,15 +2500,15 @@
       }
 
       .finance-form label,
-      .finance-form label:nth-child(1),
-      .finance-form label:nth-child(2),
-      .finance-form label:nth-child(3),
-      .finance-form label:nth-child(4),
-      .finance-form label:nth-child(5),
-      .finance-form label:nth-child(6),
-      .finance-form label:nth-child(7),
-      .finance-form label:nth-child(8),
-      .finance-submit-wrap {
+.finance-form label:nth-child(1),
+.finance-form label:nth-child(2),
+.finance-form label:nth-child(3),
+.finance-form label:nth-child(4),
+.finance-form label:nth-child(5),
+.finance-form label:nth-child(6),
+.finance-form label:nth-child(7),
+.finance-form label:nth-child(8),
+.finance-submit-wrap {
         grid-column: auto;
       }
 
@@ -2775,7 +2523,7 @@
     }
 
     @media (max-width: 640px) {
-      body[data-route='divisions/finance'] .route-division-finance.is-active {
+      body[data-route="divisions/finance"] .route-division-finance.is-active {
         padding: 18px 0 72px;
       }
 
@@ -2793,22 +2541,22 @@
       }
 
       .finance-totals,
-      .finance-form {
+.finance-form {
         grid-template-columns: 1fr;
       }
 
       .finance-total,
-      .finance-total:nth-child(3),
-      .finance-total:nth-child(4),
-      .finance-form label,
-      .finance-form label:nth-child(odd),
-      .finance-submit-wrap {
+.finance-total:nth-child(3),
+.finance-total:nth-child(4),
+.finance-form label,
+.finance-form label:nth-child(odd),
+.finance-submit-wrap {
         border-left: 0;
         border-top: 1px solid var(--glass-border);
       }
 
       .finance-total:first-child,
-      .finance-form label:first-child {
+.finance-form label:first-child {
         border-top: 0;
       }
 
@@ -2816,13 +2564,13 @@
         min-width: 820px;
       }
 
-      body.internal-unlocked[data-route^='divisions'] .division-return {
+      body.internal-unlocked[data-route^="divisions"] .division-return {
         right: auto;
         left: 72px;
         max-width: 120px;
       }
 
-      body.internal-unlocked[data-route^='divisions'] .internal-session-line {
+      body.internal-unlocked[data-route^="divisions"] .internal-session-line {
         max-width: 112px;
       }
     }
@@ -2859,7 +2607,7 @@
       transform: translateY(0);
     }
     footer span {
-      font-family: 'Cinzel', serif;
+      font-family: "Cinzel", serif;
       font-size: 8.5px;
       font-weight: 300;
       letter-spacing: 0.32em;
@@ -2893,40 +2641,27 @@
         transform-origin: left;
       }
 
-      .desk-trigger:hover {
-        color: rgba(242, 237, 228, 0.68);
-        transform: translateY(-50%) translateX(-2px);
-      }
+      
 
-      .desk-trigger:hover::before {
-        background: rgba(232, 192, 122, 0.58);
-        box-shadow: 0 0 18px rgba(232, 192, 122, 0.22);
-      }
+      
 
-      .desk-trigger:hover::after {
-        opacity: 1;
-        transform: scaleX(1);
-        transform-origin: left;
-      }
+      
 
-      .desk-close:hover::before,
-      .desk-close:hover::after {
-        background: rgba(242, 237, 228, 0.68);
-      }
+      
 
-      .desk-close:hover::before { transform: rotate(45deg) scaleX(1.18); }
-      .desk-close:hover::after { transform: rotate(-45deg) scaleX(1.18); }
+      
+      
 
       .dashboard-filter-trigger:hover,
-      .dashboard-category-trigger:hover,
-      .dashboard-upload:hover,
-      .dashboard-commit:hover {
+.dashboard-category-trigger:hover,
+.dashboard-upload:hover,
+.dashboard-commit:hover {
         color: rgba(242, 237, 228, 0.58);
         border-color: rgba(232, 192, 122, 0.14);
       }
 
       .dashboard-filter-menu button:hover,
-      .dashboard-category-menu button:hover {
+.dashboard-category-menu button:hover {
         color: rgba(242, 237, 228, 0.62);
         background: rgba(242, 237, 228, 0.032);
       }
@@ -3030,9 +2765,7 @@
         align-items: center;
       }
       .footer-language-toggle { display: none; }
-      .desk-trigger,
-      .desk-scrim,
-      .desk-panel { display: none; }
+      
 
       .dashboard-shell {
         width: calc(100vw - 48px);
@@ -3041,8 +2774,8 @@
       }
 
       .dashboard-head,
-      .dashboard-entry-grid,
-      .dashboard-post {
+.dashboard-entry-grid,
+.dashboard-post {
         display: block;
       }
 
@@ -3061,7 +2794,7 @@
       footer { gap: 16px; }
       footer span { font-size: 7.5px; letter-spacing: 0.22em; }
       footer span:nth-child(3),
-      footer .sep:nth-child(4) { display: none; }
+footer .sep:nth-child(4) { display: none; }
 
       .route-gallery { padding: 0; }
       .gallery-accordion { display: none; }
@@ -3077,13 +2810,32 @@
 
     @media (prefers-reduced-motion: reduce) {
       .orb { animation: none !important; }
-      header, footer, .logo-mark, .division-return, .division-return::after, .desk-trigger, .desk-trigger::before, .desk-trigger::after, .desk-panel, .desk-scrim, .desk-close::before, .desk-close::after, .dashboard-filter-menu, .dashboard-category-menu, .dashboard-post, .side-nav, .side-nav nav a, .hero-logo-bg, .hero-logo-glow-overlay, .route-view, .gallery-panel, .gallery-panel::before, .division-door, .division-door::before, .division-door::after, .division-door-inner, .division-door-title {
+      header,
+footer,
+.logo-mark,
+.division-return,
+.division-return::after,
+.dashboard-filter-menu,
+.dashboard-category-menu,
+.dashboard-post,
+.side-nav,
+.side-nav nav a,
+.hero-logo-bg,
+.hero-logo-glow-overlay,
+.route-view,
+.gallery-panel,
+.gallery-panel::before,
+.division-door,
+.division-door::before,
+.division-door::after,
+.division-door-inner,
+.division-door-title {
         transition-duration: 0.01ms !important;
       }
     }
   
     body.internal-locked,
-    body.internal-unlocked {
+body.internal-unlocked {
       /* State hooks for the future Supabase access gate. */
     }
 
@@ -3103,8 +2855,7 @@
       -webkit-backdrop-filter: blur(28px) saturate(160%) brightness(0.96);
     }
 
-    body.internal-route-protected.internal-locked .route-view.is-active > .internal-gate,
-    body.desk-open.internal-locked .desk-panel .internal-gate {
+    body.internal-route-protected.internal-locked .route-view.is-active > .internal-gate {
       display: flex;
     }
 
@@ -3112,8 +2863,7 @@
       display: none;
     }
 
-    .dashboard-shell,
-    .desk-panel-inner {
+    .dashboard-shell {
       position: relative;
     }
 
@@ -3131,12 +2881,12 @@
     }
 
     .internal-gate-kicker,
-    .internal-gate-title,
-    .internal-gate-status,
-    .internal-access-button,
-    .internal-sign-out,
-    .internal-session-line {
-      font-family: 'Cinzel', serif;
+.internal-gate-title,
+.internal-gate-status,
+.internal-access-button,
+.internal-sign-out,
+.internal-session-line {
+      font-family: "Cinzel", serif;
       font-weight: 300;
       text-transform: uppercase;
     }
@@ -3159,7 +2909,7 @@
     .internal-gate-copy {
       max-width: 300px;
       margin: 0 auto 20px;
-      font-family: 'Cormorant Garamond', serif;
+      font-family: "Cormorant Garamond", serif;
       font-size: 16px;
       font-weight: 300;
       line-height: 1.48;
@@ -3175,11 +2925,11 @@
       color: rgba(242, 237, 228, 0.28);
     }
 
-    body[data-internal-auth='checking'] .internal-gate-status {
+    body[data-internal-auth="checking"] .internal-gate-status {
       color: rgba(232, 192, 122, 0.48);
     }
 
-    body[data-internal-auth='signed_in'] .internal-gate-status {
+    body[data-internal-auth="signed_in"] .internal-gate-status {
       color: rgba(232, 192, 122, 0.54);
     }
 
@@ -3197,7 +2947,7 @@
 
     .internal-auth-label {
       align-self: flex-start;
-      font-family: 'Cinzel', serif;
+      font-family: "Cinzel", serif;
       font-size: 7px;
       font-weight: 300;
       letter-spacing: 0.26em;
@@ -3211,7 +2961,7 @@
       border: 1px solid rgba(242, 237, 228, 0.085);
       background: rgba(8, 5, 3, 0.22);
       padding: 0 12px;
-      font-family: 'Cormorant Garamond', serif;
+      font-family: "Cormorant Garamond", serif;
       font-size: 15px;
       font-weight: 300;
       letter-spacing: 0.035em;
@@ -3226,7 +2976,7 @@
 
     .internal-auth-feedback {
       min-height: 12px;
-      font-family: 'Cormorant Garamond', serif;
+      font-family: "Cormorant Garamond", serif;
       font-size: 12px;
       font-weight: 300;
       font-style: italic;
@@ -3260,8 +3010,10 @@
       align-items: center;
       gap: 10px;
       min-height: 32px;
-      max-width: min(34vw, 360px);
+      width: var(--session-plaque-w);
+      max-width: var(--session-plaque-w);
       padding: 0 12px 0 14px;
+      justify-content: center;
       border: 1px solid rgba(242, 237, 228, 0.070);
       background:
         linear-gradient(90deg, rgba(242, 237, 228, 0.028), rgba(184, 104, 48, 0.035)),
@@ -3271,9 +3023,9 @@
       box-shadow:
         0 14px 42px rgba(0, 0, 0, 0.18),
         inset 0 1px 0 rgba(242, 237, 228, 0.025);
-      font-size: 6.8px;
-      letter-spacing: 0.22em;
-      color: rgba(242, 237, 228, 0.24);
+      font-size: 7.45px;
+      letter-spacing: 0.19em;
+      color: rgba(242, 237, 228, 0.34);
       white-space: nowrap;
       overflow: hidden;
     }
@@ -3289,10 +3041,10 @@
 
     .internal-session-user {
       min-width: 0;
-      max-width: 150px;
+      max-width: 158px;
       overflow: hidden;
       text-overflow: ellipsis;
-      color: rgba(242, 237, 228, 0.56);
+      color: rgba(242, 237, 228, 0.64);
     }
 
     .internal-session-separator {
@@ -3307,16 +3059,16 @@
       border: 0;
       background: transparent;
       padding: 0;
-      font-size: 6.8px;
-      letter-spacing: 0.22em;
-      color: rgba(232, 192, 122, 0.44);
+      font-size: 7.45px;
+      letter-spacing: 0.19em;
+      color: rgba(232, 192, 122, 0.54);
       cursor: pointer;
     }
 
-    body.internal-unlocked[data-route='divisions/marketing'] .division-return,
-    body.internal-unlocked[data-route='divisions/finance'] .division-return,
-    body.internal-unlocked[data-route='divisions/operations'] .division-return {
-      right: clamp(230px, 26vw, 380px);
+    body.internal-unlocked[data-route="divisions/marketing"] .division-return,
+body.internal-unlocked[data-route="divisions/finance"] .division-return,
+body.internal-unlocked[data-route="divisions/operations"] .division-return {
+      right: calc(clamp(16px, 2.2vw, 34px) + var(--session-plaque-w) + var(--session-plaque-gap));
     }
 
     @media (hover: hover) and (pointer: fine) {
@@ -3330,9 +3082,7 @@
         color: rgba(232, 192, 122, 0.62);
       }
 
-      .desk-send:not(:disabled):hover {
-        color: rgba(232, 192, 122, 0.68);
-      }
+      
     }
 
     @media (max-width: 640px) {
@@ -3346,7 +3096,8 @@
 
       .internal-session-line {
         right: 14px;
-        max-width: 34vw;
+        width: 112px;
+        max-width: 112px;
         min-height: 28px;
         padding: 0 8px;
         gap: 7px;
@@ -3355,7 +3106,7 @@
       }
 
       .internal-session-context,
-      .internal-session-separator {
+.internal-session-separator {
         display: none;
       }
 
@@ -3383,15 +3134,14 @@
       margin: auto;
     }
 
-    body.internal-route-protected[data-internal-auth='signed_out'] .route-view.is-active > *:not(.internal-gate),
-    body.internal-route-protected[data-internal-auth='checking'] .route-view.is-active > *:not(.internal-gate) {
+    body.internal-route-protected[data-internal-auth="signed_out"] .route-view.is-active > *:not(.internal-gate),
+body.internal-route-protected[data-internal-auth="checking"] .route-view.is-active > *:not(.internal-gate) {
       pointer-events: none;
     }
 
-    body.internal-route-protected[data-internal-auth='signed_in'] .route-view.is-active > * {
+    body.internal-route-protected[data-internal-auth="signed_in"] .route-view.is-active > * {
       pointer-events: auto;
     }
-
 
 
     /* Patch 9B — Text readability uplift */
@@ -3416,7 +3166,7 @@
       color: rgba(242, 237, 228, 0.38);
     }
     .side-nav nav a,
-    .side-nav nav .nav-reserved {
+.side-nav nav .nav-reserved {
       color: rgba(242, 237, 228, 0.64);
       border-bottom-color: rgba(242, 237, 228, 0.08);
     }
@@ -3424,7 +3174,7 @@
       color: rgba(242, 237, 228, 0.44);
     }
     .side-nav nav a .num,
-    .side-nav nav .nav-reserved .num {
+.side-nav nav .nav-reserved .num {
       color: rgba(212, 142, 74, 0.74);
     }
     .side-nav .nav-footer {
@@ -3432,45 +3182,31 @@
     }
 
     .language-toggle,
-    .language-toggle .lang-option,
-    .footer-language-toggle .lang-option {
+.language-toggle .lang-option,
+.footer-language-toggle .lang-option {
       color: rgba(242, 237, 228, 0.32);
     }
     .language-toggle .lang-option.active,
-    .footer-language-toggle .lang-option.active {
+.footer-language-toggle .lang-option.active {
       color: rgba(242, 237, 228, 0.58);
     }
     .language-toggle .lang-sep,
-    .footer-language-toggle .lang-sep {
+.footer-language-toggle .lang-sep {
       color: rgba(242, 237, 228, 0.18);
     }
 
-    .desk-trigger {
-      color: rgba(242, 237, 228, 0.38);
-    }
-    .desk-trigger::before {
-      background: rgba(184, 104, 48, 0.54);
-      box-shadow: 0 0 14px rgba(184, 104, 48, 0.24);
-    }
-    .desk-trigger::after {
-      background: rgba(184, 104, 48, 0.58);
-    }
+    
+    
+    
 
-    .desk-close::before,
-    .desk-close::after {
-      background: rgba(242, 237, 228, 0.46);
-    }
-    .desk-kicker,
+    
     .dashboard-kicker {
       color: rgba(196, 118, 54, 0.72);
     }
-    .desk-title,
     .dashboard-title {
       color: rgba(242, 237, 228, 0.84);
     }
-    .desk-intro {
-      color: rgba(242, 237, 228, 0.52);
-    }
+    
 
     .gallery-caption {
       color: rgba(248, 244, 236, 0.86);
@@ -3508,7 +3244,6 @@
     }
 
 
-
     /* Patch 9C — Small-font legibility refinement */
     .division-return {
       color: rgba(242, 237, 228, 0.52);
@@ -3522,14 +3257,14 @@
       color: rgba(242, 237, 228, 0.48);
     }
     .side-nav nav a,
-    .side-nav nav .nav-reserved {
+.side-nav nav .nav-reserved {
       color: rgba(242, 237, 228, 0.69);
     }
     .side-nav nav .nav-reserved {
       color: rgba(242, 237, 228, 0.50);
     }
     .side-nav nav a .num,
-    .side-nav nav .nav-reserved .num {
+.side-nav nav .nav-reserved .num {
       color: rgba(218, 148, 78, 0.84);
     }
     .side-nav .nav-footer {
@@ -3537,25 +3272,22 @@
     }
 
     .language-toggle,
-    .language-toggle .lang-option,
-    .footer-language-toggle .lang-option {
+.language-toggle .lang-option,
+.footer-language-toggle .lang-option {
       color: rgba(242, 237, 228, 0.42);
     }
     .language-toggle .lang-option.active,
-    .footer-language-toggle .lang-option.active {
+.footer-language-toggle .lang-option.active {
       color: rgba(242, 237, 228, 0.66);
     }
     .language-toggle .lang-sep,
-    .footer-language-toggle .lang-sep {
+.footer-language-toggle .lang-sep {
       color: rgba(242, 237, 228, 0.24);
     }
 
-    .desk-trigger {
-      color: rgba(242, 237, 228, 0.50);
-    }
-    .desk-kicker,
+    
     .dashboard-kicker,
-    .internal-gate-kicker {
+.internal-gate-kicker {
       color: rgba(202, 126, 62, 0.84);
     }
 
@@ -3566,12 +3298,12 @@
       color: rgba(232, 192, 122, 0.72);
     }
     .dashboard-filter-menu button,
-    .dashboard-category-trigger,
-    .dashboard-category-menu button {
+.dashboard-category-trigger,
+.dashboard-category-menu button {
       color: rgba(242, 237, 228, 0.48);
     }
     .dashboard-filter-menu button.is-active,
-    .dashboard-category-menu button.is-active {
+.dashboard-category-menu button.is-active {
       color: rgba(232, 192, 122, 0.78);
     }
     .dashboard-entry-meta {
@@ -3581,11 +3313,11 @@
       color: rgba(242, 237, 228, 0.34);
     }
     .dashboard-input::placeholder,
-    .dashboard-textarea::placeholder {
+.dashboard-textarea::placeholder {
       color: rgba(242, 237, 228, 0.34);
     }
     .dashboard-upload,
-    .dashboard-commit {
+.dashboard-commit {
       color: rgba(242, 237, 228, 0.48);
     }
     .dashboard-commit {
@@ -3610,7 +3342,7 @@
       color: rgba(202, 126, 62, 0.76);
     }
     .dashboard-post-foot,
-    .dashboard-delete-entry {
+.dashboard-delete-entry {
       color: rgba(242, 237, 228, 0.34);
     }
 
@@ -3623,8 +3355,8 @@
     .internal-gate-status {
       color: rgba(242, 237, 228, 0.42);
     }
-    body[data-internal-auth='checking'] .internal-gate-status,
-    body[data-internal-auth='signed_in'] .internal-gate-status {
+    body[data-internal-auth="checking"] .internal-gate-status,
+body[data-internal-auth="signed_in"] .internal-gate-status {
       color: rgba(232, 192, 122, 0.68);
     }
     .internal-auth-label {
@@ -3657,80 +3389,38 @@
     }
 
 
+    
+    
 
-    /* Patch 11B — Desk layout and footer collision correction */
-    .desk-scrim {
-      inset: var(--header-h) 0 0 0;
-    }
+    
 
-    .desk-panel {
-      bottom: 0;
-      width: clamp(500px, 42vw, 620px);
-      min-width: 460px;
-      z-index: 160;
-    }
+    
 
-    .desk-panel-inner {
-      padding: clamp(34px, 5vh, 52px) clamp(38px, 4.2vw, 58px) 36px;
-    }
+    
 
-    .desk-intro {
-      max-width: 390px;
-      margin-bottom: clamp(26px, 4vh, 40px);
-    }
+    
 
-    .desk-thread-wrap {
-      padding: 30px 0;
-      min-height: 180px;
-    }
+    
 
-    .desk-thread {
-      gap: 16px;
-      justify-content: flex-start;
-    }
+    
 
-    .desk-empty {
-      margin: auto;
-      color: rgba(242, 237, 228, 0.34);
-    }
+    
 
-    .desk-message {
-      width: min(82%, 380px);
-      padding: 16px 18px 16px;
-    }
+    
 
-    .desk-message-name {
-      color: rgba(242, 237, 228, 0.48);
-    }
+    
 
-    .desk-message-body {
-      color: rgba(242, 237, 228, 0.64);
-    }
+    
 
-    .desk-message-time {
-      color: rgba(242, 237, 228, 0.30);
-    }
+    
 
-    .desk-composer {
-      margin-top: 24px;
-      padding: 15px 18px 16px;
-    }
+    
 
-    .desk-composer-label {
-      color: rgba(242, 237, 228, 0.36);
-    }
+    
 
-    .desk-composer-meta {
-      color: rgba(242, 237, 228, 0.36);
-    }
+    
 
-    .desk-send {
-      color: rgba(232, 192, 122, 0.62);
-    }
-
-    body.desk-open .internal-session-line {
-      display: none !important;
-    }
+    
 
     @media (max-width: 1180px) {
       .internal-session-line {
@@ -3747,14 +3437,9 @@
     }
 
     @media (max-width: 980px) {
-      .desk-panel {
-        width: min(560px, calc(100vw - 28px));
-        min-width: 0;
-      }
+      
 
-      .desk-panel-inner {
-        padding: 36px 32px 30px;
-      }
+      
 
       .internal-session-line {
         right: 16px;
@@ -3774,16 +3459,7 @@
       }
     }
 
-    @media (max-width: 720px) {
-      .desk-panel {
-        width: 100vw;
-      }
-
-      .desk-message {
-        width: 88%;
-      }
-    }
-
+    
 
 
     /* Patch 16B — Ledger-style Record composer trigger and inline composer */
@@ -3805,7 +3481,7 @@
       border-bottom: 1px solid rgba(232, 192, 122, 0.18);
       background: transparent;
       box-shadow: none;
-      font-family: 'Cinzel', serif;
+      font-family: "Cinzel", serif;
       font-size: 7.5px;
       font-weight: 300;
       letter-spacing: 0.30em;
@@ -3833,7 +3509,7 @@
     }
 
     .dashboard-entry-toggle:hover,
-    .dashboard-entry-toggle:focus-visible {
+.dashboard-entry-toggle:focus-visible {
       color: rgba(242, 237, 228, 0.80);
       border-color: rgba(232, 192, 122, 0.34);
       transform: translate3d(-2px, 0, 0);
@@ -3841,7 +3517,7 @@
     }
 
     .dashboard-entry-toggle:hover .dashboard-entry-toggle-rule,
-    .dashboard-entry-toggle:focus-visible .dashboard-entry-toggle-rule {
+.dashboard-entry-toggle:focus-visible .dashboard-entry-toggle-rule {
       width: 40px;
       background: rgba(242, 237, 228, 0.46);
     }
@@ -3870,7 +3546,7 @@
 
     /* Patch 16H — hard suppression: the entry trigger must not render beneath the Index */
     body.is-dashboard-filtering #dashboardEntryToggle,
-    #dashboardEntryToggle[hidden] {
+#dashboardEntryToggle[hidden] {
       display: none !important;
       visibility: hidden !important;
       opacity: 0 !important;
@@ -3917,23 +3593,23 @@
     }
 
     .dashboard-entry.is-expanded::-webkit-scrollbar,
-    .dashboard-category-menu::-webkit-scrollbar {
+.dashboard-category-menu::-webkit-scrollbar {
       width: 6px;
     }
 
     .dashboard-entry.is-expanded::-webkit-scrollbar-track,
-    .dashboard-category-menu::-webkit-scrollbar-track {
+.dashboard-category-menu::-webkit-scrollbar-track {
       background: rgba(8, 5, 3, 0.28);
     }
 
     .dashboard-entry.is-expanded::-webkit-scrollbar-thumb,
-    .dashboard-category-menu::-webkit-scrollbar-thumb {
+.dashboard-category-menu::-webkit-scrollbar-thumb {
       background: rgba(232, 192, 122, 0.22);
       border-radius: 999px;
     }
 
     .dashboard-entry.is-expanded::before {
-      content: '';
+      content: "";
       position: absolute;
       top: 0;
       left: 18px;
@@ -3957,7 +3633,7 @@
       height: 24px;
       border: 0;
       background: transparent;
-      font-family: 'Cormorant Garamond', serif;
+      font-family: "Cormorant Garamond", serif;
       font-size: 19px;
       font-weight: 300;
       line-height: 1;
@@ -3967,7 +3643,7 @@
     }
 
     .dashboard-entry-close:hover,
-    .dashboard-entry-close:focus-visible {
+.dashboard-entry-close:focus-visible {
       color: rgba(242, 237, 228, 0.74);
       outline: none;
     }
@@ -4022,7 +3698,7 @@
       }
 
       .dashboard-entry-grid .dashboard-input,
-      .dashboard-entry-grid .dashboard-category {
+.dashboard-entry-grid .dashboard-category {
         margin-bottom: 9px;
       }
 
@@ -4033,7 +3709,7 @@
       }
 
       .dashboard-upload,
-      .dashboard-commit {
+.dashboard-commit {
         width: 100%;
         min-height: 36px;
       }
@@ -4076,111 +3752,60 @@
     }
 
 
-
-    /* Patch 12B — remove moving/pale Desk vignette and simplify send language */
-    .desk-thread-wrap::before {
-      display: none !important;
-      content: none !important;
-      background: none !important;
-    }
+    
+    
 
     .hero-logo-glow-overlay,
-    .hero-logo-glow-overlay.is-lit {
+.hero-logo-glow-overlay.is-lit {
       display: none !important;
       opacity: 0 !important;
     }
 
-    .desk-send {
-      letter-spacing: 0.26em;
-    }
+    
 
 
+    
+    
 
-    /* Patch 12D — Desk soft delete messages */
-    .desk-message {
-      position: relative;
-    }
+    
 
-    .desk-message-delete {
-      position: absolute;
-      right: 14px;
-      top: 12px;
-      border: 0;
-      background: transparent;
-      padding: 0;
-      font-family: 'Cinzel', serif;
-      font-size: 6.6px;
-      font-weight: 300;
-      letter-spacing: 0.24em;
-      text-transform: uppercase;
-      color: rgba(232, 192, 122, 0.34);
-      cursor: pointer;
-      opacity: 0;
-      transform: translateY(-2px);
-      transition:
-        opacity 220ms cubic-bezier(0.22, 1, 0.36, 1),
-        color 220ms cubic-bezier(0.22, 1, 0.36, 1),
-        transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
-    }
+    
 
-    .desk-message:hover .desk-message-delete,
-    .desk-message:focus-within .desk-message-delete {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    
 
-    .desk-message-delete:hover,
-    .desk-message-delete:focus-visible {
-      color: rgba(232, 192, 122, 0.68);
-      outline: none;
-    }
+    
 
-    .desk-message.is-deleted {
-      background: rgba(242, 237, 228, 0.026);
-      border-color: rgba(242, 237, 228, 0.060);
-    }
+    
 
-    .desk-message.is-deleted .desk-message-body {
-      font-style: italic;
-      color: rgba(242, 237, 228, 0.44);
-    }
-
-    .desk-message.is-deleted .desk-message-name {
-      color: rgba(242, 237, 228, 0.30);
-    }
-
+    
 
 
     /* Patch 12E — restore home monogram hover only */
     @media (hover: hover) and (pointer: fine) {
-      body[data-route='home']:not(.desk-open) .hero-logo-glow-overlay {
+      body[data-route="home"] .hero-logo-glow-overlay {
         display: block !important;
       }
 
-      body[data-route='home']:not(.desk-open) .hero-logo-bg.visible + .hero-logo-glow-overlay.is-lit {
+      body[data-route="home"] .hero-logo-bg.visible + .hero-logo-glow-overlay.is-lit {
         opacity: 1 !important;
       }
     }
 
-    body.desk-open .hero-logo-glow-overlay,
-    body:not([data-route='home']) .hero-logo-glow-overlay {
+    body:not([data-route="home"]) .hero-logo-glow-overlay {
       opacity: 0 !important;
     }
 
 
-
     /* Patch 13 — Global Supabase threshold gate */
-    body:not([data-internal-auth='signed_in']) {
+    body:not([data-internal-auth="signed_in"]) {
       overflow: hidden;
     }
 
-    body:not([data-internal-auth='signed_in']) header,
-    body:not([data-internal-auth='signed_in']) main,
-    body:not([data-internal-auth='signed_in']) footer,
-    body:not([data-internal-auth='signed_in']) .side-nav,
-    body:not([data-internal-auth='signed_in']) .desk-panel,
-    body:not([data-internal-auth='signed_in']) .desk-scrim,
-    body:not([data-internal-auth='signed_in']) .overlay {
+    body:not([data-internal-auth="signed_in"]) header,
+body:not([data-internal-auth="signed_in"]) main,
+body:not([data-internal-auth="signed_in"]) footer,
+body:not([data-internal-auth="signed_in"]) .side-nav,
+body:not([data-internal-auth="signed_in"]) .overlay {
       filter: blur(22px) brightness(0.54) saturate(0.84);
       transform: scale(1.012);
       pointer-events: none !important;
@@ -4191,13 +3816,11 @@
         opacity 520ms cubic-bezier(0.22, 1, 0.36, 1);
     }
 
-    body[data-internal-auth='signed_in'] header,
-    body[data-internal-auth='signed_in'] main,
-    body[data-internal-auth='signed_in'] footer,
-    body[data-internal-auth='signed_in'] .side-nav,
-    body[data-internal-auth='signed_in'] .desk-panel,
-    body[data-internal-auth='signed_in'] .desk-scrim,
-    body[data-internal-auth='signed_in'] .overlay {
+    body[data-internal-auth="signed_in"] header,
+body[data-internal-auth="signed_in"] main,
+body[data-internal-auth="signed_in"] footer,
+body[data-internal-auth="signed_in"] .side-nav,
+body[data-internal-auth="signed_in"] .overlay {
       filter: none;
       transform: none;
     }
@@ -4223,7 +3846,7 @@
         visibility 560ms cubic-bezier(0.22, 1, 0.36, 1);
     }
 
-    body[data-internal-auth='signed_in'] .global-auth-gate {
+    body[data-internal-auth="signed_in"] .global-auth-gate {
       opacity: 0;
       visibility: hidden;
       pointer-events: none;
@@ -4246,7 +3869,7 @@
     }
 
     .global-auth-card::before {
-      content: '';
+      content: "";
       position: absolute;
       inset: 12px;
       border: 1px solid rgba(242, 237, 228, 0.035);
@@ -4261,10 +3884,10 @@
     }
 
     .global-auth-kicker,
-    .global-auth-label,
-    .global-auth-button,
-    .global-auth-status {
-      font-family: 'Cinzel', serif;
+.global-auth-label,
+.global-auth-button,
+.global-auth-status {
+      font-family: "Cinzel", serif;
       font-weight: 300;
       text-transform: uppercase;
     }
@@ -4278,7 +3901,7 @@
 
     .global-auth-title {
       margin: 0 0 18px;
-      font-family: 'Cinzel', serif;
+      font-family: "Cinzel", serif;
       font-size: clamp(19px, 4.4vw, 28px);
       font-weight: 300;
       letter-spacing: 0.42em;
@@ -4288,7 +3911,7 @@
     .global-auth-copy {
       max-width: 312px;
       margin: 0 auto 22px;
-      font-family: 'Cormorant Garamond', serif;
+      font-family: "Cormorant Garamond", serif;
       font-size: 16px;
       font-weight: 300;
       line-height: 1.52;
@@ -4304,13 +3927,13 @@
       color: rgba(242, 237, 228, 0.34);
     }
 
-    body[data-internal-auth='checking'] .global-auth-status {
+    body[data-internal-auth="checking"] .global-auth-status {
       color: rgba(232, 192, 122, 0.62);
     }
 
-    body[data-internal-auth='auth_error'] .global-auth-status,
-    body[data-internal-auth='inactive'] .global-auth-status,
-    body[data-internal-auth='config_error'] .global-auth-status {
+    body[data-internal-auth="auth_error"] .global-auth-status,
+body[data-internal-auth="inactive"] .global-auth-status,
+body[data-internal-auth="config_error"] .global-auth-status {
       color: rgba(232, 192, 122, 0.70);
     }
 
@@ -4335,7 +3958,7 @@
       border: 1px solid rgba(242, 237, 228, 0.10);
       background: rgba(5, 3, 2, 0.34);
       padding: 0 13px;
-      font-family: 'Cormorant Garamond', serif;
+      font-family: "Cormorant Garamond", serif;
       font-size: 15.5px;
       font-weight: 300;
       letter-spacing: 0.045em;
@@ -4369,7 +3992,7 @@
     }
 
     .global-auth-button:hover,
-    .global-auth-button:focus-visible {
+.global-auth-button:focus-visible {
       color: rgba(242, 237, 228, 0.84);
       border-color: rgba(232, 192, 122, 0.30);
       background: rgba(184, 104, 48, 0.105);
@@ -4383,7 +4006,7 @@
 
     .global-auth-feedback {
       min-height: 14px;
-      font-family: 'Cormorant Garamond', serif;
+      font-family: "Cormorant Garamond", serif;
       font-size: 12px;
       font-style: italic;
       letter-spacing: 0.035em;
@@ -4391,14 +4014,12 @@
     }
 
     /* The threshold is now global; inner feature gates remain inert. */
-    .route-view .internal-gate,
-    .desk-panel .internal-gate {
+    .route-view .internal-gate {
       display: none !important;
     }
 
-    body:not([data-internal-auth='signed_in']) .dashboard-entry-toggle,
-    body:not([data-internal-auth='signed_in']) .dashboard-entry,
-    body:not([data-internal-auth='signed_in']) .desk-trigger {
+    body:not([data-internal-auth="signed_in"]) .dashboard-entry-toggle,
+body:not([data-internal-auth="signed_in"]) .dashboard-entry {
       display: none !important;
     }
 
@@ -4413,16 +4034,14 @@
     }
 
 
-
     /* Patch 13B — restore closed side-nav position after global gate unlock */
-    body[data-internal-auth='signed_in'] .side-nav:not(.open) {
+    body[data-internal-auth="signed_in"] .side-nav:not(.open) {
       transform: translate3d(-100%, 0, 0);
     }
 
-    body[data-internal-auth='signed_in'] .side-nav.open {
+    body[data-internal-auth="signed_in"] .side-nav.open {
       transform: translate3d(0, 0, 0);
     }
-
 
 
     /* Patch 13C — quieter division-door animation and line removal */
@@ -4472,191 +4091,72 @@
 
     @media (hover: hover) and (pointer: fine) {
       .division-door:hover,
-      .division-door.is-selected {
+.division-door.is-selected {
         transform: translate3d(0, -3px, 0);
       }
 
       .division-door:hover::before,
-      .division-door.is-selected::before {
+.division-door.is-selected::before {
         transform: translateY(0);
       }
 
       .division-doors:has(.division-door:hover) .division-door:not(:hover),
-      .division-doors.has-selected .division-door:not(.is-selected) {
+.division-doors.has-selected .division-door:not(.is-selected) {
         opacity: 0.56;
         filter: saturate(0.86) brightness(0.90);
       }
     }
 
 
+    
+    
 
-    /* Patch 13D — Desk visual polish and thin deleted notices */
-    .desk-thread-wrap {
-      padding: 34px 10px 30px;
-      scrollbar-width: thin;
-      scrollbar-color: rgba(232, 192, 122, 0.13) transparent;
-    }
+    
 
-    .desk-thread-wrap::-webkit-scrollbar {
-      width: 2px;
-    }
+    
 
-    .desk-thread-wrap::-webkit-scrollbar-thumb {
-      background: rgba(232, 192, 122, 0.16);
-    }
+    
 
-    .desk-thread {
-      gap: 18px;
-      align-items: flex-start;
-      padding: 2px 0;
-    }
+    
 
-    .desk-message {
-      width: min(78%, 430px);
-      align-self: flex-start;
-      padding: 15px 17px 15px;
-      background: rgba(242, 237, 228, 0.028);
-      border: 1px solid rgba(242, 237, 228, 0.050);
-      box-shadow:
-        0 16px 38px rgba(0, 0, 0, 0.12),
-        inset 0 1px 0 rgba(242, 237, 228, 0.018);
-      transition:
-        border-color 260ms cubic-bezier(0.22, 1, 0.36, 1),
-        background 260ms cubic-bezier(0.22, 1, 0.36, 1),
-        box-shadow 260ms cubic-bezier(0.22, 1, 0.36, 1);
-    }
+    
 
-    .desk-message:hover,
-    .desk-message:focus-within {
-      border-color: rgba(232, 192, 122, 0.12);
-      background: rgba(242, 237, 228, 0.038);
-      box-shadow:
-        0 18px 44px rgba(0, 0, 0, 0.16),
-        inset 0 1px 0 rgba(242, 237, 228, 0.026);
-    }
+    
 
-    .desk-message.is-sent {
-      align-self: flex-end;
-      background: rgba(184, 104, 48, 0.044);
-      border-color: rgba(232, 192, 122, 0.075);
-    }
+    
 
-    .desk-message.is-received {
-      align-self: flex-start;
-    }
+    
 
-    .desk-message-name {
-      margin-bottom: 8px;
-      font-size: 6.9px;
-      letter-spacing: 0.30em;
-      color: rgba(202, 126, 62, 0.56);
-    }
+    
 
-    .desk-message-body {
-      font-size: 16px;
-      line-height: 1.48;
-      letter-spacing: 0.032em;
-      color: rgba(242, 237, 228, 0.70);
-    }
+    
 
-    .desk-message-time {
-      margin-top: 9px;
-      font-size: 6px;
-      letter-spacing: 0.23em;
-      color: rgba(242, 237, 228, 0.22);
-    }
+    
 
-    .desk-message-delete {
-      top: 10px;
-      right: 12px;
-      font-size: 6.2px;
-      color: rgba(232, 192, 122, 0.28);
-    }
+    
 
-    .desk-message.is-deleted {
-      width: fit-content;
-      max-width: min(78%, 430px);
-      align-self: center;
-      padding: 4px 10px 5px;
-      border: 0;
-      background: rgba(242, 237, 228, 0.018);
-      box-shadow: none;
-      text-align: center;
-    }
+    
 
-    .desk-message.is-deleted:hover,
-    .desk-message.is-deleted:focus-within {
-      border: 0;
-      background: rgba(242, 237, 228, 0.026);
-      box-shadow: none;
-    }
+    
 
-    .desk-message.is-deleted .desk-message-name,
-    .desk-message.is-deleted .desk-message-time,
-    .desk-message.is-deleted .desk-message-delete {
-      display: none !important;
-    }
+    
 
-    .desk-message.is-deleted .desk-message-body {
-      margin: 0;
-      font-size: 13.5px;
-      line-height: 1.18;
-      font-style: italic;
-      letter-spacing: 0.035em;
-      color: rgba(242, 237, 228, 0.42);
-      white-space: normal;
-    }
+    
 
-    .desk-composer {
-      margin-top: 24px;
-      gap: 8px;
-      padding: 11px 14px 12px;
-      border-color: rgba(242, 237, 228, 0.060);
-      background: rgba(242, 237, 228, 0.024);
-      box-shadow: inset 0 1px 0 rgba(242, 237, 228, 0.016);
-    }
+    
 
-    .desk-composer-label {
-      font-size: 6.5px;
-      letter-spacing: 0.28em;
-      color: rgba(242, 237, 228, 0.26);
-    }
+    
 
-    .desk-message-input {
-      min-height: 44px;
-      max-height: 112px;
-      font-size: 16px;
-      line-height: 1.42;
-      color: rgba(242, 237, 228, 0.68);
-    }
+    
 
-    .desk-message-input::placeholder {
-      color: rgba(242, 237, 228, 0.24);
-    }
+    
 
-    .desk-composer-meta {
-      font-size: 6.2px;
-      letter-spacing: 0.22em;
-      color: rgba(242, 237, 228, 0.24);
-    }
+    
 
-    .desk-send {
-      color: rgba(232, 192, 122, 0.58);
-      letter-spacing: 0.27em;
-    }
+    
 
-    .desk-send:hover,
-    .desk-send:focus-visible {
-      color: rgba(232, 192, 122, 0.78);
-      outline: none;
-    }
-
-    /* Patch 14 — The Desk retired; correspondence is handled outside the website. */
-    .desk-trigger,
-    .desk-scrim,
-    .desk-panel {
-      display: none !important;
-    }
+    
+    
 
 
     /* Patch 13E — wider modern private-threshold composition */
@@ -4702,7 +4202,7 @@
     }
 
     .global-auth-card::after {
-      content: '';
+      content: "";
       position: absolute;
       top: 42px;
       bottom: 42px;
@@ -4826,7 +4326,6 @@
         margin-right: auto;
       }
     }
-
 
 
     /* Patch 13F — corrected horizontal threshold proportions */
@@ -4970,7 +4469,6 @@
     }
 
 
-
     /* Patch 13G — cleaner, more elegant threshold composition */
     .global-auth-card {
       width: min(88vw, 900px);
@@ -5033,7 +4531,7 @@
     }
 
     .global-auth-status::before {
-      content: '';
+      content: "";
       position: absolute;
       left: 0;
       top: 0;
@@ -5083,7 +4581,7 @@
     }
 
     .global-auth-button:hover,
-    .global-auth-button:focus-visible {
+.global-auth-button:focus-visible {
       background:
         linear-gradient(180deg, rgba(184, 104, 48, 0.125), rgba(184, 104, 48, 0.052));
       border-color: rgba(232, 192, 122, 0.28);
@@ -5095,7 +4593,7 @@
       }
 
       .global-auth-form::before {
-        content: '';
+        content: "";
         position: absolute;
         left: calc(-1 * clamp(31px, 3.75vw, 46px));
         top: 8px;
@@ -5132,7 +4630,6 @@
     }
 
 
-
     /* Patch 13H — stabilise auth inputs against browser/password-manager autofill */
     .global-auth-input {
       box-sizing: border-box;
@@ -5149,8 +4646,8 @@
     }
 
     .global-auth-input:hover,
-    .global-auth-input:focus,
-    .global-auth-input:focus-visible {
+.global-auth-input:focus,
+.global-auth-input:focus-visible {
       outline: none;
       border-color: rgba(232, 192, 122, 0.22);
       background:
@@ -5163,9 +4660,9 @@
     }
 
     .global-auth-input:-webkit-autofill,
-    .global-auth-input:-webkit-autofill:hover,
-    .global-auth-input:-webkit-autofill:focus,
-    .global-auth-input:-webkit-autofill:active {
+.global-auth-input:-webkit-autofill:hover,
+.global-auth-input:-webkit-autofill:focus,
+.global-auth-input:-webkit-autofill:active {
       -webkit-text-fill-color: rgba(242, 237, 228, 0.78) !important;
       caret-color: rgba(242, 237, 228, 0.78);
       border-color: rgba(232, 192, 122, 0.18) !important;
@@ -5209,8 +4706,8 @@
     }
 
     .dashboard-filter-trigger::before,
-    .dashboard-filter-trigger::after {
-      content: '';
+.dashboard-filter-trigger::after {
+      content: "";
       position: absolute;
       left: 14px;
       right: 14px;
@@ -5235,7 +4732,7 @@
     }
 
     .dashboard-feed::before {
-      content: '';
+      content: "";
       position: absolute;
       top: 0;
       bottom: clamp(34px, 7vh, 78px);
@@ -5258,7 +4755,7 @@
     }
 
     .dashboard-post::before {
-      content: '';
+      content: "";
       position: absolute;
       top: -1px;
       left: 0;
@@ -5275,7 +4772,7 @@
     }
 
     .dashboard-post-main::before {
-      content: '';
+      content: "";
       position: absolute;
       top: 3px;
       bottom: 5px;
@@ -5292,7 +4789,7 @@
     }
 
     .dashboard-post-date::after {
-      content: '';
+      content: "";
       display: block;
       width: 26px;
       height: 1px;
@@ -5308,11 +4805,11 @@
       color: rgba(184, 104, 48, 0.68);
     }
 
-    .dashboard-post[data-category='decisions'] .dashboard-post-category {
+    .dashboard-post[data-category="decisions"] .dashboard-post-category {
       color: rgba(232, 192, 122, 0.74);
     }
 
-    .dashboard-post[data-category='decisions'] .dashboard-post-main::before {
+    .dashboard-post[data-category="decisions"] .dashboard-post-main::before {
       background: linear-gradient(180deg, rgba(232, 192, 122, 0.36), rgba(242, 237, 228, 0.070) 48%, transparent);
     }
 
@@ -5356,7 +4853,7 @@
     }
 
     .dashboard-post-attachments .dashboard-attachment:hover img,
-    .dashboard-post-attachments .dashboard-attachment:focus-visible img {
+.dashboard-post-attachments .dashboard-attachment:focus-visible img {
       opacity: 0.96;
       transform: scale(1.018);
     }
@@ -5384,9 +4881,9 @@
 
     @media (max-width: 760px) {
       .dashboard-feed::before,
-      .dashboard-post::before,
-      .dashboard-post-main::before,
-      .dashboard-post-date::after {
+.dashboard-post::before,
+.dashboard-post-main::before,
+.dashboard-post-date::after {
         display: none;
       }
 
@@ -5616,7 +5113,7 @@
       }
 
       .dashboard-filter-trigger,
-      .dashboard-filter-menu {
+.dashboard-filter-menu {
         width: 100%;
         min-width: 0;
       }
@@ -5626,7 +5123,6 @@
         left: 0;
       }
     }
-
 
 
     /* Patch 18D — Whole-site readability pass
@@ -5654,25 +5150,25 @@
     }
 
     .division-return,
-    .internal-session-line,
-    footer span,
-    .language-toggle,
-    .side-nav nav a,
-    .dashboard-filter-trigger,
-    .dashboard-filter-menu button,
-    .dashboard-category-trigger,
-    .dashboard-category-menu button,
-    .dashboard-upload,
-    .dashboard-commit,
-    .dashboard-post-foot,
-    .dashboard-delete-entry,
-    .finance-tabs button,
-    .finance-total-label,
-    .finance-table th,
-    .finance-status,
-    .finance-submit,
-    .finance-empty,
-    .finance-feedback {
+.internal-session-line,
+footer span,
+.language-toggle,
+.side-nav nav a,
+.dashboard-filter-trigger,
+.dashboard-filter-menu button,
+.dashboard-category-trigger,
+.dashboard-category-menu button,
+.dashboard-upload,
+.dashboard-commit,
+.dashboard-post-foot,
+.dashboard-delete-entry,
+.finance-tabs button,
+.finance-total-label,
+.finance-table th,
+.finance-status,
+.finance-submit,
+.finance-empty,
+.finance-feedback {
       font-size: clamp(8.8px, 0.48vw, 10.4px);
       line-height: 1.55;
       opacity: 0.62;
@@ -5685,25 +5181,25 @@
     }
 
     .internal-session-user,
-    .dashboard-filter-value,
-    .finance-tabs button.is-active,
-    .finance-total-value,
-    .finance-money {
+.dashboard-filter-value,
+.finance-tabs button.is-active,
+.finance-total-value,
+.finance-money {
       opacity: 0.86;
     }
 
     .hero-roma-signature,
-    .gallery-caption,
-    .division-door-subtitle,
-    .division-panel p,
-    .internal-gate-panel p,
-    .dashboard-record-brief,
-    .dashboard-entry-note,
-    .dashboard-upload-note,
-    .dashboard-post p,
-    .finance-intro,
-    .finance-note,
-    .finance-form label {
+.gallery-caption,
+.division-door-subtitle,
+.division-panel p,
+.internal-gate-panel p,
+.dashboard-record-brief,
+.dashboard-entry-note,
+.dashboard-upload-note,
+.dashboard-post p,
+.finance-intro,
+.finance-note,
+.finance-form label {
       font-weight: 400;
       line-height: 1.62;
       color: var(--cream);
@@ -5711,13 +5207,13 @@
     }
 
     .dashboard-input,
-    .dashboard-textarea,
-    .dashboard-category-trigger,
-    .finance-table td,
-    .finance-form input,
-    .finance-form select,
-    .finance-form textarea,
-    .internal-gate-input {
+.dashboard-textarea,
+.dashboard-category-trigger,
+.finance-table td,
+.finance-form input,
+.finance-form select,
+.finance-form textarea,
+.internal-gate-input {
       font-size: clamp(16.5px, 0.92vw, 18px);
       font-weight: 400;
       line-height: 1.45;
@@ -5726,32 +5222,32 @@
     }
 
     .dashboard-input::placeholder,
-    .dashboard-textarea::placeholder,
-    .finance-form input::placeholder,
-    .finance-form textarea::placeholder,
-    .internal-gate-input::placeholder {
+.dashboard-textarea::placeholder,
+.finance-form input::placeholder,
+.finance-form textarea::placeholder,
+.internal-gate-input::placeholder {
       color: var(--cream);
       opacity: 0.46;
     }
 
     .dashboard-kicker,
-    .dashboard-entry-meta,
-    .dashboard-post-category,
-    .dashboard-post-date,
-    .dashboard-post-author,
-    .finance-kicker,
-    .finance-reserved-title,
-    .internal-gate-kicker,
-    .internal-gate-status {
+.dashboard-entry-meta,
+.dashboard-post-category,
+.dashboard-post-date,
+.dashboard-post-author,
+.finance-kicker,
+.finance-reserved-title,
+.internal-gate-kicker,
+.internal-gate-status {
       font-size: clamp(8.8px, 0.5vw, 10.2px);
       opacity: 0.58;
       line-height: 1.65;
     }
 
     .dashboard-post h2,
-    .finance-title,
-    .internal-gate-title,
-    .division-door-title {
+.finance-title,
+.internal-gate-title,
+.division-door-title {
       opacity: 0.9;
     }
 
@@ -5761,19 +5257,19 @@
     }
 
     .dashboard-post-foot,
-    .dashboard-delete-entry {
+.dashboard-delete-entry {
       opacity: 0.42;
     }
 
     .dashboard-attachment span,
-    .attachment-viewer-meta,
-    .attachment-viewer-count {
+.attachment-viewer-meta,
+.attachment-viewer-count {
       font-size: clamp(9px, 0.48vw, 10.5px);
       opacity: 0.68;
     }
 
     .finance-total-label,
-    .finance-table th {
+.finance-table th {
       opacity: 0.52;
     }
 
@@ -5791,20 +5287,20 @@
 
     @media (max-width: 760px) {
       .division-return,
-      .internal-session-line,
-      footer span,
-      .language-toggle,
-      .dashboard-filter-trigger,
-      .dashboard-filter-menu button,
-      .dashboard-category-trigger,
-      .dashboard-category-menu button,
-      .dashboard-upload,
-      .dashboard-commit,
-      .finance-tabs button,
-      .finance-total-label,
-      .finance-table th,
-      .finance-status,
-      .finance-submit {
+.internal-session-line,
+footer span,
+.language-toggle,
+.dashboard-filter-trigger,
+.dashboard-filter-menu button,
+.dashboard-category-trigger,
+.dashboard-category-menu button,
+.dashboard-upload,
+.dashboard-commit,
+.finance-tabs button,
+.finance-total-label,
+.finance-table th,
+.finance-status,
+.finance-submit {
         font-size: 10px;
         letter-spacing: 0.18em;
       }
@@ -5814,72 +5310,183 @@
       }
 
       .dashboard-post p,
-      .finance-intro,
-      .division-panel p,
-      .internal-gate-panel p {
+.finance-intro,
+.division-panel p,
+.internal-gate-panel p {
         font-size: 18px;
         line-height: 1.65;
       }
     }
 
 
-
-
-    /* Patch 18I — Division header session consolidation
-       Keep Return and signed-in controls separated after the readability pass. */
-    body.internal-unlocked[data-route^='divisions'] .internal-session-line {
-      right: clamp(18px, 2vw, 32px);
-      max-width: clamp(150px, 15vw, 235px);
-      min-height: 30px;
-      padding: 0 10px;
-      gap: 8px;
+    
+    body.internal-unlocked .internal-session-line,
+body.internal-unlocked[data-route^="divisions"] .internal-session-line {
+      right: clamp(16px, 2.2vw, 34px);
+      width: var(--session-plaque-w);
+      max-width: var(--session-plaque-w);
+      min-height: 32px;
+      padding: 0 12px 0 14px;
+      gap: 10px;
+      justify-content: center;
       overflow: hidden;
-      font-size: clamp(6.8px, 0.38vw, 8.2px);
+      font-size: 7.45px;
       line-height: 1;
-      letter-spacing: 0.22em;
+      letter-spacing: 0.19em;
     }
 
-    body.internal-unlocked[data-route^='divisions'] .internal-session-context,
-    body.internal-unlocked[data-route^='divisions'] .internal-session-separator {
-      display: none;
+    body.internal-unlocked .internal-session-context,
+body.internal-unlocked[data-route^="divisions"] .internal-session-context {
+      display: inline;
+      flex: 0 0 auto;
     }
 
-    body.internal-unlocked[data-route^='divisions'] .internal-session-user {
-      max-width: clamp(74px, 8vw, 116px);
+    body.internal-unlocked .internal-session-separator,
+body.internal-unlocked[data-route^="divisions"] .internal-session-separator {
+      display: block;
+      flex: 0 0 auto;
     }
 
-    body.internal-unlocked[data-route^='divisions'] .internal-sign-out {
-      font-size: clamp(6.6px, 0.36vw, 7.8px);
+    body.internal-unlocked .internal-session-user,
+body.internal-unlocked[data-route^="divisions"] .internal-session-user {
+      flex: 0 1 auto;
+      max-width: 158px;
+    }
+
+    body.internal-unlocked .internal-sign-out,
+body.internal-unlocked[data-route^="divisions"] .internal-sign-out {
+      font-size: 7.45px;
       line-height: 1;
-      letter-spacing: 0.20em;
+      letter-spacing: 0.19em;
     }
 
-    body.internal-unlocked[data-route='divisions/marketing'] .division-return,
-    body.internal-unlocked[data-route='divisions/finance'] .division-return,
-    body.internal-unlocked[data-route='divisions/operations'] .division-return {
-      right: calc(clamp(18px, 2vw, 32px) + clamp(150px, 15vw, 235px) + clamp(30px, 3vw, 58px));
-      max-width: 128px;
-      overflow: hidden;
-      text-overflow: ellipsis;
+    body.internal-unlocked[data-route="divisions/marketing"] .division-return,
+body.internal-unlocked[data-route="divisions/finance"] .division-return,
+body.internal-unlocked[data-route="divisions/operations"] .division-return {
+      right: calc(clamp(16px, 2.2vw, 34px) + var(--session-plaque-w) + var(--session-plaque-gap));
+      min-height: 32px;
+      max-width: none;
+      padding: 8px 0 8px 12px;
+      border: 0;
+      background: transparent;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+      box-shadow: none;
+      overflow: visible;
+      text-overflow: clip;
       white-space: nowrap;
-      font-size: clamp(7.6px, 0.42vw, 8.8px);
+      font-size: 8.5px;
       line-height: 1;
-      letter-spacing: 0.30em;
+      letter-spacing: 0.32em;
+      color: rgba(242, 237, 228, 0.42);
+      opacity: 0.74;
     }
 
-    body:not([data-route='divisions/marketing']):not([data-route='divisions/finance']):not([data-route='divisions/operations']) .division-return {
+    body.internal-unlocked[data-route="divisions/marketing"] .division-return::after,
+body.internal-unlocked[data-route="divisions/finance"] .division-return::after,
+body.internal-unlocked[data-route="divisions/operations"] .division-return::after {
+      display: block;
+      left: 12px;
+      right: 0;
+      bottom: 6px;
+    }
+
+    body.internal-unlocked[data-route="divisions/marketing"] .division-return:hover,
+body.internal-unlocked[data-route="divisions/finance"] .division-return:hover,
+body.internal-unlocked[data-route="divisions/operations"] .division-return:hover,
+body.internal-unlocked[data-route="divisions/marketing"] .division-return:focus-visible,
+body.internal-unlocked[data-route="divisions/finance"] .division-return:focus-visible,
+body.internal-unlocked[data-route="divisions/operations"] .division-return:focus-visible {
+      color: rgba(232, 192, 122, 0.68);
+      opacity: 0.92;
+    }
+
+    body:not([data-route="divisions/marketing"]):not([data-route="divisions/finance"]):not([data-route="divisions/operations"]) .division-return {
       display: none;
     }
 
-    @media (max-width: 640px) {
-      body.internal-unlocked[data-route^='divisions'] .division-return {
-        right: auto;
-        left: 72px;
-        max-width: 120px;
+    @media (max-width: 1180px) {
+      :root {
+        --session-plaque-w: 300px;
+        --session-plaque-gap: 18px;
+      }
+    }
+
+    @media (max-width: 760px) {
+      :root {
+        --session-plaque-w: 164px;
+        --session-plaque-gap: 12px;
       }
 
-      body.internal-unlocked[data-route^='divisions'] .internal-session-line {
-        max-width: 112px;
+      body.internal-unlocked .internal-session-line,
+body.internal-unlocked[data-route^="divisions"] .internal-session-line {
+        right: 10px;
+        width: var(--session-plaque-w);
+        max-width: var(--session-plaque-w);
+        min-height: 30px;
+        padding: 0 9px;
+        gap: 7px;
+        justify-content: center;
+        font-size: 7.35px;
+        letter-spacing: 0.145em;
+        white-space: nowrap;
+        overflow: hidden;
+      }
+
+      body.internal-unlocked .internal-session-context,
+body.internal-unlocked[data-route^="divisions"] .internal-session-context {
+        display: none;
+      }
+
+      body.internal-unlocked .internal-session-separator,
+body.internal-unlocked[data-route^="divisions"] .internal-session-separator {
+        display: block;
+        height: 12px;
+      }
+
+      body.internal-unlocked .internal-session-user,
+body.internal-unlocked[data-route^="divisions"] .internal-session-user {
+        max-width: 84px;
+      }
+
+      body.internal-unlocked .internal-sign-out,
+body.internal-unlocked[data-route^="divisions"] .internal-sign-out {
+        font-size: 7.35px;
+        letter-spacing: 0.145em;
+      }
+
+      body.internal-unlocked[data-route^="divisions"] .division-return {
+        right: auto;
+        left: 66px;
+        max-width: 82px;
+        min-height: 30px;
+        padding: 0 8px;
+        font-size: 7.6px;
+        letter-spacing: 0.24em;
+      }
+    }
+
+    @media (max-width: 380px) {
+      :root {
+        --session-plaque-w: 148px;
+      }
+
+      body.internal-unlocked .internal-session-line,
+body.internal-unlocked[data-route^="divisions"] .internal-session-line {
+        gap: 6px;
+        padding: 0 8px;
+        font-size: 7.05px;
+        letter-spacing: 0.12em;
+      }
+
+      body.internal-unlocked .internal-session-user,
+body.internal-unlocked[data-route^="divisions"] .internal-session-user {
+        max-width: 68px;
+      }
+
+      body.internal-unlocked[data-route^="divisions"] .division-return {
+        left: 62px;
+        max-width: 70px;
       }
     }
 
@@ -5908,10 +5515,10 @@
         <span class="i18n-text" data-i18n="internal.status.signedOut">Authentication required</span>
       </div>
       <form class="global-auth-form internal-auth-form" data-internal-auth-form novalidate>
-        <label class="global-auth-label i18n-text" data-i18n="internal.emailLabel">Email</label>
-        <input class="global-auth-input" type="email" inputmode="email" autocomplete="username" data-internal-email data-i18n-placeholder="internal.emailPlaceholder" placeholder="name@moscatelli.co" required>
-        <label class="global-auth-label i18n-text" data-i18n="internal.passwordLabel">Password</label>
-        <input class="global-auth-input" type="password" autocomplete="current-password" data-internal-password data-i18n-placeholder="internal.passwordPlaceholder" placeholder="Password" required>
+        <label class="global-auth-label i18n-text" for="globalAuthEmail" data-i18n="internal.emailLabel">Email</label>
+        <input class="global-auth-input" id="globalAuthEmail" type="email" inputmode="email" autocomplete="username" data-internal-email data-i18n-placeholder="internal.emailPlaceholder" placeholder="name@moscatelli.co" required>
+        <label class="global-auth-label i18n-text" for="globalAuthPassword" data-i18n="internal.passwordLabel">Password</label>
+        <input class="global-auth-input" id="globalAuthPassword" type="password" autocomplete="current-password" data-internal-password data-i18n-placeholder="internal.passwordPlaceholder" placeholder="Password" required>
         <button class="global-auth-button i18n-text" type="submit" data-internal-auth-submit data-i18n="global.enter">Enter</button>
         <div class="global-auth-feedback" data-internal-auth-feedback aria-live="polite"></div>
       </form>
@@ -6007,10 +5614,10 @@
               <span class="i18n-text" data-i18n="internal.status.signedOut">Authentication required</span>
             </div>
             <form class="internal-gate-actions internal-auth-form" data-internal-auth-form novalidate>
-              <label class="internal-auth-label i18n-text" data-i18n="internal.emailLabel">Email</label>
-              <input class="internal-auth-input" type="email" inputmode="email" autocomplete="email" data-internal-email data-i18n-placeholder="internal.emailPlaceholder" placeholder="name@moscatelli.co" required>
-              <label class="internal-auth-label i18n-text" data-i18n="internal.passwordLabel">Password</label>
-              <input class="internal-auth-input" type="password" autocomplete="current-password" data-internal-password data-i18n-placeholder="internal.passwordPlaceholder" placeholder="••••••••" required>
+              <label class="internal-auth-label i18n-text" for="recordGateEmail" data-i18n="internal.emailLabel">Email</label>
+              <input class="internal-auth-input" id="recordGateEmail" type="email" inputmode="email" autocomplete="email" data-internal-email data-i18n-placeholder="internal.emailPlaceholder" placeholder="name@moscatelli.co" required>
+              <label class="internal-auth-label i18n-text" for="recordGatePassword" data-i18n="internal.passwordLabel">Password</label>
+              <input class="internal-auth-input" id="recordGatePassword" type="password" autocomplete="current-password" data-internal-password data-i18n-placeholder="internal.passwordPlaceholder" placeholder="••••••••" required>
               <button class="internal-access-button i18n-text" type="submit" data-internal-auth-submit data-i18n="internal.enter">Enter</button>
               <div class="internal-auth-feedback" data-internal-auth-feedback aria-live="polite"></div>
             </form>
@@ -6143,10 +5750,10 @@
             <span class="i18n-text" data-i18n="internal.status.signedOut">Authentication required</span>
           </div>
           <form class="internal-gate-actions internal-auth-form" data-internal-auth-form novalidate>
-              <label class="internal-auth-label i18n-text" data-i18n="internal.emailLabel">Email</label>
-              <input class="internal-auth-input" type="email" inputmode="email" autocomplete="email" data-internal-email data-i18n-placeholder="internal.emailPlaceholder" placeholder="name@moscatelli.co" required>
-              <label class="internal-auth-label i18n-text" data-i18n="internal.passwordLabel">Password</label>
-              <input class="internal-auth-input" type="password" autocomplete="current-password" data-internal-password data-i18n-placeholder="internal.passwordPlaceholder" placeholder="••••••••" required>
+              <label class="internal-auth-label i18n-text" for="marketingGateEmail" data-i18n="internal.emailLabel">Email</label>
+              <input class="internal-auth-input" id="marketingGateEmail" type="email" inputmode="email" autocomplete="email" data-internal-email data-i18n-placeholder="internal.emailPlaceholder" placeholder="name@moscatelli.co" required>
+              <label class="internal-auth-label i18n-text" for="marketingGatePassword" data-i18n="internal.passwordLabel">Password</label>
+              <input class="internal-auth-input" id="marketingGatePassword" type="password" autocomplete="current-password" data-internal-password data-i18n-placeholder="internal.passwordPlaceholder" placeholder="••••••••" required>
               <button class="internal-access-button i18n-text" type="submit" data-internal-auth-submit data-i18n="internal.enter">Enter</button>
               <div class="internal-auth-feedback" data-internal-auth-feedback aria-live="polite"></div>
             </form>
@@ -6163,10 +5770,10 @@
             <span class="i18n-text" data-i18n="internal.status.signedOut">Authentication required</span>
           </div>
           <form class="internal-gate-actions internal-auth-form" data-internal-auth-form novalidate>
-              <label class="internal-auth-label i18n-text" data-i18n="internal.emailLabel">Email</label>
-              <input class="internal-auth-input" type="email" inputmode="email" autocomplete="email" data-internal-email data-i18n-placeholder="internal.emailPlaceholder" placeholder="name@moscatelli.co" required>
-              <label class="internal-auth-label i18n-text" data-i18n="internal.passwordLabel">Password</label>
-              <input class="internal-auth-input" type="password" autocomplete="current-password" data-internal-password data-i18n-placeholder="internal.passwordPlaceholder" placeholder="••••••••" required>
+              <label class="internal-auth-label i18n-text" for="financeGateEmail" data-i18n="internal.emailLabel">Email</label>
+              <input class="internal-auth-input" id="financeGateEmail" type="email" inputmode="email" autocomplete="email" data-internal-email data-i18n-placeholder="internal.emailPlaceholder" placeholder="name@moscatelli.co" required>
+              <label class="internal-auth-label i18n-text" for="financeGatePassword" data-i18n="internal.passwordLabel">Password</label>
+              <input class="internal-auth-input" id="financeGatePassword" type="password" autocomplete="current-password" data-internal-password data-i18n-placeholder="internal.passwordPlaceholder" placeholder="••••••••" required>
               <button class="internal-access-button i18n-text" type="submit" data-internal-auth-submit data-i18n="internal.enter">Enter</button>
               <div class="internal-auth-feedback" data-internal-auth-feedback aria-live="polite"></div>
             </form>
@@ -6246,7 +5853,7 @@
             </label>
             <label>
               <span class="i18n-text" data-i18n="finance.label.amount">Amount</span>
-              <input id="financeEntryAmount" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0.00" required>
+              <input id="financeEntryAmount" type="number" min="0.01" step="0.01" inputmode="decimal" placeholder="0.00" required>
             </label>
             <label>
               <span class="i18n-text" data-i18n="finance.label.currency">Currency</span>
@@ -6310,10 +5917,10 @@
             <span class="i18n-text" data-i18n="internal.status.signedOut">Authentication required</span>
           </div>
           <form class="internal-gate-actions internal-auth-form" data-internal-auth-form novalidate>
-              <label class="internal-auth-label i18n-text" data-i18n="internal.emailLabel">Email</label>
-              <input class="internal-auth-input" type="email" inputmode="email" autocomplete="email" data-internal-email data-i18n-placeholder="internal.emailPlaceholder" placeholder="name@moscatelli.co" required>
-              <label class="internal-auth-label i18n-text" data-i18n="internal.passwordLabel">Password</label>
-              <input class="internal-auth-input" type="password" autocomplete="current-password" data-internal-password data-i18n-placeholder="internal.passwordPlaceholder" placeholder="••••••••" required>
+              <label class="internal-auth-label i18n-text" for="operationsGateEmail" data-i18n="internal.emailLabel">Email</label>
+              <input class="internal-auth-input" id="operationsGateEmail" type="email" inputmode="email" autocomplete="email" data-internal-email data-i18n-placeholder="internal.emailPlaceholder" placeholder="name@moscatelli.co" required>
+              <label class="internal-auth-label i18n-text" for="operationsGatePassword" data-i18n="internal.passwordLabel">Password</label>
+              <input class="internal-auth-input" id="operationsGatePassword" type="password" autocomplete="current-password" data-internal-password data-i18n-placeholder="internal.passwordPlaceholder" placeholder="••••••••" required>
               <button class="internal-access-button i18n-text" type="submit" data-internal-auth-submit data-i18n="internal.enter">Enter</button>
               <div class="internal-auth-feedback" data-internal-auth-feedback aria-live="polite"></div>
             </form>
@@ -6360,16 +5967,6 @@
     const divisionDoors = document.querySelectorAll('.division-door');
     const divisionDoorsWrap = document.getElementById('divisionDoors');
     const divisionReturn = document.getElementById('divisionReturn');
-    const deskTrigger = document.getElementById('deskTrigger');
-    const deskPanel = document.getElementById('deskPanel');
-    const deskScrim = document.getElementById('deskScrim');
-    const deskClose = document.getElementById('deskClose');
-    const deskThread = document.getElementById('deskThread');
-    const deskEmpty = document.getElementById('deskEmpty');
-    const deskComposer = document.getElementById('deskComposer');
-    const deskMessageInput = document.getElementById('deskMessageInput');
-    const deskSendMessage = document.getElementById('deskSendMessage');
-    const deskComposerMeta = document.getElementById('deskComposerMeta');
     const internalSessionLine = document.getElementById('internalSessionLine');
     const internalSessionUser = document.getElementById('internalSessionUser');
     const internalSignOut = document.getElementById('internalSignOut');
@@ -6408,36 +6005,6 @@
       [ROUTES.OPERATIONS]: 'Operations — Moscatelli'
     });
 
-    const DESK_CONFIG = Object.freeze({
-      provider: 'retired',
-      state: 'retired',
-      futureProvider: null,
-      realtimeEnabled: false
-    });
-
-    const DESK_DATA_CONFIG = Object.freeze({
-      table: 'desk_messages',
-      channel: 'desk',
-      primaryKey: 'id',
-      ownerKey: 'created_by',
-      createdAtKey: 'created_at',
-      realtimeEvent: 'postgres_changes',
-      realtimeEnabled: false,
-      fields: Object.freeze([
-        'id',
-        'channel',
-        'body',
-        'created_by',
-        'sender_display',
-        'sender_role',
-        'deleted_at',
-        'deleted_by',
-        'deleted_by_display',
-        'created_at',
-        'updated_at'
-      ])
-    });
-
     const DASHBOARD_DATA_CONFIG = Object.freeze({
       table: 'record_posts',
       attachmentsTable: 'record_attachments',
@@ -6449,6 +6016,8 @@
       defaultCategory: 'meetings',
       defaultChannel: 'record',
       maxAttachments: 4,
+      allowAttachmentOnlyEntries: false,
+      fallbackPreviewMaxBytes: 320 * 1024,
       realtimeEvent: 'postgres_changes',
       realtimeEnabled: true,
       fields: Object.freeze([
@@ -6504,7 +6073,8 @@
         'Contingency',
         'Founder Contribution'
       ]),
-      statuses: Object.freeze(['estimate', 'quoted', 'committed', 'paid'])
+      statuses: Object.freeze(['estimate', 'quoted', 'committed', 'paid']),
+      minAmount: 0.01
     });
 
     const INTERNAL_ROLES = Object.freeze({
@@ -6512,25 +6082,19 @@
         canReadRecord: true,
         canCreateRecord: true,
         canDeleteOwnRecord: true,
-        canDeleteAnyRecord: true,
-        canUseDesk: false,
-        canSendDeskMessage: false
+        canDeleteAnyRecord: true
       }),
       partner: Object.freeze({
         canReadRecord: true,
         canCreateRecord: true,
         canDeleteOwnRecord: true,
-        canDeleteAnyRecord: false,
-        canUseDesk: false,
-        canSendDeskMessage: false
+        canDeleteAnyRecord: false
       }),
       member: Object.freeze({
         canReadRecord: true,
         canCreateRecord: true,
         canDeleteOwnRecord: true,
-        canDeleteAnyRecord: false,
-        canUseDesk: false,
-        canSendDeskMessage: false
+        canDeleteAnyRecord: false
       })
     });
 
@@ -6558,8 +6122,7 @@
         'division-pages'
       ]),
       dashboard: DASHBOARD_DATA_CONFIG,
-      finance: FINANCE_DATA_CONFIG,
-      desk: DESK_DATA_CONFIG
+      finance: FINANCE_DATA_CONFIG
     });
 
     const INTERNAL_MOCK_USER = Object.freeze({
@@ -6580,31 +6143,63 @@
       lastEventAt: null
     };
 
-    const DeskRuntime = {
-      loaded: false,
-      subscribed: false,
-      channel: DESK_DATA_CONFIG.channel,
-      syncTimer: null,
-      lastSignature: ''
-    };
-
     const RealtimeRuntime = {
-      deskChannel: null,
       dashboardChannel: null,
       attachmentChannel: null,
       dashboardRefreshTimer: null,
-      deskRefreshTimer: null,
       status: 'idle'
     };
+
+    // ── Production-safe public event helpers ──
+    function publicErrorDetail(error = {}) {
+      if (!error) return null;
+      return {
+        message: error.message || error.error_description || 'Operation failed',
+        code: error.code || error.status || error.name || null
+      };
+    }
+
+    function publicUserDetail(user = null) {
+      if (!user) return null;
+      return {
+        id: user.id || null,
+        displayName: user.displayName || '',
+        role: user.role || '',
+        division: user.division || '',
+        isActive: Boolean(user.isActive),
+        provider: user.provider || ''
+      };
+    }
+
+    function publicEventDetail(detail = {}) {
+      const safe = {};
+      Object.entries(detail || {}).forEach(([key, value]) => {
+        if (key === 'error') {
+          safe.error = publicErrorDetail(value);
+          return;
+        }
+        if (key === 'errors' && Array.isArray(value)) {
+          safe.errors = value.slice(0, 4).map(item => publicErrorDetail(item) || item).filter(Boolean);
+          return;
+        }
+        if (key === 'user') {
+          safe.user = publicUserDetail(value);
+          return;
+        }
+        if (key === 'config' || key === 'session' || key === 'url' || key === 'anonKey') return;
+        if (['status','ready','route','feature','protected','signedIn','reason','mode','label','table','channel','id','postId','attachmentId','fileName','expected','persisted','enabled'].includes(key)) {
+          safe[key] = value;
+        }
+      });
+      return safe;
+    }
 
     const InternalData = (() => {
       const STORAGE_BUCKET = 'record-attachments';
       const SUPABASE_RECORD_LIMIT = 240;
-      const SUPABASE_DESK_LIMIT = 300;
 
       const mockStore = {
         posts: new Map(),
-        messages: [],
         attachments: new Map(),
         financeEntries: []
       };
@@ -6662,12 +6257,54 @@
         }, new Map());
       }
 
+      function publicErrorDetail(error = {}) {
+        if (!error) return null;
+        return {
+          message: error.message || error.error_description || 'Operation failed',
+          code: error.code || error.status || error.name || null
+        };
+      }
+
+      function publicUserDetail(user = null) {
+        if (!user) return null;
+        return {
+          id: user.id || null,
+          displayName: user.displayName || '',
+          role: user.role || '',
+          division: user.division || '',
+          isActive: Boolean(user.isActive),
+          provider: user.provider || ''
+        };
+      }
+
+      function publicEventDetail(detail = {}) {
+        const safe = {};
+        Object.entries(detail || {}).forEach(([key, value]) => {
+          if (key === 'error') {
+            safe.error = publicErrorDetail(value);
+            return;
+          }
+          if (key === 'errors' && Array.isArray(value)) {
+            safe.errors = value.slice(0, 4).map(item => publicErrorDetail(item) || item).filter(Boolean);
+            return;
+          }
+          if (key === 'user') {
+            safe.user = publicUserDetail(value);
+            return;
+          }
+          if (key === 'config' || key === 'session' || key === 'url' || key === 'anonKey') return;
+          if (['status','ready','route','feature','protected','signedIn','reason','mode','label','table','channel','id','postId','attachmentId','fileName','expected','persisted','enabled'].includes(key)) {
+            safe[key] = value;
+          }
+        });
+        return safe;
+      }
+
       function dataEvent(type, detail = {}) {
         window.dispatchEvent(new CustomEvent(`moscatelli:data-${type}`, {
           detail: {
             mode: getInternalMode(),
-            user: InternalState.user,
-            ...detail
+            ...publicEventDetail(detail)
           }
         }));
       }
@@ -6706,6 +6343,10 @@
         return typeof value === 'string' && value.startsWith('data:image/');
       }
 
+      function attachmentFallbackLimitText(limit = DASHBOARD_DATA_CONFIG.fallbackPreviewMaxBytes) {
+        return formatBytes(Number(limit) || DASHBOARD_DATA_CONFIG.fallbackPreviewMaxBytes || 0);
+      }
+
       function blobToDataUrl(blob) {
         return new Promise((resolve, reject) => {
           if (!blob) {
@@ -6740,16 +6381,6 @@
         return Boolean(policy.canDeleteAnyRecord || (policy.canDeleteOwnRecord && isOwner));
       }
 
-      function canCurrentUserUseDesk() {
-        const policy = currentRolePolicy();
-        return Boolean(isInternalUserSignedIn() && policy.canUseDesk);
-      }
-
-      function canCurrentUserSendDeskMessage() {
-        const policy = currentRolePolicy();
-        return Boolean(isInternalUserSignedIn() && policy.canSendDeskMessage);
-      }
-
       function activeSupabaseClient() {
         if (getInternalMode() !== 'supabase') return null;
         return createInternalSupabaseClient();
@@ -6774,26 +6405,6 @@
           updated_at: payload.updated_at || now
         };
       }
-
-      function normaliseDeskMessagePayload(payload = {}) {
-        const now = payload.created_at || new Date().toISOString();
-        const user = getCurrentInternalUser() || INTERNAL_MOCK_USER;
-
-        return {
-          id: payload.id || mockId('message'),
-          channel: payload.channel || DESK_DATA_CONFIG.channel,
-          body: payload.body || '',
-          created_by: payload.created_by || user.id,
-          sender_display: payload.sender_display || user.displayName || 'Member',
-          sender_role: payload.sender_role || user.role || 'member',
-          deleted_at: payload.deleted_at || null,
-          deleted_by: payload.deleted_by || null,
-          deleted_by_display: payload.deleted_by_display || '',
-          created_at: now,
-          updated_at: payload.updated_at || now
-        };
-      }
-
 
 
       function normaliseFinanceEntry(payload = {}) {
@@ -6927,6 +6538,16 @@
       }
 
       async function persistAttachmentPreviewFallback(client, post, item, path, failure) {
+        const maxFallbackBytes = DASHBOARD_DATA_CONFIG.fallbackPreviewMaxBytes || 0;
+        const fallbackSize = Number(item.blob?.size || item.resized_size || 0);
+
+        if (maxFallbackBytes && fallbackSize > maxFallbackBytes) {
+          const limitError = new Error(`Attachment backup preview is too large for database fallback (${formatBytes(fallbackSize)} / ${attachmentFallbackLimitText(maxFallbackBytes)}).`);
+          limitError.code = 'fallback_preview_too_large';
+          limitError.status = 'fallback_size_limit';
+          throw limitError;
+        }
+
         const previewUrl = await blobToDataUrl(item.blob);
         const metadataPayload = {
           post_id: post.id,
@@ -6951,14 +6572,17 @@
 
         dataEvent('attachment-preview-fallback', {
           path,
-          reason: failure?.message || attachmentErrorSummary(failure) || 'storage_upload_failed'
+          reason: failure?.message || attachmentErrorSummary(failure) || 'storage_upload_failed',
+          previewSize: fallbackSize,
+          maxPreviewSize: maxFallbackBytes
         });
 
         const [hydrated] = await hydrateAttachmentRows(client, [data]);
         return {
           ...hydrated,
           preview_url: hydrated.preview_url || previewUrl,
-          source: 'supabase-preview-fallback'
+          source: 'supabase-preview-fallback',
+          fallback_preview_used: true
         };
       }
 
@@ -6966,6 +6590,7 @@
         const ownerId = post?.created_by || currentOwnerId();
         const persisted = [];
         const errors = [];
+        const warnings = [];
         const retryDelays = [0, 360, 920];
 
         for (const [index, sourceItem] of items.entries()) {
@@ -7013,6 +6638,11 @@
 
             try {
               const fallbackAttachment = await persistAttachmentPreviewFallback(client, post, item, path, failure);
+              warnings.push({
+                ...failure,
+                stage: 'storage_preview_fallback',
+                message: `${failure.message || 'Storage upload failed'}; backup preview was stored instead.`
+              });
               persisted.push(fallbackAttachment);
               continue;
             } catch (fallbackError) {
@@ -7069,6 +6699,11 @@
             const fallbackPath = `${ownerId}/${post.id}/metadata-fallback-${safeStorageFileName(item, index)}`;
             try {
               const fallbackAttachment = await persistAttachmentPreviewFallback(client, post, item, fallbackPath, failure);
+              warnings.push({
+                ...failure,
+                stage: 'metadata_preview_fallback',
+                message: `${failure.message || 'Attachment metadata insert failed'}; backup preview was stored instead.`
+              });
               persisted.push(fallbackAttachment);
               continue;
             } catch (fallbackError) {
@@ -7087,7 +6722,7 @@
           });
         }
 
-        return { attachments: persisted, errors };
+        return { attachments: persisted, errors, warnings };
       }
 
       const auth = {
@@ -7255,8 +6890,14 @@
           const uploadResult = await persistPostAttachments(client, data, selectedAttachments);
           const post = hydratePost(data, uploadResult.attachments, currentProfileSnapshot());
           post.attachment_errors = uploadResult.errors;
+          post.attachment_warnings = uploadResult.warnings;
 
-          dataEvent('post-created', { post, table: DASHBOARD_DATA_CONFIG.table, attachmentErrors: uploadResult.errors });
+          dataEvent('post-created', {
+            post,
+            table: DASHBOARD_DATA_CONFIG.table,
+            attachmentErrors: uploadResult.errors,
+            attachmentWarnings: uploadResult.warnings
+          });
           return post;
         },
 
@@ -7282,7 +6923,7 @@
 
           const { data: attachmentRows, error: attachmentError } = await client
             .from(DASHBOARD_DATA_CONFIG.attachmentsTable)
-            .select('path')
+            .select('path, preview_url')
             .eq('post_id', postId);
 
           if (attachmentError) {
@@ -7290,14 +6931,9 @@
             return { ok: false, error: attachmentError };
           }
 
-          const paths = (attachmentRows || []).map(item => item.path).filter(Boolean);
-          if (paths.length) {
-            const { error: storageError } = await client.storage.from(STORAGE_BUCKET).remove(paths);
-            if (storageError) {
-              dataEvent('post-delete-storage-error', { error: storageError, postId, paths });
-              return { ok: false, error: storageError };
-            }
-          }
+          const paths = (attachmentRows || [])
+            .filter(item => item.path && !isStoredImagePreview(item.preview_url || ''))
+            .map(item => item.path);
 
           const { data, error } = await client
             .from(DASHBOARD_DATA_CONFIG.table)
@@ -7311,8 +6947,22 @@
             return { ok: false, error };
           }
 
-          dataEvent('post-deleted', { postId, post: data, table: DASHBOARD_DATA_CONFIG.table });
-          return { ok: true, post: data };
+          let storageCleanupError = null;
+          if (paths.length) {
+            const { error: storageError } = await client.storage.from(STORAGE_BUCKET).remove(paths);
+            if (storageError) {
+              storageCleanupError = storageError;
+              dataEvent('post-delete-storage-cleanup-error', { error: storageError, postId, paths });
+            }
+          }
+
+          dataEvent('post-deleted', {
+            postId,
+            post: data,
+            table: DASHBOARD_DATA_CONFIG.table,
+            storageCleanupError
+          });
+          return { ok: true, post: data, storageCleanupError };
         },
 
         permissions(record) {
@@ -7323,181 +6973,6 @@
           };
         }
       };
-
-      const messages = {
-        fromRealtime(row = {}) {
-          if (!row) return null;
-
-          return {
-            ...normaliseDeskMessagePayload(row),
-            id: row.id,
-            sender_display: row.sender_display || 'Member',
-            sender_role: row.sender_role || 'member',
-            source: 'supabase-realtime'
-          };
-        },
-
-        async list(filters = {}) {
-          const channel = filters.channel || DESK_DATA_CONFIG.channel;
-          const client = activeSupabaseClient();
-
-          if (!client) {
-            return mockStore.messages
-              .filter(message => message.channel === channel)
-              .sort((a, b) => String(a.created_at).localeCompare(String(b.created_at)));
-          }
-
-          const { data, error } = await client
-            .from(DESK_DATA_CONFIG.table)
-            .select(supabaseFieldList(DESK_DATA_CONFIG.fields))
-            .eq('channel', channel)
-            .order('created_at', { ascending: true })
-            .limit(SUPABASE_DESK_LIMIT);
-
-          if (error) {
-            dataEvent('messages-list-error', { error, table: DESK_DATA_CONFIG.table });
-            return [];
-          }
-
-          return (data || []).map(message => ({
-            ...normaliseDeskMessagePayload(message),
-            id: message.id,
-            sender_display: message.sender_display || 'Member',
-            sender_role: message.sender_role || 'member',
-            source: 'supabase'
-          }));
-        },
-
-        async send(payload = {}) {
-          if (!canCurrentUserSendDeskMessage()) {
-            return { ok: false, error: 'not_authorized' };
-          }
-
-          const client = activeSupabaseClient();
-
-          if (!client) {
-            const message = {
-              ...normaliseDeskMessagePayload(payload),
-              owned: true,
-              source: getInternalMode()
-            };
-
-            mockStore.messages.push(message);
-            dataEvent('message-created', { message, table: DESK_DATA_CONFIG.table });
-            return { ok: true, message };
-          }
-
-          const messagePayload = {
-            channel: payload.channel || DESK_DATA_CONFIG.channel,
-            body: payload.body || '',
-            created_by: currentOwnerId()
-          };
-
-          const { data, error } = await client
-            .from(DESK_DATA_CONFIG.table)
-            .insert(messagePayload)
-            .select(supabaseFieldList(DESK_DATA_CONFIG.fields))
-            .single();
-
-          if (error || !data) {
-            dataEvent('message-create-error', { error, table: DESK_DATA_CONFIG.table });
-            return { ok: false, error };
-          }
-
-          const message = {
-            ...normaliseDeskMessagePayload(data),
-            id: data.id,
-            sender_display: data.sender_display || getCurrentInternalUser()?.displayName || 'Member',
-            sender_role: data.sender_role || getCurrentInternalUser()?.role || 'member',
-            source: 'supabase'
-          };
-
-          dataEvent('message-created', { message, table: DESK_DATA_CONFIG.table });
-          return { ok: true, message };
-        },
-
-        async remove(messageId) {
-          if (!messageId || !canCurrentUserUseDesk()) {
-            return { ok: false, error: 'not_authorized' };
-          }
-
-          const client = activeSupabaseClient();
-
-          if (!client) {
-            const message = mockStore.messages.find(item => item.id === messageId);
-            if (!message) return { ok: false, error: 'not_found' };
-
-            if (message.created_by !== currentOwnerId() && !isCurrentUserFounder()) {
-              return { ok: false, error: 'not_authorized' };
-            }
-
-            message.body = '';
-            message.deleted_at = new Date().toISOString();
-            message.deleted_by = currentOwnerId();
-            message.deleted_by_display = getCurrentInternalUser()?.displayName || 'Member';
-            message.updated_at = message.deleted_at;
-
-            dataEvent('message-deleted', { message, table: DESK_DATA_CONFIG.table });
-            return { ok: true, message };
-          }
-
-          const { data, error } = await client
-            .from(DESK_DATA_CONFIG.table)
-            .update({
-              body: '',
-              deleted_at: new Date().toISOString(),
-              deleted_by: currentOwnerId()
-            })
-            .eq(DESK_DATA_CONFIG.primaryKey, messageId)
-            .select(supabaseFieldList(DESK_DATA_CONFIG.fields))
-            .single();
-
-          if (error || !data) {
-            dataEvent('message-delete-error', { error, messageId, table: DESK_DATA_CONFIG.table });
-            return { ok: false, error };
-          }
-
-          const message = {
-            ...normaliseDeskMessagePayload(data),
-            id: data.id,
-            sender_display: data.sender_display || 'Member',
-            sender_role: data.sender_role || 'member',
-            deleted_by_display: data.deleted_by_display || '',
-            source: 'supabase'
-          };
-
-          dataEvent('message-deleted', { message, table: DESK_DATA_CONFIG.table });
-          return { ok: true, message };
-        },
-
-        permissions(message = null) {
-          const owned = message?.created_by === currentOwnerId();
-          const canDelete = Boolean(
-            message
-            && !message.deleted_at
-            && canCurrentUserUseDesk()
-            && (owned || isCurrentUserFounder())
-          );
-
-          return {
-            can_use: canCurrentUserUseDesk(),
-            can_send: canCurrentUserSendDeskMessage(),
-            can_delete: canDelete,
-            owned,
-            channel: DESK_DATA_CONFIG.channel
-          };
-        },
-
-        _legacyPermissions() {
-          return {
-            can_use: canCurrentUserUseDesk(),
-            can_send: canCurrentUserSendDeskMessage(),
-            channel: DESK_DATA_CONFIG.channel
-          };
-        }
-      };
-
-
 
       const finance = {
         async list() {
@@ -7527,7 +7002,7 @@
         async create(payload = {}) {
           const entry = normaliseFinanceEntry(payload);
 
-          if (!entry.description || !entry.amount || entry.amount <= 0) {
+          if (!entry.description || !Number.isFinite(entry.amount) || entry.amount < FINANCE_DATA_CONFIG.minAmount) {
             return { ok: false, error: 'invalid_finance_entry' };
           }
 
@@ -7594,7 +7069,6 @@
         store: mockStore,
         auth,
         posts,
-        messages,
         finance,
         attachments
       });
@@ -7630,9 +7104,11 @@
         'dashboard.recording': 'Sending…',
         'dashboard.recorded': 'Sent',
         'dashboard.feedback.empty': 'Add a title or note before sending.',
+        'dashboard.feedback.emptyWithAttachments': 'Add a title or note before sending attachments.',
         'dashboard.feedback.auth': 'Sign in again before sending.',
         'dashboard.feedback.error': 'The entry could not be saved. Please try again.',
         'dashboard.feedback.attachErrors': 'Entry saved, but one or more attachments could not be added.',
+        'dashboard.feedback.attachFallback': 'Entry saved. One attachment used the backup preview method.',
         'dashboard.feedback.attachRollback': 'The entry was not saved because its attachment could not be added. Please try again.',
         'dashboard.feedback.attachRollbackDetail': 'The entry was not saved because its attachment could not be added.',
         'dashboard.feedback.attachInvalid': 'Only image files may be attached.',
@@ -7695,9 +7171,10 @@
         'finance.add': 'Add entry',
         'finance.adding': 'Adding…',
         'finance.added': 'Entry added',
-        'finance.error.invalid': 'Add a description and amount before saving.',
+        'finance.error.invalid': 'Add a description and amount greater than zero before saving.',
         'finance.error.save': 'The finance entry could not be saved.',
-        'finance.error.load': 'Finance entries could not be loaded. Run the finance SQL migration if this is the first deployment.',
+        'finance.error.load': 'Finance entries could not be loaded.',
+        'finance.error.missingMigration': 'Finance entries could not be loaded. Confirm that 34_patch18a_finance_entries.sql has been run.',
         'finance.suppliers.empty': 'No supplier totals yet.',
         'finance.suppliers.name': 'Counterparty',
         'finance.suppliers.count': 'Entries',
@@ -7716,17 +7193,12 @@
         'finance.status.committed': 'Committed',
         'finance.status.paid': 'Paid',
         'ui.return': 'Return',
-        'ui.desk': 'The Desk',
-        'desk.kicker': 'Internal Correspondence',
-        'desk.intro': 'A private place for correspondence, decisions, and internal work.',
         'global.kicker': 'Private Threshold',
         'global.copy': 'Sign in with your account to continue.',
         'global.enter': 'Enter',
         'internal.kicker': 'Private Access',
         'internal.recordTitle': 'Records',
         'internal.recordIntro': 'This area is for internal notes, decisions, and updates.',
-        'internal.deskTitle': 'The Desk',
-        'internal.deskIntro': 'Internal correspondence is reserved for authenticated team members.',
         'internal.divisionIntro': 'This page is reserved for authenticated team members.',
         'internal.route.public': 'Public area',
         'internal.route.protected': 'Private area',
@@ -7748,15 +7220,6 @@
         'internal.status.configError': 'Connection unavailable. Check Supabase settings.',
         'internal.status.authError': 'Access denied. Check the email and password.',
         'internal.status.inactive': 'Profile not active yet.',
-        'desk.composer': 'Correspondence field',
-        'desk.placeholder': 'Write a quiet correspondence…',
-        'desk.send': 'SEND',
-        'desk.empty': 'No correspondence has been entered.',
-        'desk.local': 'Local message',
-        'desk.locked': 'Sign in to write.',
-        'desk.ready': 'Ready for internal correspondence.',
-        'desk.delete': 'Delete',
-        'desk.deletedMessage': '{user} deleted a message',
         'footer.rights': 'All rights reserved',
         'footer.privacy': 'Privacy',
         'aria.openMenu': 'Open menu',
@@ -7792,9 +7255,11 @@
         'dashboard.recording': 'Enviando…',
         'dashboard.recorded': 'Enviado',
         'dashboard.feedback.empty': 'Adicione um título ou uma nota antes de enviar.',
+        'dashboard.feedback.emptyWithAttachments': 'Adicione um título ou uma nota antes de enviar anexos.',
         'dashboard.feedback.auth': 'Entre novamente antes de enviar.',
         'dashboard.feedback.error': 'Não foi possível salvar a entrada. Tente novamente.',
         'dashboard.feedback.attachErrors': 'Entrada salva, mas um ou mais anexos não puderam ser adicionados.',
+        'dashboard.feedback.attachFallback': 'Entrada salva. Um anexo usou o método de pré-visualização de backup.',
         'dashboard.feedback.attachRollback': 'A entrada não foi salva porque o anexo não pôde ser adicionado. Tente novamente.',
         'dashboard.feedback.attachRollbackDetail': 'A entrada não foi salva porque o anexo não pôde ser adicionado.',
         'dashboard.feedback.attachInvalid': 'Somente imagens podem ser anexadas.',
@@ -7857,9 +7322,10 @@
         'finance.add': 'Adicionar entrada',
         'finance.adding': 'Adicionando…',
         'finance.added': 'Entrada adicionada',
-        'finance.error.invalid': 'Adicione uma descrição e um valor antes de salvar.',
+        'finance.error.invalid': 'Adicione uma descrição e um valor maior que zero antes de salvar.',
         'finance.error.save': 'A entrada financeira não pôde ser salva.',
-        'finance.error.load': 'As entradas financeiras não puderam ser carregadas. Execute a migração SQL de finanças se este for o primeiro deploy.',
+        'finance.error.load': 'As entradas financeiras não puderam ser carregadas.',
+        'finance.error.missingMigration': 'As entradas financeiras não puderam ser carregadas. Confirme que 34_patch18a_finance_entries.sql foi executado.',
         'finance.suppliers.empty': 'Ainda não há totais por fornecedor.',
         'finance.suppliers.name': 'Contraparte',
         'finance.suppliers.count': 'Entradas',
@@ -7878,17 +7344,12 @@
         'finance.status.committed': 'Comprometido',
         'finance.status.paid': 'Pago',
         'ui.return': 'Voltar',
-        'ui.desk': 'Correspondência',
-        'desk.kicker': 'Correspondência Interna',
-        'desk.intro': 'Um espaço privado para mensagens, decisões e trabalho interno.',
         'global.kicker': 'Acesso Privado',
         'global.copy': 'Entre com sua conta para continuar.',
         'global.enter': 'Entrar',
         'internal.kicker': 'Acesso Privado',
         'internal.recordTitle': 'Registros',
         'internal.recordIntro': 'Esta área é para notas, decisões e atualizações internas.',
-        'internal.deskTitle': 'Correspondência',
-        'internal.deskIntro': 'A correspondência interna é reservada a membros autenticados da equipe.',
         'internal.divisionIntro': 'Esta página é reservada a membros autenticados da equipe.',
         'internal.route.public': 'Área pública',
         'internal.route.protected': 'Área privada',
@@ -7910,15 +7371,6 @@
         'internal.status.configError': 'Conexão indisponível. Verifique o Supabase.',
         'internal.status.authError': 'Acesso recusado. Verifique email e senha.',
         'internal.status.inactive': 'Perfil ainda não está ativo.',
-        'desk.composer': 'Campo de correspondência',
-        'desk.placeholder': 'Escreva uma correspondência discreta…',
-        'desk.send': 'ENVIAR',
-        'desk.empty': 'Ainda não há correspondência.',
-        'desk.local': 'Mensagem local',
-        'desk.locked': 'Entre para escrever.',
-        'desk.ready': 'Pronto para correspondência interna.',
-        'desk.delete': 'Apagar',
-        'desk.deletedMessage': '{user} apagou uma mensagem',
         'footer.rights': 'Todos os direitos reservados',
         'footer.privacy': 'Privacidade',
         'aria.openMenu': 'Abrir menu',
@@ -8017,8 +7469,7 @@
           mode: InternalState.mode,
           authStatus: InternalState.authStatus,
           ready: InternalState.ready,
-          user: InternalState.user,
-          ...detail
+          ...publicEventDetail(detail)
         }
       }));
     }
@@ -8188,9 +7639,8 @@
 
       document.querySelectorAll('[data-internal-gate]').forEach(gate => {
         const parentRoute = gate.closest('[data-view]')?.dataset.view || null;
-        const isDeskGate = gate.dataset.internalGate === 'desk';
         const belongsToCurrentRoute = parentRoute ? parentRoute === currentRoute : false;
-        const visible = shouldShowGates && (isDeskGate || belongsToCurrentRoute);
+        const visible = shouldShowGates && belongsToCurrentRoute;
 
         gate.setAttribute('aria-hidden', String(!visible));
       });
@@ -8295,24 +7745,21 @@
     }
 
     window.MoscatelliInternal = Object.freeze({
-      getBuild: () => 'patch18i-finance-css-consolidation',
+      getBuild: () => 'patch18u-realtime-event-validation-hardening',
       getMode: getInternalMode,
       isSignedIn: isInternalUserSignedIn,
       getCurrentUser: () => {
         const user = getCurrentInternalUser();
-        return user ? Object.freeze({ ...user }) : null;
+        return user ? Object.freeze(publicUserDetail(user)) : null;
       },
       getStatus: () => Object.freeze({
         authStatus: InternalState.authStatus,
         ready: InternalState.ready,
         route: currentRoute,
         mode: getInternalMode(),
-        deskOpen: document.body.classList.contains('desk-open'),
-        deskLoaded: DeskRuntime.loaded,
-        deskRetired: true,
+        signedIn: isInternalUserSignedIn(),
         realtimeStatus: RealtimeRuntime.status,
-        build: 'patch18i-finance-css-consolidation',
-        deskSignature: DeskRuntime.lastSignature
+        build: 'patch18u-realtime-event-validation-hardening'
       }),
       isInternalRoute,
       featureForRoute: internalFeatureForRoute
@@ -8352,7 +7799,6 @@
       }
 
       internalSessionLine?.setAttribute('aria-hidden', String(!isInternalUserSignedIn()));
-      updateDeskComposerState();
       updateInternalGateVisibility();
 
       if (!isInternalUserSignedIn() && InternalState.authStatus !== 'checking') {
@@ -8603,7 +8049,6 @@
     function updateMonogramGlowFromPointer(event) {
       if (
         currentRoute !== ROUTES.HOME ||
-        document.body.classList.contains('desk-open') ||
         !pageHint ||
         !monogramGlowOverlay ||
         !heroPointerGlow ||
@@ -8891,7 +8336,6 @@
     document.addEventListener('keydown', e => {
       if (e.key === 'Escape') {
         closeNav();
-        closeDesk();
         dashboardFilter?.classList.remove('is-open');
         dashboardFilterTrigger?.setAttribute('aria-expanded', 'false');
         closeEntryCategory();
@@ -8919,160 +8363,14 @@
       navigateTo(ROUTES.DIVISIONS);
       releaseTapFocus();
     });
-
-    function deskMessageFromComposer() {
-      return {
-        channel: DESK_DATA_CONFIG.channel,
-        body: deskMessageInput?.value.trim() || ''
-      };
-    }
-
-    function deskMessageTimeLabel(dateValue) {
-      const date = new Date(dateValue);
-      if (Number.isNaN(date.getTime())) return '';
-
-      return date.toLocaleTimeString(currentLang === 'pt' ? 'pt-BR' : 'en-GB', {
-        hour: '2-digit',
-        minute: '2-digit'
-      });
-    }
-
-    function updateDeskComposerState() {
-      const permissions = InternalData.messages.permissions();
-      const canSend = Boolean(permissions.can_send);
-
-      if (deskMessageInput) deskMessageInput.disabled = !canSend;
-      if (deskSendMessage) deskSendMessage.disabled = !canSend;
-      if (deskComposerMeta) {
-        const key = canSend ? 'desk.ready' : 'desk.locked';
-        deskComposerMeta.textContent = translations[currentLang]?.[key] || '';
-      }
-
-      deskPanel?.setAttribute('data-desk-state', canSend ? 'ready' : 'locked');
-      deskPanel?.setAttribute('data-provider', getInternalMode());
-    }
-
-    function deletedDeskMessageText(message) {
-      const displayName = message.deleted_by_display || message.sender_display || 'User';
-      const template = translations[currentLang]?.['desk.deletedMessage'] || '{user} deleted a message';
-      return template.replace('{user}', displayName);
-    }
-
-    function renderDeskMessageRecord(message) {
-      if (!deskThread || !message || deskThread.querySelector(`[data-message-id="${message.id}"]`)) return null;
-
-      deskEmpty?.remove();
-
-      const currentUser = getCurrentInternalUser();
-      const isSent = message.created_by && currentUser?.id === message.created_by;
-      const isDeleted = Boolean(message.deleted_at);
-      const permissions = InternalData.messages.permissions(message);
-
-      const item = document.createElement('article');
-      item.className = `desk-message ${isSent ? 'is-sent' : 'is-received'}${isDeleted ? ' is-deleted' : ''}`;
-      item.dataset.messageId = message.id;
-      item.dataset.createdBy = message.created_by || '';
-      item.dataset.channel = message.channel || DESK_DATA_CONFIG.channel;
-      item.dataset.messageSource = message.source || getInternalMode();
-      item.dataset.deleted = String(isDeleted);
-
-      const name = document.createElement('span');
-      name.className = 'desk-message-name';
-      name.textContent = message.sender_display || 'Member';
-
-      const body = document.createElement('p');
-      body.className = 'desk-message-body';
-      body.textContent = isDeleted ? deletedDeskMessageText(message) : (message.body || '');
-
-      const time = document.createElement('span');
-      time.className = 'desk-message-time';
-      time.textContent = deskMessageTimeLabel(message.created_at);
-
-      item.append(name, body, time);
-
-      if (permissions.can_delete) {
-        const deleteButton = document.createElement('button');
-        deleteButton.className = 'desk-message-delete';
-        deleteButton.type = 'button';
-        deleteButton.dataset.deleteDeskMessage = 'true';
-        deleteButton.textContent = translations[currentLang]?.['desk.delete'] || 'Delete';
-        item.appendChild(deleteButton);
-      }
-
-      deskThread.appendChild(item);
-
-      const wrap = deskThread.closest('[data-desk-thread-wrap]');
-      if (wrap) wrap.scrollTop = wrap.scrollHeight;
-
-      return item;
-    }
-
-    function deskMessagesSignature(messages = []) {
-      return messages
-        .map(message => [
-          message.id,
-          message.created_by || '',
-          message.body || '',
-          message.deleted_at || '',
-          message.deleted_by_display || '',
-          message.updated_at || message.created_at || ''
-        ].join('|'))
-        .join('||');
-    }
-
-    async function loadDeskMessages({ force = false, reason = 'manual' } = {}) {
-      if (!deskThread || !isInternalUserSignedIn()) return [];
-      if (DeskRuntime.loaded && !force) return [];
-
-      try {
-        const messages = await InternalData.messages.list({ channel: DESK_DATA_CONFIG.channel });
-        const signature = deskMessagesSignature(messages);
-        const changed = signature !== DeskRuntime.lastSignature;
-
-        if (force && changed) {
-          deskThread.querySelectorAll('.desk-message').forEach(message => message.remove());
-          if (deskEmpty && !deskThread.contains(deskEmpty)) deskThread.appendChild(deskEmpty);
-        }
-
-        if (!DeskRuntime.loaded || changed) {
-          messages.forEach(message => renderDeskMessageRecord(message));
-
-          if (messages.length) {
-            deskEmpty?.remove();
-          } else if (deskEmpty && !deskThread.contains(deskEmpty)) {
-            deskThread.appendChild(deskEmpty);
-          }
-        }
-
-        DeskRuntime.loaded = true;
-        DeskRuntime.lastSignature = signature;
-
-        window.dispatchEvent(new CustomEvent('moscatelli:desk-loaded', {
-          detail: {
-            count: messages.length,
-            channel: DESK_DATA_CONFIG.channel,
-            force,
-            reason,
-            changed
-          }
-        }));
-
-        return messages;
-      } catch (error) {
-        DeskRuntime.loaded = false;
-        window.dispatchEvent(new CustomEvent('moscatelli:desk-load-error', { detail: { error, reason } }));
-        return [];
-      }
-    }
-
     function dispatchRealtimeEvent(type, detail = {}) {
+      const safeDetail = publicEventDetail({
+        mode: getInternalMode(),
+        signedIn: isInternalUserSignedIn(),
+        ...detail
+      });
       window.dispatchEvent(new CustomEvent(`moscatelli:realtime-${type}`, {
-        detail: {
-          mode: getInternalMode(),
-          signedIn: isInternalUserSignedIn(),
-          user: getCurrentInternalUser(),
-          ...detail
-        }
+        detail: safeDetail
       }));
     }
 
@@ -9090,16 +8388,6 @@
       RealtimeRuntime[key] = null;
       dispatchRealtimeEvent('released', { label });
     }
-
-    function releaseDeskRealtime() {
-      releaseRealtimeChannel('deskChannel', 'desk');
-      if (RealtimeRuntime.deskRefreshTimer) {
-        clearTimeout(RealtimeRuntime.deskRefreshTimer);
-        RealtimeRuntime.deskRefreshTimer = null;
-      }
-      DeskRuntime.subscribed = false;
-    }
-
     function releaseDashboardRealtime() {
       releaseRealtimeChannel('dashboardChannel', 'record');
       releaseRealtimeChannel('attachmentChannel', 'record-attachments');
@@ -9110,216 +8398,9 @@
     }
 
     function releaseAllRealtime() {
-      releaseDeskRealtime();
       releaseDashboardRealtime();
       RealtimeRuntime.status = 'idle';
     }
-
-    function removeDeskMessageById(messageId) {
-      if (!messageId || !deskThread) return false;
-      const item = deskThread.querySelector(`[data-message-id="${messageId}"]`);
-      if (!item) return false;
-      item.remove();
-      if (deskEmpty && !deskThread.querySelector('.desk-message') && !deskThread.contains(deskEmpty)) deskThread.appendChild(deskEmpty);
-      return true;
-    }
-
-    function updateDeskMessageFromRealtime(message) {
-      if (!message?.id || !deskThread) return;
-      removeDeskMessageById(message.id);
-      renderDeskMessageRecord(message);
-    }
-
-    function scheduleDeskRealtimeReload(reason = 'desk-change') {
-      if (!isInternalUserSignedIn()) return;
-
-      if (RealtimeRuntime.deskRefreshTimer) {
-        clearTimeout(RealtimeRuntime.deskRefreshTimer);
-      }
-
-      RealtimeRuntime.deskRefreshTimer = setTimeout(() => {
-        RealtimeRuntime.deskRefreshTimer = null;
-
-        if (!document.body.classList.contains('desk-open')) {
-          DeskRuntime.loaded = false;
-          return;
-        }
-
-        DeskRuntime.loaded = false;
-        loadDeskMessages({ force: true, reason });
-        dispatchRealtimeEvent('desk-refresh', { reason });
-      }, 220);
-    }
-
-    function prepareDeskRealtimeHooks() {
-      return;
-      if (DeskRuntime.subscribed || RealtimeRuntime.deskChannel) return;
-
-      if (!DESK_DATA_CONFIG.realtimeEnabled || getInternalMode() !== 'supabase' || !isInternalUserSignedIn()) {
-        dispatchRealtimeEvent('desk-skipped', {
-          enabled: DESK_DATA_CONFIG.realtimeEnabled,
-          channel: DESK_DATA_CONFIG.channel,
-          table: DESK_DATA_CONFIG.table
-        });
-        return;
-      }
-
-      const client = createInternalSupabaseClient();
-      if (!client?.channel) {
-        dispatchRealtimeEvent('desk-unavailable', { table: DESK_DATA_CONFIG.table });
-        return;
-      }
-
-      const channel = client
-        .channel(`moscatelli-desk-${DESK_DATA_CONFIG.channel}`)
-        .on('postgres_changes', {
-          event: 'INSERT',
-          schema: 'public',
-          table: DESK_DATA_CONFIG.table,
-          filter: `channel=eq.${DESK_DATA_CONFIG.channel}`
-        }, payload => {
-          const message = InternalData.messages.fromRealtime(payload.new);
-          scheduleDeskRealtimeReload('desk-insert');
-          dispatchRealtimeEvent('desk-insert', { messageId: message?.id || payload.new?.id || null });
-        })
-        .on('postgres_changes', {
-          event: 'UPDATE',
-          schema: 'public',
-          table: DESK_DATA_CONFIG.table,
-          filter: `channel=eq.${DESK_DATA_CONFIG.channel}`
-        }, payload => {
-          const message = InternalData.messages.fromRealtime(payload.new);
-          scheduleDeskRealtimeReload('desk-update');
-          dispatchRealtimeEvent('desk-update', { messageId: message?.id || payload.new?.id || null });
-        })
-        .on('postgres_changes', {
-          event: 'DELETE',
-          schema: 'public',
-          table: DESK_DATA_CONFIG.table,
-          filter: `channel=eq.${DESK_DATA_CONFIG.channel}`
-        }, payload => {
-          const messageId = payload.old?.id || null;
-          scheduleDeskRealtimeReload('desk-delete');
-          dispatchRealtimeEvent('desk-delete', { messageId });
-        })
-        .subscribe(status => {
-          RealtimeRuntime.status = status;
-          dispatchRealtimeEvent('desk-status', { status, channel: DESK_DATA_CONFIG.channel, table: DESK_DATA_CONFIG.table });
-        });
-
-      RealtimeRuntime.deskChannel = channel;
-      DeskRuntime.subscribed = true;
-      window.dispatchEvent(new CustomEvent('moscatelli:desk-realtime-ready', {
-        detail: {
-          enabled: DESK_DATA_CONFIG.realtimeEnabled,
-          channel: DESK_DATA_CONFIG.channel,
-          table: DESK_DATA_CONFIG.table,
-          event: DESK_DATA_CONFIG.realtimeEvent
-        }
-      }));
-    }
-
-    async function sendDeskMessage() {
-      const payload = deskMessageFromComposer();
-      if (!payload.body) return null;
-
-      try {
-        const result = await InternalData.messages.send(payload);
-        if (!result.ok) return null;
-
-        renderDeskMessageRecord(result.message);
-        if (deskMessageInput) deskMessageInput.value = '';
-        scheduleDeskRealtimeReload('desk-send');
-
-        return result.message;
-      } catch (error) {
-        window.dispatchEvent(new CustomEvent('moscatelli:desk-send-error', { detail: { error } }));
-        return null;
-      }
-    }
-
-    function setDeskOpenState(isOpen) {
-      document.body.classList.toggle('desk-open', isOpen);
-      deskPanel?.setAttribute('aria-hidden', String(!isOpen));
-      deskScrim?.setAttribute('aria-hidden', String(!isOpen));
-      deskTrigger?.setAttribute('aria-expanded', String(isOpen));
-
-      window.dispatchEvent(new CustomEvent(isOpen ? 'moscatelli:desk-open' : 'moscatelli:desk-close', {
-        detail: DESK_CONFIG
-      }));
-    }
-
-    function stopDeskAuthoritativeSync() {
-      if (DeskRuntime.syncTimer) {
-        clearInterval(DeskRuntime.syncTimer);
-        DeskRuntime.syncTimer = null;
-      }
-    }
-
-    function syncDeskFromSource(reason = 'desk-sync') {
-      if (!isInternalUserSignedIn() || !document.body.classList.contains('desk-open')) return;
-      DeskRuntime.loaded = false;
-      loadDeskMessages({ force: true, reason });
-    }
-
-    function startDeskAuthoritativeSync() {
-      if (!isInternalUserSignedIn() || DeskRuntime.syncTimer) return;
-
-      DeskRuntime.syncTimer = setInterval(() => {
-        syncDeskFromSource('desk-poll');
-      }, 2600);
-    }
-
-    function openDesk() {
-      // Patch 14: The Desk has been retired from the website. Team correspondence now belongs in external tools.
-      closeDesk();
-      return;
-    }
-
-    function closeDesk() {
-      setDeskOpenState(false);
-      stopDeskAuthoritativeSync();
-      releaseTapFocus();
-    }
-
-    function toggleDesk() {
-      document.body.classList.contains('desk-open') ? closeDesk() : openDesk();
-    }
-
-    deskComposer?.addEventListener('submit', event => {
-      event.preventDefault();
-      sendDeskMessage();
-    });
-
-    deskMessageInput?.addEventListener('keydown', event => {
-      if (event.key !== 'Enter') return;
-      if (event.altKey || event.shiftKey || event.ctrlKey || event.metaKey || event.isComposing) return;
-
-      event.preventDefault();
-      sendDeskMessage();
-    });
-
-    deskThread?.addEventListener('click', async event => {
-      const deleteButton = event.target.closest('[data-delete-desk-message]');
-      if (!deleteButton) return;
-
-      const item = deleteButton.closest('[data-message-id]');
-      const messageId = item?.dataset.messageId;
-      if (!messageId) return;
-
-      deleteButton.disabled = true;
-      const result = await InternalData.messages.remove(messageId);
-
-      if (result.ok && result.message) {
-        updateDeskMessageFromRealtime(result.message);
-      } else {
-        deleteButton.disabled = false;
-      }
-    });
-
-    deskTrigger?.addEventListener('click', toggleDesk);
-    deskClose?.addEventListener('click', closeDesk);
-    deskScrim?.addEventListener('click', closeDesk);
 
 
 
@@ -9345,12 +8426,35 @@
     const FinanceRuntime = {
       loaded: false,
       loading: false,
+      saving: false,
       entries: [],
       activeView: 'ledger'
     };
 
     function financeText(key, fallback = '') {
       return translations[currentLang]?.[key] || fallback || '';
+    }
+
+    function isFinanceMissingMigrationError(error = {}) {
+      const parts = [
+        error?.code,
+        error?.message,
+        error?.details,
+        error?.hint
+      ].filter(Boolean).join(' ').toLowerCase();
+
+      return /42p01|finance_entries|relation .*does not exist|could not find the table|schema cache/.test(parts);
+    }
+
+    function financeLoadErrorMessage(error = {}) {
+      if (isFinanceMissingMigrationError(error)) {
+        return financeText(
+          'finance.error.missingMigration',
+          'Finance entries could not be loaded. Confirm that 34_patch18a_finance_entries.sql has been run.'
+        );
+      }
+
+      return financeText('finance.error.load', 'Finance entries could not be loaded.');
     }
 
     function financeStatusText(status) {
@@ -9586,8 +8690,8 @@
         return FinanceRuntime.entries;
       } catch (error) {
         FinanceRuntime.loaded = false;
-        setFinanceFeedback(financeText('finance.error.load', 'Finance entries could not be loaded.'), 'error');
-        window.dispatchEvent(new CustomEvent('moscatelli:finance-load-error', { detail: { error } }));
+        setFinanceFeedback(financeLoadErrorMessage(error), 'error');
+        window.dispatchEvent(new CustomEvent('moscatelli:finance-load-error', { detail: { error: publicErrorDetail(error) } }));
         return [];
       } finally {
         FinanceRuntime.loading = false;
@@ -9615,11 +8719,15 @@
     }
 
     async function createFinanceEntryFromForm() {
+      if (FinanceRuntime.saving) return;
+
       const payload = financePayloadFromForm();
-      if (!String(payload.description || '').trim() || !payload.amount || payload.amount <= 0) {
-        setFinanceFeedback(financeText('finance.error.invalid', 'Add a description and amount before saving.'), 'error');
+      if (!String(payload.description || '').trim() || !Number.isFinite(payload.amount) || payload.amount < FINANCE_DATA_CONFIG.minAmount) {
+        setFinanceFeedback(financeText('finance.error.invalid', 'Add a description and amount greater than zero before saving.'), 'error');
         return;
       }
+
+      FinanceRuntime.saving = true;
 
       if (financeEntrySubmit) {
         financeEntrySubmit.disabled = true;
@@ -9641,8 +8749,9 @@
         setFinanceFeedback(financeText('finance.added', 'Entry added'));
       } catch (error) {
         setFinanceFeedback(financeText('finance.error.save', 'The finance entry could not be saved.'), 'error');
-        window.dispatchEvent(new CustomEvent('moscatelli:finance-create-error', { detail: { error } }));
+        window.dispatchEvent(new CustomEvent('moscatelli:finance-create-error', { detail: { error: publicErrorDetail(error) } }));
       } finally {
+        FinanceRuntime.saving = false;
         if (financeEntrySubmit) {
           financeEntrySubmit.disabled = false;
           financeEntrySubmit.textContent = financeText('finance.add', 'Add entry');
@@ -10045,8 +9154,11 @@
     function validateDashboardRecord(payload) {
       if (payload?.rawTitle || payload?.rawBody) return true;
 
+      const hasAttachments = Boolean(payload?.attachments?.length);
       setDashboardComposerFeedback(
-        dashboardFeedbackText('dashboard.feedback.empty', 'Add a title or note before sending.'),
+        hasAttachments
+          ? dashboardFeedbackText('dashboard.feedback.emptyWithAttachments', 'Add a title or note before sending attachments.')
+          : dashboardFeedbackText('dashboard.feedback.empty', 'Add a title or note before sending.'),
         'error'
       );
       setCommitState('idle');
@@ -10250,9 +9362,13 @@
       const body = normaliseDashboardText(record.body);
       const hasAttachments = Array.isArray(record.attachments) && record.attachments.length > 0;
 
-      if (hasAttachments) return true;
-      if (isLegacyEmptyDashboardValue(title, body)) return false;
-      return Boolean(title || (body && body !== '—' && body !== '-'));
+      if (isLegacyEmptyDashboardValue(title, body)) {
+        return Boolean(hasAttachments && DASHBOARD_DATA_CONFIG.allowAttachmentOnlyEntries);
+      }
+
+      return Boolean(title || (body && body !== '—' && body !== '-') || (
+        hasAttachments && DASHBOARD_DATA_CONFIG.allowAttachmentOnlyEntries
+      ));
     }
 
     function renderDashboardPostRecord(record, { prepend = true, replace = false } = {}) {
@@ -10416,7 +9532,7 @@
       try {
         return await loadDashboardRecords({ channel: DASHBOARD_DATA_CONFIG.defaultChannel });
       } catch (error) {
-        window.dispatchEvent(new CustomEvent('moscatelli:record-load-error', { detail: { error } }));
+        window.dispatchEvent(new CustomEvent('moscatelli:record-load-error', { detail: { error: publicErrorDetail(error) } }));
         return [];
       } finally {
         DashboardRuntime.loading = false;
@@ -10581,7 +9697,7 @@
 
         if (missingSelectedAttachments) {
           await InternalData.posts.remove(record.id).catch(error => {
-            window.dispatchEvent(new CustomEvent('moscatelli:record-attachment-rollback-error', { detail: { error, postId: record.id } }));
+            window.dispatchEvent(new CustomEvent('moscatelli:record-attachment-rollback-error', { detail: { error: publicErrorDetail(error), postId: record.id } }));
           });
 
           removeDashboardPostById(record.id);
@@ -10594,7 +9710,7 @@
               postId: record.id,
               expected: expectedAttachmentCount,
               persisted: persistedAttachmentCount,
-              errors: record.attachment_errors || []
+              errors: (record.attachment_errors || []).map(publicErrorDetail).filter(Boolean)
             }
           }));
           return null;
@@ -10610,6 +9726,11 @@
             dashboardFeedbackText('dashboard.feedback.attachErrors', 'Entry saved, but one or more attachments could not be added.'),
             'warning'
           );
+        } else if (record.attachment_warnings?.length) {
+          setDashboardComposerFeedback(
+            dashboardFeedbackText('dashboard.feedback.attachFallback', 'Entry saved. One attachment used the backup preview method.'),
+            'warning'
+          );
         }
 
         return record;
@@ -10618,7 +9739,7 @@
           dashboardFeedbackText('dashboard.feedback.error', 'The entry could not be saved. Please try again.'),
           'error'
         );
-        window.dispatchEvent(new CustomEvent('moscatelli:record-create-error', { detail: { error } }));
+        window.dispatchEvent(new CustomEvent('moscatelli:record-create-error', { detail: { error: publicErrorDetail(error) } }));
         return null;
       } finally {
         if (expectedAttachmentCount) {
@@ -10653,15 +9774,21 @@
 
         if (record) {
           const hadAttachmentErrors = Boolean(record.attachment_errors?.length);
+          const hadAttachmentWarnings = Boolean(record.attachment_warnings?.length);
           resetDashboardComposer({
             preserveAttachmentUrls: record.source === 'mock',
-            preserveFeedback: hadAttachmentErrors
+            preserveFeedback: hadAttachmentErrors || hadAttachmentWarnings
           });
           setCommitState('confirmed');
 
           if (hadAttachmentErrors) {
             setDashboardComposerFeedback(
               dashboardFeedbackText('dashboard.feedback.attachErrors', 'Entry saved, but one or more attachments could not be added.'),
+              'warning'
+            );
+          } else if (hadAttachmentWarnings) {
+            setDashboardComposerFeedback(
+              dashboardFeedbackText('dashboard.feedback.attachFallback', 'Entry saved. One attachment used the backup preview method.'),
               'warning'
             );
           } else {
@@ -10888,7 +10015,7 @@
             dashboardFeedbackText('dashboard.feedback.attachResize', 'One attachment could not be prepared for preview.'),
             'warning'
           );
-          window.dispatchEvent(new CustomEvent('moscatelli:record-attachment-resize-error', { detail: { error, fileName: file.name } }));
+          window.dispatchEvent(new CustomEvent('moscatelli:record-attachment-resize-error', { detail: { error: publicErrorDetail(error), fileName: file.name } }));
         }
       }
 
@@ -10896,15 +10023,6 @@
 
       if (dashboardAttachmentInput) dashboardAttachmentInput.value = '';
     });
-
-
-    function clearDeskThread() {
-      stopDeskAuthoritativeSync();
-      deskThread?.querySelectorAll('.desk-message').forEach(message => message.remove());
-      if (deskThread && deskEmpty && !deskThread.contains(deskEmpty)) deskThread.appendChild(deskEmpty);
-      DeskRuntime.loaded = false;
-      DeskRuntime.lastSignature = '';
-    }
 
     function clearInternalRuntimeViews() {
       releaseAllRealtime();
@@ -10934,7 +10052,6 @@
       releaseAllRealtime();
       DashboardRuntime.loaded = false;
       FinanceRuntime.loaded = false;
-      DeskRuntime.loaded = false;
       loadVisibleInternalRuntimeViews({ force: true });
     });
 
