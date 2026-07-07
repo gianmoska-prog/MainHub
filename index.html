@@ -2738,6 +2738,48 @@
       }
     }
 
+
+
+    /* Patch 18B — Finance visibility guard
+       The Finance division must not depend on any route reveal sequence. When the
+       Finance route is active and the user is signed in, keep the workspace,
+       header, tabs, active panel, and form explicitly visible. */
+    body[data-route='divisions/finance'][data-internal-auth='signed_in'] .route-division-finance.is-active .finance-workspace,
+    body.internal-unlocked[data-route='divisions/finance'] .route-division-finance.is-active .finance-workspace {
+      display: flex !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+      transform: none !important;
+      min-height: min(680px, calc(100dvh - var(--header-h) - var(--footer-h) - 52px));
+    }
+
+    body[data-route='divisions/finance'][data-internal-auth='signed_in'] .route-division-finance.is-active .finance-header,
+    body[data-route='divisions/finance'][data-internal-auth='signed_in'] .route-division-finance.is-active .finance-tabs,
+    body[data-route='divisions/finance'][data-internal-auth='signed_in'] .route-division-finance.is-active .finance-panel.is-active,
+    body.internal-unlocked[data-route='divisions/finance'] .route-division-finance.is-active .finance-header,
+    body.internal-unlocked[data-route='divisions/finance'] .route-division-finance.is-active .finance-tabs,
+    body.internal-unlocked[data-route='divisions/finance'] .route-division-finance.is-active .finance-panel.is-active {
+      visibility: visible !important;
+      opacity: 1 !important;
+      transform: none !important;
+    }
+
+    .route-division-finance .finance-header,
+    .route-division-finance .finance-panel {
+      flex: 0 0 auto;
+    }
+
+    .route-division-finance .finance-panel.is-active {
+      display: block;
+    }
+
+    @media (max-width: 640px) {
+      body[data-route='divisions/finance'][data-internal-auth='signed_in'] .route-division-finance.is-active .finance-workspace,
+      body.internal-unlocked[data-route='divisions/finance'] .route-division-finance.is-active .finance-workspace {
+        min-height: calc(100dvh - var(--header-h) - var(--footer-h));
+      }
+    }
+
     .route-division-page {
       padding: 0;
       align-items: center;
@@ -7949,7 +7991,7 @@
     }
 
     window.MoscatelliInternal = Object.freeze({
-      getBuild: () => 'patch18a-finance-division-v1',
+      getBuild: () => 'patch18b-finance-visibility-css-guard',
       getMode: getInternalMode,
       isSignedIn: isInternalUserSignedIn,
       getCurrentUser: () => {
@@ -7965,7 +8007,7 @@
         deskLoaded: DeskRuntime.loaded,
         deskRetired: true,
         realtimeStatus: RealtimeRuntime.status,
-        build: 'patch18a-finance-division-v1',
+        build: 'patch18b-finance-visibility-css-guard',
         deskSignature: DeskRuntime.lastSignature
       }),
       isInternalRoute,
@@ -9075,6 +9117,16 @@
       if (!financeFeedback) return;
       financeFeedback.textContent = message;
       financeFeedback.classList.toggle('is-error', tone === 'error');
+    }
+
+    function mountFinanceWorkspace() {
+      if (!financeWorkspace) return;
+      financeWorkspace.hidden = false;
+      financeWorkspace.removeAttribute('aria-hidden');
+      financeWorkspace.classList.add('is-mounted');
+      if (currentRoute === ROUTES.FINANCE) {
+        financeWorkspace.scrollTop = 0;
+      }
     }
 
     function setFinanceTab(view = 'ledger') {
@@ -10570,6 +10622,7 @@
       }
 
       if (currentRoute === ROUTES.FINANCE) {
+        mountFinanceWorkspace();
         loadFinanceEntries({ force });
       }
     }
