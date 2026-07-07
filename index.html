@@ -5579,6 +5579,684 @@
       }
     }
 
+
+
+    /* Patch 18C — Finance formatting reset
+       Keep the Finance division inside a disciplined viewport frame and prevent the
+       ledger, totals, and add-entry form from collapsing into a single cramped row. */
+    body[data-route='divisions/finance'] .route-division-finance.is-active {
+      align-items: center;
+      justify-content: flex-start;
+      overflow: hidden;
+    }
+
+    body[data-route='divisions/finance'][data-internal-auth='signed_in'] .route-division-finance.is-active .finance-workspace,
+    body.internal-unlocked[data-route='divisions/finance'] .route-division-finance.is-active .finance-workspace {
+      width: min(88vw, 1500px) !important;
+      height: calc(100dvh - var(--header-h) - var(--footer-h) - clamp(42px, 6.5vh, 86px)) !important;
+      max-height: calc(100dvh - var(--header-h) - var(--footer-h) - clamp(42px, 6.5vh, 86px)) !important;
+      min-height: 0 !important;
+      margin: clamp(20px, 3.2vh, 42px) auto 0 !important;
+      padding: 0 !important;
+      gap: clamp(14px, 1.5vw, 22px);
+      overflow-x: hidden;
+      overflow-y: auto;
+    }
+
+    body[data-route='divisions/finance'] .finance-header {
+      width: 100%;
+      grid-template-columns: minmax(0, 1fr) minmax(280px, 380px);
+      align-items: center;
+      gap: clamp(28px, 5vw, 80px);
+      padding: 0 0 clamp(18px, 2.1vh, 28px);
+      margin: 0;
+    }
+
+    body[data-route='divisions/finance'] .finance-kicker {
+      margin-bottom: clamp(10px, 1.2vh, 16px);
+    }
+
+    body[data-route='divisions/finance'] .finance-title {
+      max-width: 100%;
+      font-size: clamp(30px, 3.15vw, 48px);
+      letter-spacing: clamp(0.14em, 0.9vw, 0.22em);
+      line-height: 1.05;
+      overflow-wrap: normal;
+      white-space: normal;
+    }
+
+    body[data-route='divisions/finance'] .finance-intro {
+      max-width: 760px;
+      margin-top: clamp(12px, 1.35vh, 18px);
+    }
+
+    body[data-route='divisions/finance'] .finance-tabs {
+      width: 100%;
+      min-width: 0;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      align-self: center;
+    }
+
+    body[data-route='divisions/finance'] .finance-panel {
+      width: 100%;
+      overflow: hidden;
+    }
+
+    body[data-route='divisions/finance'] .finance-totals {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    body[data-route='divisions/finance'] .finance-total {
+      min-height: 86px;
+      padding: clamp(18px, 1.75vw, 28px) clamp(18px, 1.85vw, 30px);
+    }
+
+    body[data-route='divisions/finance'] .finance-total-label {
+      min-height: 22px;
+    }
+
+    body[data-route='divisions/finance'] .finance-table-scroll {
+      width: 100%;
+      max-width: 100%;
+    }
+
+    body[data-route='divisions/finance'] .finance-table {
+      min-width: 1040px;
+    }
+
+    body[data-route='divisions/finance'] .finance-empty,
+    body[data-route='divisions/finance'] .finance-feedback {
+      width: 100%;
+      padding: 22px 24px;
+    }
+
+    body[data-route='divisions/finance'] .finance-form {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      border-top: 1px solid var(--glass-border);
+    }
+
+    body[data-route='divisions/finance'] .finance-form label,
+    body[data-route='divisions/finance'] .finance-submit-wrap {
+      min-width: 0;
+      padding: 17px 18px;
+      border-left: 1px solid var(--glass-border);
+      border-top: 0;
+    }
+
+    body[data-route='divisions/finance'] .finance-form label:first-child,
+    body[data-route='divisions/finance'] .finance-form label:nth-child(5) {
+      border-left: 0;
+    }
+
+    body[data-route='divisions/finance'] .finance-form label:nth-child(n+5),
+    body[data-route='divisions/finance'] .finance-submit-wrap {
+      border-top: 1px solid var(--glass-border);
+    }
+
+    body[data-route='divisions/finance'] .finance-form label:nth-child(1) { grid-column: 1 / span 3; }
+    body[data-route='divisions/finance'] .finance-form label:nth-child(2) { grid-column: 4 / span 4; }
+    body[data-route='divisions/finance'] .finance-form label:nth-child(3) { grid-column: 8 / span 3; }
+    body[data-route='divisions/finance'] .finance-form label:nth-child(4) { grid-column: 11 / span 2; }
+    body[data-route='divisions/finance'] .finance-form label:nth-child(5) { grid-column: 1 / span 2; }
+    body[data-route='divisions/finance'] .finance-form label:nth-child(6) { grid-column: 3 / span 2; }
+    body[data-route='divisions/finance'] .finance-form label:nth-child(7) { grid-column: 5 / span 3; }
+    body[data-route='divisions/finance'] .finance-form label:nth-child(8) { grid-column: 8 / span 3; }
+    body[data-route='divisions/finance'] .finance-submit-wrap { grid-column: 11 / span 2; }
+
+    body[data-route='divisions/finance'] .finance-form input,
+    body[data-route='divisions/finance'] .finance-form select,
+    body[data-route='divisions/finance'] .finance-form textarea {
+      min-height: 34px;
+      font-size: 16px;
+      line-height: 1.35;
+    }
+
+    body[data-route='divisions/finance'] .finance-form textarea {
+      min-height: 48px;
+      max-height: 120px;
+    }
+
+    body[data-route='divisions/finance'] .finance-submit-wrap {
+      align-items: stretch;
+    }
+
+    body[data-route='divisions/finance'] .finance-submit {
+      min-height: 54px;
+    }
+
+    @media (max-width: 1280px) {
+      body[data-route='divisions/finance'] .finance-header {
+        grid-template-columns: 1fr;
+        align-items: start;
+      }
+
+      body[data-route='divisions/finance'] .finance-tabs {
+        width: min(100%, 520px);
+      }
+
+      body[data-route='divisions/finance'] .finance-totals {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      body[data-route='divisions/finance'] .finance-total:nth-child(3) {
+        border-left: 0;
+        border-top: 1px solid var(--glass-border);
+      }
+
+      body[data-route='divisions/finance'] .finance-total:nth-child(4) {
+        border-top: 1px solid var(--glass-border);
+      }
+
+      body[data-route='divisions/finance'] .finance-form {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      body[data-route='divisions/finance'] .finance-form label,
+      body[data-route='divisions/finance'] .finance-submit-wrap,
+      body[data-route='divisions/finance'] .finance-form label:nth-child(1),
+      body[data-route='divisions/finance'] .finance-form label:nth-child(2),
+      body[data-route='divisions/finance'] .finance-form label:nth-child(3),
+      body[data-route='divisions/finance'] .finance-form label:nth-child(4),
+      body[data-route='divisions/finance'] .finance-form label:nth-child(5),
+      body[data-route='divisions/finance'] .finance-form label:nth-child(6),
+      body[data-route='divisions/finance'] .finance-form label:nth-child(7),
+      body[data-route='divisions/finance'] .finance-form label:nth-child(8) {
+        grid-column: auto;
+      }
+
+      body[data-route='divisions/finance'] .finance-form label:nth-child(odd) {
+        border-left: 0;
+      }
+
+      body[data-route='divisions/finance'] .finance-form label:nth-child(n+3),
+      body[data-route='divisions/finance'] .finance-submit-wrap {
+        border-top: 1px solid var(--glass-border);
+      }
+
+      body[data-route='divisions/finance'] .finance-submit-wrap {
+        grid-column: 1 / -1;
+        border-left: 0;
+      }
+    }
+
+    @media (max-width: 640px) {
+      body[data-route='divisions/finance'][data-internal-auth='signed_in'] .route-division-finance.is-active .finance-workspace,
+      body.internal-unlocked[data-route='divisions/finance'] .route-division-finance.is-active .finance-workspace {
+        width: calc(100vw - 32px) !important;
+        height: calc(100dvh - var(--header-h) - var(--footer-h) - 28px) !important;
+        max-height: calc(100dvh - var(--header-h) - var(--footer-h) - 28px) !important;
+        margin-top: 14px !important;
+      }
+
+      body[data-route='divisions/finance'] .finance-header {
+        gap: 18px;
+        padding-bottom: 18px;
+      }
+
+      body[data-route='divisions/finance'] .finance-title {
+        font-size: clamp(26px, 9vw, 34px);
+        letter-spacing: 0.12em;
+      }
+
+      body[data-route='divisions/finance'] .finance-tabs {
+        width: 100%;
+      }
+
+      body[data-route='divisions/finance'] .finance-totals,
+      body[data-route='divisions/finance'] .finance-form {
+        grid-template-columns: 1fr;
+      }
+
+      body[data-route='divisions/finance'] .finance-total,
+      body[data-route='divisions/finance'] .finance-total:nth-child(3),
+      body[data-route='divisions/finance'] .finance-total:nth-child(4),
+      body[data-route='divisions/finance'] .finance-form label,
+      body[data-route='divisions/finance'] .finance-form label:nth-child(odd),
+      body[data-route='divisions/finance'] .finance-form label:nth-child(n+3),
+      body[data-route='divisions/finance'] .finance-submit-wrap {
+        border-left: 0;
+        border-top: 1px solid var(--glass-border);
+      }
+
+      body[data-route='divisions/finance'] .finance-total:first-child,
+      body[data-route='divisions/finance'] .finance-form label:first-child {
+        border-top: 0;
+      }
+
+      body[data-route='divisions/finance'] .finance-table {
+        min-width: 840px;
+      }
+    }
+
+
+
+
+
+    /* Patch 18D — Whole-site readability pass
+       Raise the practical minimum size/contrast of small labels and body copy
+       without changing route structure, data logic, colours, or interaction flow. */
+    html {
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
+    }
+
+    body {
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    .logo-mark span {
+      font-size: clamp(13px, 0.62vw, 15px);
+      opacity: 0.76;
+      letter-spacing: 0.34em;
+    }
+
+    .hamburger {
+      opacity: 0.84;
+    }
+
+    .division-return,
+    .internal-session-line,
+    footer span,
+    .language-toggle,
+    .side-nav nav a,
+    .dashboard-filter-trigger,
+    .dashboard-filter-menu button,
+    .dashboard-category-trigger,
+    .dashboard-category-menu button,
+    .dashboard-upload,
+    .dashboard-commit,
+    .dashboard-post-foot,
+    .dashboard-delete-entry,
+    .finance-tabs button,
+    .finance-total-label,
+    .finance-table th,
+    .finance-status,
+    .finance-submit,
+    .finance-empty,
+    .finance-feedback {
+      font-size: clamp(8.8px, 0.48vw, 10.4px);
+      line-height: 1.55;
+      opacity: 0.62;
+    }
+
+    .side-nav nav a {
+      font-size: clamp(13px, 0.76vw, 16px);
+      opacity: 0.72;
+      line-height: 1.45;
+    }
+
+    .internal-session-user,
+    .dashboard-filter-value,
+    .finance-tabs button.is-active,
+    .finance-total-value,
+    .finance-money {
+      opacity: 0.86;
+    }
+
+    .hero-roma-signature,
+    .gallery-caption,
+    .division-door-subtitle,
+    .division-panel p,
+    .internal-gate-panel p,
+    .dashboard-record-brief,
+    .dashboard-entry-note,
+    .dashboard-upload-note,
+    .dashboard-post p,
+    .finance-intro,
+    .finance-note,
+    .finance-form label {
+      font-weight: 400;
+      line-height: 1.62;
+      color: var(--cream);
+      opacity: 0.68;
+    }
+
+    .dashboard-input,
+    .dashboard-textarea,
+    .dashboard-category-trigger,
+    .finance-table td,
+    .finance-form input,
+    .finance-form select,
+    .finance-form textarea,
+    .internal-gate-input {
+      font-size: clamp(16.5px, 0.92vw, 18px);
+      font-weight: 400;
+      line-height: 1.45;
+      color: var(--cream);
+      opacity: 0.84;
+    }
+
+    .dashboard-input::placeholder,
+    .dashboard-textarea::placeholder,
+    .finance-form input::placeholder,
+    .finance-form textarea::placeholder,
+    .internal-gate-input::placeholder {
+      color: var(--cream);
+      opacity: 0.46;
+    }
+
+    .dashboard-kicker,
+    .dashboard-entry-meta,
+    .dashboard-post-category,
+    .dashboard-post-date,
+    .dashboard-post-author,
+    .finance-kicker,
+    .finance-reserved-title,
+    .internal-gate-kicker,
+    .internal-gate-status {
+      font-size: clamp(8.8px, 0.5vw, 10.2px);
+      opacity: 0.58;
+      line-height: 1.65;
+    }
+
+    .dashboard-post h2,
+    .finance-title,
+    .internal-gate-title,
+    .division-door-title {
+      opacity: 0.9;
+    }
+
+    .dashboard-post p {
+      max-width: 760px;
+      font-size: clamp(17px, 0.98vw, 19px);
+    }
+
+    .dashboard-post-foot,
+    .dashboard-delete-entry {
+      opacity: 0.42;
+    }
+
+    .dashboard-attachment span,
+    .attachment-viewer-meta,
+    .attachment-viewer-count {
+      font-size: clamp(9px, 0.48vw, 10.5px);
+      opacity: 0.68;
+    }
+
+    .finance-total-label,
+    .finance-table th {
+      opacity: 0.52;
+    }
+
+    .finance-table td {
+      opacity: 0.82;
+    }
+
+    .finance-form label {
+      font-size: clamp(14px, 0.78vw, 15.5px);
+    }
+
+    .finance-submit {
+      opacity: 0.82;
+    }
+
+    @media (max-width: 760px) {
+      .division-return,
+      .internal-session-line,
+      footer span,
+      .language-toggle,
+      .dashboard-filter-trigger,
+      .dashboard-filter-menu button,
+      .dashboard-category-trigger,
+      .dashboard-category-menu button,
+      .dashboard-upload,
+      .dashboard-commit,
+      .finance-tabs button,
+      .finance-total-label,
+      .finance-table th,
+      .finance-status,
+      .finance-submit {
+        font-size: 10px;
+        letter-spacing: 0.18em;
+      }
+
+      .side-nav nav a {
+        font-size: 15px;
+      }
+
+      .dashboard-post p,
+      .finance-intro,
+      .division-panel p,
+      .internal-gate-panel p {
+        font-size: 18px;
+        line-height: 1.65;
+      }
+    }
+
+
+    /* Patch 18E — Full-site readability floor
+       Extends the readability pass beyond Finance by establishing a practical
+       minimum size/contrast for navigation, public pages, internal gates,
+       Dashboard/Record, Finance, forms, controls, and small metadata. */
+    body {
+      font-size: 17px;
+      line-height: 1.55;
+    }
+
+    .logo-mark span,
+    .internal-session-line,
+    .division-return,
+    .language-toggle,
+    footer span,
+    .side-nav .nav-label,
+    .side-nav nav a .num,
+    .division-door .roman,
+    .dashboard-kicker,
+    .dashboard-entry-meta,
+    .dashboard-post-date,
+    .dashboard-post-category,
+    .dashboard-post-author,
+    .dashboard-post-foot,
+    .dashboard-delete-entry,
+    .dashboard-filter-trigger,
+    .dashboard-filter-menu button,
+    .dashboard-category-trigger,
+    .dashboard-category-menu button,
+    .dashboard-upload,
+    .dashboard-commit,
+    .dashboard-composer-feedback,
+    .dashboard-attachment span,
+    .attachment-viewer-meta,
+    .attachment-viewer-count,
+    .finance-kicker,
+    .finance-tabs button,
+    .finance-total-label,
+    .finance-table th,
+    .finance-status,
+    .finance-submit,
+    .finance-empty,
+    .finance-feedback,
+    .finance-reserved-title,
+    .global-auth-label,
+    .global-auth-status,
+    .internal-gate-kicker,
+    .internal-gate-status {
+      font-size: clamp(10.5px, 0.58vw, 12px);
+      line-height: 1.55;
+      opacity: 0.74;
+    }
+
+    .logo-mark span,
+    .internal-session-user,
+    .dashboard-filter-value,
+    .finance-total-value,
+    .finance-money,
+    .finance-tabs button.is-active,
+    .dashboard-category-menu button.is-active,
+    .dashboard-filter-menu button.is-active {
+      opacity: 0.92;
+    }
+
+    .side-nav nav a,
+    .side-nav nav .nav-reserved {
+      font-size: clamp(15px, 0.82vw, 18px);
+      line-height: 1.5;
+      opacity: 0.82;
+    }
+
+    .gallery-caption,
+    .hero-roma-signature,
+    .division-door-subtitle,
+    .division-panel p,
+    .global-auth-copy,
+    .internal-gate-panel p,
+    .dashboard-record-brief,
+    .dashboard-entry-note,
+    .dashboard-upload-note,
+    .dashboard-post p,
+    .finance-intro,
+    .finance-note,
+    .finance-form label,
+    .finance-table td,
+    .attachment-viewer-title {
+      color: var(--cream);
+      opacity: 0.78;
+      line-height: 1.68;
+    }
+
+    .gallery-caption {
+      font-size: clamp(16px, 0.9vw, 19px);
+    }
+
+    .division-door-title {
+      font-size: clamp(13px, 0.78vw, 16px);
+      opacity: 0.88;
+    }
+
+    .division-panel p,
+    .global-auth-copy,
+    .internal-gate-panel p,
+    .dashboard-post p,
+    .finance-intro,
+    .finance-table td,
+    .finance-form input,
+    .finance-form select,
+    .finance-form textarea,
+    .dashboard-input,
+    .dashboard-textarea,
+    .internal-gate-input,
+    .global-auth-input {
+      font-size: clamp(17px, 0.96vw, 20px);
+    }
+
+    .dashboard-title,
+    .finance-title,
+    .internal-gate-title,
+    .global-auth-title {
+      opacity: 0.94;
+      text-shadow: 0 0 18px rgba(242, 237, 228, 0.08);
+    }
+
+    .dashboard-post h2 {
+      font-size: clamp(18px, 1.05vw, 23px);
+      opacity: 0.92;
+      line-height: 1.45;
+    }
+
+    .dashboard-input::placeholder,
+    .dashboard-textarea::placeholder,
+    .finance-form input::placeholder,
+    .finance-form textarea::placeholder,
+    .internal-gate-input::placeholder,
+    .global-auth-input::placeholder {
+      color: var(--cream);
+      opacity: 0.58;
+    }
+
+    .dashboard-input,
+    .dashboard-textarea,
+    .dashboard-category-trigger,
+    .finance-form input,
+    .finance-form select,
+    .finance-form textarea,
+    .internal-gate-input,
+    .global-auth-input {
+      opacity: 0.9;
+    }
+
+    .dashboard-upload,
+    .dashboard-commit,
+    .finance-submit,
+    .global-auth-button,
+    .internal-gate-button,
+    .division-return,
+    .internal-session-signout {
+      opacity: 0.86;
+    }
+
+    .dashboard-upload:focus-visible,
+    .dashboard-commit:focus-visible,
+    .finance-submit:focus-visible,
+    .global-auth-button:focus-visible,
+    .internal-gate-button:focus-visible,
+    .side-nav nav a:focus-visible,
+    .division-door:focus-visible,
+    .gallery-panel:focus-visible,
+    .dashboard-filter-trigger:focus-visible,
+    .dashboard-category-trigger:focus-visible,
+    .finance-tabs button:focus-visible {
+      outline: 1px solid var(--amber-pale);
+      outline-offset: 4px;
+    }
+
+    @media (max-width: 760px) {
+      body {
+        font-size: 17px;
+      }
+
+      .logo-mark span,
+      .internal-session-line,
+      .division-return,
+      .language-toggle,
+      footer span,
+      .dashboard-filter-trigger,
+      .dashboard-filter-menu button,
+      .dashboard-category-trigger,
+      .dashboard-category-menu button,
+      .dashboard-upload,
+      .dashboard-commit,
+      .finance-tabs button,
+      .finance-total-label,
+      .finance-table th,
+      .finance-status,
+      .finance-submit,
+      .global-auth-label,
+      .global-auth-status,
+      .internal-gate-kicker,
+      .internal-gate-status {
+        font-size: 11px;
+        line-height: 1.6;
+        letter-spacing: 0.18em;
+      }
+
+      .side-nav nav a {
+        font-size: 16.5px;
+        line-height: 1.6;
+      }
+
+      .gallery-caption,
+      .division-panel p,
+      .global-auth-copy,
+      .internal-gate-panel p,
+      .dashboard-post p,
+      .dashboard-input,
+      .dashboard-textarea,
+      .finance-intro,
+      .finance-table td,
+      .finance-form input,
+      .finance-form select,
+      .finance-form textarea,
+      .internal-gate-input,
+      .global-auth-input {
+        font-size: 18px;
+        line-height: 1.68;
+      }
+    }
+
+
   </style>
 </head>
 <body data-internal-mode="supabase" data-internal-auth="signed_out" data-internal-ready="false" data-internal-route="public" data-internal-feature="public">
@@ -7991,7 +8669,7 @@
     }
 
     window.MoscatelliInternal = Object.freeze({
-      getBuild: () => 'patch18b-finance-visibility-css-guard',
+      getBuild: () => 'patch18e-full-site-readability-floor',
       getMode: getInternalMode,
       isSignedIn: isInternalUserSignedIn,
       getCurrentUser: () => {
@@ -8007,7 +8685,7 @@
         deskLoaded: DeskRuntime.loaded,
         deskRetired: true,
         realtimeStatus: RealtimeRuntime.status,
-        build: 'patch18b-finance-visibility-css-guard',
+        build: 'patch18e-full-site-readability-floor',
         deskSignature: DeskRuntime.lastSignature
       }),
       isInternalRoute,
