@@ -2260,6 +2260,484 @@
       transform: translateY(6px);
     }
 
+
+
+    /* Patch 18A — Finance Division v1 */
+    .finance-workspace {
+      width: min(92vw, 1480px);
+      max-height: calc(100dvh - var(--header-h) - var(--footer-h) - 52px);
+      margin: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      padding: clamp(28px, 3.6vw, 54px);
+      overflow: hidden auto;
+      scrollbar-width: thin;
+      scrollbar-color: var(--glass-border) transparent;
+    }
+
+    .finance-workspace,
+    .finance-workspace * {
+      border-radius: 0 !important;
+    }
+
+    .finance-workspace::-webkit-scrollbar,
+    .finance-table-scroll::-webkit-scrollbar,
+    .finance-form textarea::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    .finance-workspace::-webkit-scrollbar-track,
+    .finance-table-scroll::-webkit-scrollbar-track,
+    .finance-form textarea::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .finance-workspace::-webkit-scrollbar-thumb,
+    .finance-table-scroll::-webkit-scrollbar-thumb,
+    .finance-form textarea::-webkit-scrollbar-thumb {
+      background: var(--glass-border);
+    }
+
+    .finance-header {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: end;
+      gap: 28px;
+      border-bottom: 1px solid var(--glass-border);
+      padding-bottom: 18px;
+    }
+
+    .finance-kicker,
+    .finance-title,
+    .finance-tabs button,
+    .finance-total-label,
+    .finance-total-value,
+    .finance-table th,
+    .finance-status,
+    .finance-submit,
+    .finance-reserved-title,
+    .finance-empty,
+    .finance-feedback {
+      font-family: 'Cinzel', serif;
+      text-transform: uppercase;
+    }
+
+    .finance-kicker {
+      font-size: 8px;
+      font-weight: 300;
+      letter-spacing: 0.34em;
+      color: var(--cream);
+      opacity: 0.36;
+      margin-bottom: 12px;
+    }
+
+    .finance-title {
+      font-size: clamp(22px, 2.2vw, 34px);
+      font-weight: 300;
+      letter-spacing: 0.22em;
+      color: var(--cream);
+      opacity: 0.82;
+      line-height: 1.16;
+    }
+
+    .finance-intro {
+      max-width: 640px;
+      margin-top: 14px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(15px, 1.04vw, 18px);
+      font-weight: 300;
+      line-height: 1.55;
+      letter-spacing: 0.035em;
+      color: var(--cream);
+      opacity: 0.52;
+    }
+
+    .finance-tabs {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(92px, 1fr));
+      gap: 0;
+      min-width: min(420px, 44vw);
+      border-top: 1px solid var(--glass-border);
+      border-bottom: 1px solid var(--glass-border);
+    }
+
+    .finance-tabs button {
+      min-height: 42px;
+      border: 0;
+      border-left: 1px solid var(--glass-border);
+      background: transparent;
+      color: var(--cream);
+      opacity: 0.34;
+      font-size: 8px;
+      font-weight: 300;
+      letter-spacing: 0.25em;
+      cursor: pointer;
+      border-bottom: 1px solid transparent;
+    }
+
+    .finance-tabs button:first-child {
+      border-left: 0;
+    }
+
+    .finance-tabs button.is-active {
+      opacity: 0.82;
+      font-weight: 400;
+      border-bottom-color: var(--cream);
+    }
+
+    .finance-tabs button.is-disabled {
+      opacity: 0.18;
+      cursor: not-allowed;
+    }
+
+    .finance-panel {
+      display: none;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      box-shadow: 0 1px 40px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.04);
+      backdrop-filter: blur(28px) saturate(150%) brightness(1.02);
+      -webkit-backdrop-filter: blur(28px) saturate(150%) brightness(1.02);
+    }
+
+    .finance-panel.is-active {
+      display: block;
+    }
+
+    .finance-totals {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      border-bottom: 1px solid var(--glass-border);
+    }
+
+    .finance-total {
+      min-height: 92px;
+      padding: 22px 24px 20px;
+      border-left: 1px solid var(--glass-border);
+    }
+
+    .finance-total:first-child {
+      border-left: 0;
+    }
+
+    .finance-total-label {
+      display: block;
+      font-size: 7px;
+      font-weight: 300;
+      letter-spacing: 0.26em;
+      color: var(--cream);
+      opacity: 0.32;
+      line-height: 1.5;
+      margin-bottom: 12px;
+    }
+
+    .finance-total-value {
+      display: block;
+      min-height: 22px;
+      font-size: clamp(14px, 1.28vw, 22px);
+      font-weight: 300;
+      letter-spacing: 0.12em;
+      color: var(--cream);
+      opacity: 0.82;
+      line-height: 1.28;
+    }
+
+    .finance-table-scroll {
+      overflow-x: auto;
+      border-bottom: 1px solid var(--glass-border);
+    }
+
+    .finance-table {
+      width: 100%;
+      min-width: 980px;
+      border-collapse: collapse;
+      table-layout: fixed;
+    }
+
+    .finance-table th,
+    .finance-table td {
+      border-bottom: 1px solid var(--glass-border);
+      vertical-align: top;
+      text-align: left;
+    }
+
+    .finance-table tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .finance-table th {
+      padding: 16px 18px 14px;
+      font-size: 7px;
+      font-weight: 300;
+      letter-spacing: 0.28em;
+      color: var(--cream);
+      opacity: 0.32;
+      line-height: 1.5;
+    }
+
+    .finance-table td {
+      padding: 21px 18px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 16px;
+      font-weight: 300;
+      line-height: 1.42;
+      letter-spacing: 0.026em;
+      color: var(--cream);
+      opacity: 0.72;
+    }
+
+    .finance-table .is-numeric,
+    .finance-money {
+      font-family: 'Cinzel', serif;
+      font-size: 13px;
+      letter-spacing: 0.12em;
+      white-space: nowrap;
+      color: var(--cream);
+      opacity: 0.82;
+    }
+
+    .finance-description {
+      display: block;
+      color: var(--cream);
+      opacity: 0.86;
+    }
+
+    .finance-note {
+      display: block;
+      margin-top: 7px;
+      font-style: italic;
+      color: var(--cream);
+      opacity: 0.42;
+    }
+
+    .finance-status {
+      font-size: 8px;
+      font-weight: 300;
+      letter-spacing: 0.24em;
+      color: var(--cream);
+      opacity: 0.64;
+      white-space: nowrap;
+    }
+
+    .finance-status[data-status='quoted'] {
+      font-style: italic;
+      letter-spacing: 0.30em;
+    }
+
+    .finance-status[data-status='committed'] {
+      color: var(--amber-core);
+      opacity: 0.88;
+      font-weight: 400;
+      letter-spacing: 0.34em;
+    }
+
+    .finance-status[data-status='paid'] {
+      font-weight: 400;
+      letter-spacing: 0.22em;
+      opacity: 0.78;
+    }
+
+    .finance-empty,
+    .finance-feedback {
+      padding: 24px;
+      font-size: 8px;
+      font-weight: 300;
+      letter-spacing: 0.24em;
+      color: var(--cream);
+      opacity: 0.38;
+      text-align: center;
+      border-bottom: 1px solid var(--glass-border);
+    }
+
+    .finance-feedback.is-error {
+      color: var(--amber-core);
+      opacity: 0.9;
+    }
+
+    .finance-form {
+      display: grid;
+      grid-template-columns: 1.05fr 1.25fr 0.95fr 0.64fr 0.5fr 0.66fr 0.8fr 1fr auto;
+      gap: 0;
+      border-top: 1px solid var(--glass-border);
+    }
+
+    .finance-form label {
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      padding: 18px 14px;
+      border-left: 1px solid var(--glass-border);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 13px;
+      font-weight: 300;
+      font-style: italic;
+      letter-spacing: 0.055em;
+      color: var(--cream);
+      opacity: 0.58;
+    }
+
+    .finance-form label:first-child {
+      border-left: 0;
+    }
+
+    .finance-form input,
+    .finance-form select,
+    .finance-form textarea {
+      width: 100%;
+      border: 0;
+      border-top: 1px solid var(--glass-border);
+      background: transparent;
+      color: var(--cream);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 16px;
+      font-weight: 300;
+      letter-spacing: 0.03em;
+      outline: none;
+      padding: 10px 0 0;
+    }
+
+    .finance-form select,
+    .finance-form input[type='date'] {
+      font-family: 'Cormorant Garamond', serif;
+      color-scheme: dark;
+    }
+
+    .finance-form textarea {
+      min-height: 54px;
+      resize: vertical;
+    }
+
+    .finance-form input::placeholder,
+    .finance-form textarea::placeholder {
+      color: var(--cream);
+      opacity: 0.28;
+    }
+
+    .finance-submit-wrap {
+      display: flex;
+      align-items: end;
+      padding: 18px 18px;
+      border-left: 1px solid var(--glass-border);
+    }
+
+    .finance-submit {
+      width: 100%;
+      min-height: 40px;
+      border: 1px solid var(--glass-border);
+      background: var(--glass-bg);
+      color: var(--cream);
+      opacity: 0.74;
+      font-size: 8px;
+      font-weight: 300;
+      letter-spacing: 0.24em;
+      cursor: pointer;
+    }
+
+    .finance-submit:disabled {
+      opacity: 0.26;
+      cursor: progress;
+    }
+
+    .finance-reserved {
+      padding: 56px 34px;
+      text-align: center;
+      color: var(--cream);
+      opacity: 0.28;
+    }
+
+    .finance-reserved-title {
+      font-size: 8px;
+      font-weight: 300;
+      letter-spacing: 0.28em;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      .finance-tabs button:not(.is-disabled):hover,
+      .finance-submit:not(:disabled):hover {
+        opacity: 0.88;
+      }
+    }
+
+    @media (max-width: 1080px) {
+      .finance-header {
+        grid-template-columns: 1fr;
+        align-items: start;
+      }
+
+      .finance-tabs {
+        width: 100%;
+        min-width: 0;
+      }
+
+      .finance-totals {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .finance-total:nth-child(3) {
+        border-left: 0;
+        border-top: 1px solid var(--glass-border);
+      }
+
+      .finance-total:nth-child(4) {
+        border-top: 1px solid var(--glass-border);
+      }
+
+      .finance-form {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .finance-form label:nth-child(odd) {
+        border-left: 0;
+      }
+
+      .finance-form label:nth-child(n+3),
+      .finance-submit-wrap {
+        border-top: 1px solid var(--glass-border);
+      }
+
+      .finance-submit-wrap {
+        grid-column: 1 / -1;
+        border-left: 0;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .finance-workspace {
+        width: 100%;
+        max-height: calc(100dvh - var(--header-h) - var(--footer-h));
+        padding: 22px 16px 26px;
+      }
+
+      .finance-title {
+        letter-spacing: 0.16em;
+      }
+
+      .finance-totals,
+      .finance-form {
+        grid-template-columns: 1fr;
+      }
+
+      .finance-total,
+      .finance-total:nth-child(3),
+      .finance-total:nth-child(4),
+      .finance-form label,
+      .finance-form label:nth-child(odd),
+      .finance-form label:nth-child(n+3) {
+        border-left: 0;
+        border-top: 1px solid var(--glass-border);
+      }
+
+      .finance-total:first-child,
+      .finance-form label:first-child {
+        border-top: 0;
+      }
+
+      .finance-table {
+        min-width: 840px;
+      }
+    }
+
     .route-division-page {
       padding: 0;
       align-items: center;
@@ -5348,6 +5826,133 @@
             </form>
         </div>
       </div>
+
+      <div class="finance-workspace" id="financeWorkspace" aria-label="Finance division">
+        <header class="finance-header">
+          <div>
+            <div class="finance-kicker i18n-text" data-i18n="finance.kicker">Finance</div>
+            <h1 class="finance-title i18n-text" data-i18n="finance.title">Finance</h1>
+            <p class="finance-intro i18n-text" data-i18n="finance.intro">A simple record of brand capital, estimates, commitments, and paid expenses.</p>
+          </div>
+          <nav class="finance-tabs" aria-label="Finance sections">
+            <button class="finance-tab is-active i18n-text" type="button" data-finance-tab="ledger" data-i18n="finance.tab.ledger" aria-selected="true">Ledger</button>
+            <button class="finance-tab i18n-text" type="button" data-finance-tab="suppliers" data-i18n="finance.tab.suppliers" aria-selected="false">Suppliers</button>
+            <button class="finance-tab is-disabled" type="button" data-finance-tab="reserved" aria-selected="false" aria-disabled="true" disabled>—</button>
+          </nav>
+        </header>
+
+        <section class="finance-panel is-active" data-finance-panel="ledger" aria-label="Finance ledger">
+          <div class="finance-totals" id="financeTotals">
+            <div class="finance-total">
+              <span class="finance-total-label i18n-text" data-i18n="finance.total.estimated">Estimated</span>
+              <span class="finance-total-value" data-finance-total="estimated">—</span>
+            </div>
+            <div class="finance-total">
+              <span class="finance-total-label i18n-text" data-i18n="finance.total.committed">Committed</span>
+              <span class="finance-total-value" data-finance-total="committed">—</span>
+            </div>
+            <div class="finance-total">
+              <span class="finance-total-label i18n-text" data-i18n="finance.total.paid">Paid</span>
+              <span class="finance-total-value" data-finance-total="paid">—</span>
+            </div>
+            <div class="finance-total">
+              <span class="finance-total-label i18n-text" data-i18n="finance.total.founder">Founder contributions to date</span>
+              <span class="finance-total-value" data-finance-total="founder">—</span>
+            </div>
+          </div>
+          <div class="finance-empty i18n-text" id="financeEmpty" data-i18n="finance.empty">No finance entries yet.</div>
+          <div class="finance-table-scroll">
+            <table class="finance-table" aria-label="Finance entries">
+              <thead>
+                <tr>
+                  <th class="i18n-text" data-i18n="finance.th.date">Date</th>
+                  <th class="i18n-text" data-i18n="finance.th.category">Category</th>
+                  <th class="i18n-text" data-i18n="finance.th.description">Description</th>
+                  <th class="i18n-text" data-i18n="finance.th.counterparty">Counterparty</th>
+                  <th class="i18n-text" data-i18n="finance.th.status">Status</th>
+                  <th class="i18n-text" data-i18n="finance.th.amount">Amount</th>
+                </tr>
+              </thead>
+              <tbody id="financeLedgerBody"></tbody>
+            </table>
+          </div>
+          <form class="finance-form" id="financeEntryForm" novalidate>
+            <label>
+              <span class="i18n-text" data-i18n="finance.label.category">Category</span>
+              <select id="financeEntryCategory" required>
+                <option value="Product Development" class="i18n-text" data-i18n="finance.cat.productDevelopment">Product Development</option>
+                <option value="Samples" class="i18n-text" data-i18n="finance.cat.samples">Samples</option>
+                <option value="Packaging" class="i18n-text" data-i18n="finance.cat.packaging">Packaging</option>
+                <option value="Photography/Video" class="i18n-text" data-i18n="finance.cat.photography">Photography/Video</option>
+                <option value="Legal" class="i18n-text" data-i18n="finance.cat.legal">Legal</option>
+                <option value="Marketing" class="i18n-text" data-i18n="finance.cat.marketing">Marketing</option>
+                <option value="Contingency" class="i18n-text" data-i18n="finance.cat.contingency">Contingency</option>
+                <option value="Founder Contribution" class="i18n-text" data-i18n="finance.cat.founder">Founder Contribution</option>
+              </select>
+            </label>
+            <label>
+              <span class="i18n-text" data-i18n="finance.label.description">Description</span>
+              <input id="financeEntryDescription" type="text" data-i18n-placeholder="finance.placeholder.description" placeholder="What this entry is for" required>
+            </label>
+            <label>
+              <span class="i18n-text" data-i18n="finance.label.counterparty">Counterparty</span>
+              <input id="financeEntryCounterparty" type="text" data-i18n-placeholder="finance.placeholder.counterparty" placeholder="Supplier or contributor">
+            </label>
+            <label>
+              <span class="i18n-text" data-i18n="finance.label.amount">Amount</span>
+              <input id="financeEntryAmount" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0.00" required>
+            </label>
+            <label>
+              <span class="i18n-text" data-i18n="finance.label.currency">Currency</span>
+              <input id="financeEntryCurrency" type="text" maxlength="3" value="EUR" required>
+            </label>
+            <label>
+              <span class="i18n-text" data-i18n="finance.label.status">Status</span>
+              <select id="financeEntryStatus" required>
+                <option value="estimate" class="i18n-text" data-i18n="finance.status.estimate">Estimate</option>
+                <option value="quoted" class="i18n-text" data-i18n="finance.status.quoted">Quoted</option>
+                <option value="committed" class="i18n-text" data-i18n="finance.status.committed">Committed</option>
+                <option value="paid" class="i18n-text" data-i18n="finance.status.paid">Paid</option>
+              </select>
+            </label>
+            <label>
+              <span class="i18n-text" data-i18n="finance.label.date">Entry date</span>
+              <input id="financeEntryDate" type="date" required>
+            </label>
+            <label>
+              <span class="i18n-text" data-i18n="finance.label.notes">Notes</span>
+              <textarea id="financeEntryNotes" data-i18n-placeholder="finance.placeholder.notes" placeholder="Optional note"></textarea>
+            </label>
+            <div class="finance-submit-wrap">
+              <button class="finance-submit i18n-text" id="financeEntrySubmit" type="submit" data-i18n="finance.add">Add entry</button>
+            </div>
+          </form>
+          <div class="finance-feedback" id="financeFeedback" role="status" aria-live="polite"></div>
+        </section>
+
+        <section class="finance-panel" data-finance-panel="suppliers" aria-label="Finance suppliers">
+          <div class="finance-empty i18n-text" id="financeSuppliersEmpty" data-i18n="finance.suppliers.empty">No supplier totals yet.</div>
+          <div class="finance-table-scroll">
+            <table class="finance-table" aria-label="Supplier finance totals">
+              <thead>
+                <tr>
+                  <th class="i18n-text" data-i18n="finance.suppliers.name">Counterparty</th>
+                  <th class="i18n-text" data-i18n="finance.suppliers.count">Entries</th>
+                  <th class="i18n-text" data-i18n="finance.suppliers.committed">Committed total</th>
+                  <th class="i18n-text" data-i18n="finance.suppliers.paid">Paid total</th>
+                </tr>
+              </thead>
+              <tbody id="financeSuppliersBody"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="finance-panel" data-finance-panel="reserved" aria-label="Reserved finance section" aria-hidden="true">
+          <div class="finance-reserved">
+            <span class="finance-reserved-title i18n-text" data-i18n="finance.reserved">Reserved</span>
+          </div>
+        </section>
+      </div>
     </section>
     <section class="route-view route-division-page route-division-operations" data-view="divisions/operations" aria-hidden="true">
       <div class="internal-gate internal-gate-division" data-internal-gate="division-operations" aria-hidden="true">
@@ -5523,6 +6128,39 @@
       ])
     });
 
+
+
+    const FINANCE_DATA_CONFIG = Object.freeze({
+      table: 'finance_entries',
+      primaryKey: 'id',
+      ownerKey: 'created_by',
+      createdAtKey: 'created_at',
+      fields: Object.freeze([
+        'id',
+        'created_at',
+        'created_by',
+        'category',
+        'description',
+        'counterparty',
+        'amount',
+        'currency',
+        'status',
+        'entry_date',
+        'notes'
+      ]),
+      categories: Object.freeze([
+        'Product Development',
+        'Samples',
+        'Packaging',
+        'Photography/Video',
+        'Legal',
+        'Marketing',
+        'Contingency',
+        'Founder Contribution'
+      ]),
+      statuses: Object.freeze(['estimate', 'quoted', 'committed', 'paid'])
+    });
+
     const INTERNAL_ROLES = Object.freeze({
       founder: Object.freeze({
         canReadRecord: true,
@@ -5574,6 +6212,7 @@
         'division-pages'
       ]),
       dashboard: DASHBOARD_DATA_CONFIG,
+      finance: FINANCE_DATA_CONFIG,
       desk: DESK_DATA_CONFIG
     });
 
@@ -5620,7 +6259,8 @@
       const mockStore = {
         posts: new Map(),
         messages: [],
-        attachments: new Map()
+        attachments: new Map(),
+        financeEntries: []
       };
 
       const profileCache = new Map();
@@ -5805,6 +6445,30 @@
           deleted_by_display: payload.deleted_by_display || '',
           created_at: now,
           updated_at: payload.updated_at || now
+        };
+      }
+
+
+
+      function normaliseFinanceEntry(payload = {}) {
+        const now = payload.created_at || new Date().toISOString();
+        const rawStatus = String(payload.status || 'estimate').trim().toLowerCase();
+        const status = FINANCE_DATA_CONFIG.statuses.includes(rawStatus) ? rawStatus : 'estimate';
+        const rawAmount = Number(payload.amount || 0);
+        const currency = String(payload.currency || 'EUR').trim().toUpperCase().slice(0, 3) || 'EUR';
+
+        return {
+          id: payload.id || mockId('finance'),
+          created_at: now,
+          created_by: payload.created_by || currentOwnerId(),
+          category: FINANCE_DATA_CONFIG.categories.includes(payload.category) ? payload.category : 'Product Development',
+          description: String(payload.description || '').trim(),
+          counterparty: String(payload.counterparty || '').trim(),
+          amount: Number.isFinite(rawAmount) ? Math.max(0, rawAmount) : 0,
+          currency,
+          status,
+          entry_date: payload.entry_date || new Date().toISOString().slice(0, 10),
+          notes: String(payload.notes || '').trim()
         };
       }
 
@@ -6487,6 +7151,77 @@
         }
       };
 
+
+
+      const finance = {
+        async list() {
+          const client = activeSupabaseClient();
+
+          if (!client) {
+            return mockStore.financeEntries
+              .map(entry => normaliseFinanceEntry(entry))
+              .sort((a, b) => String(b.entry_date || '').localeCompare(String(a.entry_date || '')) || String(b.created_at || '').localeCompare(String(a.created_at || '')));
+          }
+
+          const { data, error } = await client
+            .from(FINANCE_DATA_CONFIG.table)
+            .select(supabaseFieldList(FINANCE_DATA_CONFIG.fields))
+            .order('entry_date', { ascending: false })
+            .order('created_at', { ascending: false })
+            .limit(500);
+
+          if (error) {
+            dataEvent('finance-list-error', { error, table: FINANCE_DATA_CONFIG.table });
+            throw error;
+          }
+
+          return (data || []).map(row => normaliseFinanceEntry(row));
+        },
+
+        async create(payload = {}) {
+          const entry = normaliseFinanceEntry(payload);
+
+          if (!entry.description || !entry.amount || entry.amount <= 0) {
+            return { ok: false, error: 'invalid_finance_entry' };
+          }
+
+          const client = activeSupabaseClient();
+
+          if (!client) {
+            mockStore.financeEntries.unshift({ ...entry, source: getInternalMode() });
+            dataEvent('finance-entry-created', { entry, table: FINANCE_DATA_CONFIG.table });
+            return { ok: true, entry };
+          }
+
+          const insertPayload = {
+            created_by: currentOwnerId(),
+            category: entry.category,
+            description: entry.description,
+            counterparty: entry.counterparty,
+            amount: entry.amount,
+            currency: entry.currency,
+            status: entry.status,
+            entry_date: entry.entry_date,
+            notes: entry.notes
+          };
+
+          const { data, error } = await client
+            .from(FINANCE_DATA_CONFIG.table)
+            .insert(insertPayload)
+            .select(supabaseFieldList(FINANCE_DATA_CONFIG.fields))
+            .single();
+
+          if (error || !data) {
+            dataEvent('finance-entry-create-error', { error, table: FINANCE_DATA_CONFIG.table });
+            return { ok: false, error: error || 'finance_entry_not_returned' };
+          }
+
+          const saved = normaliseFinanceEntry(data);
+          dataEvent('finance-entry-created', { entry: saved, table: FINANCE_DATA_CONFIG.table });
+          return { ok: true, entry: saved };
+        }
+      };
+
       const attachments = {
         async fromComposer(items = []) {
           return items.map(item => normaliseAttachment(item));
@@ -6514,6 +7249,7 @@
         auth,
         posts,
         messages,
+        finance,
         attachments
       });
     })();
@@ -6581,6 +7317,58 @@
         'divisions.marketing': 'Marketing',
         'divisions.finance': 'Finance',
         'divisions.operations': 'Operations',
+
+        'finance.kicker': 'Finance',
+        'finance.title': 'Finance',
+        'finance.intro': 'A simple record of brand capital, estimates, commitments, and paid expenses.',
+        'finance.tab.ledger': 'Ledger',
+        'finance.tab.suppliers': 'Suppliers',
+        'finance.reserved': 'Reserved',
+        'finance.total.estimated': 'Estimated',
+        'finance.total.committed': 'Committed',
+        'finance.total.paid': 'Paid',
+        'finance.total.founder': 'Founder contributions to date',
+        'finance.empty': 'No finance entries yet.',
+        'finance.th.date': 'Date',
+        'finance.th.category': 'Category',
+        'finance.th.description': 'Description',
+        'finance.th.counterparty': 'Counterparty',
+        'finance.th.status': 'Status',
+        'finance.th.amount': 'Amount',
+        'finance.label.category': 'Category',
+        'finance.label.description': 'Description',
+        'finance.label.counterparty': 'Counterparty',
+        'finance.label.amount': 'Amount',
+        'finance.label.currency': 'Currency',
+        'finance.label.status': 'Status',
+        'finance.label.date': 'Entry date',
+        'finance.label.notes': 'Notes',
+        'finance.placeholder.description': 'What this entry is for',
+        'finance.placeholder.counterparty': 'Supplier or contributor',
+        'finance.placeholder.notes': 'Optional note',
+        'finance.add': 'Add entry',
+        'finance.adding': 'Adding…',
+        'finance.added': 'Entry added',
+        'finance.error.invalid': 'Add a description and amount before saving.',
+        'finance.error.save': 'The finance entry could not be saved.',
+        'finance.error.load': 'Finance entries could not be loaded. Run the finance SQL migration if this is the first deployment.',
+        'finance.suppliers.empty': 'No supplier totals yet.',
+        'finance.suppliers.name': 'Counterparty',
+        'finance.suppliers.count': 'Entries',
+        'finance.suppliers.committed': 'Committed total',
+        'finance.suppliers.paid': 'Paid total',
+        'finance.cat.productDevelopment': 'Product Development',
+        'finance.cat.samples': 'Samples',
+        'finance.cat.packaging': 'Packaging',
+        'finance.cat.photography': 'Photography/Video',
+        'finance.cat.legal': 'Legal',
+        'finance.cat.marketing': 'Marketing',
+        'finance.cat.contingency': 'Contingency',
+        'finance.cat.founder': 'Founder Contribution',
+        'finance.status.estimate': 'Estimate',
+        'finance.status.quoted': 'Quoted',
+        'finance.status.committed': 'Committed',
+        'finance.status.paid': 'Paid',
         'ui.return': 'Return',
         'ui.desk': 'The Desk',
         'desk.kicker': 'Internal Correspondence',
@@ -6691,6 +7479,58 @@
         'divisions.marketing': 'Marketing',
         'divisions.finance': 'Finanças',
         'divisions.operations': 'Operações',
+
+        'finance.kicker': 'Finanças',
+        'finance.title': 'Finanças',
+        'finance.intro': 'Um registro simples de capital da marca, estimativas, compromissos e despesas pagas.',
+        'finance.tab.ledger': 'Livro',
+        'finance.tab.suppliers': 'Fornecedores',
+        'finance.reserved': 'Reservado',
+        'finance.total.estimated': 'Estimado',
+        'finance.total.committed': 'Comprometido',
+        'finance.total.paid': 'Pago',
+        'finance.total.founder': 'Contribuições do fundador até agora',
+        'finance.empty': 'Ainda não há entradas financeiras.',
+        'finance.th.date': 'Data',
+        'finance.th.category': 'Categoria',
+        'finance.th.description': 'Descrição',
+        'finance.th.counterparty': 'Contraparte',
+        'finance.th.status': 'Status',
+        'finance.th.amount': 'Valor',
+        'finance.label.category': 'Categoria',
+        'finance.label.description': 'Descrição',
+        'finance.label.counterparty': 'Contraparte',
+        'finance.label.amount': 'Valor',
+        'finance.label.currency': 'Moeda',
+        'finance.label.status': 'Status',
+        'finance.label.date': 'Data da entrada',
+        'finance.label.notes': 'Notas',
+        'finance.placeholder.description': 'Para que serve esta entrada',
+        'finance.placeholder.counterparty': 'Fornecedor ou contribuinte',
+        'finance.placeholder.notes': 'Nota opcional',
+        'finance.add': 'Adicionar entrada',
+        'finance.adding': 'Adicionando…',
+        'finance.added': 'Entrada adicionada',
+        'finance.error.invalid': 'Adicione uma descrição e um valor antes de salvar.',
+        'finance.error.save': 'A entrada financeira não pôde ser salva.',
+        'finance.error.load': 'As entradas financeiras não puderam ser carregadas. Execute a migração SQL de finanças se este for o primeiro deploy.',
+        'finance.suppliers.empty': 'Ainda não há totais por fornecedor.',
+        'finance.suppliers.name': 'Contraparte',
+        'finance.suppliers.count': 'Entradas',
+        'finance.suppliers.committed': 'Total comprometido',
+        'finance.suppliers.paid': 'Total pago',
+        'finance.cat.productDevelopment': 'Desenvolvimento de Produto',
+        'finance.cat.samples': 'Amostras',
+        'finance.cat.packaging': 'Embalagem',
+        'finance.cat.photography': 'Fotografia/Vídeo',
+        'finance.cat.legal': 'Legal',
+        'finance.cat.marketing': 'Marketing',
+        'finance.cat.contingency': 'Contingência',
+        'finance.cat.founder': 'Contribuição do Fundador',
+        'finance.status.estimate': 'Estimativa',
+        'finance.status.quoted': 'Cotado',
+        'finance.status.committed': 'Comprometido',
+        'finance.status.paid': 'Pago',
         'ui.return': 'Voltar',
         'ui.desk': 'Correspondência',
         'desk.kicker': 'Correspondência Interna',
@@ -7109,7 +7949,7 @@
     }
 
     window.MoscatelliInternal = Object.freeze({
-      getBuild: () => 'patch17c-plain-language-record-labels',
+      getBuild: () => 'patch18a-finance-division-v1',
       getMode: getInternalMode,
       isSignedIn: isInternalUserSignedIn,
       getCurrentUser: () => {
@@ -7125,7 +7965,7 @@
         deskLoaded: DeskRuntime.loaded,
         deskRetired: true,
         realtimeStatus: RealtimeRuntime.status,
-        build: 'patch17c-plain-language-record-labels',
+        build: 'patch18a-finance-division-v1',
         deskSignature: DeskRuntime.lastSignature
       }),
       isInternalRoute,
@@ -7600,6 +8440,7 @@
         button.textContent = translations[lang]?.['dashboard.delete'] || button.textContent;
       });
       updateInternalAccessUI();
+      renderFinanceModule();
       updateMenuAria();
     }
 
@@ -8133,6 +8974,340 @@
     deskTrigger?.addEventListener('click', toggleDesk);
     deskClose?.addEventListener('click', closeDesk);
     deskScrim?.addEventListener('click', closeDesk);
+
+
+
+    const financeWorkspace = document.getElementById('financeWorkspace');
+    const financeTabs = document.querySelectorAll('[data-finance-tab]');
+    const financePanels = document.querySelectorAll('[data-finance-panel]');
+    const financeLedgerBody = document.getElementById('financeLedgerBody');
+    const financeSuppliersBody = document.getElementById('financeSuppliersBody');
+    const financeEmpty = document.getElementById('financeEmpty');
+    const financeSuppliersEmpty = document.getElementById('financeSuppliersEmpty');
+    const financeEntryForm = document.getElementById('financeEntryForm');
+    const financeEntryCategory = document.getElementById('financeEntryCategory');
+    const financeEntryDescription = document.getElementById('financeEntryDescription');
+    const financeEntryCounterparty = document.getElementById('financeEntryCounterparty');
+    const financeEntryAmount = document.getElementById('financeEntryAmount');
+    const financeEntryCurrency = document.getElementById('financeEntryCurrency');
+    const financeEntryStatus = document.getElementById('financeEntryStatus');
+    const financeEntryDate = document.getElementById('financeEntryDate');
+    const financeEntryNotes = document.getElementById('financeEntryNotes');
+    const financeEntrySubmit = document.getElementById('financeEntrySubmit');
+    const financeFeedback = document.getElementById('financeFeedback');
+
+    const FinanceRuntime = {
+      loaded: false,
+      loading: false,
+      entries: [],
+      activeView: 'ledger'
+    };
+
+    function financeText(key, fallback = '') {
+      return translations[currentLang]?.[key] || fallback || '';
+    }
+
+    function financeStatusText(status) {
+      return financeText(`finance.status.${status || 'estimate'}`, status || 'Estimate');
+    }
+
+    function financeCategoryText(category) {
+      const categoryMap = {
+        'Product Development': 'finance.cat.productDevelopment',
+        'Samples': 'finance.cat.samples',
+        'Packaging': 'finance.cat.packaging',
+        'Photography/Video': 'finance.cat.photography',
+        'Legal': 'finance.cat.legal',
+        'Marketing': 'finance.cat.marketing',
+        'Contingency': 'finance.cat.contingency',
+        'Founder Contribution': 'finance.cat.founder'
+      };
+
+      return financeText(categoryMap[category], category || '');
+    }
+
+    function normaliseFinanceDate(value) {
+      const date = value instanceof Date ? value : new Date(value || Date.now());
+      return Number.isNaN(date.getTime()) ? new Date() : date;
+    }
+
+    function formatFinanceDate(value) {
+      return normaliseFinanceDate(value).toLocaleDateString(currentLang === 'pt' ? 'pt-BR' : 'en-GB', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric'
+      });
+    }
+
+    function formatFinanceMoney(amount = 0, currency = 'EUR') {
+      const value = Number(amount || 0);
+      const code = String(currency || 'EUR').toUpperCase().slice(0, 3) || 'EUR';
+
+      try {
+        return new Intl.NumberFormat(currentLang === 'pt' ? 'pt-BR' : 'en-GB', {
+          style: 'currency',
+          currency: code,
+          maximumFractionDigits: value % 1 === 0 ? 0 : 2
+        }).format(value);
+      } catch {
+        return `${code} ${value.toLocaleString(currentLang === 'pt' ? 'pt-BR' : 'en-GB')}`;
+      }
+    }
+
+    function financeCurrencyTotals(entries = []) {
+      return entries.reduce((map, entry) => {
+        const currency = String(entry.currency || 'EUR').toUpperCase();
+        map.set(currency, (map.get(currency) || 0) + Number(entry.amount || 0));
+        return map;
+      }, new Map());
+    }
+
+    function formatFinanceTotals(entries = []) {
+      const totals = financeCurrencyTotals(entries);
+      if (!totals.size) return '—';
+      return Array.from(totals.entries())
+        .sort(([a], [b]) => a.localeCompare(b))
+        .map(([currency, amount]) => formatFinanceMoney(amount, currency))
+        .join(' · ');
+    }
+
+    function setFinanceFeedback(message = '', tone = '') {
+      if (!financeFeedback) return;
+      financeFeedback.textContent = message;
+      financeFeedback.classList.toggle('is-error', tone === 'error');
+    }
+
+    function setFinanceTab(view = 'ledger') {
+      const nextView = view === 'suppliers' ? 'suppliers' : 'ledger';
+      FinanceRuntime.activeView = nextView;
+
+      financeTabs.forEach(tab => {
+        if (tab.classList.contains('is-disabled')) return;
+        const isActive = tab.dataset.financeTab === nextView;
+        tab.classList.toggle('is-active', isActive);
+        tab.setAttribute('aria-selected', String(isActive));
+      });
+
+      financePanels.forEach(panel => {
+        const isActive = panel.dataset.financePanel === nextView;
+        panel.classList.toggle('is-active', isActive);
+        panel.setAttribute('aria-hidden', String(!isActive));
+      });
+    }
+
+    function updateFinanceTotals(entries = FinanceRuntime.entries) {
+      const nonFounder = entries.filter(entry => entry.category !== 'Founder Contribution');
+      const estimated = nonFounder.filter(entry => entry.status === 'estimate' || entry.status === 'quoted');
+      const committed = nonFounder.filter(entry => entry.status === 'committed');
+      const paid = nonFounder.filter(entry => entry.status === 'paid');
+      const founder = entries.filter(entry => entry.category === 'Founder Contribution' && entry.status === 'paid');
+
+      const totalTargets = {
+        estimated,
+        committed,
+        paid,
+        founder
+      };
+
+      Object.entries(totalTargets).forEach(([key, list]) => {
+        const element = financeWorkspace?.querySelector(`[data-finance-total="${key}"]`);
+        if (element) element.textContent = formatFinanceTotals(list);
+      });
+    }
+
+    function renderFinanceLedger(entries = FinanceRuntime.entries) {
+      if (!financeLedgerBody) return;
+      financeLedgerBody.textContent = '';
+
+      const sorted = [...entries].sort((a, b) =>
+        String(b.entry_date || '').localeCompare(String(a.entry_date || '')) ||
+        String(b.created_at || '').localeCompare(String(a.created_at || ''))
+      );
+
+      sorted.forEach(entry => {
+        const row = document.createElement('tr');
+        row.dataset.status = entry.status;
+        row.dataset.category = entry.category;
+
+        const dateCell = document.createElement('td');
+        dateCell.textContent = formatFinanceDate(entry.entry_date || entry.created_at);
+
+        const categoryCell = document.createElement('td');
+        categoryCell.textContent = financeCategoryText(entry.category);
+
+        const descriptionCell = document.createElement('td');
+        const description = document.createElement('span');
+        description.className = 'finance-description';
+        description.textContent = entry.description || '—';
+        descriptionCell.appendChild(description);
+        if (entry.notes) {
+          const note = document.createElement('span');
+          note.className = 'finance-note';
+          note.textContent = entry.notes;
+          descriptionCell.appendChild(note);
+        }
+
+        const counterpartyCell = document.createElement('td');
+        counterpartyCell.textContent = entry.counterparty || '—';
+
+        const statusCell = document.createElement('td');
+        const status = document.createElement('span');
+        status.className = 'finance-status';
+        status.dataset.status = entry.status;
+        status.textContent = financeStatusText(entry.status);
+        statusCell.appendChild(status);
+
+        const amountCell = document.createElement('td');
+        amountCell.className = 'is-numeric';
+        amountCell.textContent = formatFinanceMoney(entry.amount, entry.currency);
+
+        row.append(dateCell, categoryCell, descriptionCell, counterpartyCell, statusCell, amountCell);
+        financeLedgerBody.appendChild(row);
+      });
+
+      if (financeEmpty) financeEmpty.style.display = entries.length ? 'none' : 'block';
+    }
+
+    function renderFinanceSuppliers(entries = FinanceRuntime.entries) {
+      if (!financeSuppliersBody) return;
+      financeSuppliersBody.textContent = '';
+
+      const rows = Array.from(entries.reduce((map, entry) => {
+        const name = (entry.counterparty || '').trim();
+        if (!name || entry.category === 'Founder Contribution') return map;
+        if (!map.has(name)) {
+          map.set(name, { name, count: 0, committed: [], paid: [], totalSort: 0 });
+        }
+        const item = map.get(name);
+        item.count += 1;
+        if (entry.status === 'committed') item.committed.push(entry);
+        if (entry.status === 'paid') item.paid.push(entry);
+        if (entry.status === 'committed' || entry.status === 'paid') item.totalSort += Number(entry.amount || 0);
+        return map;
+      }, new Map()).values()).sort((a, b) => b.totalSort - a.totalSort || a.name.localeCompare(b.name));
+
+      rows.forEach(item => {
+        const row = document.createElement('tr');
+
+        const nameCell = document.createElement('td');
+        nameCell.textContent = item.name;
+
+        const countCell = document.createElement('td');
+        countCell.className = 'is-numeric';
+        countCell.textContent = String(item.count);
+
+        const committedCell = document.createElement('td');
+        committedCell.className = 'is-numeric';
+        committedCell.textContent = formatFinanceTotals(item.committed);
+
+        const paidCell = document.createElement('td');
+        paidCell.className = 'is-numeric';
+        paidCell.textContent = formatFinanceTotals(item.paid);
+
+        row.append(nameCell, countCell, committedCell, paidCell);
+        financeSuppliersBody.appendChild(row);
+      });
+
+      if (financeSuppliersEmpty) financeSuppliersEmpty.style.display = rows.length ? 'none' : 'block';
+    }
+
+    function renderFinanceModule() {
+      updateFinanceTotals();
+      renderFinanceLedger();
+      renderFinanceSuppliers();
+    }
+
+    async function loadFinanceEntries({ force = false } = {}) {
+      if (!financeWorkspace || !isInternalUserSignedIn()) return [];
+      if (FinanceRuntime.loading) return [];
+      if (FinanceRuntime.loaded && !force) return FinanceRuntime.entries;
+
+      FinanceRuntime.loading = true;
+      try {
+        FinanceRuntime.entries = await InternalData.finance.list();
+        FinanceRuntime.loaded = true;
+        renderFinanceModule();
+        setFinanceFeedback('');
+        return FinanceRuntime.entries;
+      } catch (error) {
+        FinanceRuntime.loaded = false;
+        setFinanceFeedback(financeText('finance.error.load', 'Finance entries could not be loaded.'), 'error');
+        window.dispatchEvent(new CustomEvent('moscatelli:finance-load-error', { detail: { error } }));
+        return [];
+      } finally {
+        FinanceRuntime.loading = false;
+      }
+    }
+
+    function financePayloadFromForm() {
+      const amount = Number(financeEntryAmount?.value || 0);
+      return {
+        category: financeEntryCategory?.value || 'Product Development',
+        description: financeEntryDescription?.value || '',
+        counterparty: financeEntryCounterparty?.value || '',
+        amount,
+        currency: financeEntryCurrency?.value || 'EUR',
+        status: financeEntryStatus?.value || 'estimate',
+        entry_date: financeEntryDate?.value || new Date().toISOString().slice(0, 10),
+        notes: financeEntryNotes?.value || ''
+      };
+    }
+
+    function resetFinanceForm() {
+      financeEntryForm?.reset();
+      if (financeEntryCurrency) financeEntryCurrency.value = 'EUR';
+      if (financeEntryDate) financeEntryDate.value = new Date().toISOString().slice(0, 10);
+    }
+
+    async function createFinanceEntryFromForm() {
+      const payload = financePayloadFromForm();
+      if (!String(payload.description || '').trim() || !payload.amount || payload.amount <= 0) {
+        setFinanceFeedback(financeText('finance.error.invalid', 'Add a description and amount before saving.'), 'error');
+        return;
+      }
+
+      if (financeEntrySubmit) {
+        financeEntrySubmit.disabled = true;
+        financeEntrySubmit.textContent = financeText('finance.adding', 'Adding…');
+      }
+
+      setFinanceFeedback('');
+
+      try {
+        const result = await InternalData.finance.create(payload);
+        if (!result.ok) {
+          setFinanceFeedback(financeText('finance.error.save', 'The finance entry could not be saved.'), 'error');
+          return;
+        }
+
+        FinanceRuntime.entries.unshift(result.entry);
+        renderFinanceModule();
+        resetFinanceForm();
+        setFinanceFeedback(financeText('finance.added', 'Entry added'));
+      } catch (error) {
+        setFinanceFeedback(financeText('finance.error.save', 'The finance entry could not be saved.'), 'error');
+        window.dispatchEvent(new CustomEvent('moscatelli:finance-create-error', { detail: { error } }));
+      } finally {
+        if (financeEntrySubmit) {
+          financeEntrySubmit.disabled = false;
+          financeEntrySubmit.textContent = financeText('finance.add', 'Add entry');
+        }
+      }
+    }
+
+    financeTabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        if (tab.disabled || tab.classList.contains('is-disabled')) return;
+        setFinanceTab(tab.dataset.financeTab);
+      });
+    });
+
+    financeEntryForm?.addEventListener('submit', event => {
+      event.preventDefault();
+      createFinanceEntryFromForm();
+    });
+
+    if (financeEntryDate) financeEntryDate.value = new Date().toISOString().slice(0, 10);
 
     const dashboardFilter = document.getElementById('dashboardFilter');
     const dashboardFilterTrigger = document.getElementById('dashboardFilterTrigger');
@@ -9380,6 +10555,9 @@
       releaseAllRealtime();
       closeRecordAttachmentViewer({ restoreFocus: false });
       clearDashboardPosts();
+      FinanceRuntime.loaded = false;
+      FinanceRuntime.entries = [];
+      renderFinanceModule();
     }
 
     function loadVisibleInternalRuntimeViews({ force = false } = {}) {
@@ -9390,11 +10568,16 @@
       if (currentRoute === ROUTES.DASHBOARD) {
         ensureDashboardRecordsLoaded({ force });
       }
+
+      if (currentRoute === ROUTES.FINANCE) {
+        loadFinanceEntries({ force });
+      }
     }
 
     window.addEventListener('moscatelli:internal-user', event => {
       releaseAllRealtime();
       DashboardRuntime.loaded = false;
+      FinanceRuntime.loaded = false;
       DeskRuntime.loaded = false;
       loadVisibleInternalRuntimeViews({ force: true });
     });
