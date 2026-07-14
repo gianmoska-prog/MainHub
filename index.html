@@ -4794,6 +4794,52 @@ body:not([data-internal-auth="signed_in"]) .dashboard-entry {
       }
     }
 
+    /* Patch 18X — extension-safe, viewport-anchored authentication threshold */
+    .global-auth-gate {
+      display: block !important;
+      inline-size: 100vw;
+      block-size: 100vh;
+      block-size: 100dvh;
+      min-inline-size: 100vw;
+      min-block-size: 100vh;
+      min-block-size: 100dvh;
+      padding: 0 !important;
+      overflow: hidden;
+      contain: layout;
+    }
+
+    .global-auth-card {
+      position: fixed !important;
+      inset: auto !important;
+      top: 50% !important;
+      left: 50% !important;
+      max-width: calc(100vw - 48px);
+      max-height: calc(100dvh - 48px);
+      margin: 0 !important;
+      flex: none !important;
+      transform: translate3d(-50%, -50%, 0) !important;
+      transform-origin: center center;
+      isolation: isolate;
+    }
+
+    .global-auth-form {
+      min-width: 0;
+      width: 100%;
+      max-width: 100%;
+      flex: none;
+      contain: layout;
+    }
+
+    @media (max-height: 640px) {
+      .global-auth-card {
+        min-height: 0;
+        overflow-x: hidden;
+        overflow-y: auto;
+        scrollbar-width: thin;
+        scrollbar-color: rgba(232, 192, 122, 0.18) transparent;
+      }
+    }
+
     /* Reserve space for extension icons so NordPass/Chrome overlays do not visually crush the input text. */
     .global-auth-form {
       isolation: isolate;
@@ -7864,7 +7910,7 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
     }
 
     window.MoscatelliInternal = Object.freeze({
-      getBuild: () => 'patch18w-auth-welcome-mobile-title-fix',
+      getBuild: () => 'patch18x-extension-safe-auth-anchor',
       getMode: getInternalMode,
       isSignedIn: isInternalUserSignedIn,
       getCurrentUser: () => {
@@ -7878,7 +7924,7 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
         mode: getInternalMode(),
         signedIn: isInternalUserSignedIn(),
         realtimeStatus: RealtimeRuntime.status,
-        build: 'patch18w-auth-welcome-mobile-title-fix'
+        build: 'patch18x-extension-safe-auth-anchor'
       }),
       isInternalRoute,
       featureForRoute: internalFeatureForRoute
