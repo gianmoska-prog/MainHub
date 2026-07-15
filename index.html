@@ -5698,6 +5698,48 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
       }
     }
 
+    /* Patch 19A — supplied ROMA header wordmark, tinted to the site palette */
+    .logo-mark {
+      width: clamp(190px, 17vw, 250px);
+      height: 42px;
+      gap: 0;
+    }
+
+    .header-wordmark {
+      display: block;
+      width: 100%;
+      height: 100%;
+      background-image: url("assets/brand/moscatelli-roma-wordmark.png");
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: contain;
+      opacity: 0.78;
+      filter: invert(93%) sepia(9%) saturate(260%) hue-rotate(343deg) brightness(102%);
+    }
+
+    @supports ((-webkit-mask-image: url("")) or (mask-image: url(""))) {
+      .header-wordmark {
+        background: rgba(242, 237, 228, 0.74);
+        -webkit-mask-image: url("assets/brand/moscatelli-roma-wordmark.png");
+        mask-image: url("assets/brand/moscatelli-roma-wordmark.png");
+        -webkit-mask-position: center;
+        mask-position: center;
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-size: contain;
+        mask-size: contain;
+        opacity: 1;
+        filter: none;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .logo-mark {
+        width: min(62vw, 220px);
+        height: 38px;
+      }
+    }
+
   </style>
 </head>
 <body data-internal-mode="supabase" data-internal-auth="signed_out" data-internal-ready="false" data-internal-route="public" data-internal-feature="public">
@@ -5772,10 +5814,8 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
       <span></span>
       <span></span>
     </button>
-    <div class="logo-mark" id="logoMark" aria-label="Logo">
-      <div class="rule"></div>
-      <span>Moscatelli</span>
-      <div class="rule right"></div>
+    <div class="logo-mark" id="logoMark" role="img" aria-label="Moscatelli Roma">
+      <span class="header-wordmark" aria-hidden="true"></span>
     </div>
     <span class="internal-session-line" id="internalSessionLine" aria-live="polite" aria-hidden="true">
       <span class="internal-session-context i18n-text" data-i18n="internal.signedInAs">Signed in as</span>
@@ -7969,7 +8009,7 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
     }
 
     window.MoscatelliInternal = Object.freeze({
-      getBuild: () => 'patch18z-autofill-invariant-auth-columns',
+      getBuild: () => 'patch19a-roma-header-wordmark',
       getMode: getInternalMode,
       isSignedIn: isInternalUserSignedIn,
       getCurrentUser: () => {
@@ -7983,7 +8023,7 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
         mode: getInternalMode(),
         signedIn: isInternalUserSignedIn(),
         realtimeStatus: RealtimeRuntime.status,
-        build: 'patch18z-autofill-invariant-auth-columns'
+        build: 'patch19a-roma-header-wordmark'
       }),
       isInternalRoute,
       featureForRoute: internalFeatureForRoute
