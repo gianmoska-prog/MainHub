@@ -5740,6 +5740,172 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
       }
     }
 
+    /* Patch 19B — compact recovery actions with a contained SMS verification panel */
+    .global-auth-form {
+      height: 278px;
+      min-height: 278px;
+      max-height: 278px;
+    }
+
+    .global-auth-assistance {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+      width: 100%;
+      margin-top: -2px;
+    }
+
+    .global-auth-assist-button {
+      min-width: 0;
+      min-height: 30px;
+      padding: 7px 10px;
+      border: 1px solid rgba(232, 192, 122, 0.16);
+      background: rgba(8, 5, 3, 0.24);
+      color: rgba(242, 237, 228, 0.58);
+      font: 500 9px/1.2 Arial, sans-serif;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: color 180ms ease, border-color 180ms ease, background 180ms ease;
+    }
+
+    .global-auth-assist-button:hover,
+    .global-auth-assist-button:focus-visible {
+      border-color: rgba(232, 192, 122, 0.42);
+      background: rgba(232, 192, 122, 0.055);
+      color: rgba(242, 237, 228, 0.88);
+      outline: none;
+    }
+
+    .global-auth-assist-button:disabled {
+      cursor: wait;
+      opacity: 0.42;
+    }
+
+    .auth-sms-dialog {
+      position: fixed;
+      inset: 0;
+      z-index: 10020;
+      display: grid;
+      place-items: center;
+      padding: 20px;
+      background: rgba(7, 4, 2, 0.78);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity 220ms ease, visibility 220ms ease;
+    }
+
+    .auth-sms-dialog.is-open {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+
+    .auth-sms-card {
+      width: min(420px, 100%);
+      padding: clamp(24px, 5vw, 38px);
+      border: 1px solid rgba(232, 192, 122, 0.2);
+      background: linear-gradient(145deg, rgba(32, 18, 10, 0.98), rgba(11, 7, 4, 0.99));
+      box-shadow: 0 30px 90px rgba(0, 0, 0, 0.48), inset 0 1px 0 rgba(242, 237, 228, 0.035);
+      transform: translateY(8px) scale(0.985);
+      transition: transform 220ms ease;
+    }
+
+    .auth-sms-dialog.is-open .auth-sms-card {
+      transform: translateY(0) scale(1);
+    }
+
+    .auth-sms-heading {
+      margin: 0 0 8px;
+      color: rgba(242, 237, 228, 0.9);
+      font: 400 clamp(24px, 5vw, 32px)/1.1 Georgia, serif;
+      letter-spacing: 0.08em;
+    }
+
+    .auth-sms-copy,
+    .auth-sms-feedback {
+      margin: 0;
+      color: rgba(242, 237, 228, 0.52);
+      font: 400 13px/1.55 Arial, sans-serif;
+    }
+
+    .auth-sms-form {
+      display: grid;
+      gap: 12px;
+      margin-top: 22px;
+    }
+
+    .auth-sms-field {
+      width: 100%;
+      min-height: 46px;
+      padding: 12px 14px;
+      border: 1px solid rgba(232, 192, 122, 0.19);
+      border-radius: 0;
+      background: rgba(5, 3, 2, 0.42);
+      color: rgba(242, 237, 228, 0.88);
+      font: 400 14px/1 Arial, sans-serif;
+      outline: none;
+    }
+
+    .auth-sms-field:focus {
+      border-color: rgba(232, 192, 122, 0.5);
+    }
+
+    .auth-sms-code-row,
+    .auth-sms-actions {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+    }
+
+    .auth-sms-code-row[hidden] {
+      display: none;
+    }
+
+    .auth-sms-primary,
+    .auth-sms-close {
+      min-height: 42px;
+      padding: 10px 18px;
+      border: 1px solid rgba(232, 192, 122, 0.28);
+      background: rgba(232, 192, 122, 0.07);
+      color: rgba(242, 237, 228, 0.78);
+      font: 500 9px/1 Arial, sans-serif;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+
+    .auth-sms-close {
+      border-color: transparent;
+      background: transparent;
+      color: rgba(242, 237, 228, 0.45);
+    }
+
+    .auth-sms-feedback {
+      min-height: 20px;
+      color: rgba(232, 192, 122, 0.72);
+    }
+
+    @media (max-width: 640px) {
+      .global-auth-form {
+        height: 276px;
+        min-height: 276px;
+        max-height: 276px;
+      }
+
+      .global-auth-assist-button {
+        font-size: 8px;
+        letter-spacing: 0.09em;
+      }
+
+      .auth-sms-code-row {
+        grid-template-columns: 1fr;
+      }
+    }
+
   </style>
 </head>
 <body data-internal-mode="supabase" data-internal-auth="signed_out" data-internal-ready="false" data-internal-route="public" data-internal-feature="public">
@@ -5772,10 +5938,49 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
           <input class="global-auth-input" id="globalAuthEmail" type="email" inputmode="email" autocomplete="username" data-internal-email data-i18n-placeholder="internal.emailPlaceholder" placeholder="name@moscatelli.co" required>
           <label class="global-auth-label i18n-text" for="globalAuthPassword" data-i18n="internal.passwordLabel">Password</label>
           <input class="global-auth-input" id="globalAuthPassword" type="password" autocomplete="current-password" data-internal-password data-i18n-placeholder="internal.passwordPlaceholder" placeholder="Password" required>
+          <div class="global-auth-assistance">
+            <button class="global-auth-assist-button i18n-text" id="authSmsOpen" type="button" data-i18n="internal.smsAction">SMS code</button>
+            <button class="global-auth-assist-button i18n-text" id="authPasswordReset" type="button" data-i18n="internal.resetAction">Reset password</button>
+          </div>
           <button class="global-auth-button i18n-text" type="submit" data-internal-auth-submit data-i18n="global.enter">Enter</button>
           <div class="global-auth-feedback" data-internal-auth-feedback aria-live="polite"></div>
         </form>
       </div>
+    </div>
+  </section>
+
+  <section class="auth-sms-dialog" id="authSmsDialog" role="dialog" aria-modal="true" aria-labelledby="authSmsHeading" aria-hidden="true">
+    <div class="auth-sms-card">
+      <h2 class="auth-sms-heading i18n-text" id="authSmsHeading" data-i18n="internal.smsTitle">Sign in by SMS</h2>
+      <p class="auth-sms-copy i18n-text" data-i18n="internal.smsCopy">Enter the mobile number registered on your account.</p>
+      <form class="auth-sms-form" id="authSmsForm" novalidate>
+        <input class="auth-sms-field" id="authSmsPhone" type="tel" inputmode="tel" autocomplete="tel" data-i18n-placeholder="internal.phonePlaceholder" placeholder="+39 320 000 0000" aria-label="Mobile number" required>
+        <button class="auth-sms-primary i18n-text" id="authSmsSend" type="button" data-i18n="internal.smsSend">Send code</button>
+        <div class="auth-sms-code-row" id="authSmsCodeRow" hidden>
+          <input class="auth-sms-field" id="authSmsCode" type="text" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]*" maxlength="8" data-i18n-placeholder="internal.codePlaceholder" placeholder="One-time code" aria-label="One-time code">
+          <button class="auth-sms-primary i18n-text" id="authSmsVerify" type="submit" data-i18n="internal.smsVerify">Verify</button>
+        </div>
+        <div class="auth-sms-feedback" id="authSmsFeedback" aria-live="polite"></div>
+        <div class="auth-sms-actions">
+          <button class="auth-sms-close i18n-text" id="authSmsClose" type="button" data-i18n="internal.cancel">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <section class="auth-sms-dialog" id="authPasswordDialog" role="dialog" aria-modal="true" aria-labelledby="authPasswordHeading" aria-hidden="true">
+    <div class="auth-sms-card">
+      <h2 class="auth-sms-heading i18n-text" id="authPasswordHeading" data-i18n="internal.newPasswordTitle">Choose a new password</h2>
+      <p class="auth-sms-copy i18n-text" data-i18n="internal.newPasswordCopy">Enter and confirm your new password to complete recovery.</p>
+      <form class="auth-sms-form" id="authPasswordForm" novalidate>
+        <input class="auth-sms-field" id="authNewPassword" type="password" autocomplete="new-password" minlength="8" data-i18n-placeholder="internal.newPasswordPlaceholder" placeholder="New password" aria-label="New password" required>
+        <input class="auth-sms-field" id="authConfirmPassword" type="password" autocomplete="new-password" minlength="8" data-i18n-placeholder="internal.confirmPasswordPlaceholder" placeholder="Confirm password" aria-label="Confirm password" required>
+        <button class="auth-sms-primary i18n-text" id="authPasswordSave" type="submit" data-i18n="internal.savePassword">Save password</button>
+        <div class="auth-sms-feedback" id="authPasswordFeedback" aria-live="polite"></div>
+        <div class="auth-sms-actions">
+          <button class="auth-sms-close i18n-text" id="authPasswordCancel" type="button" data-i18n="internal.cancel">Cancel</button>
+        </div>
+      </form>
     </div>
   </section>
 
@@ -6237,6 +6442,24 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
     const internalAuthSubmitButtons = document.querySelectorAll('[data-internal-auth-submit]');
     const internalAuthFeedbacks = document.querySelectorAll('[data-internal-auth-feedback]');
     const internalStatusElements = document.querySelectorAll('[data-internal-status]');
+    const authSmsOpen = document.getElementById('authSmsOpen');
+    const authPasswordReset = document.getElementById('authPasswordReset');
+    const authSmsDialog = document.getElementById('authSmsDialog');
+    const authSmsForm = document.getElementById('authSmsForm');
+    const authSmsPhone = document.getElementById('authSmsPhone');
+    const authSmsSend = document.getElementById('authSmsSend');
+    const authSmsCodeRow = document.getElementById('authSmsCodeRow');
+    const authSmsCode = document.getElementById('authSmsCode');
+    const authSmsVerify = document.getElementById('authSmsVerify');
+    const authSmsFeedback = document.getElementById('authSmsFeedback');
+    const authSmsClose = document.getElementById('authSmsClose');
+    const authPasswordDialog = document.getElementById('authPasswordDialog');
+    const authPasswordForm = document.getElementById('authPasswordForm');
+    const authNewPassword = document.getElementById('authNewPassword');
+    const authConfirmPassword = document.getElementById('authConfirmPassword');
+    const authPasswordSave = document.getElementById('authPasswordSave');
+    const authPasswordFeedback = document.getElementById('authPasswordFeedback');
+    const authPasswordCancel = document.getElementById('authPasswordCancel');
     const welcomeBack = document.getElementById('welcomeBack');
     const welcomeBackText = document.getElementById('welcomeBackText');
 
@@ -7042,6 +7265,80 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
           return { ok: true, email, user, session };
         },
 
+        async sendSmsOtp(phone) {
+          if (getInternalMode() !== 'supabase') return { ok: false, error: 'supabase_required' };
+
+          const client = createInternalSupabaseClient();
+          if (!client) return { ok: false, error: 'client_unavailable' };
+
+          const { error } = await client.auth.signInWithOtp({
+            phone,
+            options: { shouldCreateUser: false }
+          });
+
+          if (error) {
+            dataEvent('auth-sms-send-error', { error });
+            return { ok: false, error };
+          }
+
+          dataEvent('auth-sms-sent', { phone });
+          return { ok: true, phone };
+        },
+
+        async verifySmsOtp(phone, token) {
+          if (getInternalMode() !== 'supabase') return { ok: false, error: 'supabase_required' };
+
+          const client = createInternalSupabaseClient();
+          if (!client) return { ok: false, error: 'client_unavailable' };
+
+          const { data, error } = await client.auth.verifyOtp({ phone, token, type: 'sms' });
+          if (error) {
+            dataEvent('auth-sms-verify-error', { error });
+            return { ok: false, error };
+          }
+
+          const session = data?.session || null;
+          const user = data?.user ? await profileFromSupabaseUser(data.user) : null;
+          dataEvent('auth-sms-sign-in', { phone, user, session });
+          return { ok: true, phone, user, session };
+        },
+
+        async sendPasswordReset(email) {
+          if (getInternalMode() !== 'supabase') return { ok: false, error: 'supabase_required' };
+
+          const client = createInternalSupabaseClient();
+          if (!client) return { ok: false, error: 'client_unavailable' };
+
+          const { error } = await client.auth.resetPasswordForEmail(email, {
+            redirectTo: INTERNAL_CONFIG.supabase.redirectTo
+          });
+
+          if (error) {
+            dataEvent('auth-password-reset-error', { error });
+            return { ok: false, error };
+          }
+
+          dataEvent('auth-password-reset-sent', { email });
+          return { ok: true, email };
+        },
+
+        async updatePassword(password) {
+          if (getInternalMode() !== 'supabase') return { ok: false, error: 'supabase_required' };
+
+          const client = createInternalSupabaseClient();
+          if (!client) return { ok: false, error: 'client_unavailable' };
+
+          const { data, error } = await client.auth.updateUser({ password });
+          if (error) {
+            dataEvent('auth-password-update-error', { error });
+            return { ok: false, error };
+          }
+
+          const sessionResult = await this.getSession();
+          dataEvent('auth-password-updated', { user: sessionResult.user });
+          return { ok: true, user: sessionResult.user, session: sessionResult.session, authUser: data?.user || null };
+        },
+
         async signInMock(user = INTERNAL_MOCK_USER) {
           const session = {
             id: mockId('session'),
@@ -7475,6 +7772,29 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
         'internal.passwordLabel': 'Password',
         'internal.passwordPlaceholder': 'Password',
         'internal.enter': 'Enter',
+        'internal.smsAction': 'SMS code',
+        'internal.resetAction': 'Reset password',
+        'internal.smsTitle': 'Sign in by SMS',
+        'internal.smsCopy': 'Enter the mobile number registered on your account.',
+        'internal.phonePlaceholder': '+39 320 000 0000',
+        'internal.codePlaceholder': 'One-time code',
+        'internal.smsSend': 'Send code',
+        'internal.smsVerify': 'Verify',
+        'internal.cancel': 'Cancel',
+        'internal.smsSent': 'Code sent. Enter it below.',
+        'internal.smsError': 'The code could not be sent. Check the number and Supabase phone settings.',
+        'internal.smsVerifyError': 'The code is invalid or has expired.',
+        'internal.resetSent': 'Password reset email sent. Check your inbox.',
+        'internal.resetError': 'The reset email could not be sent. Check the address and Supabase email settings.',
+        'internal.emailRequired': 'Enter your email address first.',
+        'internal.newPasswordTitle': 'Choose a new password',
+        'internal.newPasswordCopy': 'Enter and confirm your new password to complete recovery.',
+        'internal.newPasswordPlaceholder': 'New password',
+        'internal.confirmPasswordPlaceholder': 'Confirm password',
+        'internal.savePassword': 'Save password',
+        'internal.passwordMismatch': 'Use at least eight characters and make sure both passwords match.',
+        'internal.passwordSaved': 'Password updated. Signing you in…',
+        'internal.passwordSaveError': 'The password could not be updated. Request a new recovery email and try again.',
         'internal.signOut': 'Sign out',
         'internal.signedInAs': 'Signed in as',
         'internal.status.signedOut': 'Authentication required',
@@ -7626,6 +7946,29 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
         'internal.passwordLabel': 'Senha',
         'internal.passwordPlaceholder': 'Senha',
         'internal.enter': 'Entrar',
+        'internal.smsAction': 'Código SMS',
+        'internal.resetAction': 'Redefinir senha',
+        'internal.smsTitle': 'Entrar por SMS',
+        'internal.smsCopy': 'Digite o número de celular registrado na sua conta.',
+        'internal.phonePlaceholder': '+39 320 000 0000',
+        'internal.codePlaceholder': 'Código de uso único',
+        'internal.smsSend': 'Enviar código',
+        'internal.smsVerify': 'Verificar',
+        'internal.cancel': 'Cancelar',
+        'internal.smsSent': 'Código enviado. Digite-o abaixo.',
+        'internal.smsError': 'Não foi possível enviar o código. Verifique o número e as configurações de telefone do Supabase.',
+        'internal.smsVerifyError': 'O código é inválido ou expirou.',
+        'internal.resetSent': 'Email de redefinição enviado. Verifique sua caixa de entrada.',
+        'internal.resetError': 'Não foi possível enviar o email. Verifique o endereço e as configurações de email do Supabase.',
+        'internal.emailRequired': 'Digite primeiro o seu email.',
+        'internal.newPasswordTitle': 'Escolha uma nova senha',
+        'internal.newPasswordCopy': 'Digite e confirme a nova senha para concluir a recuperação.',
+        'internal.newPasswordPlaceholder': 'Nova senha',
+        'internal.confirmPasswordPlaceholder': 'Confirmar senha',
+        'internal.savePassword': 'Salvar senha',
+        'internal.passwordMismatch': 'Use pelo menos oito caracteres e confirme a mesma senha.',
+        'internal.passwordSaved': 'Senha atualizada. Iniciando sessão…',
+        'internal.passwordSaveError': 'Não foi possível atualizar a senha. Solicite um novo email e tente novamente.',
         'internal.signOut': 'Sair',
         'internal.signedInAs': 'Sessão de',
         'internal.status.signedOut': 'Autenticação necessária',
@@ -7990,7 +8333,15 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
       applyInternalRouteProtection(currentRoute || routeFromHash());
       internalAccessEvent('supabase-ready', { user: InternalState.user });
 
-      client.auth.onAuthStateChange(async (_event, session) => {
+      client.auth.onAuthStateChange(async (authEvent, session) => {
+        if (authEvent === 'PASSWORD_RECOVERY') {
+          lockInternalAreas();
+          setInternalAuthStatus('signed_out');
+          openPasswordRecoveryDialog();
+          updateInternalAccessUI();
+          return;
+        }
+
         if (session?.user) {
           const user = await profileFromSupabaseUser(session.user);
           setInternalUser(user, session);
@@ -8009,7 +8360,7 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
     }
 
     window.MoscatelliInternal = Object.freeze({
-      getBuild: () => 'patch19a-roma-header-wordmark',
+      getBuild: () => 'patch19b-auth-recovery-actions',
       getMode: getInternalMode,
       isSignedIn: isInternalUserSignedIn,
       getCurrentUser: () => {
@@ -8023,7 +8374,7 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
         mode: getInternalMode(),
         signedIn: isInternalUserSignedIn(),
         realtimeStatus: RealtimeRuntime.status,
-        build: 'patch19a-roma-header-wordmark'
+        build: 'patch19b-auth-recovery-actions'
       }),
       isInternalRoute,
       featureForRoute: internalFeatureForRoute
@@ -8055,6 +8406,10 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
 
       internalAuthSubmitButtons.forEach(button => {
         button.disabled = InternalState.authStatus === 'checking' || InternalState.authStatus === 'signed_in';
+      });
+
+      [authSmsOpen, authPasswordReset].forEach(button => {
+        if (button) button.disabled = InternalState.authStatus === 'checking' || InternalState.authStatus === 'signed_in';
       });
 
       if (internalSessionUser) {
@@ -8152,6 +8507,162 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
         setInternalAuthStatus(result.error === 'client_unavailable' ? 'config_error' : 'auth_error');
       }
 
+      updateInternalAccessUI();
+    }
+
+    function authText(key, fallback = '') {
+      return translations[currentLang]?.[key] || fallback;
+    }
+
+    function setPrimaryAuthFeedback(message = '') {
+      const primaryFeedback = document.querySelector('#globalAuthGate [data-internal-auth-feedback]');
+      if (primaryFeedback) primaryFeedback.textContent = message;
+    }
+
+    function normaliseSmsPhone(value = '') {
+      const compact = String(value).trim().replace(/[\s().-]+/g, '');
+      return /^\+[1-9]\d{7,14}$/.test(compact) ? compact : '';
+    }
+
+    function openSmsAuthDialog() {
+      if (!authSmsDialog) return;
+      authSmsDialog.classList.add('is-open');
+      authSmsDialog.setAttribute('aria-hidden', 'false');
+      authSmsFeedback.textContent = '';
+      setTimeout(() => authSmsPhone?.focus(), 80);
+    }
+
+    function closeSmsAuthDialog() {
+      if (!authSmsDialog) return;
+      authSmsDialog.classList.remove('is-open');
+      authSmsDialog.setAttribute('aria-hidden', 'true');
+      authSmsCodeRow.hidden = true;
+      authSmsCode.value = '';
+      authSmsFeedback.textContent = '';
+      authSmsOpen?.focus();
+    }
+
+    async function requestSmsOtp() {
+      const phone = normaliseSmsPhone(authSmsPhone?.value);
+      if (!phone) {
+        authSmsFeedback.textContent = authText('internal.smsError', 'Enter a valid international mobile number.');
+        authSmsPhone?.focus();
+        return;
+      }
+
+      authSmsSend.disabled = true;
+      authSmsFeedback.textContent = authText('internal.status.checking', 'Verifying access…');
+      const result = await InternalData.auth.sendSmsOtp(phone);
+      authSmsSend.disabled = false;
+
+      if (!result.ok) {
+        authSmsFeedback.textContent = authText('internal.smsError', 'The code could not be sent.');
+        return;
+      }
+
+      authSmsCodeRow.hidden = false;
+      authSmsFeedback.textContent = authText('internal.smsSent', 'Code sent. Enter it below.');
+      setTimeout(() => authSmsCode?.focus(), 60);
+    }
+
+    async function verifySmsOtp(event) {
+      event?.preventDefault?.();
+      const phone = normaliseSmsPhone(authSmsPhone?.value);
+      const token = String(authSmsCode?.value || '').replace(/\D/g, '');
+
+      if (!phone || token.length < 6) {
+        authSmsFeedback.textContent = authText('internal.smsVerifyError', 'The code is invalid or has expired.');
+        return;
+      }
+
+      authSmsVerify.disabled = true;
+      authSmsFeedback.textContent = authText('internal.status.checking', 'Verifying access…');
+      const result = await InternalData.auth.verifySmsOtp(phone, token);
+      authSmsVerify.disabled = false;
+
+      if (!result.ok) {
+        authSmsFeedback.textContent = authText('internal.smsVerifyError', 'The code is invalid or has expired.');
+        return;
+      }
+
+      rememberPendingInternalRoute(currentRoute || routeFromHash());
+      setInternalUser(result.user, result.session);
+      if (InternalState.authStatus === 'signed_in') {
+        closeSmsAuthDialog();
+        unlockInternalAreas();
+        restorePendingInternalRoute();
+        applyInternalRouteProtection(currentRoute || routeFromHash());
+        showWelcomeBack(result.user);
+      } else {
+        authSmsFeedback.textContent = authText('internal.status.inactive', 'Profile not active yet.');
+      }
+      updateInternalAccessUI();
+    }
+
+    async function requestPasswordReset() {
+      const primaryEmail = document.querySelector('#globalAuthGate [data-internal-email]');
+      const email = primaryEmail?.value.trim() || '';
+      if (!email || !primaryEmail.checkValidity()) {
+        setPrimaryAuthFeedback(authText('internal.emailRequired', 'Enter your email address first.'));
+        primaryEmail?.focus();
+        return;
+      }
+
+      authPasswordReset.disabled = true;
+      setPrimaryAuthFeedback(authText('internal.status.checking', 'Verifying access…'));
+      const result = await InternalData.auth.sendPasswordReset(email);
+      authPasswordReset.disabled = false;
+      setPrimaryAuthFeedback(result.ok
+        ? authText('internal.resetSent', 'Password reset email sent. Check your inbox.')
+        : authText('internal.resetError', 'The reset email could not be sent.'));
+    }
+
+    function openPasswordRecoveryDialog() {
+      if (!authPasswordDialog) return;
+      authPasswordDialog.classList.add('is-open');
+      authPasswordDialog.setAttribute('aria-hidden', 'false');
+      authPasswordFeedback.textContent = '';
+      setTimeout(() => authNewPassword?.focus(), 80);
+    }
+
+    function closePasswordRecoveryDialog() {
+      if (!authPasswordDialog) return;
+      authPasswordDialog.classList.remove('is-open');
+      authPasswordDialog.setAttribute('aria-hidden', 'true');
+      authNewPassword.value = '';
+      authConfirmPassword.value = '';
+      authPasswordFeedback.textContent = '';
+    }
+
+    async function saveRecoveredPassword(event) {
+      event?.preventDefault?.();
+      const password = authNewPassword?.value || '';
+      const confirmation = authConfirmPassword?.value || '';
+
+      if (password.length < 8 || password !== confirmation) {
+        authPasswordFeedback.textContent = authText('internal.passwordMismatch', 'Use at least eight characters and make sure both passwords match.');
+        return;
+      }
+
+      authPasswordSave.disabled = true;
+      authPasswordFeedback.textContent = authText('internal.status.checking', 'Verifying access…');
+      const result = await InternalData.auth.updatePassword(password);
+      authPasswordSave.disabled = false;
+
+      if (!result.ok) {
+        authPasswordFeedback.textContent = authText('internal.passwordSaveError', 'The password could not be updated.');
+        return;
+      }
+
+      authPasswordFeedback.textContent = authText('internal.passwordSaved', 'Password updated. Signing you in…');
+      setInternalUser(result.user, result.session);
+      if (InternalState.authStatus === 'signed_in') {
+        closePasswordRecoveryDialog();
+        unlockInternalAreas();
+        restorePendingInternalRoute();
+        applyInternalRouteProtection(currentRoute || routeFromHash());
+        showWelcomeBack(result.user);
+      }
       updateInternalAccessUI();
     }
 
@@ -8565,6 +9076,24 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
 
     internalAuthForms.forEach(form => {
       form.addEventListener('submit', requestInternalPasswordAccess);
+    });
+
+    authSmsOpen?.addEventListener('click', openSmsAuthDialog);
+    authPasswordReset?.addEventListener('click', requestPasswordReset);
+    authSmsSend?.addEventListener('click', requestSmsOtp);
+    authSmsForm?.addEventListener('submit', verifySmsOtp);
+    authSmsClose?.addEventListener('click', closeSmsAuthDialog);
+    authSmsDialog?.addEventListener('click', event => {
+      if (event.target === authSmsDialog) closeSmsAuthDialog();
+    });
+    authPasswordForm?.addEventListener('submit', saveRecoveredPassword);
+    authPasswordCancel?.addEventListener('click', closePasswordRecoveryDialog);
+    authPasswordDialog?.addEventListener('click', event => {
+      if (event.target === authPasswordDialog) closePasswordRecoveryDialog();
+    });
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape' && authSmsDialog?.classList.contains('is-open')) closeSmsAuthDialog();
+      if (event.key === 'Escape' && authPasswordDialog?.classList.contains('is-open')) closePasswordRecoveryDialog();
     });
 
     internalMockSignInButtons.forEach(button => {
