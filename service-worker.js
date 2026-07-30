@@ -1,4 +1,4 @@
-const CACHE_NAME = 'moscatelli-shell-19e';
+const CACHE_NAME = 'moscatelli-shell-19f';
 const SHELL_ASSETS = [
   './',
   './index.html',
