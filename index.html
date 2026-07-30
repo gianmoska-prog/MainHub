@@ -6833,6 +6833,419 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
       }
     }
 
+    /* Patch 19G — authenticated hub hardening and portrait PWA polish */
+    .route-view[inert],
+    [aria-hidden="true"][inert] {
+      pointer-events: none !important;
+    }
+
+    .portrait-lock {
+      display: none;
+    }
+
+    .gallery-hint {
+      position: absolute;
+      left: 50%;
+      bottom: 18px;
+      z-index: 4;
+      margin: 0;
+      transform: translateX(-50%);
+      font-family: "Cinzel", serif;
+      font-size: 7.5px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: rgba(242, 237, 228, 0.38);
+      pointer-events: none;
+      transition: opacity 320ms ease, transform 320ms ease;
+    }
+
+    body.gallery-interacted .gallery-hint {
+      opacity: 0;
+      transform: translate(-50%, 5px);
+    }
+
+    .dashboard-loading {
+      box-sizing: border-box;
+      width: 100%;
+      min-height: 150px;
+      padding: 30px 24px;
+      border-top: 1px solid rgba(242, 237, 228, 0.08);
+      border-bottom: 1px solid rgba(242, 237, 228, 0.08);
+    }
+
+    .dashboard-loading[hidden] {
+      display: none;
+    }
+
+    .dashboard-loading-label {
+      display: block;
+      margin-bottom: 22px;
+      font-family: "Cinzel", serif;
+      font-size: 7.5px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: rgba(242, 237, 228, 0.4);
+    }
+
+    .dashboard-loading-line {
+      display: block;
+      width: min(620px, 74%);
+      height: 9px;
+      margin-bottom: 13px;
+      background: linear-gradient(90deg, rgba(242, 237, 228, 0.035), rgba(232, 192, 122, 0.12), rgba(242, 237, 228, 0.035));
+      background-size: 220% 100%;
+      animation: dashboard-loading-shimmer 1.7s ease-in-out infinite;
+    }
+
+    .dashboard-loading-line.is-short {
+      width: min(410px, 52%);
+    }
+
+    @keyframes dashboard-loading-shimmer {
+      to { background-position: -220% 0; }
+    }
+
+    .dashboard-delete-dialog {
+      position: fixed;
+      inset: 0;
+      z-index: 2750;
+      display: grid;
+      place-items: center;
+      padding: 20px;
+    }
+
+    .dashboard-delete-dialog[hidden] {
+      display: none;
+    }
+
+    .dashboard-delete-scrim {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+      background: rgba(5, 3, 2, 0.86);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
+
+    .dashboard-delete-card {
+      position: relative;
+      z-index: 1;
+      box-sizing: border-box;
+      width: min(460px, calc(100vw - 40px));
+      padding: 38px 36px 32px;
+      border: 1px solid rgba(232, 192, 122, 0.18);
+      background: linear-gradient(145deg, rgba(30, 18, 11, 0.98), rgba(9, 6, 4, 0.99));
+      box-shadow: 0 28px 90px rgba(0, 0, 0, 0.66);
+      text-align: center;
+    }
+
+    .dashboard-delete-kicker {
+      display: block;
+      margin-bottom: 14px;
+      font-family: "Cinzel", serif;
+      font-size: 7.5px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: rgba(232, 192, 122, 0.56);
+    }
+
+    .dashboard-delete-title {
+      margin: 0 0 12px;
+      font-family: "Cinzel", serif;
+      font-size: 22px;
+      font-weight: 300;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(242, 237, 228, 0.86);
+    }
+
+    .dashboard-delete-copy {
+      margin: 0 0 28px;
+      font-size: 17px;
+      color: rgba(242, 237, 228, 0.54);
+    }
+
+    .dashboard-delete-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .dashboard-delete-actions button {
+      min-height: 46px;
+      border: 1px solid rgba(242, 237, 228, 0.12);
+      background: rgba(10, 7, 5, 0.74);
+      font-family: "Cinzel", serif;
+      font-size: 8px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(242, 237, 228, 0.58);
+      cursor: pointer;
+    }
+
+    .dashboard-delete-confirm {
+      border-color: rgba(232, 192, 122, 0.28) !important;
+      color: rgba(232, 192, 122, 0.84) !important;
+    }
+
+    .finance-feedback-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      min-height: 28px;
+      padding: 8px 0 0;
+    }
+
+    .finance-feedback-wrap .finance-feedback {
+      min-height: 0;
+      padding: 0;
+    }
+
+    .finance-retry {
+      min-width: 76px;
+      min-height: 36px;
+      padding: 0 14px;
+      border: 1px solid rgba(232, 192, 122, 0.22);
+      background: rgba(12, 8, 5, 0.72);
+      font-family: "Cinzel", serif;
+      font-size: 7.5px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(232, 192, 122, 0.74);
+      cursor: pointer;
+    }
+
+    body[data-route="divisions/finance"] .route-division-finance.is-active {
+      scroll-padding-bottom: 96px;
+      padding-bottom: max(96px, calc(64px + env(safe-area-inset-bottom, 0px)));
+    }
+
+    .side-nav .nav-label,
+    .side-nav nav a {
+      color: rgba(242, 237, 228, 0.66);
+    }
+
+    .side-nav nav .nav-reserved {
+      color: rgba(242, 237, 228, 0.28);
+    }
+
+    @media (max-width: 640px) {
+      :root {
+        --header-h: calc(60px + env(safe-area-inset-top, 0px));
+        --footer-h: calc(44px + env(safe-area-inset-bottom, 0px));
+      }
+
+      header {
+        box-sizing: border-box;
+        padding-top: env(safe-area-inset-top, 0px);
+      }
+
+      footer {
+        box-sizing: border-box;
+        padding-bottom: env(safe-area-inset-bottom, 0px);
+      }
+
+      .side-nav {
+        box-sizing: border-box;
+        padding-bottom: max(32px, calc(24px + env(safe-area-inset-bottom, 0px)));
+        background: rgba(10, 7, 5, 0.975);
+        box-shadow: 22px 0 70px rgba(0, 0, 0, 0.72);
+        backdrop-filter: blur(30px) saturate(130%);
+        -webkit-backdrop-filter: blur(30px) saturate(130%);
+      }
+
+      .overlay.open {
+        background: rgba(4, 2, 1, 0.68);
+      }
+
+      body.internal-unlocked .internal-session-line,
+      body.internal-unlocked[data-route^="divisions"] .internal-session-line {
+        min-height: 44px;
+      }
+
+      body.internal-unlocked .internal-sign-out,
+      body.internal-unlocked[data-route^="divisions"] .internal-sign-out {
+        min-height: 44px;
+        font-size: 8.5px;
+      }
+
+      body.internal-unlocked[data-route^="divisions"] .division-return {
+        min-height: 44px;
+        min-width: 74px;
+        font-size: 8.5px;
+      }
+
+      footer span {
+        font-size: 8.5px;
+        letter-spacing: 0.18em;
+        color: rgba(242, 237, 228, 0.34);
+      }
+
+      .gallery-hint {
+        display: none;
+      }
+
+      .dashboard-filter-menu,
+      .dashboard-category-menu {
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+        mask-image: linear-gradient(to bottom, transparent 0, #000 14px, #000 calc(100% - 14px), transparent 100%);
+        -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 14px, #000 calc(100% - 14px), transparent 100%);
+      }
+
+      .dashboard-filter-menu::-webkit-scrollbar,
+      .dashboard-category-menu::-webkit-scrollbar {
+        display: none;
+        width: 0;
+        height: 0;
+      }
+
+      .dashboard-category-menu {
+        top: auto;
+        bottom: calc(100% + 8px);
+        max-height: min(48svh, 300px);
+      }
+
+      .dashboard-loading {
+        min-height: 180px;
+        padding: 30px 16px;
+      }
+
+      .dashboard-loading-line,
+      .dashboard-loading-line.is-short {
+        width: 100%;
+      }
+
+      .dashboard-delete-card {
+        padding: 32px 24px 24px;
+      }
+
+      .dashboard-delete-actions {
+        grid-template-columns: 1fr;
+      }
+
+      .dashboard-delete-actions button {
+        min-height: 48px;
+      }
+
+      .finance-feedback-wrap {
+        flex-direction: column;
+        gap: 10px;
+        padding: 14px 18px 0;
+        text-align: center;
+      }
+
+      .finance-retry {
+        min-height: 44px;
+      }
+
+      .finance-table-scroll {
+        overflow: visible;
+      }
+
+      .finance-table {
+        display: block;
+        width: 100%;
+        min-width: 0;
+      }
+
+      .finance-table thead {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(0 0 0 0);
+        clip-path: inset(50%);
+      }
+
+      .finance-table tbody {
+        display: grid;
+        gap: 12px;
+      }
+
+      .finance-table tbody:empty {
+        display: none;
+      }
+
+      .finance-table tr,
+      .finance-table td {
+        display: block;
+        width: 100%;
+      }
+
+      .finance-table tbody tr {
+        box-sizing: border-box;
+        padding: 8px 16px;
+        border: 1px solid rgba(242, 237, 228, 0.09);
+        background: rgba(12, 8, 5, 0.58);
+      }
+
+      .finance-table tbody td {
+        box-sizing: border-box;
+        display: grid;
+        grid-template-columns: minmax(96px, 0.72fr) minmax(0, 1fr);
+        gap: 14px;
+        min-height: 44px;
+        padding: 12px 0;
+        border: 0;
+        border-bottom: 1px solid rgba(242, 237, 228, 0.07);
+        text-align: left !important;
+        white-space: normal;
+      }
+
+      .finance-table tbody td:last-child {
+        border-bottom: 0;
+      }
+
+      .finance-table tbody td::before {
+        content: attr(data-label);
+        font-family: "Cinzel", serif;
+        font-size: 7px;
+        letter-spacing: 0.19em;
+        text-transform: uppercase;
+        color: rgba(242, 237, 228, 0.38);
+      }
+    }
+
+    @media (orientation: landscape) and (max-height: 500px) and (pointer: coarse) {
+      .portrait-lock {
+        position: fixed;
+        inset: 0;
+        z-index: 5000;
+        display: grid;
+        place-content: center;
+        justify-items: center;
+        gap: 18px;
+        padding: max(24px, env(safe-area-inset-top, 0px)) max(24px, env(safe-area-inset-right, 0px)) max(24px, env(safe-area-inset-bottom, 0px)) max(24px, env(safe-area-inset-left, 0px));
+        background: radial-gradient(circle at 50% 44%, #28160d 0%, #080604 68%);
+        text-align: center;
+      }
+
+      .portrait-lock-mark {
+        font-family: "Cinzel", serif;
+        font-size: 54px;
+        color: rgba(232, 192, 122, 0.3);
+      }
+
+      .portrait-lock p {
+        margin: 0;
+        font-family: "Cinzel", serif;
+        font-size: 10px;
+        letter-spacing: 0.28em;
+        text-transform: uppercase;
+        color: rgba(242, 237, 228, 0.72);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .dashboard-loading-line {
+        animation: none;
+      }
+    }
+
   </style>
 </head>
 <body data-internal-mode="supabase" data-internal-auth="signed_out" data-internal-ready="false" data-internal-route="public" data-internal-feature="public">
@@ -6922,6 +7335,11 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
 
   <div class="overlay" id="overlay"></div>
 
+  <div class="portrait-lock" role="status" aria-live="polite">
+    <div class="portrait-lock-mark" aria-hidden="true">M</div>
+    <p class="i18n-text" data-i18n="portrait.message">Please rotate your device to portrait.</p>
+  </div>
+
   <aside class="side-nav" id="sideNav" aria-hidden="true">
     <p class="nav-label i18n-text" data-i18n="nav.label">Navigation</p>
     <nav>
@@ -6994,6 +7412,7 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
           <span class="gallery-caption i18n-text" data-i18n="gallery.caption.7">Gianluca Moscatelli - Founder portrait</span>
         </button>
       </div>
+      <p class="gallery-hint i18n-text" data-i18n="gallery.hint">Select an image to expand</p>
     </section>
     <section class="route-view route-dashboard" data-view="dashboard" aria-hidden="true">
       <div class="dashboard-shell" data-dashboard>
@@ -7084,6 +7503,11 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
         </div>
 
         <div class="dashboard-feed" id="dashboardFeed" aria-live="polite">
+          <div class="dashboard-loading" id="dashboardLoading" role="status" aria-live="polite" hidden>
+            <span class="dashboard-loading-label i18n-text" data-i18n="dashboard.loading">Loading records</span>
+            <span class="dashboard-loading-line" aria-hidden="true"></span>
+            <span class="dashboard-loading-line is-short" aria-hidden="true"></span>
+          </div>
           <p class="dashboard-empty i18n-text" id="dashboardEmpty" data-i18n="dashboard.empty">No entries yet.</p>
         </div>
 
@@ -7108,6 +7532,18 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
         </figure>
         <button class="record-lightbox-nav is-prev" id="recordAttachmentViewerPrev" type="button" aria-label="Previous attachment">‹</button>
         <button class="record-lightbox-nav is-next" id="recordAttachmentViewerNext" type="button" aria-label="Next attachment">›</button>
+      </div>
+    </div>
+    <div class="dashboard-delete-dialog" id="dashboardDeleteDialog" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="dashboardDeleteTitle" hidden>
+      <button class="dashboard-delete-scrim" type="button" data-delete-dialog-cancel aria-label="Cancel deletion"></button>
+      <div class="dashboard-delete-card" role="document">
+        <span class="dashboard-delete-kicker i18n-text" data-i18n="dashboard.deleteKicker">Private record</span>
+        <h2 class="dashboard-delete-title i18n-text" id="dashboardDeleteTitle" data-i18n="dashboard.deleteTitle">Delete this entry?</h2>
+        <p class="dashboard-delete-copy i18n-text" data-i18n="dashboard.deleteCopy">This cannot be undone.</p>
+        <div class="dashboard-delete-actions">
+          <button class="dashboard-delete-cancel i18n-text" id="dashboardDeleteCancel" type="button" data-delete-dialog-cancel data-i18n="dashboard.cancel">Cancel</button>
+          <button class="dashboard-delete-confirm i18n-text" id="dashboardDeleteConfirm" type="button" data-i18n="dashboard.deleteConfirm">Delete entry</button>
+        </div>
       </div>
     </div>
     <section class="route-view route-divisions" data-view="divisions" aria-hidden="true">
@@ -7277,7 +7713,10 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
               <button class="finance-submit i18n-text" id="financeEntrySubmit" type="submit" data-i18n="finance.add">Add entry</button>
             </div>
           </form>
-          <div class="finance-feedback" id="financeFeedback" role="status" aria-live="polite"></div>
+          <div class="finance-feedback-wrap">
+            <div class="finance-feedback" id="financeFeedback" role="status" aria-live="polite"></div>
+            <button class="finance-retry i18n-text" id="financeRetry" type="button" data-i18n="finance.retry" hidden>Retry</button>
+          </div>
         </section>
 
         <section class="finance-panel" data-finance-panel="suppliers" aria-label="Finance suppliers">
@@ -8622,6 +9061,13 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
         'dashboard.viewerUnavailable': 'This attachment could not be opened. Refresh the page and try again.',
         'dashboard.delete': 'Delete',
         'dashboard.deleted': 'Entry deleted',
+        'dashboard.loading': 'Loading records',
+        'dashboard.loadError': 'Records could not be reached. They will be available again when the connection recovers.',
+        'dashboard.deleteKicker': 'Private record',
+        'dashboard.deleteTitle': 'Delete this entry?',
+        'dashboard.deleteCopy': 'This cannot be undone.',
+        'dashboard.deleteConfirm': 'Delete entry',
+        'dashboard.cancel': 'Cancel',
         'dashboard.empty': 'No entries yet.',
         'dashboard.untitled': 'Untitled entry',
         'dashboard.authorLocal': 'Local draft · Not saved',
@@ -8677,7 +9123,8 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
         'finance.error.invalid': 'Add a description and amount greater than zero before saving.',
         'finance.error.save': 'The finance entry could not be saved.',
         'finance.error.load': 'Finance entries could not be loaded.',
-        'finance.error.missingMigration': 'Finance entries could not be loaded. Confirm that 34_patch18a_finance_entries.sql has been run.',
+        'finance.error.missingMigration': 'The Finance workspace is not ready yet. Please try again shortly.',
+        'finance.retry': 'Retry',
         'finance.suppliers.empty': 'No supplier totals yet.',
         'finance.suppliers.name': 'Counterparty',
         'finance.suppliers.count': 'Entries',
@@ -8756,7 +9203,9 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
         'gallery.caption.4': 'Founder Double Breasted suit - Concept',
         'gallery.caption.5': 'Moscatelli Parfums - Concept',
         'gallery.caption.6': 'Moscatelli Lotto II - Cinematic concept',
-        'gallery.caption.7': 'Gianluca Moscatelli - Founder portrait'
+        'gallery.caption.7': 'Gianluca Moscatelli - Founder portrait',
+        'gallery.hint': 'Select an image to expand',
+        'portrait.message': 'Please rotate your device to portrait.'
       },
       pt: {
         'nav.label': 'Navegação',
@@ -8797,6 +9246,13 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
         'dashboard.viewerUnavailable': 'Este anexo não pôde ser aberto. Atualize a página e tente novamente.',
         'dashboard.delete': 'Apagar',
         'dashboard.deleted': 'Entrada apagada',
+        'dashboard.loading': 'Carregando registros',
+        'dashboard.loadError': 'Não foi possível acessar os registros. Eles voltarão a aparecer quando a conexão for restabelecida.',
+        'dashboard.deleteKicker': 'Registro privado',
+        'dashboard.deleteTitle': 'Apagar esta entrada?',
+        'dashboard.deleteCopy': 'Esta ação não pode ser desfeita.',
+        'dashboard.deleteConfirm': 'Apagar entrada',
+        'dashboard.cancel': 'Cancelar',
         'dashboard.empty': 'Ainda não há entradas.',
         'dashboard.untitled': 'Entrada sem título',
         'dashboard.authorLocal': 'Rascunho local · Não salvo',
@@ -8852,7 +9308,8 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
         'finance.error.invalid': 'Adicione uma descrição e um valor maior que zero antes de salvar.',
         'finance.error.save': 'A entrada financeira não pôde ser salva.',
         'finance.error.load': 'As entradas financeiras não puderam ser carregadas.',
-        'finance.error.missingMigration': 'As entradas financeiras não puderam ser carregadas. Confirme que 34_patch18a_finance_entries.sql foi executado.',
+        'finance.error.missingMigration': 'A área financeira ainda não está pronta. Tente novamente em instantes.',
+        'finance.retry': 'Tentar novamente',
         'finance.suppliers.empty': 'Ainda não há totais por fornecedor.',
         'finance.suppliers.name': 'Contraparte',
         'finance.suppliers.count': 'Entradas',
@@ -8931,7 +9388,9 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
         'gallery.caption.4': 'Terno de abotoamento duplo do fundador - Conceito',
         'gallery.caption.5': 'Moscatelli Parfums - Conceito',
         'gallery.caption.6': 'Moscatelli Lotto II - Conceito cinematográfico',
-        'gallery.caption.7': 'Gianluca Moscatelli - Retrato do fundador'
+        'gallery.caption.7': 'Gianluca Moscatelli - Retrato do fundador',
+        'gallery.hint': 'Selecione uma imagem para ampliar',
+        'portrait.message': 'Gire o dispositivo para a posição vertical.'
       }
     };
 
@@ -9302,7 +9761,7 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
     }
 
     window.MoscatelliInternal = Object.freeze({
-      getBuild: () => 'patch19f2-mobile-dashboard-repair',
+      getBuild: () => 'patch19g-full-site-hardening',
       getMode: getInternalMode,
       isSignedIn: isInternalUserSignedIn,
       getCurrentUser: () => {
@@ -9316,7 +9775,7 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
         mode: getInternalMode(),
         signedIn: isInternalUserSignedIn(),
         realtimeStatus: RealtimeRuntime.status,
-        build: 'patch19f2-mobile-dashboard-repair'
+        build: 'patch19g-full-site-hardening'
       }),
       isInternalRoute,
       featureForRoute: internalFeatureForRoute
@@ -9726,6 +10185,11 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
         const isActive = view.dataset.view === nextRoute;
         view.classList.toggle('is-active', isActive);
         view.setAttribute('aria-hidden', String(!isActive));
+        view.inert = !isActive;
+        if (isActive) {
+          view.scrollTop = 0;
+          view.querySelector('.dashboard-feed')?.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+        }
       });
 
       if (nextRoute === ROUTES.GALLERY && galleryAccordion && !galleryDesktopQuery.matches) {
@@ -9902,6 +10366,7 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
 
     function setActiveGalleryPanel(panel) {
       updateGalleryPanelWidths();
+      document.body.classList.add('gallery-interacted');
       const shouldClose = panel.classList.contains('is-active');
 
       if (galleryCaptionTimer) {
@@ -10001,6 +10466,7 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
       updateInternalAccessUI();
       renderFinanceModule();
       updateMenuAria();
+      queueMicrotask(() => refreshDashboardLanguage());
     }
 
     function detectDefaultLanguage() {
@@ -10084,6 +10550,8 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
 
     function openNav() {
       clearTimeout(navStaggerTimer);
+      sideNav.inert = false;
+      document.getElementById('mainContent')?.setAttribute('inert', '');
       sideNav.classList.add('open', 'entrance-stagger');
       sideNav.setAttribute('aria-hidden', 'false');
       hamburger.classList.add('open');
@@ -10102,10 +10570,13 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
       hamburger.classList.remove('open');
       hamburger.setAttribute('aria-expanded', 'false');
       overlay.classList.remove('open');
+      sideNav.inert = true;
+      document.getElementById('mainContent')?.removeAttribute('inert');
       updateMenuAria();
     }
 
     updateMenuAria();
+    sideNav.inert = true;
 
     hamburger.addEventListener('click', e => {
       e.preventDefault();
@@ -10208,6 +10679,7 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
     const financeEntryNotes = document.getElementById('financeEntryNotes');
     const financeEntrySubmit = document.getElementById('financeEntrySubmit');
     const financeFeedback = document.getElementById('financeFeedback');
+    const financeRetry = document.getElementById('financeRetry');
 
     const FinanceRuntime = {
       loaded: false,
@@ -10236,7 +10708,7 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
       if (isFinanceMissingMigrationError(error)) {
         return financeText(
           'finance.error.missingMigration',
-          'Finance entries could not be loaded. Confirm that 34_patch18a_finance_entries.sql has been run.'
+          'The Finance workspace is not ready yet. Please try again shortly.'
         );
       }
 
@@ -10311,6 +10783,7 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
       if (!financeFeedback) return;
       financeFeedback.textContent = message;
       financeFeedback.classList.toggle('is-error', tone === 'error');
+      if (financeRetry) financeRetry.hidden = tone !== 'error';
     }
 
     function mountFinanceWorkspace() {
@@ -10337,6 +10810,7 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
         const isActive = panel.dataset.financePanel === nextView;
         panel.classList.toggle('is-active', isActive);
         panel.setAttribute('aria-hidden', String(!isActive));
+        panel.inert = !isActive;
       });
     }
 
@@ -10375,12 +10849,15 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
         row.dataset.category = entry.category;
 
         const dateCell = document.createElement('td');
+        dateCell.dataset.label = financeText('finance.th.date', 'Date');
         dateCell.textContent = formatFinanceDate(entry.entry_date || entry.created_at);
 
         const categoryCell = document.createElement('td');
+        categoryCell.dataset.label = financeText('finance.th.category', 'Category');
         categoryCell.textContent = financeCategoryText(entry.category);
 
         const descriptionCell = document.createElement('td');
+        descriptionCell.dataset.label = financeText('finance.th.description', 'Description');
         const description = document.createElement('span');
         description.className = 'finance-description';
         description.textContent = entry.description || '—';
@@ -10393,9 +10870,11 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
         }
 
         const counterpartyCell = document.createElement('td');
+        counterpartyCell.dataset.label = financeText('finance.th.counterparty', 'Counterparty');
         counterpartyCell.textContent = entry.counterparty || '—';
 
         const statusCell = document.createElement('td');
+        statusCell.dataset.label = financeText('finance.th.status', 'Status');
         const status = document.createElement('span');
         status.className = 'finance-status';
         status.dataset.status = entry.status;
@@ -10403,6 +10882,7 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
         statusCell.appendChild(status);
 
         const amountCell = document.createElement('td');
+        amountCell.dataset.label = financeText('finance.th.amount', 'Amount');
         amountCell.className = 'is-numeric';
         amountCell.textContent = formatFinanceMoney(entry.amount, entry.currency);
 
@@ -10435,17 +10915,21 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
         const row = document.createElement('tr');
 
         const nameCell = document.createElement('td');
+        nameCell.dataset.label = financeText('finance.suppliers.name', 'Counterparty');
         nameCell.textContent = item.name;
 
         const countCell = document.createElement('td');
+        countCell.dataset.label = financeText('finance.suppliers.count', 'Entries');
         countCell.className = 'is-numeric';
         countCell.textContent = String(item.count);
 
         const committedCell = document.createElement('td');
+        committedCell.dataset.label = financeText('finance.suppliers.committed', 'Committed total');
         committedCell.className = 'is-numeric';
         committedCell.textContent = formatFinanceTotals(item.committed);
 
         const paidCell = document.createElement('td');
+        paidCell.dataset.label = financeText('finance.suppliers.paid', 'Paid total');
         paidCell.className = 'is-numeric';
         paidCell.textContent = formatFinanceTotals(item.paid);
 
@@ -10551,11 +11035,14 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
         setFinanceTab(tab.dataset.financeTab);
       });
     });
+    setFinanceTab(FinanceRuntime.activeView);
 
     financeEntryForm?.addEventListener('submit', event => {
       event.preventDefault();
       createFinanceEntryFromForm();
     });
+
+    financeRetry?.addEventListener('click', () => loadFinanceEntries({ force: true }));
 
     if (financeEntryDate) financeEntryDate.value = new Date().toISOString().slice(0, 10);
 
@@ -10564,6 +11051,7 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
     const dashboardFilterMenu = document.getElementById('dashboardFilterMenu');
     const dashboardFilterValue = document.getElementById('dashboardFilterValue');
     const dashboardFeed = document.getElementById('dashboardFeed');
+    const dashboardLoading = document.getElementById('dashboardLoading');
     const dashboardAttachmentInput = document.getElementById('dashboardAttachmentInput');
     const dashboardAttachments = document.getElementById('dashboardAttachments');
     const dashboardAttachmentLimit = document.getElementById('dashboardAttachmentLimit');
@@ -10586,16 +11074,22 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
     const recordAttachmentViewerClose = document.getElementById('recordAttachmentViewerClose');
     const recordAttachmentViewerPrev = document.getElementById('recordAttachmentViewerPrev');
     const recordAttachmentViewerNext = document.getElementById('recordAttachmentViewerNext');
+    const dashboardDeleteDialog = document.getElementById('dashboardDeleteDialog');
+    const dashboardDeleteCancel = document.getElementById('dashboardDeleteCancel');
+    const dashboardDeleteConfirm = document.getElementById('dashboardDeleteConfirm');
     let dashboardLocalAttachments = [];
     let dashboardCommitInFlight = false;
     let recordAttachmentViewerItems = [];
     let recordAttachmentViewerIndex = 0;
     let recordAttachmentViewerLastFocus = null;
+    let dashboardDeleteTarget = null;
+    let dashboardDeleteLastFocus = null;
 
     let dashboardCurrentFilter = 'all';
     const DashboardRuntime = {
       loaded: false,
       loading: false,
+      loadError: false,
       attachmentPersisting: false,
       deferredRealtimeRefreshReason: '',
       suppressRealtimeUntil: 0
@@ -10608,14 +11102,27 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
       const visiblePosts = Array.from(dashboardFeed.querySelectorAll('.dashboard-post'))
         .filter(post => !post.classList.contains('is-hidden'));
 
-      empty.classList.toggle('is-visible', visiblePosts.length === 0);
+      empty.textContent = DashboardRuntime.loadError
+        ? (translations[currentLang]?.['dashboard.loadError'] || 'Records could not be reached. They will be available again when the connection recovers.')
+        : (translations[currentLang]?.['dashboard.empty'] || 'No entries yet.');
+      empty.classList.toggle('is-visible', !DashboardRuntime.loading && DashboardRuntime.loaded && visiblePosts.length === 0);
+    }
+
+    function setDashboardLoading(loading) {
+      DashboardRuntime.loading = Boolean(loading);
+      if (dashboardLoading) dashboardLoading.hidden = !DashboardRuntime.loading;
+      dashboardFeed?.setAttribute('aria-busy', String(DashboardRuntime.loading));
+      updateDashboardEmptyState();
     }
 
     function clearDashboardPosts({ resetLoaded = true } = {}) {
       if (!dashboardFeed) return;
 
       dashboardFeed.querySelectorAll('.dashboard-post').forEach(post => post.remove());
-      if (resetLoaded) DashboardRuntime.loaded = false;
+      if (resetLoaded) {
+        DashboardRuntime.loaded = false;
+        DashboardRuntime.loadError = false;
+      }
       updateDashboardEmptyState();
     }
 
@@ -10655,8 +11162,7 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
 
       dashboardEntryCategory.dataset.entryCategory = category;
       dashboardEntryCategoryValue.textContent = activeText || category;
-      dashboardEntryCategory.classList.remove('is-open');
-      dashboardEntryCategoryTrigger?.setAttribute('aria-expanded', 'false');
+      closeEntryCategory();
     }
 
     function setDashboardEntryTriggerSuppressed(suppressed) {
@@ -10681,6 +11187,7 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
       dashboardFilterTrigger?.setAttribute('aria-expanded', 'false');
       dashboardFilterMenu?.setAttribute('hidden', '');
       dashboardFilterMenu?.setAttribute('aria-hidden', 'true');
+      if (dashboardFilterMenu) dashboardFilterMenu.inert = true;
       dashboardShell?.classList.remove('is-filtering');
       document.body.classList.remove('is-dashboard-filtering');
 
@@ -10694,6 +11201,7 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
       setDashboardEntryTriggerSuppressed(true);
       dashboardFilterMenu?.removeAttribute('hidden');
       dashboardFilterMenu?.setAttribute('aria-hidden', 'false');
+      if (dashboardFilterMenu) dashboardFilterMenu.inert = false;
       dashboardFilter?.classList.add('is-open');
       dashboardFilterTrigger?.setAttribute('aria-expanded', 'true');
       dashboardShell?.classList.add('is-filtering');
@@ -10702,16 +11210,29 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
 
     function toggleEntryCategory() {
       closeDashboardFilter();
-      const isOpen = dashboardEntryCategory?.classList.toggle('is-open');
-      dashboardEntryCategoryTrigger?.setAttribute('aria-expanded', String(Boolean(isOpen)));
+      const shouldOpen = !dashboardEntryCategory?.classList.contains('is-open');
+      if (!shouldOpen) {
+        closeEntryCategory();
+        return;
+      }
+      dashboardEntryCategoryMenu?.removeAttribute('hidden');
+      dashboardEntryCategoryMenu?.setAttribute('aria-hidden', 'false');
+      if (dashboardEntryCategoryMenu) dashboardEntryCategoryMenu.inert = false;
+      dashboardEntryCategory?.classList.add('is-open');
+      dashboardEntryCategoryTrigger?.setAttribute('aria-expanded', 'true');
     }
 
     function closeEntryCategory() {
       dashboardEntryCategory?.classList.remove('is-open');
       dashboardEntryCategoryTrigger?.setAttribute('aria-expanded', 'false');
+      dashboardEntryCategoryMenu?.setAttribute('hidden', '');
+      dashboardEntryCategoryMenu?.setAttribute('aria-hidden', 'true');
+      if (dashboardEntryCategoryMenu) dashboardEntryCategoryMenu.inert = true;
     }
 
     closeDashboardFilter();
+    closeEntryCategory();
+    if (dashboardEntryComposer) dashboardEntryComposer.inert = true;
 
     dashboardEntryCategoryTrigger?.addEventListener('click', toggleEntryCategory);
 
@@ -10773,6 +11294,41 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
     function categoryLabel(category) {
       const key = categoryLabelKey(category);
       return translations[currentLang]?.[key] || category || '';
+    }
+
+    function refreshDashboardLanguage() {
+      if (!dashboardFeed) return;
+
+      dashboardFeed.querySelectorAll('.dashboard-post').forEach(post => {
+        const record = {
+          category: post.dataset.category || 'meetings',
+          source: post.dataset.recordSource || getInternalMode(),
+          author_display: post.dataset.authorDisplay || '',
+          created_by: post.dataset.createdBy || ''
+        };
+
+        const date = post.querySelector('.dashboard-post-date');
+        const category = post.querySelector('.dashboard-post-category');
+        const author = post.querySelector('.dashboard-post-author');
+        const deleteButton = post.querySelector('[data-delete-owned-entry]');
+
+        if (date) date.textContent = formatLedgerDate(post.dataset.createdAt || post.dataset.date);
+        if (category) category.textContent = categoryLabel(record.category);
+        if (author) author.textContent = dashboardAuthorLine(record);
+        if (deleteButton) deleteButton.textContent = translations[currentLang]?.['dashboard.delete'] || 'Delete';
+
+        post.querySelectorAll('.dashboard-attachment-open').forEach((button, index) => {
+          const label = formatAttachmentLabel(index);
+          const caption = button.querySelector('.dashboard-attachment-label');
+          if (caption) caption.textContent = label;
+          button.dataset.size = label;
+          button.dataset.recordCategory = categoryLabel(record.category);
+          button.dataset.recordDate = formatLedgerDate(post.dataset.createdAt || post.dataset.date);
+          button.setAttribute('aria-label', label);
+        });
+      });
+
+      updateDashboardEmptyState();
     }
 
     function sortDashboardPostsByDate() {
@@ -10839,6 +11395,7 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
       const isExpanded = Boolean(expanded);
       dashboardEntryComposer.classList.toggle('is-expanded', isExpanded);
       dashboardEntryComposer.setAttribute('aria-hidden', String(!isExpanded));
+      dashboardEntryComposer.inert = !isExpanded;
       dashboardShell?.classList.toggle('is-composing', isExpanded);
       document.body.classList.toggle('is-dashboard-composing', isExpanded);
       dashboardEntryToggle.setAttribute('aria-expanded', String(isExpanded));
@@ -11267,6 +11824,7 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
           }
 
           const label = document.createElement('span');
+          label.className = 'dashboard-attachment-label';
           label.textContent = attachmentLabel;
 
           attachment.appendChild(label);
@@ -11315,14 +11873,18 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
       if (DashboardRuntime.loading) return [];
       if (DashboardRuntime.loaded && !force) return [];
 
-      DashboardRuntime.loading = true;
+      setDashboardLoading(true);
       try {
-        return await loadDashboardRecords({ channel: DASHBOARD_DATA_CONFIG.defaultChannel });
+        const records = await loadDashboardRecords({ channel: DASHBOARD_DATA_CONFIG.defaultChannel });
+        DashboardRuntime.loadError = false;
+        return records;
       } catch (error) {
+        DashboardRuntime.loaded = true;
+        DashboardRuntime.loadError = true;
         window.dispatchEvent(new CustomEvent('moscatelli:record-load-error', { detail: { error: publicErrorDetail(error) } }));
         return [];
       } finally {
-        DashboardRuntime.loading = false;
+        setDashboardLoading(false);
       }
     }
 
@@ -11587,16 +12149,39 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
       }, 240);
     });
 
-    dashboardFeed?.addEventListener('click', async event => {
-      const deleteButton = event.target.closest('[data-delete-owned-entry]');
-      if (!deleteButton) return;
+    function closeDashboardDeleteDialog({ restoreFocus = true } = {}) {
+      if (!dashboardDeleteDialog) return;
+      dashboardDeleteDialog.hidden = true;
+      dashboardDeleteDialog.setAttribute('aria-hidden', 'true');
+      dashboardDeleteDialog.inert = true;
+      document.body.classList.remove('is-delete-confirming');
+      const focusTarget = dashboardDeleteLastFocus;
+      dashboardDeleteTarget = null;
+      dashboardDeleteLastFocus = null;
+      if (restoreFocus && focusTarget?.isConnected) focusTarget.focus();
+    }
 
-      const post = deleteButton.closest('.dashboard-post');
-      if (!post || post.dataset.canDelete !== 'true') return;
+    function openDashboardDeleteDialog(post, trigger) {
+      if (!dashboardDeleteDialog || !post) return;
+      dashboardDeleteTarget = post;
+      dashboardDeleteLastFocus = trigger || document.activeElement;
+      dashboardDeleteDialog.inert = false;
+      dashboardDeleteDialog.hidden = false;
+      dashboardDeleteDialog.setAttribute('aria-hidden', 'false');
+      document.body.classList.add('is-delete-confirming');
+      requestAnimationFrame(() => dashboardDeleteCancel?.focus());
+    }
 
+    async function confirmDashboardDelete() {
+      const post = dashboardDeleteTarget;
+      if (!post || post.dataset.canDelete !== 'true' || !dashboardDeleteConfirm) return;
+
+      dashboardDeleteConfirm.disabled = true;
       const removal = await InternalData.posts.remove(post.dataset.postId);
+      dashboardDeleteConfirm.disabled = false;
       if (!removal.ok) return;
 
+      closeDashboardDeleteDialog({ restoreFocus: false });
       post.classList.add('is-removing');
 
       setTimeout(async () => {
@@ -11608,8 +12193,44 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
         post.remove();
         updateDashboardEmptyState();
         setCommitState('idle');
+        dashboardEntryToggle?.focus();
       }, 220);
+    }
+
+    dashboardFeed?.addEventListener('click', event => {
+      const deleteButton = event.target.closest('[data-delete-owned-entry]');
+      if (!deleteButton) return;
+
+      const post = deleteButton.closest('.dashboard-post');
+      if (!post || post.dataset.canDelete !== 'true') return;
+      openDashboardDeleteDialog(post, deleteButton);
     });
+
+    dashboardDeleteDialog?.querySelectorAll('[data-delete-dialog-cancel]').forEach(button => {
+      button.addEventListener('click', () => closeDashboardDeleteDialog());
+    });
+    dashboardDeleteConfirm?.addEventListener('click', confirmDashboardDelete);
+    dashboardDeleteDialog?.addEventListener('keydown', event => {
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        closeDashboardDeleteDialog();
+        return;
+      }
+
+      if (event.key !== 'Tab') return;
+      const controls = [dashboardDeleteCancel, dashboardDeleteConfirm].filter(control => control && !control.disabled);
+      if (!controls.length) return;
+      const first = controls[0];
+      const last = controls[controls.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    });
+    if (dashboardDeleteDialog) dashboardDeleteDialog.inert = true;
 
     function toggleDashboardFilter() {
       const shouldOpen = !dashboardFilter?.classList.contains('is-open');
