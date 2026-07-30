@@ -2,8 +2,16 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content" />
+  <meta name="theme-color" content="#080604" />
+  <meta name="application-name" content="MOSCATELLI" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="MOSCATELLI" />
   <title>Moscatelli</title>
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="assets/brand/app-icon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@300;400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet" />
 
@@ -2042,11 +2050,22 @@ body.internal-unlocked[data-route="divisions/finance"] .route-division-finance.i
     }
 
     .finance-header {
+      position: relative;
+      inset: auto;
+      z-index: auto;
       display: block;
       width: 100%;
+      height: auto;
       margin: 0 0 clamp(18px, 2.2vh, 30px);
       padding: 0 0 clamp(18px, 2.4vh, 32px);
+      background: none;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
       border-bottom: 1px solid var(--glass-border);
+      box-shadow: none;
+      opacity: 1;
+      transform: none;
+      transition: none;
       overflow: visible;
     }
 
@@ -5740,7 +5759,7 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
       }
     }
 
-    /* Patch 19B — compact recovery actions with a contained SMS verification panel */
+    /* Patch 19C — compact recovery actions with a contained email-code panel */
     .global-auth-form {
       height: 278px;
       min-height: 278px;
@@ -5906,6 +5925,447 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
       }
     }
 
+    /* Patch 19D — mobile-first auth composition and viewport stability */
+    @media (max-width: 820px) {
+      .logo-mark {
+        width: min(40vw, 150px);
+        height: 34px;
+      }
+
+      body.internal-unlocked .internal-session-line,
+      body.internal-unlocked[data-route^="divisions"] .internal-session-line {
+        right: 10px;
+        width: 92px;
+        max-width: 92px;
+        min-height: 30px;
+        padding: 0 8px;
+        gap: 0;
+        justify-content: center;
+      }
+
+      body.internal-unlocked .internal-session-context,
+      body.internal-unlocked .internal-session-user,
+      body.internal-unlocked .internal-session-separator,
+      body.internal-unlocked[data-route^="divisions"] .internal-session-context,
+      body.internal-unlocked[data-route^="divisions"] .internal-session-user,
+      body.internal-unlocked[data-route^="divisions"] .internal-session-separator {
+        display: none;
+      }
+
+      body.internal-unlocked .internal-sign-out,
+      body.internal-unlocked[data-route^="divisions"] .internal-sign-out {
+        font-size: 7.4px;
+        line-height: 1;
+        letter-spacing: 0.15em;
+      }
+
+      body.internal-unlocked[data-route^="divisions/"] .logo-mark {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+      }
+
+      .global-auth-gate {
+        width: 100%;
+        min-width: 0;
+        min-height: 100%;
+        padding:
+          env(safe-area-inset-top, 0)
+          env(safe-area-inset-right, 0)
+          env(safe-area-inset-bottom, 0)
+          env(safe-area-inset-left, 0) !important;
+        overflow-x: clip;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .global-auth-stage {
+        box-sizing: border-box;
+        width: 100%;
+        height: auto;
+        min-height: max(100svh, 620px);
+        padding-block: 12px;
+      }
+
+      .global-auth-stage > .global-auth-card {
+        box-sizing: border-box;
+        width: calc(100% - 32px);
+        max-width: 420px;
+        min-height: 0;
+        padding: 32px 24px 28px;
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .global-auth-intro {
+        display: block;
+        flex: 0 0 205px;
+        min-width: 0;
+      }
+
+      .global-auth-kicker {
+        margin-bottom: 18px;
+        font-size: 7.4px;
+        letter-spacing: 0.38em;
+      }
+
+      .global-auth-title {
+        max-width: 100%;
+        margin-bottom: 20px;
+        font-size: clamp(22px, 6.6vw, 27px);
+        line-height: 1.16;
+        letter-spacing: 0.31em;
+        white-space: nowrap;
+      }
+
+      .global-auth-copy {
+        max-width: 300px;
+        margin: 0 auto 24px;
+        font-size: 17px;
+        line-height: 1.48;
+      }
+
+      .global-auth-status {
+        min-height: 27px;
+        padding-top: 15px;
+        font-size: 7px;
+        line-height: 1.45;
+        letter-spacing: 0.22em;
+      }
+
+      .global-auth-form {
+        box-sizing: border-box;
+        display: grid;
+        grid-template-rows: auto 44px auto 44px 42px 46px minmax(14px, 1fr);
+        gap: 8px;
+        width: 100%;
+        height: 260px;
+        min-height: 260px;
+        max-height: 260px;
+        padding: 0;
+      }
+
+      .global-auth-label {
+        font-size: 7.6px;
+        line-height: 1.25;
+        letter-spacing: 0.25em;
+      }
+
+      .global-auth-input {
+        width: 100%;
+        min-height: 44px;
+        height: 44px;
+        font-size: 16px;
+      }
+
+      .global-auth-assistance {
+        gap: 9px;
+        margin-top: 0;
+      }
+
+      .global-auth-assist-button {
+        min-height: 42px;
+        padding: 8px 9px;
+        font-size: 8.5px;
+        line-height: 1.25;
+        letter-spacing: 0.08em;
+      }
+
+      .global-auth-button {
+        min-height: 46px;
+        height: 46px;
+        margin-top: 0;
+      }
+
+      .global-auth-feedback {
+        min-height: 14px;
+        padding-top: 2px;
+        line-height: 1.2;
+      }
+
+      .auth-sms-dialog {
+        box-sizing: border-box;
+        align-items: center;
+        justify-items: center;
+        min-height: 100svh;
+        padding:
+          max(16px, env(safe-area-inset-top, 0))
+          max(16px, env(safe-area-inset-right, 0))
+          max(16px, env(safe-area-inset-bottom, 0))
+          max(16px, env(safe-area-inset-left, 0));
+        overflow-x: clip;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+      }
+
+      .auth-sms-card {
+        box-sizing: border-box;
+        width: min(100%, 390px);
+        max-height: calc(100svh - 32px);
+        padding: 28px 22px 22px;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+      }
+
+      .auth-sms-heading {
+        font-size: clamp(23px, 7vw, 29px);
+        line-height: 1.14;
+        letter-spacing: 0.045em;
+      }
+
+      .auth-sms-copy,
+      .auth-sms-feedback {
+        font-size: 14px;
+        line-height: 1.5;
+      }
+
+      .auth-sms-field {
+        min-height: 48px;
+        font-size: 16px;
+      }
+
+      .auth-sms-primary,
+      .auth-sms-close {
+        min-height: 44px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      body[data-route="divisions/finance"] .route-division-finance.is-active {
+        scrollbar-width: none;
+      }
+
+      body[data-route="divisions/finance"] .route-division-finance.is-active::-webkit-scrollbar {
+        width: 0;
+        height: 0;
+      }
+
+      .finance-table-scroll::-webkit-scrollbar {
+        height: 3px;
+      }
+
+      .finance-table-scroll::-webkit-scrollbar-thumb {
+        background: rgba(232, 192, 122, 0.18);
+      }
+
+      .division-doors {
+        width: calc(100% - 20px);
+        gap: 8px;
+      }
+
+      .division-door {
+        flex: 1 1 0;
+        min-width: 0;
+      }
+
+      .division-door-inner {
+        padding-inline: 3px;
+        gap: 12px;
+      }
+
+      .division-door-title {
+        max-width: 100%;
+        font-size: 8px;
+        line-height: 1.5;
+        letter-spacing: 0.16em;
+      }
+
+      .route-gallery {
+        align-items: stretch;
+        justify-content: stretch;
+        padding: 0;
+      }
+
+      .gallery-accordion {
+        box-sizing: border-box;
+        display: flex;
+        width: 100%;
+        height: 100%;
+        gap: 12px;
+        align-items: stretch;
+        justify-content: flex-start;
+        padding: 18px 18px 22px;
+        overflow-x: auto;
+        overflow-y: hidden;
+        overscroll-behavior-x: contain;
+        scroll-snap-type: x mandatory;
+        scroll-padding-inline: 18px;
+        touch-action: pan-x;
+        scrollbar-width: none;
+      }
+
+      .gallery-accordion::-webkit-scrollbar {
+        display: none;
+      }
+
+      .gallery-panel,
+      .gallery-panel.is-active {
+        flex: 0 0 min(78vw, 310px);
+        width: min(78vw, 310px);
+        height: 100%;
+        opacity: 1;
+        scroll-snap-align: center;
+        scroll-snap-stop: always;
+        border: 1px solid rgba(242, 237, 228, 0.11);
+        background: rgba(8, 6, 4, 0.72);
+        box-shadow: 0 20px 54px rgba(0, 0, 0, 0.28);
+      }
+
+      .gallery-panel img,
+      .gallery-panel.is-active img {
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+        transform: none;
+      }
+
+      .gallery-panel::before {
+        z-index: 1;
+        opacity: 1;
+        background:
+          linear-gradient(to top, rgba(5, 3, 2, 0.88), transparent 38%),
+          linear-gradient(to bottom, rgba(5, 3, 2, 0.24), transparent 24%);
+      }
+
+      .gallery-accordion.has-active .gallery-panel:not(.is-active),
+      .gallery-accordion.has-active .gallery-panel:not(.is-active) img {
+        opacity: 1;
+      }
+
+      .gallery-caption,
+      .gallery-panel.is-caption-visible .gallery-caption {
+        left: 18px;
+        right: 18px;
+        bottom: 18px;
+        z-index: 3;
+        max-width: none;
+        padding: 0;
+        opacity: 1;
+        filter: none;
+        transform: none;
+        font-size: 13px;
+        line-height: 1.38;
+        letter-spacing: 0.045em;
+        color: rgba(242, 237, 228, 0.82);
+        text-align: left;
+        text-shadow: 0 2px 18px rgba(0, 0, 0, 0.9);
+      }
+    }
+
+    @media (max-width: 360px) {
+      .logo-mark {
+        width: 128px;
+      }
+
+      body.internal-unlocked .internal-session-line,
+      body.internal-unlocked[data-route^="divisions"] .internal-session-line {
+        width: 82px;
+        max-width: 82px;
+        padding-inline: 6px;
+      }
+
+      .global-auth-stage > .global-auth-card {
+        width: calc(100% - 24px);
+        padding: 28px 20px 24px;
+      }
+
+      .global-auth-intro {
+        flex-basis: 198px;
+      }
+
+      .global-auth-title {
+        font-size: 21px;
+        letter-spacing: 0.255em;
+      }
+
+      .global-auth-copy {
+        font-size: 16.5px;
+      }
+
+      .global-auth-form {
+        height: 258px;
+        min-height: 258px;
+        max-height: 258px;
+      }
+
+      .global-auth-assist-button {
+        font-size: 8px;
+        letter-spacing: 0.055em;
+      }
+    }
+
+    @media (max-height: 520px) and (max-width: 820px) {
+      .auth-sms-dialog {
+        align-items: start;
+      }
+    }
+
+    @media (max-height: 640px) and (max-width: 820px) {
+      .global-auth-stage > .global-auth-card {
+        top: max(18px, env(safe-area-inset-top, 0px)) !important;
+        transform: translate3d(-50%, 0, 0) !important;
+      }
+    }
+
+    .division-empty-workspace {
+      width: min(calc(100% - 48px), 620px);
+      min-height: min(52vh, 360px);
+      margin: auto;
+      padding: clamp(34px, 7vw, 64px);
+      display: grid;
+      place-content: center;
+      justify-items: center;
+      border: 1px solid rgba(242, 237, 228, 0.075);
+      background:
+        radial-gradient(circle at 50% 16%, rgba(232, 192, 122, 0.055), transparent 44%),
+        rgba(8, 5, 3, 0.28);
+      box-shadow: inset 0 1px 0 rgba(242, 237, 228, 0.025);
+      text-align: center;
+    }
+
+    .division-empty-kicker {
+      margin-bottom: 18px;
+      font-family: "Cinzel", serif;
+      font-size: 8px;
+      letter-spacing: 0.34em;
+      text-transform: uppercase;
+      color: rgba(184, 104, 48, 0.72);
+    }
+
+    .division-empty-title {
+      margin-bottom: 20px;
+      font-family: "Cinzel", serif;
+      font-size: clamp(25px, 5vw, 42px);
+      font-weight: 300;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(242, 237, 228, 0.84);
+    }
+
+    .division-empty-copy {
+      max-width: 390px;
+      font-size: clamp(17px, 2vw, 19px);
+      line-height: 1.6;
+      color: rgba(242, 237, 228, 0.56);
+    }
+
+    @media (max-width: 640px) {
+      .division-empty-workspace {
+        width: calc(100% - 32px);
+        min-height: min(58vh, 390px);
+        padding: 34px 24px;
+      }
+
+      .division-empty-title {
+        font-size: clamp(24px, 8vw, 31px);
+        letter-spacing: 0.16em;
+      }
+    }
+
   </style>
 </head>
 <body data-internal-mode="supabase" data-internal-auth="signed_out" data-internal-ready="false" data-internal-route="public" data-internal-feature="public">
@@ -5939,7 +6399,7 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
           <label class="global-auth-label i18n-text" for="globalAuthPassword" data-i18n="internal.passwordLabel">Password</label>
           <input class="global-auth-input" id="globalAuthPassword" type="password" autocomplete="current-password" data-internal-password data-i18n-placeholder="internal.passwordPlaceholder" placeholder="Password" required>
           <div class="global-auth-assistance">
-            <button class="global-auth-assist-button i18n-text" id="authSmsOpen" type="button" data-i18n="internal.smsAction">SMS code</button>
+            <button class="global-auth-assist-button i18n-text" id="authOtpOpen" type="button" data-i18n="internal.otpAction">Email code</button>
             <button class="global-auth-assist-button i18n-text" id="authPasswordReset" type="button" data-i18n="internal.resetAction">Reset password</button>
           </div>
           <button class="global-auth-button i18n-text" type="submit" data-internal-auth-submit data-i18n="global.enter">Enter</button>
@@ -5949,20 +6409,20 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
     </div>
   </section>
 
-  <section class="auth-sms-dialog" id="authSmsDialog" role="dialog" aria-modal="true" aria-labelledby="authSmsHeading" aria-hidden="true">
+  <section class="auth-sms-dialog" id="authOtpDialog" role="dialog" aria-modal="true" aria-labelledby="authOtpHeading" aria-hidden="true">
     <div class="auth-sms-card">
-      <h2 class="auth-sms-heading i18n-text" id="authSmsHeading" data-i18n="internal.smsTitle">Sign in by SMS</h2>
-      <p class="auth-sms-copy i18n-text" data-i18n="internal.smsCopy">Enter the mobile number registered on your account.</p>
-      <form class="auth-sms-form" id="authSmsForm" novalidate>
-        <input class="auth-sms-field" id="authSmsPhone" type="tel" inputmode="tel" autocomplete="tel" data-i18n-placeholder="internal.phonePlaceholder" placeholder="+39 320 000 0000" aria-label="Mobile number" required>
-        <button class="auth-sms-primary i18n-text" id="authSmsSend" type="button" data-i18n="internal.smsSend">Send code</button>
-        <div class="auth-sms-code-row" id="authSmsCodeRow" hidden>
-          <input class="auth-sms-field" id="authSmsCode" type="text" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]*" maxlength="8" data-i18n-placeholder="internal.codePlaceholder" placeholder="One-time code" aria-label="One-time code">
-          <button class="auth-sms-primary i18n-text" id="authSmsVerify" type="submit" data-i18n="internal.smsVerify">Verify</button>
+      <h2 class="auth-sms-heading i18n-text" id="authOtpHeading" data-i18n="internal.otpTitle">Sign in with an email code</h2>
+      <p class="auth-sms-copy i18n-text" data-i18n="internal.otpCopy">We will send a private one-time code to your MOSCATELLI email.</p>
+      <form class="auth-sms-form" id="authOtpForm" novalidate>
+        <input class="auth-sms-field" id="authOtpEmail" type="email" inputmode="email" autocomplete="username" data-i18n-placeholder="internal.emailPlaceholder" placeholder="name@moscatelli.co" aria-label="Email address" required>
+        <button class="auth-sms-primary i18n-text" id="authOtpSend" type="button" data-i18n="internal.otpSend">Send code</button>
+        <div class="auth-sms-code-row" id="authOtpCodeRow" hidden>
+          <input class="auth-sms-field" id="authOtpCode" type="text" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]*" maxlength="8" data-i18n-placeholder="internal.codePlaceholder" placeholder="One-time code" aria-label="One-time code">
+          <button class="auth-sms-primary i18n-text" id="authOtpVerify" type="submit" data-i18n="internal.otpVerify">Verify</button>
         </div>
-        <div class="auth-sms-feedback" id="authSmsFeedback" aria-live="polite"></div>
+        <div class="auth-sms-feedback" id="authOtpFeedback" aria-live="polite"></div>
         <div class="auth-sms-actions">
-          <button class="auth-sms-close i18n-text" id="authSmsClose" type="button" data-i18n="internal.cancel">Cancel</button>
+          <button class="auth-sms-close i18n-text" id="authOtpClose" type="button" data-i18n="internal.cancel">Cancel</button>
         </div>
       </form>
     </div>
@@ -6224,6 +6684,11 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
             </form>
         </div>
       </div>
+      <div class="division-empty-workspace" aria-label="Marketing workspace">
+        <div class="division-empty-kicker i18n-text" data-i18n="division.empty.kicker">Private workspace</div>
+        <h1 class="division-empty-title i18n-text" data-i18n="divisions.marketing">Marketing</h1>
+        <p class="division-empty-copy i18n-text" data-i18n="division.empty.copy">No modules have been added to this workspace yet.</p>
+      </div>
     </section>
     <section class="route-view route-division-page route-division-finance" data-view="divisions/finance" aria-hidden="true">
       <div class="internal-gate internal-gate-division" data-internal-gate="division-finance" aria-hidden="true">
@@ -6391,6 +6856,11 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
             </form>
         </div>
       </div>
+      <div class="division-empty-workspace" aria-label="Operations workspace">
+        <div class="division-empty-kicker i18n-text" data-i18n="division.empty.kicker">Private workspace</div>
+        <h1 class="division-empty-title i18n-text" data-i18n="divisions.operations">Operations</h1>
+        <p class="division-empty-copy i18n-text" data-i18n="division.empty.copy">No modules have been added to this workspace yet.</p>
+      </div>
     </section>
   </main>
 
@@ -6442,17 +6912,17 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
     const internalAuthSubmitButtons = document.querySelectorAll('[data-internal-auth-submit]');
     const internalAuthFeedbacks = document.querySelectorAll('[data-internal-auth-feedback]');
     const internalStatusElements = document.querySelectorAll('[data-internal-status]');
-    const authSmsOpen = document.getElementById('authSmsOpen');
+    const authOtpOpen = document.getElementById('authOtpOpen');
     const authPasswordReset = document.getElementById('authPasswordReset');
-    const authSmsDialog = document.getElementById('authSmsDialog');
-    const authSmsForm = document.getElementById('authSmsForm');
-    const authSmsPhone = document.getElementById('authSmsPhone');
-    const authSmsSend = document.getElementById('authSmsSend');
-    const authSmsCodeRow = document.getElementById('authSmsCodeRow');
-    const authSmsCode = document.getElementById('authSmsCode');
-    const authSmsVerify = document.getElementById('authSmsVerify');
-    const authSmsFeedback = document.getElementById('authSmsFeedback');
-    const authSmsClose = document.getElementById('authSmsClose');
+    const authOtpDialog = document.getElementById('authOtpDialog');
+    const authOtpForm = document.getElementById('authOtpForm');
+    const authOtpEmail = document.getElementById('authOtpEmail');
+    const authOtpSend = document.getElementById('authOtpSend');
+    const authOtpCodeRow = document.getElementById('authOtpCodeRow');
+    const authOtpCode = document.getElementById('authOtpCode');
+    const authOtpVerify = document.getElementById('authOtpVerify');
+    const authOtpFeedback = document.getElementById('authOtpFeedback');
+    const authOtpClose = document.getElementById('authOtpClose');
     const authPasswordDialog = document.getElementById('authPasswordDialog');
     const authPasswordForm = document.getElementById('authPasswordForm');
     const authNewPassword = document.getElementById('authNewPassword');
@@ -7265,42 +7735,45 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
           return { ok: true, email, user, session };
         },
 
-        async sendSmsOtp(phone) {
+        async sendEmailOtp(email) {
           if (getInternalMode() !== 'supabase') return { ok: false, error: 'supabase_required' };
 
           const client = createInternalSupabaseClient();
           if (!client) return { ok: false, error: 'client_unavailable' };
 
           const { error } = await client.auth.signInWithOtp({
-            phone,
-            options: { shouldCreateUser: false }
+            email,
+            options: {
+              shouldCreateUser: false,
+              emailRedirectTo: INTERNAL_CONFIG.supabase.redirectTo
+            }
           });
 
           if (error) {
-            dataEvent('auth-sms-send-error', { error });
+            dataEvent('auth-email-otp-send-error', { error });
             return { ok: false, error };
           }
 
-          dataEvent('auth-sms-sent', { phone });
-          return { ok: true, phone };
+          dataEvent('auth-email-otp-sent', { email });
+          return { ok: true, email };
         },
 
-        async verifySmsOtp(phone, token) {
+        async verifyEmailOtp(email, token) {
           if (getInternalMode() !== 'supabase') return { ok: false, error: 'supabase_required' };
 
           const client = createInternalSupabaseClient();
           if (!client) return { ok: false, error: 'client_unavailable' };
 
-          const { data, error } = await client.auth.verifyOtp({ phone, token, type: 'sms' });
+          const { data, error } = await client.auth.verifyOtp({ email, token, type: 'email' });
           if (error) {
-            dataEvent('auth-sms-verify-error', { error });
+            dataEvent('auth-email-otp-verify-error', { error });
             return { ok: false, error };
           }
 
           const session = data?.session || null;
           const user = data?.user ? await profileFromSupabaseUser(data.user) : null;
-          dataEvent('auth-sms-sign-in', { phone, user, session });
-          return { ok: true, phone, user, session };
+          dataEvent('auth-email-otp-sign-in', { email, user, session });
+          return { ok: true, email, user, session };
         },
 
         async sendPasswordReset(email) {
@@ -7700,6 +8173,8 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
         'divisions.marketing': 'Marketing',
         'divisions.finance': 'Finance',
         'divisions.operations': 'Operations',
+        'division.empty.kicker': 'Private workspace',
+        'division.empty.copy': 'No modules have been added to this workspace yet.',
 
         'finance.kicker': 'Finance',
         'finance.title': 'Finance',
@@ -7772,18 +8247,17 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
         'internal.passwordLabel': 'Password',
         'internal.passwordPlaceholder': 'Password',
         'internal.enter': 'Enter',
-        'internal.smsAction': 'SMS code',
+        'internal.otpAction': 'Email code',
         'internal.resetAction': 'Reset password',
-        'internal.smsTitle': 'Sign in by SMS',
-        'internal.smsCopy': 'Enter the mobile number registered on your account.',
-        'internal.phonePlaceholder': '+39 320 000 0000',
+        'internal.otpTitle': 'Sign in with an email code',
+        'internal.otpCopy': 'We will send a private one-time code to your MOSCATELLI email.',
         'internal.codePlaceholder': 'One-time code',
-        'internal.smsSend': 'Send code',
-        'internal.smsVerify': 'Verify',
+        'internal.otpSend': 'Send code',
+        'internal.otpVerify': 'Verify',
         'internal.cancel': 'Cancel',
-        'internal.smsSent': 'Code sent. Enter it below.',
-        'internal.smsError': 'The code could not be sent. Check the number and Supabase phone settings.',
-        'internal.smsVerifyError': 'The code is invalid or has expired.',
+        'internal.otpSent': 'A private code is on its way. Enter it below.',
+        'internal.otpError': 'The code could not be sent. Check the email address and try again.',
+        'internal.otpVerifyError': 'The code is invalid or has expired.',
         'internal.resetSent': 'Password reset email sent. Check your inbox.',
         'internal.resetError': 'The reset email could not be sent. Check the address and Supabase email settings.',
         'internal.emailRequired': 'Enter your email address first.',
@@ -7874,6 +8348,8 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
         'divisions.marketing': 'Marketing',
         'divisions.finance': 'Finanças',
         'divisions.operations': 'Operações',
+        'division.empty.kicker': 'Área privada',
+        'division.empty.copy': 'Ainda não foram adicionados módulos a esta área.',
 
         'finance.kicker': 'Finanças',
         'finance.title': 'Finanças',
@@ -7946,18 +8422,17 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
         'internal.passwordLabel': 'Senha',
         'internal.passwordPlaceholder': 'Senha',
         'internal.enter': 'Entrar',
-        'internal.smsAction': 'Código SMS',
+        'internal.otpAction': 'Código por email',
         'internal.resetAction': 'Redefinir senha',
-        'internal.smsTitle': 'Entrar por SMS',
-        'internal.smsCopy': 'Digite o número de celular registrado na sua conta.',
-        'internal.phonePlaceholder': '+39 320 000 0000',
+        'internal.otpTitle': 'Entrar com código por email',
+        'internal.otpCopy': 'Enviaremos um código privado e de uso único para o seu email MOSCATELLI.',
         'internal.codePlaceholder': 'Código de uso único',
-        'internal.smsSend': 'Enviar código',
-        'internal.smsVerify': 'Verificar',
+        'internal.otpSend': 'Enviar código',
+        'internal.otpVerify': 'Verificar',
         'internal.cancel': 'Cancelar',
-        'internal.smsSent': 'Código enviado. Digite-o abaixo.',
-        'internal.smsError': 'Não foi possível enviar o código. Verifique o número e as configurações de telefone do Supabase.',
-        'internal.smsVerifyError': 'O código é inválido ou expirou.',
+        'internal.otpSent': 'Um código privado está a caminho. Digite-o abaixo.',
+        'internal.otpError': 'Não foi possível enviar o código. Verifique o email e tente novamente.',
+        'internal.otpVerifyError': 'O código é inválido ou expirou.',
         'internal.resetSent': 'Email de redefinição enviado. Verifique sua caixa de entrada.',
         'internal.resetError': 'Não foi possível enviar o email. Verifique o endereço e as configurações de email do Supabase.',
         'internal.emailRequired': 'Digite primeiro o seu email.',
@@ -8027,7 +8502,7 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
     }
 
     function preloadGalleryImages() {
-      if (!galleryDesktopQuery.matches || !galleryImages.length) return Promise.resolve(true);
+      if (!galleryImages.length) return Promise.resolve(true);
       if (galleryPreloadPromise) return galleryPreloadPromise;
 
       galleryPreloadPromise = Promise.all(Array.from(galleryImages, hydrateGalleryImage)).then(() => {
@@ -8039,7 +8514,7 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
     }
 
     function waitForGalleryImages(maxWait = 1200) {
-      if (galleryImagesReady || !galleryDesktopQuery.matches) return Promise.resolve(true);
+      if (galleryImagesReady) return Promise.resolve(true);
       return Promise.race([
         preloadGalleryImages(),
         new Promise(resolve => setTimeout(() => resolve(false), maxWait))
@@ -8047,12 +8522,12 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
     }
 
     function scheduleGalleryWarmup(delay = 0) {
-      if (!galleryDesktopQuery.matches || galleryImagesReady || galleryWarmupScheduled) return;
+      if (galleryImagesReady || galleryWarmupScheduled) return;
       galleryWarmupScheduled = true;
 
       const runWarmup = () => {
         galleryWarmupScheduled = false;
-        if (!galleryDesktopQuery.matches || galleryImagesReady) return;
+        if (galleryImagesReady) return;
 
         if ('requestIdleCallback' in window) {
           requestIdleCallback(() => preloadGalleryImages(), { timeout: 1800 });
@@ -8360,7 +8835,7 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
     }
 
     window.MoscatelliInternal = Object.freeze({
-      getBuild: () => 'patch19b-auth-recovery-actions',
+      getBuild: () => 'patch19d-mobile-stability-and-pwa',
       getMode: getInternalMode,
       isSignedIn: isInternalUserSignedIn,
       getCurrentUser: () => {
@@ -8374,7 +8849,7 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
         mode: getInternalMode(),
         signedIn: isInternalUserSignedIn(),
         realtimeStatus: RealtimeRuntime.status,
-        build: 'patch19b-auth-recovery-actions'
+        build: 'patch19d-mobile-stability-and-pwa'
       }),
       isInternalRoute,
       featureForRoute: internalFeatureForRoute
@@ -8408,7 +8883,7 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
         button.disabled = InternalState.authStatus === 'checking' || InternalState.authStatus === 'signed_in';
       });
 
-      [authSmsOpen, authPasswordReset].forEach(button => {
+      [authOtpOpen, authPasswordReset].forEach(button => {
         if (button) button.disabled = InternalState.authStatus === 'checking' || InternalState.authStatus === 'signed_in';
       });
 
@@ -8423,7 +8898,8 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
       if (!isInternalUserSignedIn() && InternalState.authStatus !== 'checking') {
         const gate = document.getElementById('globalAuthGate');
         const emailInput = gate?.querySelector('[data-internal-email]');
-        if (emailInput && document.activeElement === document.body) {
+        const compactOrTouch = window.matchMedia('(max-width: 820px), (pointer: coarse)').matches;
+        if (emailInput && !compactOrTouch && document.activeElement === document.body) {
           setTimeout(() => emailInput.focus(), 80);
         }
       }
@@ -8519,82 +8995,79 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
       if (primaryFeedback) primaryFeedback.textContent = message;
     }
 
-    function normaliseSmsPhone(value = '') {
-      const compact = String(value).trim().replace(/[\s().-]+/g, '');
-      return /^\+[1-9]\d{7,14}$/.test(compact) ? compact : '';
+    function openEmailOtpDialog() {
+      if (!authOtpDialog) return;
+      const primaryEmail = document.querySelector('#globalAuthGate [data-internal-email]');
+      authOtpEmail.value = primaryEmail?.value.trim() || '';
+      authOtpDialog.classList.add('is-open');
+      authOtpDialog.setAttribute('aria-hidden', 'false');
+      authOtpFeedback.textContent = '';
+      setTimeout(() => authOtpEmail?.focus(), 80);
     }
 
-    function openSmsAuthDialog() {
-      if (!authSmsDialog) return;
-      authSmsDialog.classList.add('is-open');
-      authSmsDialog.setAttribute('aria-hidden', 'false');
-      authSmsFeedback.textContent = '';
-      setTimeout(() => authSmsPhone?.focus(), 80);
+    function closeEmailOtpDialog() {
+      if (!authOtpDialog) return;
+      authOtpDialog.classList.remove('is-open');
+      authOtpDialog.setAttribute('aria-hidden', 'true');
+      authOtpCodeRow.hidden = true;
+      authOtpCode.value = '';
+      authOtpFeedback.textContent = '';
+      authOtpOpen?.focus();
     }
 
-    function closeSmsAuthDialog() {
-      if (!authSmsDialog) return;
-      authSmsDialog.classList.remove('is-open');
-      authSmsDialog.setAttribute('aria-hidden', 'true');
-      authSmsCodeRow.hidden = true;
-      authSmsCode.value = '';
-      authSmsFeedback.textContent = '';
-      authSmsOpen?.focus();
-    }
-
-    async function requestSmsOtp() {
-      const phone = normaliseSmsPhone(authSmsPhone?.value);
-      if (!phone) {
-        authSmsFeedback.textContent = authText('internal.smsError', 'Enter a valid international mobile number.');
-        authSmsPhone?.focus();
+    async function requestEmailOtp() {
+      const email = authOtpEmail?.value.trim() || '';
+      if (!email || !authOtpEmail.checkValidity()) {
+        authOtpFeedback.textContent = authText('internal.emailRequired', 'Enter your email address first.');
+        authOtpEmail?.focus();
         return;
       }
 
-      authSmsSend.disabled = true;
-      authSmsFeedback.textContent = authText('internal.status.checking', 'Verifying access…');
-      const result = await InternalData.auth.sendSmsOtp(phone);
-      authSmsSend.disabled = false;
+      authOtpSend.disabled = true;
+      authOtpFeedback.textContent = authText('internal.status.checking', 'Verifying access…');
+      const result = await InternalData.auth.sendEmailOtp(email);
+      authOtpSend.disabled = false;
 
       if (!result.ok) {
-        authSmsFeedback.textContent = authText('internal.smsError', 'The code could not be sent.');
+        authOtpFeedback.textContent = authText('internal.otpError', 'The code could not be sent.');
         return;
       }
 
-      authSmsCodeRow.hidden = false;
-      authSmsFeedback.textContent = authText('internal.smsSent', 'Code sent. Enter it below.');
-      setTimeout(() => authSmsCode?.focus(), 60);
+      authOtpCodeRow.hidden = false;
+      authOtpFeedback.textContent = authText('internal.otpSent', 'A private code is on its way. Enter it below.');
+      setTimeout(() => authOtpCode?.focus(), 60);
     }
 
-    async function verifySmsOtp(event) {
+    async function verifyEmailOtp(event) {
       event?.preventDefault?.();
-      const phone = normaliseSmsPhone(authSmsPhone?.value);
-      const token = String(authSmsCode?.value || '').replace(/\D/g, '');
+      const email = authOtpEmail?.value.trim() || '';
+      const token = String(authOtpCode?.value || '').replace(/\D/g, '');
 
-      if (!phone || token.length < 6) {
-        authSmsFeedback.textContent = authText('internal.smsVerifyError', 'The code is invalid or has expired.');
+      if (!email || !authOtpEmail.checkValidity() || token.length < 6) {
+        authOtpFeedback.textContent = authText('internal.otpVerifyError', 'The code is invalid or has expired.');
         return;
       }
 
-      authSmsVerify.disabled = true;
-      authSmsFeedback.textContent = authText('internal.status.checking', 'Verifying access…');
-      const result = await InternalData.auth.verifySmsOtp(phone, token);
-      authSmsVerify.disabled = false;
+      authOtpVerify.disabled = true;
+      authOtpFeedback.textContent = authText('internal.status.checking', 'Verifying access…');
+      const result = await InternalData.auth.verifyEmailOtp(email, token);
+      authOtpVerify.disabled = false;
 
       if (!result.ok) {
-        authSmsFeedback.textContent = authText('internal.smsVerifyError', 'The code is invalid or has expired.');
+        authOtpFeedback.textContent = authText('internal.otpVerifyError', 'The code is invalid or has expired.');
         return;
       }
 
       rememberPendingInternalRoute(currentRoute || routeFromHash());
       setInternalUser(result.user, result.session);
       if (InternalState.authStatus === 'signed_in') {
-        closeSmsAuthDialog();
+        closeEmailOtpDialog();
         unlockInternalAreas();
         restorePendingInternalRoute();
         applyInternalRouteProtection(currentRoute || routeFromHash());
         showWelcomeBack(result.user);
       } else {
-        authSmsFeedback.textContent = authText('internal.status.inactive', 'Profile not active yet.');
+        authOtpFeedback.textContent = authText('internal.status.inactive', 'Profile not active yet.');
       }
       updateInternalAccessUI();
     }
@@ -8787,6 +9260,15 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
         view.classList.toggle('is-active', isActive);
         view.setAttribute('aria-hidden', String(!isActive));
       });
+
+      if (nextRoute === ROUTES.GALLERY && galleryAccordion && !galleryDesktopQuery.matches) {
+        const resetMobileGalleryPosition = () => {
+          galleryAccordion.scrollLeft = 0;
+        };
+        requestAnimationFrame(() => requestAnimationFrame(resetMobileGalleryPosition));
+        setTimeout(resetMobileGalleryPosition, 180);
+      }
+
       if (nextRoute !== ROUTES.HOME && monogramGlowOverlay) monogramGlowOverlay.classList.remove('is-lit');
 
       routeLinks.forEach(link => {
@@ -8987,7 +9469,7 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
     updateGalleryPanelWidths();
     window.addEventListener('resize', updateGalleryPanelWidths);
     galleryDesktopQuery.addEventListener?.('change', event => {
-      if (event.matches) scheduleGalleryWarmup();
+      if (event.matches || !galleryImagesReady) scheduleGalleryWarmup();
     });
     if ('ResizeObserver' in window && galleryAccordion) {
       new ResizeObserver(updateGalleryPanelWidths).observe(galleryAccordion);
@@ -9078,13 +9560,13 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
       form.addEventListener('submit', requestInternalPasswordAccess);
     });
 
-    authSmsOpen?.addEventListener('click', openSmsAuthDialog);
+    authOtpOpen?.addEventListener('click', openEmailOtpDialog);
     authPasswordReset?.addEventListener('click', requestPasswordReset);
-    authSmsSend?.addEventListener('click', requestSmsOtp);
-    authSmsForm?.addEventListener('submit', verifySmsOtp);
-    authSmsClose?.addEventListener('click', closeSmsAuthDialog);
-    authSmsDialog?.addEventListener('click', event => {
-      if (event.target === authSmsDialog) closeSmsAuthDialog();
+    authOtpSend?.addEventListener('click', requestEmailOtp);
+    authOtpForm?.addEventListener('submit', verifyEmailOtp);
+    authOtpClose?.addEventListener('click', closeEmailOtpDialog);
+    authOtpDialog?.addEventListener('click', event => {
+      if (event.target === authOtpDialog) closeEmailOtpDialog();
     });
     authPasswordForm?.addEventListener('submit', saveRecoveredPassword);
     authPasswordCancel?.addEventListener('click', closePasswordRecoveryDialog);
@@ -9092,7 +9574,7 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
       if (event.target === authPasswordDialog) closePasswordRecoveryDialog();
     });
     document.addEventListener('keydown', event => {
-      if (event.key === 'Escape' && authSmsDialog?.classList.contains('is-open')) closeSmsAuthDialog();
+      if (event.key === 'Escape' && authOtpDialog?.classList.contains('is-open')) closeEmailOtpDialog();
       if (event.key === 'Escape' && authPasswordDialog?.classList.contains('is-open')) closePasswordRecoveryDialog();
     });
 
@@ -10910,6 +11392,14 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
       const delta = touchStartX - e.changedTouches[0].clientX;
       if (delta > 52) closeNav(); // swipe left ≥ 52px closes the panel
     }, { passive: true });
+
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./service-worker.js', { scope: './' }).catch(error => {
+          dataEvent('pwa-service-worker-error', { message: error?.message || String(error) });
+        });
+      }, { once: true });
+    }
   </script>
 </body>
 </html>
