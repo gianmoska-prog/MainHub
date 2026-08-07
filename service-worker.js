@@ -1,4 +1,4 @@
-const CACHE_NAME = 'moscatelli-shell-20a';
+const CACHE_NAME = 'moscatelli-shell-20d-calendar-hardening';
 const SHELL_ASSETS = [
   './',
   './index.html',

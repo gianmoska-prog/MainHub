@@ -294,7 +294,7 @@ body[data-route^="divisions"] .orb {
 
     body[data-route="divisions/marketing"] .division-return,
 body[data-route="divisions/finance"] .division-return,
-body[data-route="divisions/operations"] .division-return {
+body[data-route^="divisions/operations"] .division-return {
       opacity: 1;
       pointer-events: auto;
     }
@@ -3086,7 +3086,7 @@ body.internal-unlocked {
 
     body.internal-unlocked[data-route="divisions/marketing"] .division-return,
 body.internal-unlocked[data-route="divisions/finance"] .division-return,
-body.internal-unlocked[data-route="divisions/operations"] .division-return {
+body.internal-unlocked[data-route^="divisions/operations"] .division-return {
       right: calc(clamp(16px, 2.2vw, 34px) + var(--session-plaque-w) + var(--session-plaque-gap));
     }
 
@@ -5589,7 +5589,7 @@ body.internal-unlocked[data-route^="divisions"] .internal-sign-out {
 
     body.internal-unlocked[data-route="divisions/marketing"] .division-return,
 body.internal-unlocked[data-route="divisions/finance"] .division-return,
-body.internal-unlocked[data-route="divisions/operations"] .division-return {
+body.internal-unlocked[data-route^="divisions/operations"] .division-return {
       right: calc(clamp(16px, 2.2vw, 34px) + var(--session-plaque-w) + var(--session-plaque-gap));
       min-height: 32px;
       max-width: none;
@@ -5611,7 +5611,7 @@ body.internal-unlocked[data-route="divisions/operations"] .division-return {
 
     body.internal-unlocked[data-route="divisions/marketing"] .division-return::after,
 body.internal-unlocked[data-route="divisions/finance"] .division-return::after,
-body.internal-unlocked[data-route="divisions/operations"] .division-return::after {
+body.internal-unlocked[data-route^="divisions/operations"] .division-return::after {
       display: block;
       left: 12px;
       right: 0;
@@ -5620,15 +5620,15 @@ body.internal-unlocked[data-route="divisions/operations"] .division-return::afte
 
     body.internal-unlocked[data-route="divisions/marketing"] .division-return:hover,
 body.internal-unlocked[data-route="divisions/finance"] .division-return:hover,
-body.internal-unlocked[data-route="divisions/operations"] .division-return:hover,
+body.internal-unlocked[data-route^="divisions/operations"] .division-return:hover,
 body.internal-unlocked[data-route="divisions/marketing"] .division-return:focus-visible,
 body.internal-unlocked[data-route="divisions/finance"] .division-return:focus-visible,
-body.internal-unlocked[data-route="divisions/operations"] .division-return:focus-visible {
+body.internal-unlocked[data-route^="divisions/operations"] .division-return:focus-visible {
       color: rgba(232, 192, 122, 0.68);
       opacity: 0.92;
     }
 
-    body:not([data-route="divisions/marketing"]):not([data-route="divisions/finance"]):not([data-route="divisions/operations"]) .division-return {
+    body:not([data-route="divisions/marketing"]):not([data-route="divisions/finance"]):not([data-route^="divisions/operations"]) .division-return {
       display: none;
     }
 
@@ -7246,6 +7246,838 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
       }
     }
 
+
+
+    /* Patch 20A — Operations workspace and Calendar route scaffold.
+       The module and route are intentionally isolated from Finance and Records. */
+    .operations-workspace,
+    .operations-calendar-scaffold {
+      width: min(calc(100% - 64px), 1120px);
+      margin: auto;
+      color: var(--cream);
+    }
+
+    .operations-workspace {
+      display: grid;
+      gap: clamp(28px, 5vw, 58px);
+      align-content: center;
+    }
+
+    .operations-head,
+    .operations-calendar-scaffold-head {
+      display: grid;
+      justify-items: center;
+      gap: 14px;
+      text-align: center;
+    }
+
+    .operations-kicker,
+    .operations-module-index,
+    .operations-module-action,
+    .operations-calendar-scaffold-kicker {
+      font-family: "Cinzel", serif;
+      font-weight: 300;
+      text-transform: uppercase;
+    }
+
+    .operations-kicker,
+    .operations-calendar-scaffold-kicker {
+      font-size: 8px;
+      letter-spacing: 0.36em;
+      color: rgba(184, 104, 48, 0.76);
+    }
+
+    .operations-title,
+    .operations-calendar-scaffold-title {
+      font-family: "Cinzel", serif;
+      font-size: clamp(28px, 4vw, 48px);
+      font-weight: 300;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(242, 237, 228, 0.9);
+    }
+
+    .operations-intro,
+    .operations-calendar-scaffold-copy {
+      max-width: 620px;
+      font-size: clamp(17px, 2vw, 20px);
+      line-height: 1.6;
+      color: rgba(242, 237, 228, 0.58);
+    }
+
+    .operations-modules {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .operations-module {
+      position: relative;
+      min-height: 250px;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      gap: 26px;
+      padding: clamp(26px, 3vw, 38px);
+      border: 1px solid rgba(242, 237, 228, 0.09);
+      border-radius: 0;
+      background:
+        radial-gradient(circle at 84% 18%, rgba(232, 192, 122, 0.065), transparent 38%),
+        rgba(8, 5, 3, 0.32);
+      color: inherit;
+      text-align: left;
+      cursor: pointer;
+      overflow: hidden;
+      transition: border-color 260ms ease, background-color 260ms ease, transform 260ms ease;
+    }
+
+    .operations-module::after {
+      content: "";
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      width: 42%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(184, 104, 48, 0.62));
+      transform: scaleX(0.36);
+      transform-origin: right;
+      transition: transform 300ms ease;
+    }
+
+    .operations-module-index {
+      font-size: 8px;
+      letter-spacing: 0.34em;
+      color: rgba(184, 104, 48, 0.72);
+    }
+
+    .operations-module-body {
+      align-self: center;
+    }
+
+    .operations-module-title {
+      margin-bottom: 14px;
+      font-family: "Cinzel", serif;
+      font-size: clamp(22px, 2.6vw, 31px);
+      font-weight: 300;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(242, 237, 228, 0.88);
+    }
+
+    .operations-module-copy {
+      max-width: 320px;
+      font-size: 18px;
+      line-height: 1.55;
+      color: rgba(242, 237, 228, 0.54);
+    }
+
+    .operations-module-action {
+      font-size: 8px;
+      letter-spacing: 0.28em;
+      color: rgba(232, 192, 122, 0.58);
+    }
+
+    .operations-calendar-scaffold {
+      min-height: min(62vh, 520px);
+      display: grid;
+      place-content: center;
+      padding: clamp(36px, 7vw, 76px);
+      border: 1px solid rgba(242, 237, 228, 0.075);
+      background:
+        linear-gradient(rgba(242, 237, 228, 0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(242, 237, 228, 0.025) 1px, transparent 1px),
+        radial-gradient(circle at 50% 18%, rgba(232, 192, 122, 0.055), transparent 44%),
+        rgba(8, 5, 3, 0.28);
+      background-size: 64px 64px, 64px 64px, auto, auto;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      .operations-module:hover {
+        border-color: rgba(232, 192, 122, 0.20);
+        background-color: rgba(18, 10, 6, 0.48);
+        transform: translateY(-2px);
+      }
+
+      .operations-module:hover::after {
+        transform: scaleX(1);
+      }
+    }
+
+    .operations-module:focus-visible {
+      outline: 1px solid rgba(232, 192, 122, 0.58);
+      outline-offset: 4px;
+    }
+
+    @media (max-width: 820px) {
+      .route-division-operations,
+      .route-operations-calendar {
+        align-items: flex-start;
+        overflow-y: auto;
+        overscroll-behavior-y: contain;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .operations-workspace,
+      .operations-calendar-scaffold {
+        width: calc(100% - 32px);
+        margin-top: 24px;
+        margin-bottom: 42px;
+      }
+
+      .operations-modules {
+        grid-template-columns: 1fr;
+      }
+
+      .operations-module {
+        min-height: 220px;
+      }
+
+      .operations-calendar-scaffold {
+        min-height: 500px;
+        padding: 34px 24px;
+      }
+    }
+
+
+    /* Patch 20B — interactive monthly Calendar.
+       Local persistence is intentionally separated from the later Supabase adapter. */
+    .route-operations-calendar {
+      align-items: flex-start;
+      justify-content: center;
+      overflow-y: auto;
+      overscroll-behavior-y: contain;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+
+    .route-operations-calendar::-webkit-scrollbar {
+      display: none;
+    }
+
+    .calendar-workspace {
+      width: min(calc(100% - 56px), 1420px);
+      min-height: 100%;
+      margin: 0 auto;
+      padding: clamp(22px, 3vw, 38px) 0 clamp(52px, 7vw, 84px);
+    }
+
+    .calendar-header {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 30px;
+      margin-bottom: 24px;
+      padding-bottom: 22px;
+      border-bottom: 1px solid rgba(242, 237, 228, 0.075);
+    }
+
+    .calendar-heading {
+      min-width: 0;
+    }
+
+    .calendar-kicker,
+    .calendar-month-label,
+    .calendar-toolbar button,
+    .calendar-weekday,
+    .calendar-day-number,
+    .calendar-event-time,
+    .calendar-dialog-kicker,
+    .calendar-form-label,
+    .calendar-event-submit,
+    .calendar-event-delete,
+    .calendar-event-cancel,
+    .calendar-status {
+      font-family: "Cinzel", serif;
+      font-weight: 300;
+      text-transform: uppercase;
+    }
+
+    .calendar-kicker {
+      margin-bottom: 10px;
+      font-size: 8px;
+      letter-spacing: 0.36em;
+      color: rgba(184, 104, 48, 0.76);
+    }
+
+    .calendar-title {
+      font-family: "Cinzel", serif;
+      font-size: clamp(27px, 3.4vw, 43px);
+      font-weight: 300;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(242, 237, 228, 0.9);
+    }
+
+    .calendar-intro {
+      max-width: 560px;
+      margin-top: 10px;
+      font-size: 18px;
+      line-height: 1.55;
+      color: rgba(242, 237, 228, 0.54);
+    }
+
+    .calendar-toolbar {
+      display: grid;
+      grid-template-columns: auto minmax(210px, 1fr) auto;
+      align-items: center;
+      gap: 18px;
+      margin-bottom: 14px;
+    }
+
+    .calendar-navigation {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .calendar-toolbar button {
+      min-height: 38px;
+      border: 1px solid rgba(242, 237, 228, 0.095);
+      border-radius: 0;
+      background: rgba(242, 237, 228, 0.025);
+      color: rgba(242, 237, 228, 0.6);
+      cursor: pointer;
+      transition: color 180ms ease, border-color 180ms ease, background-color 180ms ease;
+    }
+
+    .calendar-nav-button {
+      width: 40px;
+      font-family: "Cormorant Garamond", serif !important;
+      font-size: 22px;
+      line-height: 1;
+    }
+
+    .calendar-today-button,
+    .calendar-add-button {
+      padding: 0 16px;
+      font-size: 8px;
+      letter-spacing: 0.24em;
+    }
+
+    .calendar-add-button {
+      color: rgba(242, 237, 228, 0.78) !important;
+      border-color: rgba(184, 104, 48, 0.28) !important;
+      background: rgba(184, 104, 48, 0.09) !important;
+    }
+
+    .calendar-month-label {
+      min-width: 0;
+      text-align: center;
+      font-size: clamp(15px, 1.7vw, 20px);
+      letter-spacing: 0.22em;
+      color: rgba(242, 237, 228, 0.74);
+    }
+
+    .calendar-status {
+      min-height: 18px;
+      margin-bottom: 10px;
+      font-size: 7.5px;
+      letter-spacing: 0.2em;
+      color: rgba(232, 192, 122, 0.58);
+      text-align: right;
+    }
+
+    .calendar-surface {
+      border-top: 1px solid rgba(242, 237, 228, 0.09);
+      border-left: 1px solid rgba(242, 237, 228, 0.09);
+      background: rgba(8, 5, 3, 0.18);
+    }
+
+    .calendar-weekdays,
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+    }
+
+    .calendar-weekday {
+      min-height: 38px;
+      display: grid;
+      place-items: center;
+      border-right: 1px solid rgba(242, 237, 228, 0.09);
+      border-bottom: 1px solid rgba(242, 237, 228, 0.09);
+      background: rgba(242, 237, 228, 0.027);
+      font-size: 7.5px;
+      letter-spacing: 0.22em;
+      color: rgba(242, 237, 228, 0.42);
+    }
+
+    .calendar-day {
+      position: relative;
+      min-width: 0;
+      min-height: clamp(108px, 13vh, 158px);
+      padding: 9px;
+      border-right: 1px solid rgba(242, 237, 228, 0.09);
+      border-bottom: 1px solid rgba(242, 237, 228, 0.09);
+      background: rgba(242, 237, 228, 0.012);
+      transition: background-color 160ms ease;
+    }
+
+    .calendar-day.is-outside {
+      background: rgba(0, 0, 0, 0.12);
+    }
+
+    .calendar-day.is-today {
+      background:
+        radial-gradient(circle at 16% 12%, rgba(184, 104, 48, 0.11), transparent 44%),
+        rgba(242, 237, 228, 0.018);
+    }
+
+    .calendar-day-number {
+      width: 28px;
+      height: 28px;
+      display: grid;
+      place-items: center;
+      margin: 0 0 7px auto;
+      border: 0;
+      border-radius: 50%;
+      background: transparent;
+      font-size: 8px;
+      letter-spacing: 0.08em;
+      color: rgba(242, 237, 228, 0.55);
+      cursor: pointer;
+    }
+
+    .calendar-day.is-outside .calendar-day-number {
+      color: rgba(242, 237, 228, 0.24);
+    }
+
+    .calendar-day.is-today .calendar-day-number {
+      background: var(--amber-core);
+      color: var(--dark-base);
+    }
+
+    .calendar-day-events {
+      display: grid;
+      gap: 5px;
+    }
+
+    .calendar-event-chip {
+      position: relative;
+      width: 100%;
+      min-width: 0;
+      display: grid;
+      grid-template-columns: 3px minmax(0, 1fr);
+      gap: 7px;
+      align-items: center;
+      padding: 6px 7px 6px 0;
+      border: 0;
+      border-radius: 0;
+      background: rgba(242, 237, 228, 0.035);
+      color: rgba(242, 237, 228, 0.72);
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .calendar-event-chip::before {
+      content: "";
+      align-self: stretch;
+      width: 3px;
+      background: rgba(184, 104, 48, 0.84);
+    }
+
+    .calendar-event-chip[data-category="meeting"]::before { background: rgba(232, 192, 122, 0.78); }
+    .calendar-event-chip[data-category="production"]::before { background: rgba(163, 109, 76, 0.88); }
+    .calendar-event-chip[data-category="launch"]::before { background: rgba(212, 146, 78, 0.94); }
+    .calendar-event-chip[data-category="travel"]::before { background: rgba(151, 131, 104, 0.84); }
+    .calendar-event-chip[data-category="admin"]::before { background: rgba(118, 105, 94, 0.86); }
+
+    .calendar-event-chip-body {
+      min-width: 0;
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+    }
+
+    .calendar-event-time {
+      flex: 0 0 auto;
+      font-size: 6.5px;
+      letter-spacing: 0.09em;
+      color: rgba(232, 192, 122, 0.56);
+    }
+
+    .calendar-event-title {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-size: 14px;
+      line-height: 1.1;
+    }
+
+    .calendar-more {
+      padding: 2px 7px;
+      font-size: 12px;
+      color: rgba(242, 237, 228, 0.4);
+    }
+
+    .calendar-event-dialog {
+      position: fixed;
+      inset: 0;
+      z-index: 520;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+    }
+
+    .calendar-event-dialog[hidden] {
+      display: none;
+    }
+
+    .calendar-dialog-scrim {
+      position: absolute;
+      inset: 0;
+      border: 0;
+      background: rgba(4, 2, 1, 0.78);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      cursor: default;
+    }
+
+    .calendar-dialog-card {
+      position: relative;
+      z-index: 1;
+      width: min(100%, 610px);
+      max-height: min(88vh, 820px);
+      overflow-y: auto;
+      padding: clamp(28px, 5vw, 46px);
+      border: 1px solid rgba(242, 237, 228, 0.12);
+      background:
+        radial-gradient(circle at 84% 10%, rgba(184, 104, 48, 0.11), transparent 38%),
+        #0d0805;
+      box-shadow: 0 36px 120px rgba(0, 0, 0, 0.48);
+    }
+
+    .calendar-dialog-kicker {
+      margin-bottom: 11px;
+      font-size: 7.5px;
+      letter-spacing: 0.34em;
+      color: rgba(184, 104, 48, 0.72);
+    }
+
+    .calendar-dialog-title {
+      margin-bottom: 28px;
+      font-family: "Cinzel", serif;
+      font-size: clamp(24px, 4vw, 34px);
+      font-weight: 300;
+      letter-spacing: 0.17em;
+      text-transform: uppercase;
+      color: rgba(242, 237, 228, 0.88);
+    }
+
+    .calendar-event-form {
+      display: grid;
+      gap: 18px;
+    }
+
+    .calendar-form-field {
+      display: grid;
+      gap: 8px;
+    }
+
+    .calendar-form-label {
+      font-size: 7.5px;
+      letter-spacing: 0.23em;
+      color: rgba(242, 237, 228, 0.44);
+    }
+
+    .calendar-event-form input,
+    .calendar-event-form select,
+    .calendar-event-form textarea {
+      width: 100%;
+      min-width: 0;
+      border: 1px solid rgba(242, 237, 228, 0.10);
+      border-radius: 0;
+      background: rgba(242, 237, 228, 0.025);
+      color: rgba(242, 237, 228, 0.78);
+      font-family: "Cormorant Garamond", serif;
+      font-size: 17px;
+      outline: none;
+    }
+
+    .calendar-event-form input,
+    .calendar-event-form select {
+      min-height: 43px;
+      padding: 0 12px;
+    }
+
+    .calendar-event-form textarea {
+      min-height: 98px;
+      resize: vertical;
+      padding: 11px 12px;
+      line-height: 1.45;
+    }
+
+    .calendar-event-form input:focus,
+    .calendar-event-form select:focus,
+    .calendar-event-form textarea:focus {
+      border-color: rgba(232, 192, 122, 0.34);
+    }
+
+    .calendar-event-form select option {
+      background: #120d08;
+      color: var(--cream);
+    }
+
+    .calendar-form-row {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .calendar-all-day {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-height: 38px;
+      color: rgba(242, 237, 228, 0.58);
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .calendar-all-day input {
+      width: 16px;
+      min-height: 16px;
+      height: 16px;
+      accent-color: var(--amber-core);
+    }
+
+    .calendar-time-row[hidden] {
+      display: none;
+    }
+
+    .calendar-form-feedback {
+      min-height: 20px;
+      font-size: 14px;
+      color: rgba(232, 192, 122, 0.74);
+    }
+
+    .calendar-dialog-actions {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 9px;
+      margin-top: 8px;
+    }
+
+    .calendar-dialog-actions button {
+      min-height: 40px;
+      padding: 0 16px;
+      border: 1px solid rgba(242, 237, 228, 0.10);
+      border-radius: 0;
+      background: rgba(242, 237, 228, 0.025);
+      font-size: 7.5px;
+      letter-spacing: 0.22em;
+      color: rgba(242, 237, 228, 0.58);
+      cursor: pointer;
+    }
+
+    .calendar-event-delete {
+      margin-right: auto;
+      color: rgba(210, 132, 102, 0.68) !important;
+    }
+
+    .calendar-event-submit {
+      border-color: rgba(184, 104, 48, 0.30) !important;
+      background: rgba(184, 104, 48, 0.10) !important;
+      color: rgba(242, 237, 228, 0.78) !important;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      .calendar-toolbar button:hover,
+      .calendar-dialog-actions button:hover {
+        color: rgba(242, 237, 228, 0.86);
+        border-color: rgba(232, 192, 122, 0.24);
+        background-color: rgba(242, 237, 228, 0.05);
+      }
+
+      .calendar-day:hover {
+        background-color: rgba(242, 237, 228, 0.026);
+      }
+
+      .calendar-event-chip:hover {
+        background: rgba(242, 237, 228, 0.065);
+      }
+    }
+
+    @media (max-width: 900px) {
+      .calendar-workspace {
+        width: calc(100% - 32px);
+      }
+
+      .calendar-header {
+        align-items: start;
+      }
+
+      .calendar-intro {
+        display: none;
+      }
+
+      .calendar-day {
+        min-height: 112px;
+      }
+
+      .calendar-event-title {
+        font-size: 13px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .calendar-workspace {
+        width: 100%;
+        padding: 22px 12px max(54px, calc(38px + env(safe-area-inset-bottom, 0px)));
+      }
+
+      .calendar-header {
+        margin: 0 4px 18px;
+        padding-bottom: 16px;
+      }
+
+      .calendar-title {
+        font-size: 25px;
+        letter-spacing: 0.16em;
+      }
+
+      .calendar-toolbar {
+        grid-template-columns: 1fr auto;
+        gap: 10px;
+      }
+
+      .calendar-navigation {
+        grid-column: 1;
+      }
+
+      .calendar-month-label {
+        grid-column: 1 / -1;
+        grid-row: 1;
+        margin-bottom: 48px;
+        font-size: 14px;
+        letter-spacing: 0.16em;
+      }
+
+      .calendar-navigation,
+      .calendar-add-button {
+        grid-row: 1;
+        align-self: end;
+      }
+
+      .calendar-add-button {
+        grid-column: 2;
+        padding: 0 12px;
+      }
+
+      .calendar-today-button {
+        padding: 0 10px;
+      }
+
+      .calendar-status {
+        padding-right: 4px;
+      }
+
+      .calendar-weekday {
+        min-height: 32px;
+        font-size: 6.5px;
+        letter-spacing: 0.08em;
+      }
+
+      .calendar-day {
+        min-height: 82px;
+        padding: 5px 3px;
+      }
+
+      .calendar-day-number {
+        width: 24px;
+        height: 24px;
+        margin-bottom: 3px;
+        font-size: 7px;
+      }
+
+      .calendar-day-events {
+        gap: 3px;
+      }
+
+      .calendar-event-chip {
+        grid-template-columns: 2px minmax(0, 1fr);
+        gap: 4px;
+        padding: 4px 3px 4px 0;
+      }
+
+      .calendar-event-chip::before {
+        width: 2px;
+      }
+
+      .calendar-event-time {
+        display: none;
+      }
+
+      .calendar-event-title {
+        font-size: 10px;
+      }
+
+      .calendar-more {
+        padding: 1px 3px;
+        font-size: 10px;
+      }
+
+      .calendar-event-dialog {
+        align-items: end;
+        padding: 0;
+      }
+
+      .calendar-dialog-card {
+        width: 100%;
+        max-height: 92vh;
+        padding: 28px 20px max(28px, env(safe-area-inset-bottom, 0px));
+        border-width: 1px 0 0;
+      }
+
+      .calendar-form-row {
+        grid-template-columns: 1fr;
+      }
+
+      .calendar-dialog-actions {
+        flex-wrap: wrap;
+      }
+    }
+
+
+    /* Patch 20D — Calendar hardening, accessibility, and realtime states. */
+    .calendar-grid[aria-busy="true"] {
+      opacity: 0.56;
+      pointer-events: none;
+    }
+
+    .calendar-toolbar button:disabled,
+    .calendar-dialog-actions button:disabled {
+      opacity: 0.42;
+      cursor: wait;
+    }
+
+    .calendar-more {
+      width: 100%;
+      border: 0;
+      background: transparent;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .calendar-event-delete.is-armed {
+      border-color: rgba(210, 132, 102, 0.34) !important;
+      background: rgba(120, 48, 34, 0.13) !important;
+      color: rgba(232, 168, 142, 0.86) !important;
+    }
+
+    body.calendar-dialog-open .route-operations-calendar > .calendar-workspace {
+      pointer-events: none;
+      user-select: none;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .operations-module,
+      .operations-module::after,
+      .calendar-toolbar button,
+      .calendar-day {
+        transition: none !important;
+      }
+    }
   </style>
 </head>
 <body data-internal-mode="supabase" data-internal-auth="signed_out" data-internal-ready="false" data-internal-route="public" data-internal-feature="public">
@@ -7762,10 +8594,120 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
             </form>
         </div>
       </div>
-      <div class="division-empty-workspace" aria-label="Operations workspace">
-        <div class="division-empty-kicker i18n-text" data-i18n="division.empty.kicker">Private workspace</div>
-        <h1 class="division-empty-title i18n-text" data-i18n="divisions.operations">Operations</h1>
-        <p class="division-empty-copy i18n-text" data-i18n="division.empty.copy">No modules have been added to this workspace yet.</p>
+      <div class="operations-workspace" id="operationsWorkspace" aria-label="Operations workspace">
+        <div class="operations-head">
+          <div class="operations-kicker i18n-text" data-i18n="operations.kicker">Private workspace</div>
+          <h1 class="operations-title i18n-text" data-i18n="divisions.operations">Operations</h1>
+          <p class="operations-intro i18n-text" data-i18n="operations.intro">Plan the practical work that carries MOSCATELLI from decision to execution.</p>
+        </div>
+        <div class="operations-modules" aria-label="Operations modules">
+          <button class="operations-module" type="button" data-route="divisions/operations/calendar" aria-label="Open Calendar">
+            <span class="operations-module-index" aria-hidden="true">I</span>
+            <span class="operations-module-body">
+              <span class="operations-module-title i18n-text" data-i18n="operations.calendar.title">Calendar</span>
+              <span class="operations-module-copy i18n-text" data-i18n="operations.calendar.copy">Coordinate launches, meetings, production milestones, travel, and internal deadlines.</span>
+            </span>
+            <span class="operations-module-action i18n-text" data-i18n="operations.open">Open module</span>
+          </button>
+        </div>
+      </div>
+    </section>
+    <section class="route-view route-division-page route-operations-calendar" data-view="divisions/operations/calendar" aria-hidden="true">
+      <div class="internal-gate internal-gate-division" data-internal-gate="division-operations-calendar" aria-hidden="true">
+        <div class="internal-gate-panel">
+          <div class="internal-gate-kicker i18n-text" data-i18n="internal.kicker">Private Access</div>
+          <h2 class="internal-gate-title i18n-text" data-i18n="operations.calendar.title">Calendar</h2>
+          <p class="internal-gate-copy i18n-text" data-i18n="internal.divisionIntro">This page is reserved for authenticated team members.</p>
+          <div class="internal-gate-status" data-internal-status>
+            <span class="i18n-text" data-i18n="internal.status.signedOut">Authentication required</span>
+          </div>
+          <form class="internal-gate-actions internal-auth-form" data-internal-auth-form novalidate>
+              <label class="internal-auth-label i18n-text" for="calendarGateEmail" data-i18n="internal.emailLabel">Email</label>
+              <input class="internal-auth-input" id="calendarGateEmail" type="email" inputmode="email" autocomplete="email" data-internal-email data-i18n-placeholder="internal.emailPlaceholder" placeholder="name@moscatelli.co" required>
+              <label class="internal-auth-label i18n-text" for="calendarGatePassword" data-i18n="internal.passwordLabel">Password</label>
+              <input class="internal-auth-input" id="calendarGatePassword" type="password" autocomplete="current-password" data-internal-password data-i18n-placeholder="internal.passwordPlaceholder" placeholder="••••••••" required>
+              <button class="internal-access-button i18n-text" type="submit" data-internal-auth-submit data-i18n="internal.enter">Enter</button>
+              <div class="internal-auth-feedback" data-internal-auth-feedback aria-live="polite"></div>
+            </form>
+        </div>
+      </div>
+      <div class="calendar-workspace" id="calendarWorkspace" aria-label="Operations calendar">
+        <div class="calendar-header">
+          <div class="calendar-heading">
+            <div class="calendar-kicker i18n-text" data-i18n="operations.calendar.kicker">Operations</div>
+            <h1 class="calendar-title i18n-text" data-i18n="operations.calendar.title">Calendar</h1>
+            <p class="calendar-intro i18n-text" data-i18n="calendar.intro">A shared monthly view for milestones, meetings, production, travel, and launches.</p>
+          </div>
+        </div>
+        <div class="calendar-toolbar" aria-label="Calendar controls">
+          <div class="calendar-navigation">
+            <button class="calendar-nav-button" id="calendarPrevious" type="button" aria-label="Previous month">‹</button>
+            <button class="calendar-today-button i18n-text" id="calendarToday" type="button" data-i18n="calendar.today">Today</button>
+            <button class="calendar-nav-button" id="calendarNext" type="button" aria-label="Next month">›</button>
+          </div>
+          <h2 class="calendar-month-label" id="calendarMonthLabel" aria-live="polite"></h2>
+          <button class="calendar-add-button i18n-text" id="calendarAddEvent" type="button" data-i18n="calendar.add">Add event</button>
+        </div>
+        <div class="calendar-status" id="calendarStatus" aria-live="polite"></div>
+        <div class="calendar-surface">
+          <div class="calendar-weekdays" id="calendarWeekdays" aria-hidden="true"></div>
+          <div class="calendar-grid" id="calendarGrid" role="grid" aria-labelledby="calendarMonthLabel"></div>
+        </div>
+      </div>
+      <div class="calendar-event-dialog" id="calendarEventDialog" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="calendarEventDialogTitle" hidden>
+        <button class="calendar-dialog-scrim" type="button" data-calendar-close aria-label="Close event editor"></button>
+        <div class="calendar-dialog-card" role="document">
+          <div class="calendar-dialog-kicker i18n-text" data-i18n="calendar.dialog.kicker">Operations calendar</div>
+          <h2 class="calendar-dialog-title i18n-text" id="calendarEventDialogTitle" data-i18n="calendar.dialog.new">New event</h2>
+          <form class="calendar-event-form" id="calendarEventForm" novalidate>
+            <input id="calendarEventId" type="hidden">
+            <label class="calendar-form-field">
+              <span class="calendar-form-label i18n-text" data-i18n="calendar.label.title">Title</span>
+              <input id="calendarEventTitle" type="text" maxlength="120" autocomplete="off" data-i18n-placeholder="calendar.placeholder.title" placeholder="Event title" required>
+            </label>
+            <div class="calendar-form-row">
+              <label class="calendar-form-field">
+                <span class="calendar-form-label i18n-text" data-i18n="calendar.label.date">Date</span>
+                <input id="calendarEventDate" type="date" required>
+              </label>
+              <label class="calendar-form-field">
+                <span class="calendar-form-label i18n-text" data-i18n="calendar.label.category">Category</span>
+                <select id="calendarEventCategory">
+                  <option value="milestone" class="i18n-text" data-i18n="calendar.category.milestone">Milestone</option>
+                  <option value="meeting" class="i18n-text" data-i18n="calendar.category.meeting">Meeting</option>
+                  <option value="production" class="i18n-text" data-i18n="calendar.category.production">Production</option>
+                  <option value="launch" class="i18n-text" data-i18n="calendar.category.launch">Launch</option>
+                  <option value="travel" class="i18n-text" data-i18n="calendar.category.travel">Travel</option>
+                  <option value="admin" class="i18n-text" data-i18n="calendar.category.admin">Administration</option>
+                </select>
+              </label>
+            </div>
+            <label class="calendar-all-day">
+              <input id="calendarEventAllDay" type="checkbox" checked>
+              <span class="i18n-text" data-i18n="calendar.allDay">All day</span>
+            </label>
+            <div class="calendar-form-row calendar-time-row" id="calendarTimeRow" hidden>
+              <label class="calendar-form-field">
+                <span class="calendar-form-label i18n-text" data-i18n="calendar.label.start">Starts</span>
+                <input id="calendarEventStart" type="time" value="09:00">
+              </label>
+              <label class="calendar-form-field">
+                <span class="calendar-form-label i18n-text" data-i18n="calendar.label.end">Ends</span>
+                <input id="calendarEventEnd" type="time" value="10:00">
+              </label>
+            </div>
+            <label class="calendar-form-field">
+              <span class="calendar-form-label i18n-text" data-i18n="calendar.label.notes">Notes</span>
+              <textarea id="calendarEventNotes" maxlength="1200" data-i18n-placeholder="calendar.placeholder.notes" placeholder="Optional context"></textarea>
+            </label>
+            <div class="calendar-form-feedback" id="calendarFormFeedback" aria-live="polite"></div>
+            <div class="calendar-dialog-actions">
+              <button class="calendar-event-delete i18n-text" id="calendarEventDelete" type="button" data-i18n="calendar.delete" hidden>Delete</button>
+              <button class="calendar-event-cancel i18n-text" type="button" data-calendar-close data-i18n="dashboard.cancel">Cancel</button>
+              <button class="calendar-event-submit i18n-text" type="submit" data-i18n="calendar.save">Save event</button>
+            </div>
+          </form>
+        </div>
       </div>
     </section>
   </main>
@@ -7808,6 +8750,7 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
     const divisionDoors = document.querySelectorAll('.division-door');
     const divisionDoorsWrap = document.getElementById('divisionDoors');
     const divisionReturn = document.getElementById('divisionReturn');
+    const operationsModuleButtons = document.querySelectorAll('.operations-module[data-route]');
     const internalSessionLine = document.getElementById('internalSessionLine');
     const internalSessionUser = document.getElementById('internalSessionUser');
     const internalSignOut = document.getElementById('internalSignOut');
@@ -7846,14 +8789,16 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
       DIVISIONS: 'divisions',
       MARKETING: 'divisions/marketing',
       FINANCE: 'divisions/finance',
-      OPERATIONS: 'divisions/operations'
+      OPERATIONS: 'divisions/operations',
+      OPERATIONS_CALENDAR: 'divisions/operations/calendar'
     });
 
     const VALID_ROUTES = new Set(Object.values(ROUTES));
     const DIVISION_CHILD_ROUTES = new Set([
       ROUTES.MARKETING,
       ROUTES.FINANCE,
-      ROUTES.OPERATIONS
+      ROUTES.OPERATIONS,
+      ROUTES.OPERATIONS_CALENDAR
     ]);
 
     const ROUTE_TITLES = Object.freeze({
@@ -7863,7 +8808,8 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
       [ROUTES.DIVISIONS]: 'Divisions — Moscatelli',
       [ROUTES.MARKETING]: 'Marketing — Moscatelli',
       [ROUTES.FINANCE]: 'Finance — Moscatelli',
-      [ROUTES.OPERATIONS]: 'Operations — Moscatelli'
+      [ROUTES.OPERATIONS]: 'Operations — Moscatelli',
+      [ROUTES.OPERATIONS_CALENDAR]: 'Calendar — Moscatelli'
     });
 
     const DASHBOARD_DATA_CONFIG = Object.freeze({
@@ -7938,6 +8884,30 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
       minAmount: 0.01
     });
 
+
+    const CALENDAR_DATA_CONFIG = Object.freeze({
+      table: 'calendar_events',
+      primaryKey: 'id',
+      ownerKey: 'created_by',
+      createdAtKey: 'created_at',
+      updatedAtKey: 'updated_at',
+      fields: Object.freeze([
+        'id',
+        'created_at',
+        'updated_at',
+        'created_by',
+        'title',
+        'event_date',
+        'all_day',
+        'start_time',
+        'end_time',
+        'category',
+        'notes'
+      ]),
+      categories: Object.freeze(['milestone', 'meeting', 'production', 'launch', 'travel', 'admin']),
+      maxEventsPerRange: 1000
+    });
+
     const INTERNAL_ROLES = Object.freeze({
       founder: Object.freeze({
         canReadRecord: true,
@@ -7976,14 +8946,16 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
         ROUTES.DASHBOARD,
         ROUTES.MARKETING,
         ROUTES.FINANCE,
-        ROUTES.OPERATIONS
+        ROUTES.OPERATIONS,
+        ROUTES.OPERATIONS_CALENDAR
       ]),
       protectedFeatures: Object.freeze([
         'record',
         'division-pages'
       ]),
       dashboard: DASHBOARD_DATA_CONFIG,
-      finance: FINANCE_DATA_CONFIG
+      finance: FINANCE_DATA_CONFIG,
+      calendar: CALENDAR_DATA_CONFIG
     });
 
     const INTERNAL_MOCK_USER = Object.freeze({
@@ -8007,7 +8979,9 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
     const RealtimeRuntime = {
       dashboardChannel: null,
       attachmentChannel: null,
+      calendarChannel: null,
       dashboardRefreshTimer: null,
+      calendarRefreshTimer: null,
       status: 'idle'
     };
 
@@ -8062,7 +9036,8 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
       const mockStore = {
         posts: new Map(),
         attachments: new Map(),
-        financeEntries: []
+        financeEntries: [],
+        calendarEvents: []
       };
 
       const profileCache = new Map();
@@ -8287,6 +9262,28 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
           status,
           entry_date: payload.entry_date || new Date().toISOString().slice(0, 10),
           notes: String(payload.notes || '').trim()
+        };
+      }
+
+
+      function normaliseCalendarRecord(payload = {}) {
+        const now = payload.updated_at || payload.updatedAt || new Date().toISOString();
+        const category = String(payload.category || 'milestone').trim().toLowerCase();
+        const allDay = payload.all_day ?? payload.allDay ?? true;
+        const eventDate = payload.event_date || payload.date || new Date().toISOString().slice(0, 10);
+
+        return {
+          id: payload.id || mockId('calendar'),
+          created_at: payload.created_at || payload.createdAt || now,
+          updated_at: now,
+          created_by: payload.created_by || payload.createdBy || currentOwnerId(),
+          title: String(payload.title || '').trim().slice(0, 120),
+          event_date: String(eventDate).slice(0, 10),
+          all_day: Boolean(allDay),
+          start_time: allDay ? null : String(payload.start_time || payload.startTime || '').slice(0, 5) || null,
+          end_time: allDay ? null : String(payload.end_time || payload.endTime || '').slice(0, 5) || null,
+          category: CALENDAR_DATA_CONFIG.categories.includes(category) ? category : 'milestone',
+          notes: String(payload.notes || '').trim().slice(0, 1200)
         };
       }
 
@@ -8981,6 +9978,147 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
         }
       };
 
+
+      const calendar = {
+        async list({ startDate = '', endDate = '' } = {}) {
+          const client = activeSupabaseClient();
+
+          if (!client) {
+            return mockStore.calendarEvents
+              .map(event => normaliseCalendarRecord(event))
+              .filter(event => (!startDate || event.event_date >= startDate) && (!endDate || event.event_date <= endDate))
+              .sort((a, b) => String(a.event_date).localeCompare(String(b.event_date)) || String(a.start_time || '').localeCompare(String(b.start_time || '')));
+          }
+
+          let query = client
+            .from(CALENDAR_DATA_CONFIG.table)
+            .select(supabaseFieldList(CALENDAR_DATA_CONFIG.fields))
+            .order('event_date', { ascending: true })
+            .order('all_day', { ascending: false })
+            .order('start_time', { ascending: true, nullsFirst: true })
+            .limit(CALENDAR_DATA_CONFIG.maxEventsPerRange);
+
+          if (startDate) query = query.gte('event_date', startDate);
+          if (endDate) query = query.lte('event_date', endDate);
+
+          const { data, error } = await query;
+          if (error) {
+            dataEvent('calendar-list-error', { error, table: CALENDAR_DATA_CONFIG.table });
+            throw error;
+          }
+
+          return (data || []).map(row => normaliseCalendarRecord(row));
+        },
+
+        async create(payload = {}) {
+          const event = normaliseCalendarRecord(payload);
+          if (!event.title || !event.event_date) return { ok: false, error: 'invalid_calendar_event' };
+
+          const client = activeSupabaseClient();
+          if (!client) {
+            mockStore.calendarEvents.push(event);
+            dataEvent('calendar-event-created', { id: event.id, table: CALENDAR_DATA_CONFIG.table });
+            return { ok: true, event };
+          }
+
+          const insertPayload = {
+            created_by: currentOwnerId(),
+            title: event.title,
+            event_date: event.event_date,
+            all_day: event.all_day,
+            start_time: event.start_time,
+            end_time: event.end_time,
+            category: event.category,
+            notes: event.notes
+          };
+
+          const { data, error } = await client
+            .from(CALENDAR_DATA_CONFIG.table)
+            .insert(insertPayload)
+            .select(supabaseFieldList(CALENDAR_DATA_CONFIG.fields))
+            .single();
+
+          if (error || !data) {
+            dataEvent('calendar-event-create-error', { error, table: CALENDAR_DATA_CONFIG.table });
+            return { ok: false, error: error || 'calendar_event_not_returned' };
+          }
+
+          const saved = normaliseCalendarRecord(data);
+          dataEvent('calendar-event-created', { id: saved.id, table: CALENDAR_DATA_CONFIG.table });
+          return { ok: true, event: saved };
+        },
+
+        async update(eventId, payload = {}) {
+          if (!eventId) return { ok: false, error: 'calendar_event_id_required' };
+          const event = normaliseCalendarRecord({ ...payload, id: eventId });
+          if (!event.title || !event.event_date) return { ok: false, error: 'invalid_calendar_event' };
+
+          const client = activeSupabaseClient();
+          if (!client) {
+            const index = mockStore.calendarEvents.findIndex(item => item.id === eventId);
+            if (index < 0) return { ok: false, error: 'not_found' };
+            mockStore.calendarEvents.splice(index, 1, event);
+            dataEvent('calendar-event-updated', { id: eventId, table: CALENDAR_DATA_CONFIG.table });
+            return { ok: true, event };
+          }
+
+          const updatePayload = {
+            title: event.title,
+            event_date: event.event_date,
+            all_day: event.all_day,
+            start_time: event.start_time,
+            end_time: event.end_time,
+            category: event.category,
+            notes: event.notes,
+            updated_at: new Date().toISOString()
+          };
+
+          const { data, error } = await client
+            .from(CALENDAR_DATA_CONFIG.table)
+            .update(updatePayload)
+            .eq('id', eventId)
+            .select(supabaseFieldList(CALENDAR_DATA_CONFIG.fields))
+            .single();
+
+          if (error || !data) {
+            dataEvent('calendar-event-update-error', { error, id: eventId, table: CALENDAR_DATA_CONFIG.table });
+            return { ok: false, error: error || 'calendar_event_not_returned' };
+          }
+
+          const saved = normaliseCalendarRecord(data);
+          dataEvent('calendar-event-updated', { id: saved.id, table: CALENDAR_DATA_CONFIG.table });
+          return { ok: true, event: saved };
+        },
+
+        async remove(eventId) {
+          if (!eventId) return { ok: false, error: 'calendar_event_id_required' };
+          const client = activeSupabaseClient();
+
+          if (!client) {
+            const index = mockStore.calendarEvents.findIndex(item => item.id === eventId);
+            if (index < 0) return { ok: false, error: 'not_found' };
+            mockStore.calendarEvents.splice(index, 1);
+            dataEvent('calendar-event-deleted', { id: eventId, table: CALENDAR_DATA_CONFIG.table });
+            return { ok: true, id: eventId };
+          }
+
+          const { data, error } = await client
+            .from(CALENDAR_DATA_CONFIG.table)
+            .delete()
+            .eq('id', eventId)
+            .select('id')
+            .single();
+
+          if (error || !data) {
+            dataEvent('calendar-event-delete-error', { error, id: eventId, table: CALENDAR_DATA_CONFIG.table });
+            return { ok: false, error: error || 'calendar_event_not_deleted' };
+          }
+
+          dataEvent('calendar-event-deleted', { id: eventId, table: CALENDAR_DATA_CONFIG.table });
+          return { ok: true, id: eventId };
+        }
+      };
+
       const attachments = {
         async fromComposer(items = []) {
           return items.map(item => normaliseAttachment(item));
@@ -9008,6 +10146,7 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
         auth,
         posts,
         finance,
+        calendar,
         attachments
       });
     })();
@@ -9086,6 +10225,56 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
         'divisions.marketing': 'Marketing',
         'divisions.finance': 'Finance',
         'divisions.operations': 'Operations',
+        'operations.kicker': 'Private workspace',
+        'operations.intro': 'Plan the practical work that carries MOSCATELLI from decision to execution.',
+        'operations.calendar.kicker': 'Operations',
+        'operations.calendar.title': 'Calendar',
+        'operations.calendar.copy': 'Coordinate launches, meetings, production milestones, travel, and internal deadlines.',
+        'operations.calendar.scaffold': 'The monthly planning surface is being prepared within this isolated route.',
+        'calendar.intro': 'A shared monthly view for milestones, meetings, production, travel, and launches.',
+        'calendar.today': 'Today',
+        'calendar.add': 'Add event',
+        'calendar.dialog.kicker': 'Operations calendar',
+        'calendar.dialog.new': 'New event',
+        'calendar.dialog.edit': 'Edit event',
+        'calendar.label.title': 'Title',
+        'calendar.label.date': 'Date',
+        'calendar.label.category': 'Category',
+        'calendar.label.start': 'Starts',
+        'calendar.label.end': 'Ends',
+        'calendar.label.notes': 'Notes',
+        'calendar.placeholder.title': 'Event title',
+        'calendar.placeholder.notes': 'Optional context',
+        'calendar.allDay': 'All day',
+        'calendar.save': 'Save event',
+        'calendar.delete': 'Delete',
+        'calendar.deleteConfirm': 'Confirm delete',
+        'calendar.deletePrompt': 'Select delete again to remove this event.',
+        'calendar.saved': 'Event saved',
+        'calendar.deleted': 'Event deleted',
+        'calendar.loading': 'Loading calendar…',
+        'calendar.error.load': 'Calendar events could not be loaded.',
+        'calendar.error.save': 'The event could not be saved.',
+        'calendar.error.delete': 'The event could not be deleted.',
+        'calendar.error.missingMigration': 'The shared calendar is not ready yet. Apply the Calendar database patch first.',
+        'calendar.error.required': 'Add a title and date before saving.',
+        'calendar.error.time': 'The end time must be later than the start time.',
+        'calendar.more': '+{count} more',
+        'calendar.category.milestone': 'Milestone',
+        'calendar.category.meeting': 'Meeting',
+        'calendar.category.production': 'Production',
+        'calendar.category.launch': 'Launch',
+        'calendar.category.travel': 'Travel',
+        'calendar.category.admin': 'Administration',
+        'calendar.weekday.mon': 'Mon',
+        'calendar.weekday.tue': 'Tue',
+        'calendar.weekday.wed': 'Wed',
+        'calendar.weekday.thu': 'Thu',
+        'calendar.weekday.fri': 'Fri',
+        'calendar.weekday.sat': 'Sat',
+        'calendar.weekday.sun': 'Sun',
+        'operations.open': 'Open module',
+        'ui.returnOperations': 'Operations',
         'division.empty.kicker': 'Private workspace',
         'division.empty.copy': 'No modules have been added to this workspace yet.',
 
@@ -9271,6 +10460,56 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
         'divisions.marketing': 'Marketing',
         'divisions.finance': 'Finanças',
         'divisions.operations': 'Operações',
+        'operations.kicker': 'Área privada',
+        'operations.intro': 'Planeje o trabalho prático que conduz a MOSCATELLI da decisão à execução.',
+        'operations.calendar.kicker': 'Operações',
+        'operations.calendar.title': 'Calendário',
+        'operations.calendar.copy': 'Coordene lançamentos, reuniões, marcos de produção, viagens e prazos internos.',
+        'operations.calendar.scaffold': 'A superfície mensal de planejamento está sendo preparada nesta rota isolada.',
+        'calendar.intro': 'Uma visão mensal compartilhada para marcos, reuniões, produção, viagens e lançamentos.',
+        'calendar.today': 'Hoje',
+        'calendar.add': 'Adicionar evento',
+        'calendar.dialog.kicker': 'Calendário de operações',
+        'calendar.dialog.new': 'Novo evento',
+        'calendar.dialog.edit': 'Editar evento',
+        'calendar.label.title': 'Título',
+        'calendar.label.date': 'Data',
+        'calendar.label.category': 'Categoria',
+        'calendar.label.start': 'Início',
+        'calendar.label.end': 'Fim',
+        'calendar.label.notes': 'Notas',
+        'calendar.placeholder.title': 'Título do evento',
+        'calendar.placeholder.notes': 'Contexto opcional',
+        'calendar.allDay': 'Dia inteiro',
+        'calendar.save': 'Salvar evento',
+        'calendar.delete': 'Apagar',
+        'calendar.deleteConfirm': 'Confirmar exclusão',
+        'calendar.deletePrompt': 'Selecione apagar novamente para remover este evento.',
+        'calendar.saved': 'Evento salvo',
+        'calendar.deleted': 'Evento apagado',
+        'calendar.loading': 'Carregando calendário…',
+        'calendar.error.load': 'Não foi possível carregar os eventos do calendário.',
+        'calendar.error.save': 'Não foi possível salvar o evento.',
+        'calendar.error.delete': 'Não foi possível apagar o evento.',
+        'calendar.error.missingMigration': 'O calendário compartilhado ainda não está pronto. Aplique primeiro o patch do banco de dados.',
+        'calendar.error.required': 'Adicione um título e uma data antes de salvar.',
+        'calendar.error.time': 'O horário de término deve ser posterior ao início.',
+        'calendar.more': '+{count} mais',
+        'calendar.category.milestone': 'Marco',
+        'calendar.category.meeting': 'Reunião',
+        'calendar.category.production': 'Produção',
+        'calendar.category.launch': 'Lançamento',
+        'calendar.category.travel': 'Viagem',
+        'calendar.category.admin': 'Administração',
+        'calendar.weekday.mon': 'Seg',
+        'calendar.weekday.tue': 'Ter',
+        'calendar.weekday.wed': 'Qua',
+        'calendar.weekday.thu': 'Qui',
+        'calendar.weekday.fri': 'Sex',
+        'calendar.weekday.sat': 'Sáb',
+        'calendar.weekday.sun': 'Dom',
+        'operations.open': 'Abrir módulo',
+        'ui.returnOperations': 'Operações',
         'division.empty.kicker': 'Área privada',
         'division.empty.copy': 'Ainda não foram adicionados módulos a esta área.',
 
@@ -9598,6 +10837,10 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
       InternalState.session = session;
       setInternalAuthStatus(user ? 'signed_in' : 'signed_out');
       internalAccessEvent('user', { user: InternalState.user });
+
+      if (user && currentRoute === ROUTES.OPERATIONS_CALENDAR) {
+        queueMicrotask(() => initCalendarModule({ force: true }));
+      }
     }
 
     function clearInternalUser() {
@@ -9637,7 +10880,7 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
       if (targetRoute === ROUTES.DASHBOARD) return 'record';
       if (targetRoute === ROUTES.MARKETING) return 'division-marketing';
       if (targetRoute === ROUTES.FINANCE) return 'division-finance';
-      if (targetRoute === ROUTES.OPERATIONS) return 'division-operations';
+      if (targetRoute === ROUTES.OPERATIONS || targetRoute === ROUTES.OPERATIONS_CALENDAR) return 'division-operations';
 
       return 'public';
     }
@@ -9761,7 +11004,7 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
     }
 
     window.MoscatelliInternal = Object.freeze({
-      getBuild: () => 'patch19g-full-site-hardening',
+      getBuild: () => 'patch20d-calendar-hardening-realtime',
       getMode: getInternalMode,
       isSignedIn: isInternalUserSignedIn,
       getCurrentUser: () => {
@@ -9775,7 +11018,7 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
         mode: getInternalMode(),
         signedIn: isInternalUserSignedIn(),
         realtimeStatus: RealtimeRuntime.status,
-        build: 'patch19g-full-site-hardening'
+        build: 'patch20d-calendar-hardening-realtime'
       }),
       isInternalRoute,
       featureForRoute: internalFeatureForRoute
@@ -10202,6 +11445,14 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
 
       if (nextRoute !== ROUTES.HOME && monogramGlowOverlay) monogramGlowOverlay.classList.remove('is-lit');
 
+      if (nextRoute === ROUTES.OPERATIONS_CALENDAR) {
+        queueMicrotask(() => initCalendarModule());
+      } else {
+        queueMicrotask(() => {
+          if (calendarEventDialog && !calendarEventDialog.hidden) closeCalendarEventDialog();
+        });
+      }
+
       routeLinks.forEach(link => {
         const linkRoute = link.dataset.route;
         const isCurrent =
@@ -10216,11 +11467,20 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
       });
 
       divisionDoors.forEach(door => {
-        const isCurrent = door.dataset.route === nextRoute;
+        const isOperationsChild = nextRoute === ROUTES.OPERATIONS_CALENDAR && door.dataset.route === ROUTES.OPERATIONS;
+        const isCurrent = door.dataset.route === nextRoute || isOperationsChild;
         door.classList.toggle('is-selected', isCurrent);
         door.setAttribute('aria-pressed', String(isCurrent));
       });
-      divisionDoorsWrap?.classList.toggle('has-selected', isDivisionChildRoute(nextRoute) );
+      divisionDoorsWrap?.classList.toggle('has-selected', isDivisionChildRoute(nextRoute));
+
+      if (divisionReturn) {
+        const returnsToOperations = nextRoute === ROUTES.OPERATIONS_CALENDAR;
+        const translationKey = returnsToOperations ? 'ui.returnOperations' : 'ui.return';
+        divisionReturn.dataset.i18n = translationKey;
+        divisionReturn.textContent = translations[currentLang]?.[translationKey] || (returnsToOperations ? 'Operations' : 'Return');
+        divisionReturn.setAttribute('aria-label', returnsToOperations ? 'Return to Operations' : 'Return to divisions');
+      }
 
       applyInternalRouteProtection(nextRoute);
     }
@@ -10465,6 +11725,7 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
       });
       updateInternalAccessUI();
       renderFinanceModule();
+      renderCalendarModule();
       updateMenuAria();
       queueMicrotask(() => refreshDashboardLanguage());
     }
@@ -10616,10 +11877,625 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
       });
     });
 
+    operationsModuleButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const targetRoute = button.dataset.route;
+        if (targetRoute) navigateTo(targetRoute);
+      });
+    });
+
     divisionReturn?.addEventListener('click', () => {
-      navigateTo(ROUTES.DIVISIONS);
+      const targetRoute = currentRoute === ROUTES.OPERATIONS_CALENDAR
+        ? ROUTES.OPERATIONS
+        : ROUTES.DIVISIONS;
+      navigateTo(targetRoute);
       releaseTapFocus();
     });
+
+
+    // ── Operations Calendar (Patch 20B: local interactive layer) ──
+    const calendarWorkspace = document.getElementById('calendarWorkspace');
+    const calendarGrid = document.getElementById('calendarGrid');
+    const calendarWeekdays = document.getElementById('calendarWeekdays');
+    const calendarMonthLabel = document.getElementById('calendarMonthLabel');
+    const calendarStatus = document.getElementById('calendarStatus');
+    const calendarPrevious = document.getElementById('calendarPrevious');
+    const calendarToday = document.getElementById('calendarToday');
+    const calendarNext = document.getElementById('calendarNext');
+    const calendarAddEvent = document.getElementById('calendarAddEvent');
+    const calendarEventDialog = document.getElementById('calendarEventDialog');
+    const calendarEventDialogTitle = document.getElementById('calendarEventDialogTitle');
+    const calendarEventForm = document.getElementById('calendarEventForm');
+    const calendarEventId = document.getElementById('calendarEventId');
+    const calendarEventTitle = document.getElementById('calendarEventTitle');
+    const calendarEventDate = document.getElementById('calendarEventDate');
+    const calendarEventCategory = document.getElementById('calendarEventCategory');
+    const calendarEventAllDay = document.getElementById('calendarEventAllDay');
+    const calendarTimeRow = document.getElementById('calendarTimeRow');
+    const calendarEventStart = document.getElementById('calendarEventStart');
+    const calendarEventEnd = document.getElementById('calendarEventEnd');
+    const calendarEventNotes = document.getElementById('calendarEventNotes');
+    const calendarFormFeedback = document.getElementById('calendarFormFeedback');
+    const calendarEventDelete = document.getElementById('calendarEventDelete');
+    const calendarEventSubmit = calendarEventForm?.querySelector('.calendar-event-submit') || null;
+    const calendarCloseButtons = document.querySelectorAll('[data-calendar-close]');
+
+    const CALENDAR_LOCAL_STORAGE_KEY = 'moscatelli:operations-calendar-events:v1';
+    const CALENDAR_CATEGORIES = new Set(['milestone', 'meeting', 'production', 'launch', 'travel', 'admin']);
+    const CALENDAR_WEEKDAY_KEYS = [
+      'calendar.weekday.mon',
+      'calendar.weekday.tue',
+      'calendar.weekday.wed',
+      'calendar.weekday.thu',
+      'calendar.weekday.fri',
+      'calendar.weekday.sat',
+      'calendar.weekday.sun'
+    ];
+
+    const CalendarRuntime = {
+      initialized: false,
+      loading: false,
+      saving: false,
+      source: 'local',
+      loadedRange: '',
+      requestId: 0,
+      deleteArmed: false,
+      deleteArmTimer: null,
+      resizeTimer: null,
+      events: [],
+      viewDate: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
+      lastFocusedElement: null
+    };
+
+    function calendarText(key, fallback = '') {
+      return translations[currentLang]?.[key] || fallback;
+    }
+
+    function calendarDateKey(value = new Date()) {
+      const date = value instanceof Date ? value : calendarParseDateKey(value);
+      if (!(date instanceof Date) || Number.isNaN(date.getTime())) return '';
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    }
+
+    function calendarParseDateKey(value = '') {
+      const match = String(value).match(/^(\d{4})-(\d{2})-(\d{2})$/);
+      if (!match) return new Date(NaN);
+      return new Date(Number(match[1]), Number(match[2]) - 1, Number(match[3]));
+    }
+
+    function calendarEventIdValue() {
+      if (window.crypto?.randomUUID) return window.crypto.randomUUID();
+      return `calendar-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+    }
+
+    function normaliseCalendarEvent(source = {}) {
+      const allDay = source.allDay ?? source.all_day ?? true;
+      const category = String(source.category || 'milestone').toLowerCase();
+      return {
+        id: String(source.id || calendarEventIdValue()),
+        title: String(source.title || '').trim().slice(0, 120),
+        date: calendarDateKey(source.date || source.event_date || new Date()),
+        allDay: Boolean(allDay),
+        startTime: String(source.startTime || source.start_time || '').slice(0, 5),
+        endTime: String(source.endTime || source.end_time || '').slice(0, 5),
+        category: CALENDAR_CATEGORIES.has(category) ? category : 'milestone',
+        notes: String(source.notes || '').trim().slice(0, 1200),
+        createdAt: source.createdAt || source.created_at || new Date().toISOString(),
+        updatedAt: source.updatedAt || source.updated_at || new Date().toISOString()
+      };
+    }
+
+
+    function isCalendarMissingMigrationError(error = {}) {
+      const parts = [error?.code, error?.message, error?.details, error?.hint]
+        .filter(Boolean)
+        .join(' ')
+        .toLowerCase();
+      return /42p01|calendar_events|relation .*does not exist|could not find the table|schema cache/.test(parts);
+    }
+
+    function calendarDataErrorMessage(error = {}, action = 'load') {
+      if (isCalendarMissingMigrationError(error)) {
+        return calendarText(
+          'calendar.error.missingMigration',
+          'The shared calendar is not ready yet. Apply the Calendar database patch first.'
+        );
+      }
+      return calendarText(`calendar.error.${action}`, `The calendar could not ${action}.`);
+    }
+
+    function calendarVisibleRange() {
+      const view = CalendarRuntime.viewDate;
+      const monthStart = new Date(view.getFullYear(), view.getMonth(), 1);
+      const mondayOffset = (monthStart.getDay() + 6) % 7;
+      const start = new Date(view.getFullYear(), view.getMonth(), 1 - mondayOffset);
+      const end = new Date(start.getFullYear(), start.getMonth(), start.getDate() + 41);
+      return {
+        startDate: calendarDateKey(start),
+        endDate: calendarDateKey(end),
+        key: `${calendarDateKey(start)}:${calendarDateKey(end)}`
+      };
+    }
+
+
+    function setCalendarLoadingState(isLoading) {
+      CalendarRuntime.loading = Boolean(isLoading);
+      calendarGrid?.setAttribute('aria-busy', String(Boolean(isLoading)));
+      [calendarPrevious, calendarToday, calendarNext].forEach(button => {
+        if (button) button.disabled = Boolean(isLoading);
+      });
+    }
+
+    async function loadSharedCalendarEvents({ force = false } = {}) {
+      const range = calendarVisibleRange();
+      if (!force && CalendarRuntime.loadedRange === range.key) {
+        renderCalendarModule();
+        return;
+      }
+
+      const requestId = ++CalendarRuntime.requestId;
+
+      if (getInternalMode() !== 'supabase') {
+        if (!CalendarRuntime.initialized || force) loadLocalCalendarEvents();
+        if (requestId !== CalendarRuntime.requestId) return;
+        CalendarRuntime.source = 'local';
+        CalendarRuntime.loadedRange = range.key;
+        renderCalendarModule();
+        return;
+      }
+
+      if (!isInternalUserSignedIn()) {
+        if (requestId !== CalendarRuntime.requestId) return;
+        CalendarRuntime.events = [];
+        CalendarRuntime.loadedRange = '';
+        renderCalendarModule();
+        return;
+      }
+
+      setCalendarLoadingState(true);
+      setCalendarStatus(calendarText('calendar.loading', 'Loading calendar…'));
+      try {
+        const rows = await InternalData.calendar.list(range);
+        if (requestId !== CalendarRuntime.requestId) return;
+        CalendarRuntime.events = rows.map(normaliseCalendarEvent).filter(event => event.title && event.date);
+        CalendarRuntime.source = 'supabase';
+        CalendarRuntime.loadedRange = range.key;
+        setCalendarStatus('');
+      } catch (error) {
+        if (requestId !== CalendarRuntime.requestId) return;
+        CalendarRuntime.events = [];
+        CalendarRuntime.loadedRange = '';
+        setCalendarStatus(calendarDataErrorMessage(error, 'load'));
+      } finally {
+        if (requestId === CalendarRuntime.requestId) {
+          setCalendarLoadingState(false);
+          renderCalendarModule();
+        }
+      }
+    }
+
+    function loadLocalCalendarEvents() {
+      try {
+        const stored = JSON.parse(localStorage.getItem(CALENDAR_LOCAL_STORAGE_KEY) || '[]');
+        CalendarRuntime.events = Array.isArray(stored)
+          ? stored.map(normaliseCalendarEvent).filter(event => event.title && event.date)
+          : [];
+      } catch {
+        CalendarRuntime.events = [];
+      }
+    }
+
+    function saveLocalCalendarEvents() {
+      try {
+        localStorage.setItem(CALENDAR_LOCAL_STORAGE_KEY, JSON.stringify(CalendarRuntime.events));
+        return true;
+      } catch {
+        return false;
+      }
+    }
+
+    function calendarMonthTitle(date) {
+      const locale = currentLang === 'pt' ? 'pt-BR' : 'en-GB';
+      return new Intl.DateTimeFormat(locale, { month: 'long', year: 'numeric' }).format(date);
+    }
+
+    function calendarEventSort(a, b) {
+      if (a.allDay !== b.allDay) return a.allDay ? -1 : 1;
+      return (a.startTime || '00:00').localeCompare(b.startTime || '00:00') || a.title.localeCompare(b.title);
+    }
+
+    function calendarEventsForDate(dateKey) {
+      return CalendarRuntime.events
+        .filter(event => event.date === dateKey)
+        .sort(calendarEventSort);
+    }
+
+    function renderCalendarWeekdays() {
+      if (!calendarWeekdays) return;
+      calendarWeekdays.replaceChildren(...CALENDAR_WEEKDAY_KEYS.map(key => {
+        const item = document.createElement('div');
+        item.className = 'calendar-weekday';
+        item.textContent = calendarText(key, key.slice(-3));
+        return item;
+      }));
+    }
+
+    function renderCalendarEventChip(event) {
+      const button = document.createElement('button');
+      button.className = 'calendar-event-chip';
+      button.type = 'button';
+      button.dataset.eventId = event.id;
+      button.dataset.category = event.category;
+      button.setAttribute('aria-label', `${event.title}${event.allDay || !event.startTime ? '' : `, ${event.startTime}`}`);
+
+      const body = document.createElement('span');
+      body.className = 'calendar-event-chip-body';
+
+      if (!event.allDay && event.startTime) {
+        const time = document.createElement('span');
+        time.className = 'calendar-event-time';
+        time.textContent = event.startTime;
+        body.append(time);
+      }
+
+      const title = document.createElement('span');
+      title.className = 'calendar-event-title';
+      title.textContent = event.title;
+      body.append(title);
+      button.append(body);
+      button.addEventListener('click', clickEvent => {
+        clickEvent.stopPropagation();
+        openCalendarEventDialog(event.date, event.id, button);
+      });
+      return button;
+    }
+
+    function renderCalendarDay(date, visibleMonth) {
+      const dateKey = calendarDateKey(date);
+      const events = calendarEventsForDate(dateKey);
+      const todayKey = calendarDateKey(new Date());
+      const cell = document.createElement('div');
+      cell.className = 'calendar-day';
+      cell.dataset.date = dateKey;
+      cell.setAttribute('role', 'gridcell');
+      cell.classList.toggle('is-outside', date.getMonth() !== visibleMonth);
+      cell.classList.toggle('is-today', dateKey === todayKey);
+
+      const number = document.createElement('button');
+      number.type = 'button';
+      number.className = 'calendar-day-number';
+      number.textContent = String(date.getDate());
+      number.setAttribute('aria-label', new Intl.DateTimeFormat(currentLang === 'pt' ? 'pt-BR' : 'en-GB', {
+        weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
+      }).format(date));
+      number.addEventListener('click', () => openCalendarEventDialog(dateKey, '', number));
+      cell.append(number);
+
+      const eventList = document.createElement('div');
+      eventList.className = 'calendar-day-events';
+      const compact = window.matchMedia('(max-width: 640px)').matches;
+      const visibleLimit = compact ? 2 : 3;
+      events.slice(0, visibleLimit).forEach(event => eventList.append(renderCalendarEventChip(event)));
+
+      if (events.length > visibleLimit) {
+        const more = document.createElement('button');
+        more.type = 'button';
+        more.className = 'calendar-more';
+        more.textContent = calendarText('calendar.more', '+{count} more').replace('{count}', String(events.length - visibleLimit));
+        more.addEventListener('click', clickEvent => {
+          clickEvent.stopPropagation();
+          eventList.replaceChildren(...events.map(renderCalendarEventChip));
+        });
+        eventList.append(more);
+      }
+
+      cell.append(eventList);
+      cell.addEventListener('click', event => {
+        if (event.target.closest('button')) return;
+        openCalendarEventDialog(dateKey, '', cell);
+      });
+      return cell;
+    }
+
+    function renderCalendarModule() {
+      if (!calendarGrid || !calendarMonthLabel) return;
+      const view = CalendarRuntime.viewDate;
+      calendarMonthLabel.textContent = calendarMonthTitle(view);
+      renderCalendarWeekdays();
+
+      const monthStart = new Date(view.getFullYear(), view.getMonth(), 1);
+      const mondayOffset = (monthStart.getDay() + 6) % 7;
+      const gridStart = new Date(view.getFullYear(), view.getMonth(), 1 - mondayOffset);
+      const cells = [];
+      for (let index = 0; index < 42; index += 1) {
+        const date = new Date(gridStart.getFullYear(), gridStart.getMonth(), gridStart.getDate() + index);
+        cells.push(renderCalendarDay(date, view.getMonth()));
+      }
+      calendarGrid.replaceChildren(...cells);
+    }
+
+    function setCalendarStatus(message = '') {
+      if (calendarStatus) calendarStatus.textContent = message;
+    }
+
+    function updateCalendarTimeVisibility() {
+      if (!calendarTimeRow || !calendarEventAllDay) return;
+      calendarTimeRow.hidden = calendarEventAllDay.checked;
+      calendarEventStart.disabled = calendarEventAllDay.checked;
+      calendarEventEnd.disabled = calendarEventAllDay.checked;
+    }
+
+    function openCalendarEventDialog(dateKey = calendarDateKey(new Date()), eventId = '', trigger = null) {
+      if (!calendarEventDialog || !calendarEventForm) return;
+      const existing = CalendarRuntime.events.find(event => event.id === eventId) || null;
+      CalendarRuntime.lastFocusedElement = trigger || document.activeElement;
+
+      calendarEventForm.reset();
+      calendarEventId.value = existing?.id || '';
+      calendarEventTitle.value = existing?.title || '';
+      calendarEventDate.value = existing?.date || dateKey;
+      calendarEventCategory.value = existing?.category || 'milestone';
+      calendarEventAllDay.checked = existing ? existing.allDay : true;
+      calendarEventStart.value = existing?.startTime || '09:00';
+      calendarEventEnd.value = existing?.endTime || '10:00';
+      calendarEventNotes.value = existing?.notes || '';
+      calendarFormFeedback.textContent = '';
+      calendarEventDelete.hidden = !existing;
+      CalendarRuntime.deleteArmed = false;
+      clearTimeout(CalendarRuntime.deleteArmTimer);
+      calendarEventDelete.classList.remove('is-armed');
+      calendarEventDelete.textContent = calendarText('calendar.delete', 'Delete');
+
+      const titleKey = existing ? 'calendar.dialog.edit' : 'calendar.dialog.new';
+      calendarEventDialogTitle.dataset.i18n = titleKey;
+      calendarEventDialogTitle.textContent = calendarText(titleKey, existing ? 'Edit event' : 'New event');
+      updateCalendarTimeVisibility();
+
+      calendarEventDialog.hidden = false;
+      calendarEventDialog.setAttribute('aria-hidden', 'false');
+      document.body.classList.add('calendar-dialog-open');
+      setTimeout(() => calendarEventTitle?.focus(), 40);
+    }
+
+    function closeCalendarEventDialog() {
+      if (!calendarEventDialog) return;
+      calendarEventDialog.hidden = true;
+      calendarEventDialog.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('calendar-dialog-open');
+      calendarFormFeedback.textContent = '';
+      CalendarRuntime.deleteArmed = false;
+      clearTimeout(CalendarRuntime.deleteArmTimer);
+      calendarEventDelete?.classList.remove('is-armed');
+      const focusTarget = CalendarRuntime.lastFocusedElement;
+      CalendarRuntime.lastFocusedElement = null;
+      if (focusTarget?.isConnected) setTimeout(() => focusTarget.focus(), 0);
+    }
+
+    function calendarFormPayload() {
+      return normaliseCalendarEvent({
+        id: calendarEventId.value || undefined,
+        title: calendarEventTitle.value,
+        date: calendarEventDate.value,
+        category: calendarEventCategory.value,
+        allDay: calendarEventAllDay.checked,
+        startTime: calendarEventAllDay.checked ? '' : calendarEventStart.value,
+        endTime: calendarEventAllDay.checked ? '' : calendarEventEnd.value,
+        notes: calendarEventNotes.value,
+        createdAt: CalendarRuntime.events.find(event => event.id === calendarEventId.value)?.createdAt,
+        updatedAt: new Date().toISOString()
+      });
+    }
+
+    async function saveCalendarEvent(event) {
+      event?.preventDefault?.();
+      if (CalendarRuntime.saving) return;
+      const payload = calendarFormPayload();
+      if (!payload.title || !payload.date) {
+        calendarFormFeedback.textContent = calendarText('calendar.error.required', 'Add a title and date before saving.');
+        return;
+      }
+      if (!payload.allDay && payload.startTime && payload.endTime && payload.endTime <= payload.startTime) {
+        calendarFormFeedback.textContent = calendarText('calendar.error.time', 'The end time must be later than the start time.');
+        return;
+      }
+
+      CalendarRuntime.saving = true;
+      if (calendarEventSubmit) calendarEventSubmit.disabled = true;
+      if (calendarEventDelete) calendarEventDelete.disabled = true;
+      calendarFormFeedback.textContent = '';
+
+      try {
+        if (getInternalMode() === 'supabase') {
+          const existing = CalendarRuntime.events.some(item => item.id === payload.id);
+          const result = existing
+            ? await InternalData.calendar.update(payload.id, payload)
+            : await InternalData.calendar.create(payload);
+          if (!result?.ok) throw result?.error || new Error('calendar_save_failed');
+        } else {
+          const existingIndex = CalendarRuntime.events.findIndex(item => item.id === payload.id);
+          if (existingIndex >= 0) CalendarRuntime.events.splice(existingIndex, 1, payload);
+          else CalendarRuntime.events.push(payload);
+          saveLocalCalendarEvents();
+        }
+
+        const savedDate = calendarParseDateKey(payload.date);
+        CalendarRuntime.viewDate = new Date(savedDate.getFullYear(), savedDate.getMonth(), 1);
+        CalendarRuntime.loadedRange = '';
+        await loadSharedCalendarEvents({ force: true });
+        setCalendarStatus(calendarText('calendar.saved', 'Event saved'));
+        closeCalendarEventDialog();
+      } catch (error) {
+        calendarFormFeedback.textContent = calendarDataErrorMessage(error, 'save');
+      } finally {
+        CalendarRuntime.saving = false;
+        if (calendarEventSubmit) calendarEventSubmit.disabled = false;
+        if (calendarEventDelete) calendarEventDelete.disabled = false;
+      }
+    }
+
+    async function deleteCalendarEvent() {
+      const eventId = calendarEventId?.value || '';
+      if (!eventId || CalendarRuntime.saving) return;
+
+      if (!CalendarRuntime.deleteArmed) {
+        CalendarRuntime.deleteArmed = true;
+        calendarEventDelete.classList.add('is-armed');
+        calendarEventDelete.textContent = calendarText('calendar.deleteConfirm', 'Confirm delete');
+        calendarFormFeedback.textContent = calendarText('calendar.deletePrompt', 'Select delete again to remove this event.');
+        clearTimeout(CalendarRuntime.deleteArmTimer);
+        CalendarRuntime.deleteArmTimer = setTimeout(() => {
+          CalendarRuntime.deleteArmed = false;
+          calendarEventDelete.classList.remove('is-armed');
+          calendarEventDelete.textContent = calendarText('calendar.delete', 'Delete');
+          calendarFormFeedback.textContent = '';
+        }, 5000);
+        return;
+      }
+
+      CalendarRuntime.saving = true;
+      if (calendarEventSubmit) calendarEventSubmit.disabled = true;
+      if (calendarEventDelete) calendarEventDelete.disabled = true;
+      calendarFormFeedback.textContent = '';
+
+      try {
+        if (getInternalMode() === 'supabase') {
+          const result = await InternalData.calendar.remove(eventId);
+          if (!result?.ok) throw result?.error || new Error('calendar_delete_failed');
+        } else {
+          CalendarRuntime.events = CalendarRuntime.events.filter(event => event.id !== eventId);
+          saveLocalCalendarEvents();
+        }
+        CalendarRuntime.loadedRange = '';
+        await loadSharedCalendarEvents({ force: true });
+        setCalendarStatus(calendarText('calendar.deleted', 'Event deleted'));
+        closeCalendarEventDialog();
+      } catch (error) {
+        calendarFormFeedback.textContent = calendarDataErrorMessage(error, 'delete');
+      } finally {
+        CalendarRuntime.saving = false;
+        if (calendarEventSubmit) calendarEventSubmit.disabled = false;
+        if (calendarEventDelete) calendarEventDelete.disabled = false;
+      }
+    }
+
+    async function initCalendarModule({ force = false } = {}) {
+      if (!calendarWorkspace) return;
+      CalendarRuntime.initialized = true;
+      await loadSharedCalendarEvents({ force });
+    }
+
+    calendarPrevious?.addEventListener('click', async () => {
+      CalendarRuntime.viewDate = new Date(CalendarRuntime.viewDate.getFullYear(), CalendarRuntime.viewDate.getMonth() - 1, 1);
+      await loadSharedCalendarEvents();
+    });
+
+    calendarNext?.addEventListener('click', async () => {
+      CalendarRuntime.viewDate = new Date(CalendarRuntime.viewDate.getFullYear(), CalendarRuntime.viewDate.getMonth() + 1, 1);
+      await loadSharedCalendarEvents();
+    });
+
+    calendarToday?.addEventListener('click', async () => {
+      const today = new Date();
+      CalendarRuntime.viewDate = new Date(today.getFullYear(), today.getMonth(), 1);
+      await loadSharedCalendarEvents();
+    });
+
+    calendarAddEvent?.addEventListener('click', () => {
+      const today = new Date();
+      const sameMonth = today.getFullYear() === CalendarRuntime.viewDate.getFullYear() && today.getMonth() === CalendarRuntime.viewDate.getMonth();
+      const defaultDate = sameMonth ? today : CalendarRuntime.viewDate;
+      openCalendarEventDialog(calendarDateKey(defaultDate), '', calendarAddEvent);
+    });
+
+    calendarEventAllDay?.addEventListener('change', updateCalendarTimeVisibility);
+    calendarEventForm?.addEventListener('submit', saveCalendarEvent);
+    calendarEventDelete?.addEventListener('click', deleteCalendarEvent);
+    calendarCloseButtons.forEach(button => button.addEventListener('click', closeCalendarEventDialog));
+
+    function calendarDialogFocusableElements() {
+      if (!calendarEventDialog || calendarEventDialog.hidden) return [];
+      return Array.from(calendarEventDialog.querySelectorAll(
+        '.calendar-dialog-card button:not([disabled]), .calendar-dialog-card input:not([disabled]), .calendar-dialog-card select:not([disabled]), .calendar-dialog-card textarea:not([disabled])'
+      )).filter(element => element.offsetParent !== null);
+    }
+
+    document.addEventListener('keydown', event => {
+      if (!calendarEventDialog || calendarEventDialog.hidden) return;
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        closeCalendarEventDialog();
+        return;
+      }
+      if (event.key !== 'Tab') return;
+
+      const focusable = calendarDialogFocusableElements();
+      if (!focusable.length) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    });
+
+    window.addEventListener('resize', () => {
+      clearTimeout(CalendarRuntime.resizeTimer);
+      CalendarRuntime.resizeTimer = setTimeout(() => {
+        if (currentRoute === ROUTES.OPERATIONS_CALENDAR) renderCalendarModule();
+      }, 120);
+    }, { passive: true });
+
+
+    function releaseCalendarRealtime() {
+      releaseRealtimeChannel('calendarChannel', 'operations-calendar');
+      if (RealtimeRuntime.calendarRefreshTimer) {
+        clearTimeout(RealtimeRuntime.calendarRefreshTimer);
+        RealtimeRuntime.calendarRefreshTimer = null;
+      }
+    }
+
+    function scheduleCalendarRealtimeRefresh(reason = 'calendar-change') {
+      CalendarRuntime.loadedRange = '';
+      if (currentRoute !== ROUTES.OPERATIONS_CALENDAR || !isInternalUserSignedIn()) return;
+      clearTimeout(RealtimeRuntime.calendarRefreshTimer);
+      RealtimeRuntime.calendarRefreshTimer = setTimeout(() => {
+        RealtimeRuntime.calendarRefreshTimer = null;
+        initCalendarModule({ force: true });
+        dispatchRealtimeEvent('calendar-refresh', { reason, table: CALENDAR_DATA_CONFIG.table });
+      }, 320);
+    }
+
+    function prepareCalendarRealtimeHooks() {
+      if (RealtimeRuntime.calendarChannel) return;
+      if (getInternalMode() !== 'supabase' || !isInternalUserSignedIn()) return;
+
+      const client = createInternalSupabaseClient();
+      if (!client?.channel) return;
+
+      RealtimeRuntime.calendarChannel = client
+        .channel('moscatelli-operations-calendar')
+        .on('postgres_changes', {
+          event: '*',
+          schema: 'public',
+          table: CALENDAR_DATA_CONFIG.table
+        }, payload => {
+          scheduleCalendarRealtimeRefresh(`calendar-${String(payload.eventType || 'change').toLowerCase()}`);
+          dispatchRealtimeEvent('calendar-change', {
+            id: payload.new?.id || payload.old?.id || null,
+            table: CALENDAR_DATA_CONFIG.table
+          });
+        })
+        .subscribe(status => {
+          dispatchRealtimeEvent('calendar-status', { status, table: CALENDAR_DATA_CONFIG.table });
+        });
+    }
+
     function dispatchRealtimeEvent(type, detail = {}) {
       const safeDetail = publicEventDetail({
         mode: getInternalMode(),
@@ -10656,6 +12532,7 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
 
     function releaseAllRealtime() {
       releaseDashboardRealtime();
+      releaseCalendarRealtime();
       RealtimeRuntime.status = 'idle';
     }
 
@@ -12438,7 +14315,11 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
       clearDashboardPosts();
       FinanceRuntime.loaded = false;
       FinanceRuntime.entries = [];
+      CalendarRuntime.initialized = false;
+      CalendarRuntime.loadedRange = '';
+      CalendarRuntime.events = [];
       renderFinanceModule();
+      renderCalendarModule();
     }
 
     function loadVisibleInternalRuntimeViews({ force = false } = {}) {
@@ -12454,12 +14335,19 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
         mountFinanceWorkspace();
         loadFinanceEntries({ force });
       }
+
+      if (currentRoute === ROUTES.OPERATIONS_CALENDAR) {
+        prepareCalendarRealtimeHooks();
+        initCalendarModule({ force });
+      }
     }
 
     window.addEventListener('moscatelli:internal-user', event => {
       releaseAllRealtime();
       DashboardRuntime.loaded = false;
       FinanceRuntime.loaded = false;
+      CalendarRuntime.initialized = false;
+      CalendarRuntime.loadedRange = '';
       loadVisibleInternalRuntimeViews({ force: true });
     });
 
