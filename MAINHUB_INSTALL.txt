@@ -1,0 +1,21 @@
+MOSCATELLI MainHub — cumulative deployment checklist (Patch 21J)
+
+1. Deploy the contents of the clean deployment ZIP to the existing MainHub GitHub Pages repository.
+2. In Supabase SQL Editor, run only the migrations that have NOT already been applied, in numeric order:
+   34_patch18a_finance_entries.sql
+   35_patch20c_calendar_events.sql
+   36_patch21b_calendar_timezones.sql
+   37_patch21c_team_presence.sql
+   38_patch21d_projects_workstreams.sql
+   39_patch21f_product_development.sql
+   40_patch21g_suppliers_partners.sql
+   41_patch21h_decisions_activity.sql
+   42_patch21i_global_search.sql
+   43_patch21j_hardening.sql
+3. Refresh MainHub after the SQL schema cache has reloaded.
+4. Verify sign-in, Finance, Calendar, Projects, Product Development, Suppliers, The Record/Activity, and Global Search.
+
+Notes
+- Do not re-run migrations that you already know have been applied unless they are documented as idempotent.
+- Patch 43 should be run even if Patch 41 was previously applied; it hardens Decision numbering/integrity for existing installations.
+- The publishable Supabase key in index.html is intentionally a client-side anon/publishable key. RLS remains the security boundary; never place a service-role key in the site.
