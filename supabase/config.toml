@@ -1,0 +1,2 @@
+[functions.mainhub-slack]
+verify_jwt = false

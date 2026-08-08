@@ -9,9 +9,9 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="MOSCATELLI" />
   <title>Moscatelli</title>
-  <link rel="manifest" href="manifest.webmanifest?v=21j1" />
+  <link rel="manifest" href="manifest.webmanifest?v=22" />
   <link rel="icon" href="assets/brand/app-icon.svg" type="image/svg+xml" />
-  <link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png?v=21j1" />
+  <link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png?v=22" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@300;400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet" />
 
@@ -9642,6 +9642,69 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
       .mainhub-search-panel { padding-inline:15px; }
     }
 
+    /* Patch 22 — quiet Slack bridge status */
+    .slack-integration-trigger {
+      min-width: 0;
+      border: 0;
+      padding: 3px 0;
+      background: transparent;
+      color: rgba(242, 237, 228, 0.34);
+      font-family: "Cinzel", serif;
+      font-size: 6.5px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: color 180ms ease;
+    }
+    .slack-integration-trigger:hover,
+    .slack-integration-trigger:focus-visible,
+    .slack-integration-trigger.is-connected { color: rgba(232, 192, 122, 0.72); }
+    .slack-integration-panel {
+      position: fixed;
+      z-index: 220;
+      top: calc(var(--header-h) - 5px);
+      right: clamp(20px, 4vw, 58px);
+      width: min(340px, calc(100vw - 28px));
+      padding: 22px;
+      border: 1px solid rgba(232, 192, 122, 0.13);
+      background: linear-gradient(145deg, rgba(24, 15, 10, 0.985), rgba(8, 6, 4, 0.99));
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.52);
+      opacity: 0;
+      transform: translateY(-7px);
+      pointer-events: none;
+      visibility: hidden;
+      transition: opacity 180ms ease, transform 180ms ease, visibility 180ms;
+    }
+    .slack-integration-panel.is-open { opacity: 1; transform: translateY(0); pointer-events: auto; visibility: visible; }
+    .slack-integration-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 18px; padding-bottom: 15px; border-bottom: 1px solid rgba(242, 237, 228, 0.07); }
+    .slack-integration-kicker,
+    .slack-integration-mode,
+    .slack-integration-metric-label,
+    .slack-integration-test {
+      font-family: "Cinzel", serif;
+      font-weight: 300;
+      text-transform: uppercase;
+    }
+    .slack-integration-kicker { display: block; margin-bottom: 5px; color: rgba(232, 192, 122, 0.58); font-size: 6.5px; letter-spacing: 0.25em; }
+    .slack-integration-title { margin: 0; font-family: "Cormorant Garamond", serif; font-size: 22px; font-weight: 300; color: rgba(242, 237, 228, 0.86); }
+    .slack-integration-mode { padding-top: 5px; color: rgba(242, 237, 228, 0.3); font-size: 6px; letter-spacing: 0.18em; }
+    .slack-integration-state { margin: 16px 0; font-family: "Cormorant Garamond", serif; font-size: 14px; line-height: 1.45; color: rgba(242, 237, 228, 0.5); }
+    .slack-integration-state.is-error { color: rgba(214, 132, 94, 0.78); }
+    .slack-integration-metrics { display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid rgba(242, 237, 228, 0.065); }
+    .slack-integration-metric { min-width: 0; padding: 12px 9px; text-align: center; border-right: 1px solid rgba(242, 237, 228, 0.065); }
+    .slack-integration-metric:last-child { border-right: 0; }
+    .slack-integration-metric-value { display: block; margin-bottom: 4px; font-family: "Cormorant Garamond", serif; font-size: 19px; color: rgba(242, 237, 228, 0.76); }
+    .slack-integration-metric-label { display: block; overflow: hidden; color: rgba(242, 237, 228, 0.27); font-size: 5.5px; letter-spacing: 0.13em; text-overflow: ellipsis; }
+    .slack-integration-foot { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding-top: 16px; }
+    .slack-integration-last { font-family: "Cormorant Garamond", serif; font-size: 11px; font-style: italic; color: rgba(242, 237, 228, 0.27); }
+    .slack-integration-test { min-height: 34px; border: 1px solid rgba(184, 104, 48, 0.28); padding: 0 13px; background: rgba(184, 104, 48, 0.045); color: rgba(232, 192, 122, 0.7); font-size: 6px; letter-spacing: 0.18em; cursor: pointer; }
+    .slack-integration-test:disabled { opacity: 0.35; cursor: default; }
+    @media (max-width: 680px) {
+      .slack-integration-trigger { width: 18px; overflow: hidden; white-space: nowrap; font-size: 0; }
+      .slack-integration-trigger::after { content: "S"; font-size: 7px; }
+      .slack-integration-panel { top: calc(var(--header-h) - 1px); right: 10px; padding: 19px; }
+    }
+
 </style>
 </head>
 <body data-internal-mode="supabase" data-internal-auth="signed_out" data-internal-ready="false" data-internal-route="public" data-internal-feature="public">
@@ -9776,6 +9839,8 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
         <span class="team-presence-cluster" id="teamPresenceCluster" aria-hidden="true"></span>
       </button>
       <span class="internal-session-separator" aria-hidden="true"></span>
+      <button class="slack-integration-trigger" id="slackIntegrationTrigger" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="slackIntegrationPanel">Slack</button>
+      <span class="internal-session-separator" aria-hidden="true"></span>
       <button class="internal-sign-out i18n-text" id="internalSignOut" type="button" data-i18n="internal.signOut">Sign out</button>
     </span>
     <div class="team-presence-panel" id="teamPresencePanel" role="dialog" aria-modal="false" aria-hidden="true" aria-labelledby="teamPresenceTitle">
@@ -9784,6 +9849,25 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
         <span class="team-presence-caption i18n-text" data-i18n="presence.caption">MainHub presence</span>
       </div>
       <div class="team-presence-list" id="teamPresenceList"></div>
+    </div>
+    <div class="slack-integration-panel" id="slackIntegrationPanel" role="dialog" aria-modal="false" aria-hidden="true" aria-labelledby="slackIntegrationTitle">
+      <div class="slack-integration-heading">
+        <div>
+          <span class="slack-integration-kicker i18n-text" data-i18n="slack.kicker">Private bridge</span>
+          <h2 class="slack-integration-title i18n-text" id="slackIntegrationTitle" data-i18n="slack.title">Slack connection</h2>
+        </div>
+        <span class="slack-integration-mode" id="slackIntegrationMode">—</span>
+      </div>
+      <p class="slack-integration-state" id="slackIntegrationState" aria-live="polite">Connection status has not been checked.</p>
+      <div class="slack-integration-metrics" aria-label="Slack delivery status">
+        <span class="slack-integration-metric"><strong class="slack-integration-metric-value" id="slackConfiguredRoutes">—</strong><span class="slack-integration-metric-label i18n-text" data-i18n="slack.routes">Routes</span></span>
+        <span class="slack-integration-metric"><strong class="slack-integration-metric-value" id="slackPendingCount">—</strong><span class="slack-integration-metric-label i18n-text" data-i18n="slack.pending">Pending</span></span>
+        <span class="slack-integration-metric"><strong class="slack-integration-metric-value" id="slackFailedCount">—</strong><span class="slack-integration-metric-label i18n-text" data-i18n="slack.failed">Failed</span></span>
+      </div>
+      <div class="slack-integration-foot">
+        <span class="slack-integration-last" id="slackIntegrationLast">No deliveries yet</span>
+        <button class="slack-integration-test i18n-text" id="slackIntegrationTest" type="button" data-i18n="slack.test">Send test</button>
+      </div>
     </div>
     <button class="division-return i18n-text" id="divisionReturn" type="button" data-i18n="ui.return" aria-label="Return to divisions">Return</button>
   </header>
@@ -10894,6 +10978,15 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
     const teamPresenceCluster = document.getElementById('teamPresenceCluster');
     const teamPresencePanel = document.getElementById('teamPresencePanel');
     const teamPresenceList = document.getElementById('teamPresenceList');
+    const slackIntegrationTrigger = document.getElementById('slackIntegrationTrigger');
+    const slackIntegrationPanel = document.getElementById('slackIntegrationPanel');
+    const slackIntegrationMode = document.getElementById('slackIntegrationMode');
+    const slackIntegrationState = document.getElementById('slackIntegrationState');
+    const slackConfiguredRoutes = document.getElementById('slackConfiguredRoutes');
+    const slackPendingCount = document.getElementById('slackPendingCount');
+    const slackFailedCount = document.getElementById('slackFailedCount');
+    const slackIntegrationLast = document.getElementById('slackIntegrationLast');
+    const slackIntegrationTest = document.getElementById('slackIntegrationTest');
     const internalSignOut = document.getElementById('internalSignOut');
     const internalMockSignInButtons = document.querySelectorAll('[data-internal-mock-sign-in]');
     const internalAuthForms = document.querySelectorAll('[data-internal-auth-form]');
@@ -11237,6 +11330,15 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
       lastSeenAvailable: true,
       generation: 0,
       status: 'idle'
+    };
+
+    const SlackIntegrationRuntime = {
+      open: false,
+      loading: false,
+      sendingTest: false,
+      status: null,
+      error: null,
+      requestId: 0
     };
 
     const HomeOverviewRuntime = {
@@ -12835,6 +12937,24 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
         }
       };
 
+      const slack = {
+        async status() {
+          const client = activeSupabaseClient();
+          if (!client) return { ok: false, error: 'client_unavailable' };
+          const { data, error } = await client.rpc('get_slack_integration_status');
+          return error ? { ok: false, error } : { ok: true, status: data || {} };
+        },
+
+        async sendTest() {
+          const client = activeSupabaseClient();
+          if (!client) return { ok: false, error: 'client_unavailable' };
+          const { data, error } = await client.functions.invoke('mainhub-slack', {
+            body: { kind: 'client_test' }
+          });
+          return error ? { ok: false, error } : { ok: Boolean(data?.ok), result: data || {} };
+        }
+      };
+
       return Object.freeze({
         mode: () => getInternalMode(),
         store: mockStore,
@@ -12848,7 +12968,8 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
         productDevelopment,
         calendar,
         search,
-        attachments
+        attachments,
+        slack
       });
     })();
     const MainHubSearchRuntime = {
@@ -13283,6 +13404,12 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
         'presence.never': 'No recent activity',
         'presence.unavailable': 'Last seen unavailable',
         'presence.aria': 'Team presence',
+        'slack.kicker': 'Private bridge',
+        'slack.title': 'Slack connection',
+        'slack.routes': 'Routes',
+        'slack.pending': 'Pending',
+        'slack.failed': 'Failed',
+        'slack.test': 'Send test',
         'internal.status.signedOut': 'Authentication required',
         'internal.status.checking': 'Verifying access…',
         'internal.status.signedIn': 'Access granted',
@@ -13712,6 +13839,12 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
         'presence.never': 'Sem atividade recente',
         'presence.unavailable': 'Último acesso indisponível',
         'presence.aria': 'Presença da equipe',
+        'slack.kicker': 'Ponte privada',
+        'slack.title': 'Conexão Slack',
+        'slack.routes': 'Rotas',
+        'slack.pending': 'Pendentes',
+        'slack.failed': 'Falhas',
+        'slack.test': 'Enviar teste',
         'internal.status.signedOut': 'Autenticação necessária',
         'internal.status.checking': 'Verificando acesso…',
         'internal.status.signedIn': 'Acesso concedido',
@@ -14061,6 +14194,107 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
       else openTeamPresencePanel();
     }
 
+    function slackText(en, pt) {
+      return currentLang === 'pt' ? pt : en;
+    }
+
+    function renderSlackIntegration() {
+      if (!slackIntegrationPanel || !slackIntegrationTrigger) return;
+      const status = SlackIntegrationRuntime.status;
+      const routes = Array.isArray(status?.routes) ? status.routes : [];
+      const configuredRoutes = routes.filter(route => route?.enabled && route?.configured).length;
+      const enabled = Boolean(status?.enabled);
+      const environment = String(status?.environment || 'not configured');
+      slackIntegrationMode.textContent = environment;
+      slackConfiguredRoutes.textContent = status ? `${configuredRoutes}/${routes.filter(route => route?.enabled).length}` : '—';
+      slackPendingCount.textContent = status ? String(Number(status.pending || 0) + Number(status.digest_pending || 0)) : '—';
+      slackFailedCount.textContent = status ? String(status.failed || 0) : '—';
+      slackIntegrationState.classList.toggle('is-error', Boolean(SlackIntegrationRuntime.error));
+      slackIntegrationTrigger.classList.toggle('is-connected', enabled && configuredRoutes > 0);
+
+      if (SlackIntegrationRuntime.loading) {
+        slackIntegrationState.textContent = slackText('Checking the private connection…', 'Verificando a conexão privada…');
+      } else if (SlackIntegrationRuntime.sendingTest) {
+        slackIntegrationState.textContent = slackText('Sending a discreet test to the private channel…', 'Enviando um teste discreto ao canal privado…');
+      } else if (SlackIntegrationRuntime.error) {
+        slackIntegrationState.textContent = slackText('The Slack bridge is not available yet.', 'A ponte Slack ainda não está disponível.');
+      } else if (!status) {
+        slackIntegrationState.textContent = slackText('Connection status has not been checked.', 'O estado da conexão ainda não foi verificado.');
+      } else if (!enabled) {
+        slackIntegrationState.textContent = slackText('Configured safely, currently paused.', 'Configurada com segurança, atualmente pausada.');
+      } else if (environment === 'testing') {
+        slackIntegrationState.textContent = slackText('Testing mode. All notices stay in the private testing channel.', 'Modo de teste. Todos os avisos ficam no canal privado de testes.');
+      } else {
+        slackIntegrationState.textContent = slackText('Connected. Important updates are immediate; routine work is digested.', 'Conectado. Atualizações importantes são imediatas; o trabalho rotineiro é resumido.');
+      }
+
+      const lastSent = status?.last_sent_at || status?.last_digest_at;
+      slackIntegrationLast.textContent = lastSent
+        ? `${slackText('Last delivery', 'Último envio')} · ${new Intl.DateTimeFormat(currentLang === 'pt' ? 'pt-BR' : 'en-GB', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }).format(new Date(lastSent))}`
+        : slackText('No deliveries yet', 'Nenhum envio ainda');
+      const founder = getCurrentInternalUser()?.role === 'founder';
+      slackIntegrationTest.hidden = !founder;
+      slackIntegrationTest.disabled = !enabled || SlackIntegrationRuntime.loading || SlackIntegrationRuntime.sendingTest;
+    }
+
+    async function refreshSlackIntegration() {
+      if (!isInternalUserSignedIn()) return;
+      const requestId = ++SlackIntegrationRuntime.requestId;
+      SlackIntegrationRuntime.loading = true;
+      SlackIntegrationRuntime.error = null;
+      renderSlackIntegration();
+      try {
+        const result = await InternalData.slack.status();
+        if (requestId !== SlackIntegrationRuntime.requestId) return;
+        if (!result.ok) throw result.error || new Error('slack_status_unavailable');
+        SlackIntegrationRuntime.status = result.status;
+      } catch (error) {
+        if (requestId !== SlackIntegrationRuntime.requestId) return;
+        SlackIntegrationRuntime.error = error;
+      } finally {
+        if (requestId === SlackIntegrationRuntime.requestId) {
+          SlackIntegrationRuntime.loading = false;
+          renderSlackIntegration();
+        }
+      }
+    }
+
+    function openSlackIntegrationPanel() {
+      if (!isInternalUserSignedIn()) return;
+      closeTeamPresencePanel();
+      SlackIntegrationRuntime.open = true;
+      slackIntegrationPanel.classList.add('is-open');
+      slackIntegrationPanel.setAttribute('aria-hidden', 'false');
+      slackIntegrationTrigger.setAttribute('aria-expanded', 'true');
+      refreshSlackIntegration();
+    }
+
+    function closeSlackIntegrationPanel() {
+      if (!slackIntegrationPanel || !slackIntegrationTrigger) return;
+      SlackIntegrationRuntime.open = false;
+      slackIntegrationPanel.classList.remove('is-open');
+      slackIntegrationPanel.setAttribute('aria-hidden', 'true');
+      slackIntegrationTrigger.setAttribute('aria-expanded', 'false');
+    }
+
+    async function sendSlackIntegrationTest() {
+      if (SlackIntegrationRuntime.sendingTest || getCurrentInternalUser()?.role !== 'founder') return;
+      SlackIntegrationRuntime.sendingTest = true;
+      SlackIntegrationRuntime.error = null;
+      renderSlackIntegration();
+      try {
+        const result = await InternalData.slack.sendTest();
+        if (!result.ok) throw result.error || new Error('slack_test_failed');
+        slackIntegrationState.textContent = slackText('Test delivered to the private testing channel.', 'Teste enviado ao canal privado de testes.');
+        await refreshSlackIntegration();
+      } catch (error) {
+        SlackIntegrationRuntime.error = error;
+      } finally {
+        SlackIntegrationRuntime.sendingTest = false;
+        renderSlackIntegration();
+      }
+    }
+
     async function refreshTeamPresenceRoster() {
       const user = getCurrentInternalUser();
       const client = createInternalSupabaseClient();
@@ -14302,6 +14536,9 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
         queueMicrotask(() => startTeamPresence());
       } else {
         stopTeamPresence();
+        closeSlackIntegrationPanel();
+        SlackIntegrationRuntime.status = null;
+        SlackIntegrationRuntime.error = null;
         resetHomeOverview();
       }
 
@@ -14321,6 +14558,9 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
 
     function clearInternalUser() {
       stopTeamPresence();
+      closeSlackIntegrationPanel();
+      SlackIntegrationRuntime.status = null;
+      SlackIntegrationRuntime.error = null;
       resetHomeOverview();
       InternalState.user = null;
       InternalState.session = null;
@@ -14482,7 +14722,7 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
     }
 
     window.MoscatelliInternal = Object.freeze({
-      getBuild: () => 'patch21j1-hardening',
+      getBuild: () => 'patch22-slack-bridge',
       getMode: getInternalMode,
       isSignedIn: isInternalUserSignedIn,
       getCurrentUser: () => {
@@ -14496,7 +14736,7 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
         mode: getInternalMode(),
         signedIn: isInternalUserSignedIn(),
         realtimeStatus: RealtimeRuntime.status,
-        build: 'patch21j1-hardening'
+        build: 'patch22-slack-bridge'
       }),
       isInternalRoute,
       featureForRoute: internalFeatureForRoute
@@ -15965,6 +16205,7 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
         renderProductProjectOptions(productProject?.value || '');
         renderProductSupplierOptions(productSupplierLink?.value || '');
         renderTeamPresence();
+        renderSlackIntegration();
         renderHomeOverview();
         refreshDashboardLanguage();
         mainhubSearchTrigger?.setAttribute('aria-label', mainhubSearchText('search.aria','Search MainHub'));
@@ -16028,13 +16269,25 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
       toggleTeamPresencePanel();
     });
     teamPresencePanel?.addEventListener('click', event => event.stopPropagation());
+    slackIntegrationTrigger?.addEventListener('click', event => {
+      event.stopPropagation();
+      if (SlackIntegrationRuntime.open) closeSlackIntegrationPanel();
+      else openSlackIntegrationPanel();
+    });
+    slackIntegrationPanel?.addEventListener('click', event => event.stopPropagation());
+    slackIntegrationTest?.addEventListener('click', sendSlackIntegrationTest);
     document.addEventListener('click', () => {
       if (TeamPresenceRuntime.open) closeTeamPresencePanel();
+      if (SlackIntegrationRuntime.open) closeSlackIntegrationPanel();
     });
     document.addEventListener('keydown', event => {
       if (event.key === 'Escape' && TeamPresenceRuntime.open) {
         closeTeamPresencePanel();
         teamPresenceTrigger?.focus();
+      }
+      if (event.key === 'Escape' && SlackIntegrationRuntime.open) {
+        closeSlackIntegrationPanel();
+        slackIntegrationTrigger?.focus();
       }
     });
 

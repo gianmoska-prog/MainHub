@@ -1,13 +1,13 @@
-const CACHE_NAME = 'moscatelli-shell-21j1-hardening';
+const CACHE_NAME = 'moscatelli-shell-22-slack-bridge';
 const SHELL_ASSETS = [
   './',
   './index.html',
-  './manifest.webmanifest?v=21j1',
+  './manifest.webmanifest?v=22',
   './assets/brand/app-icon.svg',
-  './assets/brand/app-icon-192.png?v=21j1',
-  './assets/brand/app-icon-512.png?v=21j1',
-  './assets/brand/app-icon-maskable-512.png?v=21j1',
-  './assets/brand/apple-touch-icon.png?v=21j1',
+  './assets/brand/app-icon-192.png?v=22',
+  './assets/brand/app-icon-512.png?v=22',
+  './assets/brand/app-icon-maskable-512.png?v=22',
+  './assets/brand/apple-touch-icon.png?v=22',
   './assets/brand/moscatelli-roma-wordmark.png'
 ];
 
