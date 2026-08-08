@@ -1,0 +1,31 @@
+display_information:
+  name: MOSCATELLI MainHub
+  description: Private two-way bridge between MOSCATELLI MainHub and Slack.
+  background_color: "#120b07"
+features:
+  bot_user:
+    display_name: MOSCATELLI MainHub
+    always_online: false
+  slash_commands:
+    - command: /mainhub
+      url: https://htxzyqjynthuxrhnfcrj.supabase.co/functions/v1/mainhub-slack
+      description: Create a MainHub Record entry or calendar event.
+      usage_hint: record | calendar
+      should_escape: false
+oauth_config:
+  scopes:
+    bot:
+      - channels:read
+      - chat:write
+      - commands
+      - files:write
+      - groups:read
+      - users:read
+      - users:read.email
+settings:
+  interactivity:
+    is_enabled: true
+    request_url: https://htxzyqjynthuxrhnfcrj.supabase.co/functions/v1/mainhub-slack
+  org_deploy_enabled: false
+  socket_mode_enabled: false
+  token_rotation_enabled: false
