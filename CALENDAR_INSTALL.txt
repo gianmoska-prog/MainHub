@@ -1,7 +1,10 @@
-MOSCATELLI Operations Calendar — installation
+MOSCATELLI Operations Calendar
 
-1. Deploy this folder to the existing MainHub GitHub Pages repository.
-2. In Supabase SQL Editor, run supabase_setup/35_patch20c_calendar_events.sql once.
-3. Refresh MainHub and open Divisions > Operations > Calendar.
+Calendar installation is now part of the cumulative MainHub deployment sequence.
+See MAINHUB_INSTALL.txt and apply the pending Supabase migrations in numeric order.
 
-The migration creates the shared table, RLS policies, ownership-preserving update trigger, indexes, and Realtime publication entry.
+Calendar-specific migrations are:
+35_patch20c_calendar_events.sql
+36_patch21b_calendar_timezones.sql
+37_patch21c_team_presence.sql (team presence, shared header infrastructure)
+38_patch21d_projects_workstreams.sql (optional Calendar -> Project links)

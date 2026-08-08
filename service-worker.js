@@ -1,13 +1,13 @@
-const CACHE_NAME = 'moscatelli-shell-20d-calendar-hardening';
+const CACHE_NAME = 'moscatelli-shell-21j1-hardening';
 const SHELL_ASSETS = [
   './',
   './index.html',
-  './manifest.webmanifest?v=20a',
+  './manifest.webmanifest?v=21j1',
   './assets/brand/app-icon.svg',
-  './assets/brand/app-icon-192.png?v=20a',
-  './assets/brand/app-icon-512.png?v=20a',
-  './assets/brand/app-icon-maskable-512.png?v=20a',
-  './assets/brand/apple-touch-icon.png?v=20a',
+  './assets/brand/app-icon-192.png?v=21j1',
+  './assets/brand/app-icon-512.png?v=21j1',
+  './assets/brand/app-icon-maskable-512.png?v=21j1',
+  './assets/brand/apple-touch-icon.png?v=21j1',
   './assets/brand/moscatelli-roma-wordmark.png'
 ];
 
