@@ -9,9 +9,9 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="MOSCATELLI" />
   <title>Moscatelli</title>
-  <link rel="manifest" href="manifest.webmanifest?v=23" />
+  <link rel="manifest" href="manifest.webmanifest?v=24" />
   <link rel="icon" href="assets/brand/app-icon.svg" type="image/svg+xml" />
-  <link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png?v=23" />
+  <link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png?v=24" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@300;400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet" />
 
@@ -9725,21 +9725,33 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
       }
       .hamburger span { width: 19px; }
       .logo-mark { width: min(39vw, 154px); }
+      .internal-session-line,
       body.internal-unlocked .internal-session-line,
       body.internal-unlocked[data-route^="divisions"] .internal-session-line {
         right: 8px;
-        width: 132px;
-        max-width: 132px;
+        width: 82px;
+        max-width: 82px;
+        min-width: 0;
+        box-sizing: border-box;
         min-height: 38px;
-        padding: 0 5px;
-        gap: 4px;
+        padding: 0 8px;
+        gap: 0;
         overflow: visible;
         background: rgba(8, 5, 3, 0.28);
         border-color: rgba(242, 237, 228, 0.08);
       }
+      .internal-session-context,
+      .internal-session-user,
+      .internal-session-line > .internal-session-separator,
+      .mainhub-search-trigger,
+      .team-presence-trigger,
+      .slack-integration-trigger {
+        display: none !important;
+      }
       .mainhub-search-trigger,
       .team-presence-trigger,
       .slack-integration-trigger,
+      .internal-sign-out,
       body.internal-unlocked .internal-sign-out,
       body.internal-unlocked[data-route^="divisions"] .internal-sign-out {
         flex: 0 0 28px;
@@ -9758,15 +9770,18 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
       .slack-integration-trigger::after { content: "S"; font-size: 8px; }
       body.internal-unlocked .internal-sign-out,
       body.internal-unlocked[data-route^="divisions"] .internal-sign-out {
-        overflow: hidden;
-        font-size: 0;
+        width: 100%;
+        flex-basis: 100%;
+        overflow: visible;
+        font-size: 6.5px;
+        letter-spacing: 0.14em;
       }
+      .internal-sign-out::after,
       body.internal-unlocked .internal-sign-out::after,
       body.internal-unlocked[data-route^="divisions"] .internal-sign-out::after {
-        content: "OUT";
-        font-size: 6.5px;
-        letter-spacing: 0.1em;
+        content: none;
       }
+      body[data-route="home"] .hero-logo-bg.visible { opacity: 0.12; }
       .division-return {
         left: 58px;
         right: auto !important;
@@ -15100,7 +15115,7 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
     }
 
     window.MoscatelliInternal = Object.freeze({
-      getBuild: () => 'patch23-mobile-readability',
+      getBuild: () => 'patch24-mobile-header-focus',
       getMode: getInternalMode,
       isSignedIn: isInternalUserSignedIn,
       getCurrentUser: () => {
@@ -15114,7 +15129,7 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
         mode: getInternalMode(),
         signedIn: isInternalUserSignedIn(),
         realtimeStatus: RealtimeRuntime.status,
-        build: 'patch23-mobile-readability'
+        build: 'patch24-mobile-header-focus'
       }),
       isInternalRoute,
       featureForRoute: internalFeatureForRoute
