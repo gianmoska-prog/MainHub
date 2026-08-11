@@ -1,13 +1,13 @@
-const CACHE_NAME = 'moscatelli-shell-24-mobile-header-focus';
+const CACHE_NAME = 'moscatelli-shell-25-viewport-scale-resilience';
 const SHELL_ASSETS = [
   './',
   './index.html',
-  './manifest.webmanifest?v=24',
+  './manifest.webmanifest?v=25',
   './assets/brand/app-icon.svg',
-  './assets/brand/app-icon-192.png?v=24',
-  './assets/brand/app-icon-512.png?v=24',
-  './assets/brand/app-icon-maskable-512.png?v=24',
-  './assets/brand/apple-touch-icon.png?v=24',
+  './assets/brand/app-icon-192.png?v=25',
+  './assets/brand/app-icon-512.png?v=25',
+  './assets/brand/app-icon-maskable-512.png?v=25',
+  './assets/brand/apple-touch-icon.png?v=25',
   './assets/brand/moscatelli-roma-wordmark.png'
 ];
 
