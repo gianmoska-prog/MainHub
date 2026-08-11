@@ -1,13 +1,13 @@
-const CACHE_NAME = 'moscatelli-shell-25-viewport-scale-resilience';
+const CACHE_NAME = 'moscatelli-shell-26-training-finance-category';
 const SHELL_ASSETS = [
   './',
   './index.html',
-  './manifest.webmanifest?v=25',
+  './manifest.webmanifest?v=26',
   './assets/brand/app-icon.svg',
-  './assets/brand/app-icon-192.png?v=25',
-  './assets/brand/app-icon-512.png?v=25',
-  './assets/brand/app-icon-maskable-512.png?v=25',
-  './assets/brand/apple-touch-icon.png?v=25',
+  './assets/brand/app-icon-192.png?v=26',
+  './assets/brand/app-icon-512.png?v=26',
+  './assets/brand/app-icon-maskable-512.png?v=26',
+  './assets/brand/apple-touch-icon.png?v=26',
   './assets/brand/moscatelli-roma-wordmark.png'
 ];
 
