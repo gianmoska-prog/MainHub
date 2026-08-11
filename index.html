@@ -9,9 +9,9 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="MOSCATELLI" />
   <title>Moscatelli</title>
-  <link rel="manifest" href="manifest.webmanifest?v=24" />
+  <link rel="manifest" href="manifest.webmanifest?v=25" />
   <link rel="icon" href="assets/brand/app-icon.svg" type="image/svg+xml" />
-  <link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png?v=24" />
+  <link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png?v=25" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@300;400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet" />
 
@@ -10098,6 +10098,107 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
       .suppliers-filter-option { scroll-snap-align: start; }
     }
 
+    /* Patch 25 — viewport-scale resilience for workspace dialogs */
+    body.calendar-dialog-open main,
+    body.project-dialog-open main,
+    body.product-dialog-open main,
+    body.supplier-dialog-open main,
+    body.record-lightbox-open main,
+    body.is-delete-confirming main {
+      z-index: 600;
+      overflow: visible;
+    }
+
+    body.calendar-dialog-open .route-operations-calendar,
+    body.project-dialog-open .route-operations-projects,
+    body.product-dialog-open .route-operations-products,
+    body.supplier-dialog-open .route-operations-suppliers,
+    body.record-lightbox-open .route-dashboard,
+    body.is-delete-confirming .route-dashboard {
+      contain: none;
+      transform: none;
+      overflow: visible;
+    }
+
+    .calendar-event-dialog,
+    .project-dialog,
+    .product-dialog,
+    .product-lot-dialog,
+    .supplier-dialog,
+    .record-lightbox,
+    .dashboard-delete-dialog {
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      padding: clamp(12px, 3vh, 24px);
+    }
+
+    .calendar-dialog-card,
+    .project-dialog-card,
+    .product-dialog-card,
+    .supplier-dialog-card,
+    .record-lightbox-panel,
+    .dashboard-delete-card {
+      max-height: calc(100dvh - clamp(24px, 6vh, 48px));
+      overscroll-behavior: contain;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(232, 192, 122, 0.26) transparent;
+    }
+
+    .calendar-dialog-card::-webkit-scrollbar,
+    .project-dialog-card::-webkit-scrollbar,
+    .product-dialog-card::-webkit-scrollbar,
+    .supplier-dialog-card::-webkit-scrollbar {
+      width: 7px;
+    }
+
+    .calendar-dialog-card::-webkit-scrollbar-thumb,
+    .project-dialog-card::-webkit-scrollbar-thumb,
+    .product-dialog-card::-webkit-scrollbar-thumb,
+    .supplier-dialog-card::-webkit-scrollbar-thumb {
+      border: 2px solid transparent;
+      background: rgba(232, 192, 122, 0.26);
+      background-clip: padding-box;
+    }
+
+    @media (max-height: 760px) and (min-width: 641px) {
+      .calendar-dialog-card {
+        width: min(100%, 640px);
+        padding: clamp(20px, 3vh, 26px) clamp(24px, 3vw, 34px);
+      }
+
+      .calendar-dialog-kicker { margin-bottom: 7px; }
+      .calendar-dialog-title {
+        margin-bottom: 16px;
+        font-size: clamp(22px, 3.2vh, 28px);
+      }
+      .calendar-event-form { gap: 11px; }
+      .calendar-form-field { gap: 6px; }
+      .calendar-event-form input,
+      .calendar-event-form select { min-height: 40px; }
+      .calendar-event-form textarea { min-height: 66px; }
+      .calendar-all-day { min-height: 32px; }
+      .calendar-form-feedback { min-height: 14px; }
+      .calendar-dialog-actions,
+      .project-dialog-actions,
+      .product-dialog-actions,
+      .supplier-dialog-actions {
+        position: sticky;
+        bottom: 0;
+        z-index: 3;
+        margin-top: 2px;
+        padding: 10px 0 2px;
+        background: linear-gradient(180deg, rgba(13, 8, 5, 0), rgba(13, 8, 5, 0.98) 32%);
+      }
+      .calendar-dialog-actions button { min-height: 38px; }
+
+      .project-dialog-card,
+      .product-dialog-card,
+      .supplier-dialog-card,
+      .dashboard-delete-card {
+        padding-block: clamp(20px, 3vh, 28px);
+      }
+    }
+
 </style>
 </head>
 <body data-internal-mode="supabase" data-internal-auth="signed_out" data-internal-ready="false" data-internal-route="public" data-internal-feature="public">
@@ -15115,7 +15216,7 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
     }
 
     window.MoscatelliInternal = Object.freeze({
-      getBuild: () => 'patch24-mobile-header-focus',
+      getBuild: () => 'patch25-viewport-scale-resilience',
       getMode: getInternalMode,
       isSignedIn: isInternalUserSignedIn,
       getCurrentUser: () => {
@@ -15129,7 +15230,7 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
         mode: getInternalMode(),
         signedIn: isInternalUserSignedIn(),
         realtimeStatus: RealtimeRuntime.status,
-        build: 'patch24-mobile-header-focus'
+        build: 'patch25-viewport-scale-resilience'
       }),
       isInternalRoute,
       featureForRoute: internalFeatureForRoute
