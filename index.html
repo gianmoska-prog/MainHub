@@ -9,9 +9,9 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="MOSCATELLI" />
   <title>Moscatelli</title>
-  <link rel="manifest" href="manifest.webmanifest?v=25" />
+  <link rel="manifest" href="manifest.webmanifest?v=26" />
   <link rel="icon" href="assets/brand/app-icon.svg" type="image/svg+xml" />
-  <link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png?v=25" />
+  <link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png?v=26" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@300;400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet" />
 
@@ -10864,6 +10864,7 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
                 <option value="Photography/Video" class="i18n-text" data-i18n="finance.cat.photography">Photography/Video</option>
                 <option value="Legal" class="i18n-text" data-i18n="finance.cat.legal">Legal</option>
                 <option value="Marketing" class="i18n-text" data-i18n="finance.cat.marketing">Marketing</option>
+                <option value="Training" class="i18n-text" data-i18n="finance.cat.training">Training</option>
                 <option value="Contingency" class="i18n-text" data-i18n="finance.cat.contingency">Contingency</option>
                 <option value="Founder Contribution" class="i18n-text" data-i18n="finance.cat.founder">Founder Contribution</option>
               </select>
@@ -11646,6 +11647,7 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
         'Photography/Video',
         'Legal',
         'Marketing',
+        'Training',
         'Contingency',
         'Founder Contribution'
       ]),
@@ -13835,6 +13837,7 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
         'finance.cat.photography': 'Photography/Video',
         'finance.cat.legal': 'Legal',
         'finance.cat.marketing': 'Marketing',
+        'finance.cat.training': 'Training',
         'finance.cat.contingency': 'Contingency',
         'finance.cat.founder': 'Founder Contribution',
         'finance.status.estimate': 'Estimate',
@@ -14270,6 +14273,7 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
         'finance.cat.photography': 'Fotografia/Vídeo',
         'finance.cat.legal': 'Legal',
         'finance.cat.marketing': 'Marketing',
+        'finance.cat.training': 'Formação',
         'finance.cat.contingency': 'Contingência',
         'finance.cat.founder': 'Contribuição do Fundador',
         'finance.status.estimate': 'Estimativa',
@@ -15216,7 +15220,7 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
     }
 
     window.MoscatelliInternal = Object.freeze({
-      getBuild: () => 'patch25-viewport-scale-resilience',
+      getBuild: () => 'patch26-training-finance-category',
       getMode: getInternalMode,
       isSignedIn: isInternalUserSignedIn,
       getCurrentUser: () => {
@@ -15230,7 +15234,7 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
         mode: getInternalMode(),
         signedIn: isInternalUserSignedIn(),
         realtimeStatus: RealtimeRuntime.status,
-        build: 'patch25-viewport-scale-resilience'
+        build: 'patch26-training-finance-category'
       }),
       isInternalRoute,
       featureForRoute: internalFeatureForRoute
@@ -18390,6 +18394,7 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
         'Photography/Video': 'finance.cat.photography',
         'Legal': 'finance.cat.legal',
         'Marketing': 'finance.cat.marketing',
+        'Training': 'finance.cat.training',
         'Contingency': 'finance.cat.contingency',
         'Founder Contribution': 'finance.cat.founder'
       };
