@@ -9,9 +9,9 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="MOSCATELLI" />
   <title>Moscatelli</title>
-  <link rel="manifest" href="manifest.webmanifest?v=27" />
+  <link rel="manifest" href="manifest.webmanifest?v=28" />
   <link rel="icon" href="assets/brand/app-icon.svg" type="image/svg+xml" />
-  <link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png?v=27" />
+  <link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png?v=28" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@300;400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet" />
 
@@ -10317,6 +10317,68 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
       }
     }
 
+    /* Patch 28 — simplify the desktop session plaque. The presence detail stays
+       available inside its panel, while the header presents only clear actions. */
+    .team-presence-label {
+      display: none;
+      font-family: "Cinzel", serif;
+      font-size: 7px;
+      font-weight: 300;
+      line-height: 1;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(242, 237, 228, 0.34);
+      transition: color 180ms ease;
+    }
+
+    @media (min-width: 821px) {
+      :root {
+        --session-plaque-w: 268px;
+        --session-plaque-gap: 18px;
+      }
+
+      body.internal-unlocked .internal-session-line,
+      body.internal-unlocked[data-route^="divisions"] .internal-session-line {
+        width: var(--session-plaque-w);
+        max-width: var(--session-plaque-w);
+        gap: 9px;
+        padding-inline: 13px;
+        justify-content: space-between;
+        overflow: visible;
+      }
+
+      body.internal-unlocked .internal-session-context,
+      body.internal-unlocked .internal-session-user,
+      body.internal-unlocked[data-route^="divisions"] .internal-session-context,
+      body.internal-unlocked[data-route^="divisions"] .internal-session-user,
+      .internal-session-line > .internal-session-separator:nth-child(3) {
+        display: none !important;
+      }
+
+      .team-presence-label {
+        display: inline;
+      }
+
+      .team-presence-cluster {
+        display: none;
+      }
+
+      .team-presence-trigger:hover .team-presence-label,
+      .team-presence-trigger:focus-visible .team-presence-label {
+        color: rgba(232, 192, 122, 0.72);
+      }
+
+      .mainhub-search-trigger,
+      .team-presence-trigger,
+      .slack-integration-trigger,
+      .internal-sign-out {
+        flex: 0 0 auto;
+        padding-inline: 3px;
+        font-size: 7px;
+        letter-spacing: 0.16em;
+      }
+    }
+
 </style>
 </head>
 <body data-internal-mode="supabase" data-internal-auth="signed_out" data-internal-ready="false" data-internal-route="public" data-internal-feature="public">
@@ -10448,6 +10510,7 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
       </button>
       <span class="internal-session-separator" aria-hidden="true"></span>
       <button class="team-presence-trigger" id="teamPresenceTrigger" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="teamPresencePanel">
+        <span class="team-presence-label i18n-text" data-i18n="presence.title">Team</span>
         <span class="team-presence-cluster" id="teamPresenceCluster" aria-hidden="true"></span>
       </button>
       <span class="internal-session-separator" aria-hidden="true"></span>
@@ -15338,7 +15401,7 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
     }
 
     window.MoscatelliInternal = Object.freeze({
-      getBuild: () => 'patch27-full-responsive-audit',
+      getBuild: () => 'patch28-simplified-desktop-header',
       getMode: getInternalMode,
       isSignedIn: isInternalUserSignedIn,
       getCurrentUser: () => {
@@ -15352,7 +15415,7 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
         mode: getInternalMode(),
         signedIn: isInternalUserSignedIn(),
         realtimeStatus: RealtimeRuntime.status,
-        build: 'patch27-full-responsive-audit'
+        build: 'patch28-simplified-desktop-header'
       }),
       isInternalRoute,
       featureForRoute: internalFeatureForRoute

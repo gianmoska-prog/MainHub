@@ -1,13 +1,13 @@
-const CACHE_NAME = 'moscatelli-shell-27-full-responsive-audit';
+const CACHE_NAME = 'moscatelli-shell-28-simplified-desktop-header';
 const SHELL_ASSETS = [
   './',
   './index.html',
-  './manifest.webmanifest?v=27',
+  './manifest.webmanifest?v=28',
   './assets/brand/app-icon.svg',
-  './assets/brand/app-icon-192.png?v=27',
-  './assets/brand/app-icon-512.png?v=27',
-  './assets/brand/app-icon-maskable-512.png?v=27',
-  './assets/brand/apple-touch-icon.png?v=27',
+  './assets/brand/app-icon-192.png?v=28',
+  './assets/brand/app-icon-512.png?v=28',
+  './assets/brand/app-icon-maskable-512.png?v=28',
+  './assets/brand/apple-touch-icon.png?v=28',
   './assets/brand/moscatelli-roma-wordmark.png'
 ];
 
