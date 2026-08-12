@@ -9,9 +9,9 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="MOSCATELLI" />
   <title>Moscatelli</title>
-  <link rel="manifest" href="manifest.webmanifest?v=26" />
+  <link rel="manifest" href="manifest.webmanifest?v=27" />
   <link rel="icon" href="assets/brand/app-icon.svg" type="image/svg+xml" />
-  <link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png?v=26" />
+  <link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png?v=27" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@300;400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet" />
 
@@ -10199,6 +10199,124 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
       }
     }
 
+    /* Patch 27 — full responsive audit: reliable targets, quiet scrolling,
+       and editors that remain comfortably usable at every viewport scale. */
+    .home-overview-toggle {
+      min-height: 44px;
+    }
+
+    .home-overview-route,
+    .dashboard-mode-option,
+    .mainhub-search-close {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .home-overview-route {
+      min-height: 32px;
+      padding-inline: 6px;
+    }
+
+    .dashboard-mode-option {
+      min-height: 36px;
+      padding-inline: 8px;
+    }
+
+    .mainhub-search-close {
+      min-width: 40px;
+      min-height: 32px;
+      padding-inline: 8px;
+    }
+
+    @media (min-width: 821px) {
+      .mainhub-search-trigger,
+      .team-presence-trigger,
+      .slack-integration-trigger,
+      .internal-sign-out {
+        min-height: 32px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+
+    .route-dashboard,
+    .route-division-finance,
+    .route-division-operations,
+    .route-operations-calendar,
+    .route-operations-projects,
+    .route-operations-products,
+    .route-operations-suppliers {
+      scrollbar-width: thin;
+      scrollbar-color: rgba(232, 192, 122, 0.24) transparent;
+    }
+
+    .route-dashboard::-webkit-scrollbar,
+    .route-division-finance::-webkit-scrollbar,
+    .route-division-operations::-webkit-scrollbar,
+    .route-operations-calendar::-webkit-scrollbar,
+    .route-operations-projects::-webkit-scrollbar,
+    .route-operations-products::-webkit-scrollbar,
+    .route-operations-suppliers::-webkit-scrollbar {
+      width: 7px;
+    }
+
+    .route-dashboard::-webkit-scrollbar-thumb,
+    .route-division-finance::-webkit-scrollbar-thumb,
+    .route-division-operations::-webkit-scrollbar-thumb,
+    .route-operations-calendar::-webkit-scrollbar-thumb,
+    .route-operations-projects::-webkit-scrollbar-thumb,
+    .route-operations-products::-webkit-scrollbar-thumb,
+    .route-operations-suppliers::-webkit-scrollbar-thumb {
+      border: 2px solid transparent;
+      background: rgba(232, 192, 122, 0.24);
+      background-clip: padding-box;
+    }
+
+    @media (max-width: 820px) {
+      .home-overview-route,
+      .dashboard-mode-option,
+      .mainhub-search-close {
+        min-height: 44px;
+      }
+
+      .calendar-dialog-card,
+      .project-dialog-card,
+      .product-dialog-card,
+      .supplier-dialog-card {
+        width: min(100%, calc(100vw - 24px)) !important;
+        box-sizing: border-box;
+      }
+
+      .calendar-dialog-actions,
+      .project-dialog-actions,
+      .product-dialog-actions,
+      .supplier-dialog-actions {
+        position: sticky;
+        bottom: 0;
+        z-index: 4;
+        margin-top: 4px;
+        padding: 12px 0 2px;
+        background: linear-gradient(180deg, rgba(13, 8, 5, 0), rgba(13, 8, 5, 0.98) 34%);
+      }
+    }
+
+    @media (max-width: 420px) {
+      .suppliers-filter {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        overflow: visible;
+        scroll-snap-type: none;
+      }
+
+      .suppliers-filter-option {
+        min-width: 0;
+        padding-inline: 4px;
+        scroll-snap-align: none;
+      }
+    }
+
 </style>
 </head>
 <body data-internal-mode="supabase" data-internal-auth="signed_out" data-internal-ready="false" data-internal-route="public" data-internal-feature="public">
@@ -15220,7 +15338,7 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
     }
 
     window.MoscatelliInternal = Object.freeze({
-      getBuild: () => 'patch26-training-finance-category',
+      getBuild: () => 'patch27-full-responsive-audit',
       getMode: getInternalMode,
       isSignedIn: isInternalUserSignedIn,
       getCurrentUser: () => {
@@ -15234,7 +15352,7 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
         mode: getInternalMode(),
         signedIn: isInternalUserSignedIn(),
         realtimeStatus: RealtimeRuntime.status,
-        build: 'patch26-training-finance-category'
+        build: 'patch27-full-responsive-audit'
       }),
       isInternalRoute,
       featureForRoute: internalFeatureForRoute
