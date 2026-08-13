@@ -7,6 +7,7 @@ const SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') || ''
 const SLACK_BOT_TOKEN = Deno.env.get('SLACK_BOT_TOKEN') || ''
 const SLACK_SIGNING_SECRET = Deno.env.get('SLACK_SIGNING_SECRET') || ''
 const SHARED_SECRET = Deno.env.get('MAINHUB_SLACK_SHARED_SECRET') || ''
+const ATLAS_DEPLOY_SECRET = Deno.env.get('ATLAS_DEPLOY_SECRET') || ''
 const MAINHUB_ORIGIN = 'https://gianmoska-prog.github.io'
 const STORAGE_BUCKET = 'record-attachments'
 
@@ -451,6 +452,95 @@ async function verifyMainHubUser(req: Request) {
   return profile
 }
 
+
+async function emailInboxDigest(body: Json) {
+  const rawCounts = (body.counts || {}) as Json
+  const keys = ['contact', 'gianluca', 'gabriela', 'marcella']
+  const counts = Object.fromEntries(keys.map(key => {
+    const value = Number(rawCounts[key])
+    if (!Number.isInteger(value) || value < 0) throw new Error(`invalid_email_count:${key}`)
+    return [key, value]
+  })) as Record<string, number>
+  const scheduledHour = Number(body.scheduled_hour)
+  if (![10, 22].includes(scheduledHour)) throw new Error('invalid_scheduled_hour')
+  const greeting = scheduledHour === 10 ? 'Good morning.' : 'Good evening.'
+  const checkedAt = scheduledHour === 10 ? '10:00' : '22:00'
+  const total = Object.values(counts).reduce((sum, value) => sum + value, 0)
+  const unread = (value: number) => value === 1 ? '1 unread' : `${value} unread`
+  const route = await getRoute('updates')
+  const fields = [
+    { type: 'mrkdwn', text: `*Contact*\n${unread(counts.contact)}` },
+    { type: 'mrkdwn', text: `*Gianluca*\n${unread(counts.gianluca)}` },
+    { type: 'mrkdwn', text: `*Gabriela*\n${unread(counts.gabriela)}` },
+    { type: 'mrkdwn', text: `*Marcella*\n${unread(counts.marcella)}` },
+  ]
+  const blocks: Json[] = [
+    { type: 'header', text: { type: 'plain_text', text: 'MOSCATELLI · Email Inbox', emoji: false } },
+    { type: 'section', text: { type: 'mrkdwn', text: greeting } },
+    { type: 'section', fields },
+    { type: 'divider' },
+    { type: 'section', text: { type: 'mrkdwn', text: `*Total*  ·  ${total === 1 ? '1 unread message' : `${total} unread messages`}` } },
+    { type: 'context', elements: [{ type: 'mrkdwn', text: `Last checked at ${checkedAt} · Rome` }] },
+  ]
+  const posted = await slackApi('chat.postMessage', {
+    channel: route.channel_id,
+    text: `MOSCATELLI email inbox status · ${total === 1 ? '1 unread message' : `${total} unread messages`}`,
+    blocks,
+    unfurl_links: false,
+    unfurl_media: false,
+  })
+  return { ok: true, channel: route.channel_name, ts: posted.ts, total }
+}
+
+function atlasChangeLabel(path: unknown) {
+  const value = String(path || '')
+  if (value.startsWith('content/')) return 'Knowledge content'
+  if (value.startsWith('assets/css/')) return 'Visual system'
+  if (value.startsWith('assets/js/')) return 'Experience and functionality'
+  if (value.startsWith('supabase/')) return 'Data and integrations'
+  if (value.startsWith('docs/')) return 'Documentation'
+  if (value.startsWith('.github/')) return 'Delivery system'
+  return 'Atlas platform'
+}
+
+async function atlasDeployment(body: Json) {
+  const route = await getRoute('atlas')
+  const headline = String(body.headline || 'Atlas has been updated').trim().slice(0, 180)
+  const summary = String(body.summary || '').trim().slice(0, 900)
+  const author = String(body.author || 'MOSCATELLI').trim().slice(0, 100)
+  const commitUrl = String(body.commit_url || '').trim()
+  const atlasUrl = String(body.atlas_url || 'https://gianmoska-prog.github.io/moscatelliatlas/').trim()
+  const sha = String(body.sha || '').trim().slice(0, 40)
+  const rawChanges = Array.isArray(body.changes) ? body.changes : []
+  const changes = rawChanges.map(item => String(item || '').trim()).filter(Boolean).slice(0, 12)
+  const grouped = [...new Set(changes.map(atlasChangeLabel))]
+  const fallback = `MOSCATELLI Atlas updated · ${headline}`
+  const blocks: Json[] = [
+    { type: 'header', text: { type: 'plain_text', text: 'MOSCATELLI · Atlas Update', emoji: false } },
+    { type: 'section', text: { type: 'mrkdwn', text: `*${headline}*${summary ? `\n${summary}` : ''}` } },
+  ]
+  if (grouped.length) {
+    blocks.push({
+      type: 'section',
+      fields: grouped.slice(0, 6).map(label => ({ type: 'mrkdwn', text: `*${label}*\nUpdated` })),
+    })
+  }
+  blocks.push({ type: 'context', elements: [{ type: 'mrkdwn', text: `Published by ${author}${sha ? ` · ${sha.slice(0, 7)}` : ''} · Production` }] })
+  const actions: Json[] = [
+    { type: 'button', text: { type: 'plain_text', text: 'Open Atlas', emoji: false }, url: atlasUrl, action_id: 'open_atlas' },
+  ]
+  if (/^https:\/\/github\.com\//.test(commitUrl)) actions.push({ type: 'button', text: { type: 'plain_text', text: 'View change', emoji: false }, url: commitUrl, action_id: 'view_atlas_change' })
+  blocks.push({ type: 'actions', elements: actions })
+  const posted = await slackApi('chat.postMessage', {
+    channel: route.channel_id,
+    text: fallback,
+    blocks,
+    unfurl_links: false,
+    unfurl_media: false,
+  })
+  return { ok: true, channel: route.channel_name, ts: posted.ts }
+}
+
 async function clientTest(req: Request) {
   const profile = await verifyMainHubUser(req)
   if (profile.role !== 'founder') throw new Error('founder_required')
@@ -489,6 +579,11 @@ Deno.serve(async req => {
 
     const body = rawBody ? JSON.parse(rawBody) : {}
     if (body.kind === 'client_test') return response(await clientTest(req))
+    if (body.kind === 'email_digest') return response(await emailInboxDigest(body))
+    if (body.kind === 'atlas_deployment') {
+      if (!ATLAS_DEPLOY_SECRET || !timingSafeEqual(req.headers.get('x-atlas-secret') || '', ATLAS_DEPLOY_SECRET)) return response({ error: 'unauthorized' }, 401)
+      return response(await atlasDeployment(body))
+    }
     if (!SHARED_SECRET || !timingSafeEqual(req.headers.get('x-mainhub-secret') || '', SHARED_SECRET)) return response({ error: 'unauthorized' }, 401)
     if (body.kind === 'dispatch' && body.job_id) return response(await dispatchJob(String(body.job_id)))
     if (body.kind === 'digest_tick') return response(await digestTick())
