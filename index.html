@@ -16857,8 +16857,13 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
     atlasExitDialog?.addEventListener('click', event => {
       if (event.target === atlasExitDialog) closeAtlasExitDialog();
     });
+    function atlasDestinationForCurrentLanguage() {
+      const destination = new URL(atlasMenuLink?.href || 'https://gianmoska-prog.github.io/moscatelliatlas/', window.location.href);
+      destination.searchParams.set('lang', currentLang === 'pt' ? 'pt-BR' : 'en');
+      return destination.href;
+    }
     atlasExitConfirm?.addEventListener('click', () => {
-      window.open(atlasMenuLink?.href || 'https://gianmoska-prog.github.io/moscatelliatlas/', '_blank', 'noopener,noreferrer');
+      window.open(atlasDestinationForCurrentLanguage(), '_blank', 'noopener,noreferrer');
       closeAtlasExitDialog();
     });
 
