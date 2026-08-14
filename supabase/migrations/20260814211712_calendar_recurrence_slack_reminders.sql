@@ -35,6 +35,7 @@ returns boolean
 language sql
 immutable
 parallel safe
+set search_path = pg_catalog
 as $$
   select case
     when p_date is null or p_event_date is null or p_date < p_event_date then false
