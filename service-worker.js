@@ -1,4 +1,4 @@
-const CACHE_NAME = 'moscatelli-shell-28-simplified-desktop-header';
+const CACHE_NAME = 'moscatelli-shell-29-instant-auth-wordmark';
 const SHELL_ASSETS = [
   './',
   './index.html',

@@ -12,6 +12,7 @@
   <link rel="manifest" href="manifest.webmanifest?v=28" />
   <link rel="icon" href="assets/brand/app-icon.svg" type="image/svg+xml" />
   <link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png?v=28" />
+  <link rel="preload" href="assets/brand/moscatelli-roma-wordmark.png" as="image" fetchpriority="high" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@300;400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet" />
 
@@ -10376,6 +10377,49 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
         padding-inline: 3px;
         font-size: 7px;
         letter-spacing: 0.16em;
+      }
+    }
+
+    /* The authentication wordmark must be correct on the very first paint.
+       Keep the real heading text for assistive technology, but render the
+       supplied local wordmark instead of waiting for Cinzel to download. */
+    .global-auth-title {
+      width: min(100%, 390px);
+      height: clamp(42px, 5.2vw, 56px);
+      margin-right: auto;
+      margin-left: auto;
+      overflow: hidden;
+      color: transparent;
+      font-size: 0;
+      line-height: 1;
+      letter-spacing: 0;
+      user-select: none;
+      background-image: url("assets/brand/moscatelli-roma-wordmark.png");
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: contain;
+      filter: invert(93%) sepia(9%) saturate(260%) hue-rotate(343deg) brightness(102%);
+    }
+
+    @supports ((-webkit-mask-image: url("")) or (mask-image: url(""))) {
+      .global-auth-title {
+        background: rgba(242, 237, 228, 0.86);
+        -webkit-mask-image: url("assets/brand/moscatelli-roma-wordmark.png");
+        mask-image: url("assets/brand/moscatelli-roma-wordmark.png");
+        -webkit-mask-position: center;
+        mask-position: center;
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-size: contain;
+        mask-size: contain;
+        filter: none;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .global-auth-title {
+        width: min(78vw, 330px);
+        height: 46px;
       }
     }
 
