@@ -141,6 +141,9 @@ function entityFields(entityType: string, entity: Json | null) {
     add('Date', entity.event_date)
     add('Category', titleCase(entity.category))
     add('Time', entity.all_day ? 'All day' : [entity.start_time, entity.end_time].filter(Boolean).join('–'))
+    if (entity.repeat_rule && entity.repeat_rule !== 'none') {
+      add('On repeat', `${titleCase(entity.repeat_rule)}${entity.repeat_until ? ` · until ${entity.repeat_until}` : ''}`)
+    }
     add('Notes', entity.notes)
   } else if (entityType === 'project') {
     add('Status', titleCase(entity.status))
@@ -254,6 +257,89 @@ function localParts(timeZone: string) {
   return { date: `${get('year')}-${get('month')}-${get('day')}`, hour: get('hour') }
 }
 
+function calendarReminderTime(event: Json) {
+  if (event.all_day) return 'All day'
+  const start = String(event.start_time || '').slice(0, 5)
+  const end = String(event.end_time || '').slice(0, 5)
+  return [start, end].filter(Boolean).join('–') || 'Time not set'
+}
+
+async function calendarReminderTick(settings: Json, local: { date: string, hour: string }) {
+  const reminderHour = String(settings.calendar_reminder_local_time || '08:00').slice(0, 2)
+  if (local.hour !== reminderHour) return { ok: true, skipped: 'outside_calendar_reminder_hour' }
+
+  const { data: prior, error: priorError } = await admin
+    .from('slack_calendar_reminder_runs')
+    .select('status,updated_at')
+    .eq('reminder_date', local.date)
+    .maybeSingle()
+  if (priorError) throw priorError
+  if (prior?.status === 'sent' || prior?.status === 'empty') return { ok: true, skipped: 'calendar_reminder_already_processed' }
+  if (prior?.status === 'processing' && Date.now() - new Date(prior.updated_at).getTime() < 10 * 60 * 1000) {
+    return { ok: true, skipped: 'calendar_reminder_processing' }
+  }
+
+  await admin.from('slack_calendar_reminder_runs').upsert({
+    reminder_date: local.date,
+    status: 'processing',
+    event_count: 0,
+    last_error: null,
+    updated_at: new Date().toISOString(),
+  })
+
+  try {
+    const { data, error } = await admin.rpc('calendar_events_for_date', { p_date: local.date })
+    if (error) throw error
+    const events = (data || []) as Json[]
+    if (!events.length) {
+      await admin.from('slack_calendar_reminder_runs').update({
+        status: 'empty',
+        event_count: 0,
+        updated_at: new Date().toISOString(),
+      }).eq('reminder_date', local.date)
+      return { ok: true, empty: true }
+    }
+
+    const route = await getRoute('operations')
+    const lines = events.slice(0, 30).map(event => {
+      const repeat = event.repeat_rule && event.repeat_rule !== 'none' ? ` · ${titleCase(event.repeat_rule)}` : ''
+      return `• *${String(event.title || 'Untitled event')}* — ${calendarReminderTime(event)}${repeat}`
+    })
+    if (events.length > 30) lines.push(`• _${events.length - 30} more events are available in MainHub_`)
+    const calendarUrl = `${String(settings.mainhub_base_url || '').replace(/\/$/, '')}/index.html#divisions/operations/calendar`
+    const blocks: Json[] = [
+      { type: 'header', text: { type: 'plain_text', text: 'MOSCATELLI · Today’s Calendar', emoji: false } },
+      { type: 'section', text: { type: 'mrkdwn', text: 'Good morning. Here’s what is scheduled for today.' } },
+      { type: 'section', text: { type: 'mrkdwn', text: lines.join('\n') } },
+      { type: 'context', elements: [{ type: 'mrkdwn', text: `${events.length} ${events.length === 1 ? 'event' : 'events'} · ${local.date} · Rome` }] },
+      { type: 'actions', elements: [{ type: 'button', text: { type: 'plain_text', text: 'Open calendar', emoji: false }, url: calendarUrl, action_id: 'open_calendar' }] },
+    ]
+    const posted = await slackApi('chat.postMessage', {
+      channel: route.channel_id,
+      text: `MOSCATELLI calendar · ${events.length} ${events.length === 1 ? 'event' : 'events'} today`,
+      blocks,
+      unfurl_links: false,
+      unfurl_media: false,
+    })
+    await admin.from('slack_calendar_reminder_runs').update({
+      status: 'sent',
+      event_count: events.length,
+      slack_channel_id: route.channel_id,
+      slack_message_ts: posted.ts,
+      sent_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    }).eq('reminder_date', local.date)
+    return { ok: true, count: events.length }
+  } catch (error) {
+    await admin.from('slack_calendar_reminder_runs').update({
+      status: 'failed',
+      last_error: safeError(error),
+      updated_at: new Date().toISOString(),
+    }).eq('reminder_date', local.date)
+    throw error
+  }
+}
+
 async function digestTick() {
   const settings = await getSettings()
   if (!settings.enabled) return { ok: true, skipped: 'disabled' }
@@ -270,8 +356,14 @@ async function digestTick() {
 
   if (settings.environment !== 'production') return { ok: true, skipped: 'testing_mode' }
   const local = localParts(settings.timezone || 'Europe/Rome')
+  let calendarReminder: unknown = null
+  try {
+    calendarReminder = await calendarReminderTick(settings, local)
+  } catch (error) {
+    console.error('Calendar reminder failed', safeError(error))
+  }
   const digestHour = String(settings.daily_digest_local_time || '08:30').slice(0, 2)
-  if (local.hour !== digestHour) return { ok: true, skipped: 'outside_digest_hour' }
+  if (local.hour !== digestHour) return { ok: true, skipped: 'outside_digest_hour', calendar_reminder: calendarReminder }
   const { data: prior } = await admin.from('slack_digest_runs').select('status').eq('digest_date', local.date).maybeSingle()
   if (prior?.status === 'sent' || prior?.status === 'processing') return { ok: true, skipped: 'already_processed' }
   await admin.from('slack_digest_runs').upsert({ digest_date: local.date, status: 'processing', last_error: null })

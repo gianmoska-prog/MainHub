@@ -1,4 +1,4 @@
-const CACHE_NAME = 'moscatelli-shell-29-instant-auth-wordmark';
+const CACHE_NAME = 'moscatelli-shell-30-calendar-recurrence';
 const SHELL_ASSETS = [
   './',
   './index.html',

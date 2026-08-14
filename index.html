@@ -7888,6 +7888,21 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
       display: none;
     }
 
+    .calendar-repeat-until[hidden] {
+      display: none;
+    }
+
+    .calendar-repeat-note {
+      margin-top: -5px;
+      font-family: "Cinzel", serif;
+      font-size: 6.8px;
+      font-weight: 300;
+      letter-spacing: 0.15em;
+      line-height: 1.55;
+      text-transform: uppercase;
+      color: rgba(242, 237, 228, 0.31);
+    }
+
     .calendar-timezone-note {
       margin-top: -3px;
       font-family: "Cinzel", serif;
@@ -11756,6 +11771,22 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
               </label>
             </div>
             <div class="calendar-timezone-note" id="calendarTimezoneNote" hidden></div>
+            <div class="calendar-form-row">
+              <label class="calendar-form-field">
+                <span class="calendar-form-label i18n-text" data-i18n="calendar.label.repeat">Repeat</span>
+                <select id="calendarEventRepeat">
+                  <option value="none" class="i18n-text" data-i18n="calendar.repeat.none">Does not repeat</option>
+                  <option value="daily" class="i18n-text" data-i18n="calendar.repeat.daily">Daily</option>
+                  <option value="weekly" class="i18n-text" data-i18n="calendar.repeat.weekly">Weekly</option>
+                  <option value="monthly" class="i18n-text" data-i18n="calendar.repeat.monthly">Monthly</option>
+                </select>
+              </label>
+              <label class="calendar-form-field calendar-repeat-until" id="calendarRepeatUntil" hidden>
+                <span class="calendar-form-label i18n-text" data-i18n="calendar.label.repeatUntil">Repeat until</span>
+                <input id="calendarEventRepeatUntil" type="date">
+              </label>
+            </div>
+            <div class="calendar-repeat-note i18n-text" id="calendarRepeatNote" data-i18n="calendar.repeat.note" hidden>Leave the end date blank to keep the series running.</div>
             <label class="calendar-form-field">
               <span class="calendar-form-label i18n-text" data-i18n="calendar.label.notes">Notes</span>
               <textarea id="calendarEventNotes" maxlength="1200" data-i18n-placeholder="calendar.placeholder.notes" placeholder="Optional context"></textarea>
@@ -12054,9 +12085,12 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
         'ends_at',
         'category',
         'notes',
-        'project_id'
+        'project_id',
+        'repeat_rule',
+        'repeat_until'
       ]),
       categories: Object.freeze(['milestone', 'meeting', 'production', 'launch', 'travel', 'admin']),
+      repeatRules: Object.freeze(['none', 'daily', 'weekly', 'monthly']),
       maxEventsPerRange: 1000
     });
 
@@ -12633,6 +12667,10 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
         const eventDateKey = String(eventDate).slice(0, 10);
         const startTime = allDay ? null : String(payload.start_time || payload.startTime || '').slice(0, 5) || null;
         const endTime = allDay ? null : String(payload.end_time || payload.endTime || '').slice(0, 5) || null;
+        const rawRepeatRule = String(payload.repeat_rule || payload.repeatRule || 'none').trim().toLowerCase();
+        const repeatRule = CALENDAR_DATA_CONFIG.repeatRules.includes(rawRepeatRule) ? rawRepeatRule : 'none';
+        const repeatUntilValue = payload.repeat_until || payload.repeatUntil || null;
+        const repeatUntil = repeatRule === 'none' || !repeatUntilValue ? null : String(repeatUntilValue).slice(0, 10);
         return {
           id: payload.id || mockId('calendar'),
           created_at: payload.created_at || payload.createdAt || now,
@@ -12648,7 +12686,9 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
           ends_at: allDay ? null : (payload.ends_at || payload.endsAt || calendarWallTimeToIso(eventDateKey, endTime, timeZone)),
           category: CALENDAR_DATA_CONFIG.categories.includes(category) ? category : 'milestone',
           notes: String(payload.notes || '').trim().slice(0, 1200),
-          project_id: payload.project_id || payload.projectId || null
+          project_id: payload.project_id || payload.projectId || null,
+          repeat_rule: repeatRule,
+          repeat_until: repeatUntil
         };
       }
 
@@ -13562,7 +13602,11 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
           if (!client) {
             return mockStore.calendarEvents
               .map(event => normaliseCalendarRecord(event))
-              .filter(event => (!startDate || event.event_date >= startDate) && (!endDate || event.event_date <= endDate))
+              .filter(event =>
+                (!endDate || event.event_date <= endDate) &&
+                (!startDate || event.event_date >= startDate || event.repeat_rule !== 'none') &&
+                (!startDate || !event.repeat_until || event.repeat_until >= startDate)
+              )
               .sort((a, b) => String(a.event_date).localeCompare(String(b.event_date)) || String(a.starts_at || a.start_time || '').localeCompare(String(b.starts_at || b.start_time || '')));
           }
 
@@ -13574,8 +13618,12 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
             .order('start_time', { ascending: true, nullsFirst: true })
             .limit(CALENDAR_DATA_CONFIG.maxEventsPerRange);
 
-          if (startDate) query = query.gte('event_date', startDate);
           if (endDate) query = query.lte('event_date', endDate);
+          if (startDate) {
+            query = query
+              .or(`event_date.gte.${startDate},repeat_rule.neq.none`)
+              .or(`repeat_until.is.null,repeat_until.gte.${startDate}`);
+          }
 
           const { data, error } = await query;
           if (error) {
@@ -13618,7 +13666,9 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
             ends_at: event.ends_at,
             category: event.category,
             notes: event.notes,
-            project_id: event.project_id
+            project_id: event.project_id,
+            repeat_rule: event.repeat_rule,
+            repeat_until: event.repeat_until
           };
 
           const { data, error } = await client
@@ -13663,6 +13713,8 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
             category: event.category,
             notes: event.notes,
             project_id: event.project_id,
+            repeat_rule: event.repeat_rule,
+            repeat_until: event.repeat_until,
             updated_at: new Date().toISOString()
           };
 
@@ -14112,10 +14164,18 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
         'calendar.label.category': 'Category',
         'calendar.label.start': 'Starts',
         'calendar.label.end': 'Ends',
+        'calendar.label.repeat': 'Repeat',
+        'calendar.label.repeatUntil': 'Repeat until',
         'calendar.label.notes': 'Notes',
         'calendar.placeholder.title': 'Event title',
         'calendar.placeholder.notes': 'Optional context',
         'calendar.allDay': 'All day',
+        'calendar.repeat.none': 'Does not repeat',
+        'calendar.repeat.daily': 'Daily',
+        'calendar.repeat.weekly': 'Weekly',
+        'calendar.repeat.monthly': 'Monthly',
+        'calendar.repeat.note': 'Leave the end date blank to keep the series running.',
+        'calendar.repeat.seriesEdit': 'Changes apply to the full repeating series.',
         'calendar.timezone.it': 'Italy',
         'calendar.timezone.br': 'Brazil',
         'calendar.timezone.note': 'Times entered in {zone} time',
@@ -14135,6 +14195,7 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
         'calendar.error.projectsMigration': 'Project links are not ready yet. Apply the Projects database patch first.',
         'calendar.error.required': 'Add a title and date before saving.',
         'calendar.error.time': 'The end time must be later than the start time.',
+        'calendar.error.repeatUntil': 'The repeat end date cannot be earlier than the first event.',
         'calendar.more': '+{count} more',
         'calendar.category.milestone': 'Milestone',
         'calendar.category.meeting': 'Meeting',
@@ -14552,10 +14613,18 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
         'calendar.label.category': 'Categoria',
         'calendar.label.start': 'Início',
         'calendar.label.end': 'Fim',
+        'calendar.label.repeat': 'Repetir',
+        'calendar.label.repeatUntil': 'Repetir até',
         'calendar.label.notes': 'Notas',
         'calendar.placeholder.title': 'Título do evento',
         'calendar.placeholder.notes': 'Contexto opcional',
         'calendar.allDay': 'Dia inteiro',
+        'calendar.repeat.none': 'Não repetir',
+        'calendar.repeat.daily': 'Diariamente',
+        'calendar.repeat.weekly': 'Semanalmente',
+        'calendar.repeat.monthly': 'Mensalmente',
+        'calendar.repeat.note': 'Deixe a data final em branco para manter a série ativa.',
+        'calendar.repeat.seriesEdit': 'As alterações serão aplicadas a toda a série recorrente.',
         'calendar.timezone.it': 'Itália',
         'calendar.timezone.br': 'Brasil',
         'calendar.timezone.note': 'Horários inseridos no fuso de {zone}',
@@ -14575,6 +14644,7 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
         'calendar.error.projectsMigration': 'Os vínculos com projetos ainda não estão prontos. Aplique primeiro o patch de Projetos do banco de dados.',
         'calendar.error.required': 'Adicione um título e uma data antes de salvar.',
         'calendar.error.time': 'O horário de término deve ser posterior ao início.',
+        'calendar.error.repeatUntil': 'A data final da repetição não pode ser anterior ao primeiro evento.',
         'calendar.more': '+{count} mais',
         'calendar.category.milestone': 'Marco',
         'calendar.category.meeting': 'Reunião',
@@ -16601,26 +16671,29 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
       const todayKey = calendarTodayDateKey();
       const now = Date.now();
 
-      return events
-        .map(event => normaliseCalendarEvent(event))
-        .map(event => ({
-          event,
-          display: calendarEventDisplayParts(event)
-        }))
-        .filter(({ event, display }) => {
-          if (event.allDay) return String(display.date || event.date) >= todayKey;
-          const start = calendarEventInstant(event, 'start');
-          const end = calendarEventInstant(event, 'end');
-          return Boolean((end && end.getTime() >= now) || (start && start.getTime() >= now));
-        })
-        .sort((a, b) => {
+      const normalised = events.map(event => normaliseCalendarEvent(event));
+      for (let offset = 0; offset <= 92; offset += 1) {
+        const dateKey = calendarShiftDateKey(todayKey, offset);
+        const candidates = normalised
+          .flatMap(event => calendarOccurrencesForDisplayDate(event, dateKey))
+          .map(event => ({ event, display: calendarEventDisplayParts(event) }))
+          .filter(({ event }) => {
+            if (event.allDay || offset > 0) return true;
+            const start = calendarEventInstant(event, 'start');
+            const end = calendarEventInstant(event, 'end');
+            return Boolean((end && end.getTime() >= now) || (start && start.getTime() >= now));
+          })
+          .sort((a, b) => {
           const ad = a.display.date || a.event.date;
           const bd = b.display.date || b.event.date;
           if (ad !== bd) return ad.localeCompare(bd);
           const at = a.event.allDay ? '00:00' : (a.display.startTime || a.event.startTime || '23:59');
           const bt = b.event.allDay ? '00:00' : (b.display.startTime || b.event.startTime || '23:59');
           return at.localeCompare(bt);
-        })[0] || null;
+          });
+        if (candidates.length) return candidates[0];
+      }
+      return null;
     }
 
     function renderHomeOverview() {
@@ -17831,6 +17904,10 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
     const calendarTimeRow = document.getElementById('calendarTimeRow');
     const calendarEventStart = document.getElementById('calendarEventStart');
     const calendarEventEnd = document.getElementById('calendarEventEnd');
+    const calendarEventRepeat = document.getElementById('calendarEventRepeat');
+    const calendarEventRepeatUntil = document.getElementById('calendarEventRepeatUntil');
+    const calendarRepeatUntil = document.getElementById('calendarRepeatUntil');
+    const calendarRepeatNote = document.getElementById('calendarRepeatNote');
     const calendarEventNotes = document.getElementById('calendarEventNotes');
     const calendarEventProject = document.getElementById('calendarEventProject');
     const calendarFormFeedback = document.getElementById('calendarFormFeedback');
@@ -18066,6 +18143,9 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
       const startTime = String(source.startTime || source.start_time || '').slice(0, 5);
       const endTime = String(source.endTime || source.end_time || '').slice(0, 5);
       const timeZone = calendarNormaliseTimeZone(source.timeZone || source.time_zone || CALENDAR_TIME_ZONES.IT);
+      const rawRepeatRule = String(source.repeatRule || source.repeat_rule || 'none').toLowerCase();
+      const repeatRule = CALENDAR_DATA_CONFIG.repeatRules.includes(rawRepeatRule) ? rawRepeatRule : 'none';
+      const repeatUntilValue = source.repeatUntil || source.repeat_until || null;
       return {
         id: String(source.id || calendarEventIdValue()),
         title: String(source.title || '').trim().slice(0, 120),
@@ -18079,6 +18159,8 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
         category: CALENDAR_CATEGORIES.has(category) ? category : 'milestone',
         notes: String(source.notes || '').trim().slice(0, 1200),
         projectId: source.projectId || source.project_id || null,
+        repeatRule,
+        repeatUntil: repeatRule === 'none' || !repeatUntilValue ? null : String(repeatUntilValue).slice(0, 10),
         createdAt: source.createdAt || source.created_at || new Date().toISOString(),
         updatedAt: source.updatedAt || source.updated_at || new Date().toISOString()
       };
@@ -18216,9 +18298,56 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
       return (aDisplay.startTime || '00:00').localeCompare(bDisplay.startTime || '00:00') || a.title.localeCompare(b.title);
     }
 
+    function calendarShiftDateKey(dateKey, amount) {
+      const date = calendarParseDateKey(dateKey);
+      if (Number.isNaN(date.getTime())) return '';
+      date.setDate(date.getDate() + Number(amount || 0));
+      return calendarDateKey(date);
+    }
+
+    function calendarEventRepeatsOnLocalDate(event, dateKey) {
+      const candidate = calendarParseDateKey(dateKey);
+      const first = calendarParseDateKey(event?.date || '');
+      if (Number.isNaN(candidate.getTime()) || Number.isNaN(first.getTime()) || candidate < first) return false;
+      if (event.repeatUntil && dateKey > event.repeatUntil) return false;
+      if (event.repeatRule === 'none') return dateKey === event.date;
+
+      const dayDelta = Math.round((Date.UTC(candidate.getFullYear(), candidate.getMonth(), candidate.getDate()) - Date.UTC(first.getFullYear(), first.getMonth(), first.getDate())) / 86400000);
+      if (event.repeatRule === 'daily') return true;
+      if (event.repeatRule === 'weekly') return dayDelta % 7 === 0;
+      if (event.repeatRule === 'monthly') {
+        return candidate.getDate() === first.getDate();
+      }
+      return false;
+    }
+
+    function calendarOccurrenceForLocalDate(event, dateKey) {
+      if (!calendarEventRepeatsOnLocalDate(event, dateKey)) return null;
+      if (event.repeatRule === 'none') return event;
+      if (event.allDay) return { ...event, date: dateKey, occurrenceDate: dateKey, isRecurringOccurrence: true };
+      const startsAt = calendarWallTimeToIso(dateKey, event.startTime, event.timeZone);
+      const endsAt = calendarWallTimeToIso(dateKey, event.endTime, event.timeZone);
+      if (!startsAt || !endsAt) return null;
+      return { ...event, date: dateKey, startsAt, endsAt, occurrenceDate: dateKey, isRecurringOccurrence: true };
+    }
+
+    function calendarOccurrencesForDisplayDate(event, dateKey) {
+      if (!event || !dateKey) return [];
+      if (event.repeatRule === 'none') {
+        return calendarEventDisplayParts(event).date === dateKey ? [event] : [];
+      }
+      const candidateDates = event.allDay
+        ? [dateKey]
+        : [-1, 0, 1].map(offset => calendarShiftDateKey(dateKey, offset));
+      return candidateDates
+        .map(candidate => calendarOccurrenceForLocalDate(event, candidate))
+        .filter(Boolean)
+        .filter(occurrence => calendarEventDisplayParts(occurrence).date === dateKey);
+    }
+
     function calendarEventsForDate(dateKey) {
       return CalendarRuntime.events
-        .filter(event => calendarEventDisplayParts(event).date === dateKey)
+        .flatMap(event => calendarOccurrencesForDisplayDate(event, dateKey))
         .sort(calendarEventSort);
     }
 
@@ -18239,12 +18368,17 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
       button.type = 'button';
       button.dataset.eventId = event.id;
       button.dataset.category = event.category;
-      button.setAttribute('aria-label', `${event.title}${event.allDay || !display.startTime ? '' : `, ${display.startTime}`}`);
+      const repeatLabel = event.repeatRule !== 'none'
+        ? calendarText(`calendar.repeat.${event.repeatRule}`, event.repeatRule)
+        : '';
+      button.setAttribute('aria-label', `${event.title}${event.allDay || !display.startTime ? '' : `, ${display.startTime}`}${repeatLabel ? `, ${repeatLabel}` : ''}`);
 
       if (!event.allDay) {
         const otherKey = CalendarRuntime.timeZoneKey === 'IT' ? 'BR' : 'IT';
         const other = calendarEventDisplayParts(event, otherKey);
-        if (other.startTime) button.title = `${otherKey} · ${other.startTime}${other.date && other.date !== display.date ? ` · ${other.date}` : ''}`;
+        if (other.startTime) button.title = `${otherKey} · ${other.startTime}${other.date && other.date !== display.date ? ` · ${other.date}` : ''}${repeatLabel ? ` · ${repeatLabel}` : ''}`;
+      } else if (repeatLabel) {
+        button.title = repeatLabel;
       }
 
       const body = document.createElement('span');
@@ -18347,6 +18481,17 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
       updateCalendarTimeZoneUi();
     }
 
+    function updateCalendarRepeatVisibility({ editingSeries = false } = {}) {
+      if (!calendarEventRepeat || !calendarRepeatUntil || !calendarRepeatNote) return;
+      const repeats = calendarEventRepeat.value !== 'none';
+      calendarRepeatUntil.hidden = !repeats;
+      calendarEventRepeatUntil.disabled = !repeats;
+      calendarRepeatNote.hidden = !repeats;
+      calendarRepeatNote.textContent = editingSeries && repeats
+        ? calendarText('calendar.repeat.seriesEdit', 'Changes apply to the full repeating series.')
+        : calendarText('calendar.repeat.note', 'Leave the end date blank to keep the series running.');
+    }
+
     function openCalendarEventDialog(dateKey = calendarDateKey(new Date()), eventId = '', trigger = null) {
       if (!calendarEventDialog || !calendarEventForm) return;
       const existing = CalendarRuntime.events.find(event => event.id === eventId) || null;
@@ -18362,6 +18507,8 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
       calendarEventAllDay.checked = existing ? existing.allDay : true;
       calendarEventStart.value = display?.startTime || existing?.startTime || '09:00';
       calendarEventEnd.value = display?.endTime || existing?.endTime || '10:00';
+      calendarEventRepeat.value = existing?.repeatRule || 'none';
+      calendarEventRepeatUntil.value = existing?.repeatUntil || '';
       calendarEventNotes.value = existing?.notes || '';
       calendarFormFeedback.textContent = '';
       calendarEventDelete.hidden = !existing;
@@ -18374,6 +18521,7 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
       calendarEventDialogTitle.dataset.i18n = titleKey;
       calendarEventDialogTitle.textContent = calendarText(titleKey, existing ? 'Edit event' : 'New event');
       updateCalendarTimeVisibility();
+      updateCalendarRepeatVisibility({ editingSeries: Boolean(existing) });
 
       calendarEventDialog.hidden = false;
       calendarEventDialog.setAttribute('aria-hidden', 'false');
@@ -18414,6 +18562,8 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
         endsAt: allDay ? null : calendarWallTimeToIso(date, endTime, timeZone),
         notes: calendarEventNotes.value,
         projectId: calendarEventProject?.value || null,
+        repeatRule: calendarEventRepeat?.value || 'none',
+        repeatUntil: calendarEventRepeat?.value === 'none' ? null : (calendarEventRepeatUntil?.value || null),
         createdAt: CalendarRuntime.events.find(event => event.id === calendarEventId.value)?.createdAt,
         updatedAt: new Date().toISOString()
       });
@@ -18433,6 +18583,10 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
       }
       if (!payload.allDay && new Date(payload.endsAt).getTime() <= new Date(payload.startsAt).getTime()) {
         calendarFormFeedback.textContent = calendarText('calendar.error.time', 'The end time must be later than the start time.');
+        return;
+      }
+      if (payload.repeatUntil && payload.repeatUntil < payload.date) {
+        calendarFormFeedback.textContent = calendarText('calendar.error.repeatUntil', 'The repeat end date cannot be earlier than the first event.');
         return;
       }
 
@@ -18572,6 +18726,7 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
     }));
 
     calendarEventAllDay?.addEventListener('change', updateCalendarTimeVisibility);
+    calendarEventRepeat?.addEventListener('change', () => updateCalendarRepeatVisibility({ editingSeries: Boolean(calendarEventId?.value) }));
     calendarEventForm?.addEventListener('submit', saveCalendarEvent);
     calendarEventDelete?.addEventListener('click', deleteCalendarEvent);
     calendarCloseButtons.forEach(button => button.addEventListener('click', closeCalendarEventDialog));
