@@ -1,4 +1,4 @@
-const CACHE_NAME = 'moscatelli-shell-31-finance-currency-hierarchy';
+const CACHE_NAME = 'moscatelli-shell-32-finance-entry-editing';
 const SHELL_ASSETS = [
   './',
   './index.html',

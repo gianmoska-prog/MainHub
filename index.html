@@ -2296,6 +2296,25 @@ body.internal-unlocked[data-route="divisions/finance"] .route-division-finance.i
       opacity: 0.68;
     }
 
+    .finance-edit-entry {
+      display: block;
+      width: fit-content;
+      margin-top: 11px;
+      padding: 0 0 3px;
+      border: 0;
+      border-bottom: 1px solid rgba(232, 192, 122, 0.24);
+      background: transparent;
+      font-family: "Cinzel", serif;
+      font-size: 7.5px;
+      font-weight: 300;
+      line-height: 1.4;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--amber-pale);
+      opacity: 0.48;
+      cursor: pointer;
+    }
+
     .finance-status {
       font-size: clamp(8.8px, 0.48vw, 10.4px);
       font-weight: 300;
@@ -2451,6 +2470,7 @@ body.internal-unlocked[data-route="divisions/finance"] .route-division-finance.i
       grid-column: 11 / span 2;
       display: flex;
       align-items: stretch;
+      gap: 10px;
       padding: 17px 18px;
     }
 
@@ -2473,6 +2493,24 @@ body.internal-unlocked[data-route="divisions/finance"] .route-division-finance.i
       cursor: progress;
     }
 
+    .finance-cancel-edit {
+      flex: 0 0 auto;
+      min-height: 56px;
+      padding: 0 14px;
+      border: 0;
+      border-bottom: 1px solid rgba(242, 237, 228, 0.18);
+      background: transparent;
+      font-family: "Cinzel", serif;
+      font-size: 7.5px;
+      font-weight: 300;
+      line-height: 1.35;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--cream);
+      opacity: 0.46;
+      cursor: pointer;
+    }
+
     .finance-reserved {
       padding: 56px 34px;
       text-align: center;
@@ -2488,7 +2526,9 @@ body.internal-unlocked[data-route="divisions/finance"] .route-division-finance.i
 
     @media (hover: hover) and (pointer: fine) {
       .finance-tabs button:not(.is-disabled):hover,
-.finance-submit:not(:disabled):hover {
+.finance-submit:not(:disabled):hover,
+.finance-edit-entry:hover,
+.finance-cancel-edit:hover {
         opacity: 0.88;
       }
     }
@@ -11321,6 +11361,7 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
             </label>
             <div class="finance-submit-wrap">
               <button class="finance-submit i18n-text" id="financeEntrySubmit" type="submit" data-i18n="finance.add">Add entry</button>
+              <button class="finance-cancel-edit i18n-text" id="financeEntryCancel" type="button" data-i18n="finance.cancelEdit" hidden>Cancel</button>
             </div>
           </form>
           <div class="finance-feedback-wrap">
@@ -13442,6 +13483,60 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
           const saved = normaliseFinanceEntry(data);
           dataEvent('finance-entry-created', { entry: saved, table: FINANCE_DATA_CONFIG.table });
           return { ok: true, entry: saved };
+        },
+
+        async update(entryId, payload = {}) {
+          const entry = normaliseFinanceEntry({ ...payload, id: entryId });
+
+          if (!entryId || !entry.description || !Number.isFinite(entry.amount) || entry.amount < FINANCE_DATA_CONFIG.minAmount) {
+            return { ok: false, error: 'invalid_finance_entry' };
+          }
+
+          const client = activeSupabaseClient();
+          const updatePayload = {
+            category: entry.category,
+            description: entry.description,
+            counterparty: entry.counterparty,
+            amount: entry.amount,
+            currency: entry.currency,
+            status: entry.status,
+            entry_date: entry.entry_date,
+            notes: entry.notes
+          };
+
+          if (!client) {
+            const index = mockStore.financeEntries.findIndex(item => item.id === entryId);
+            if (index < 0 || !canCurrentUserModifyRecord(mockStore.financeEntries[index])) {
+              return { ok: false, error: 'finance_entry_not_editable' };
+            }
+            const saved = normaliseFinanceEntry({ ...mockStore.financeEntries[index], ...updatePayload, id: entryId });
+            mockStore.financeEntries[index] = saved;
+            dataEvent('finance-entry-updated', { entry: saved, table: FINANCE_DATA_CONFIG.table });
+            return { ok: true, entry: saved };
+          }
+
+          const { data, error } = await client
+            .from(FINANCE_DATA_CONFIG.table)
+            .update(updatePayload)
+            .eq(FINANCE_DATA_CONFIG.primaryKey, entryId)
+            .select(supabaseFieldList(FINANCE_DATA_CONFIG.fields))
+            .single();
+
+          if (error || !data) {
+            dataEvent('finance-entry-update-error', { error, entryId, table: FINANCE_DATA_CONFIG.table });
+            return { ok: false, error: error || 'finance_entry_not_returned' };
+          }
+
+          const saved = normaliseFinanceEntry(data);
+          dataEvent('finance-entry-updated', { entry: saved, table: FINANCE_DATA_CONFIG.table });
+          return { ok: true, entry: saved };
+        },
+
+        permissions(record) {
+          return {
+            owned: record?.created_by === currentOwnerId(),
+            can_update: canCurrentUserModifyRecord(record)
+          };
         }
       };
 
@@ -14293,6 +14388,11 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
         'finance.add': 'Add entry',
         'finance.adding': 'Adding…',
         'finance.added': 'Entry added',
+        'finance.edit': 'Edit',
+        'finance.saveChanges': 'Save changes',
+        'finance.savingChanges': 'Saving…',
+        'finance.updated': 'Entry updated',
+        'finance.cancelEdit': 'Cancel',
         'finance.error.invalid': 'Add a description and amount greater than zero before saving.',
         'finance.error.save': 'The finance entry could not be saved.',
         'finance.error.load': 'Finance entries could not be loaded.',
@@ -14743,6 +14843,11 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
         'finance.add': 'Adicionar entrada',
         'finance.adding': 'Adicionando…',
         'finance.added': 'Entrada adicionada',
+        'finance.edit': 'Editar',
+        'finance.saveChanges': 'Salvar alterações',
+        'finance.savingChanges': 'Salvando…',
+        'finance.updated': 'Entrada atualizada',
+        'finance.cancelEdit': 'Cancelar',
         'finance.error.invalid': 'Adicione uma descrição e um valor maior que zero antes de salvar.',
         'finance.error.save': 'A entrada financeira não pôde ser salva.',
         'finance.error.load': 'As entradas financeiras não puderam ser carregadas.',
@@ -18945,6 +19050,7 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
     const financeEntryDate = document.getElementById('financeEntryDate');
     const financeEntryNotes = document.getElementById('financeEntryNotes');
     const financeEntrySubmit = document.getElementById('financeEntrySubmit');
+    const financeEntryCancel = document.getElementById('financeEntryCancel');
     const financeFeedback = document.getElementById('financeFeedback');
     const financeRetry = document.getElementById('financeRetry');
     const financeCommitmentsList = document.getElementById('financeCommitmentsList');
@@ -18959,7 +19065,8 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
       saving: false,
       requestId: 0,
       entries: [],
-      activeView: 'overview'
+      activeView: 'overview',
+      editingId: null
     };
 
     function financeText(key, fallback = '') {
@@ -19257,6 +19364,15 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
           note.textContent = entry.notes;
           descriptionCell.appendChild(note);
         }
+        if (InternalData.finance.permissions(entry).can_update) {
+          const edit = document.createElement('button');
+          edit.type = 'button';
+          edit.className = 'finance-edit-entry';
+          edit.dataset.financeEdit = entry.id;
+          edit.textContent = financeText('finance.edit', 'Edit');
+          edit.setAttribute('aria-label', `${financeText('finance.edit', 'Edit')}: ${entry.description || ''}`);
+          descriptionCell.appendChild(edit);
+        }
 
         const counterpartyCell = document.createElement('td');
         counterpartyCell.dataset.label = financeText('finance.th.counterparty', 'Counterparty');
@@ -19377,11 +19493,46 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
 
     function resetFinanceForm() {
       financeEntryForm?.reset();
+      FinanceRuntime.editingId = null;
+      financeEntryForm?.classList.remove('is-editing');
       if (financeEntryCurrency) financeEntryCurrency.value = 'EUR';
       if (financeEntryDate) financeEntryDate.value = new Date().toISOString().slice(0, 10);
+      if (financeEntrySubmit) {
+        financeEntrySubmit.dataset.i18n = 'finance.add';
+        financeEntrySubmit.textContent = financeText('finance.add', 'Add entry');
+      }
+      if (financeEntryCancel) financeEntryCancel.hidden = true;
     }
 
-    async function createFinanceEntryFromForm() {
+    function beginFinanceEntryEdit(entryId) {
+      const entry = FinanceRuntime.entries.find(item => item.id === entryId);
+      if (!entry || !InternalData.finance.permissions(entry).can_update || FinanceRuntime.saving) return;
+
+      FinanceRuntime.editingId = entry.id;
+      financeEntryForm?.classList.add('is-editing');
+      if (financeEntryCategory) financeEntryCategory.value = entry.category;
+      if (financeEntryDescription) financeEntryDescription.value = entry.description;
+      if (financeEntryCounterparty) financeEntryCounterparty.value = entry.counterparty;
+      if (financeEntryAmount) financeEntryAmount.value = String(entry.amount);
+      if (financeEntryCurrency) financeEntryCurrency.value = entry.currency;
+      if (financeEntryStatus) financeEntryStatus.value = entry.status;
+      if (financeEntryDate) financeEntryDate.value = entry.entry_date;
+      if (financeEntryNotes) financeEntryNotes.value = entry.notes;
+      if (financeEntrySubmit) {
+        financeEntrySubmit.dataset.i18n = 'finance.saveChanges';
+        financeEntrySubmit.textContent = financeText('finance.saveChanges', 'Save changes');
+      }
+      if (financeEntryCancel) financeEntryCancel.hidden = false;
+      setFinanceFeedback('');
+
+      financeEntryForm?.scrollIntoView({
+        behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+        block: 'center'
+      });
+      window.setTimeout(() => financeEntryDescription?.focus({ preventScroll: true }), 240);
+    }
+
+    async function saveFinanceEntryFromForm() {
       if (FinanceRuntime.saving) return;
 
       const payload = financePayloadFromForm();
@@ -19391,33 +19542,46 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
       }
 
       FinanceRuntime.saving = true;
+      const editingId = FinanceRuntime.editingId;
 
       if (financeEntrySubmit) {
         financeEntrySubmit.disabled = true;
-        financeEntrySubmit.textContent = financeText('finance.adding', 'Adding…');
+        financeEntrySubmit.textContent = editingId
+          ? financeText('finance.savingChanges', 'Saving…')
+          : financeText('finance.adding', 'Adding…');
       }
+      if (financeEntryCancel) financeEntryCancel.disabled = true;
 
       setFinanceFeedback('');
 
       try {
-        const result = await InternalData.finance.create(payload);
+        const result = editingId
+          ? await InternalData.finance.update(editingId, payload)
+          : await InternalData.finance.create(payload);
         if (!result.ok) {
           setFinanceFeedback(financeText('finance.error.save', 'The finance entry could not be saved.'), 'error');
           return;
         }
 
-        FinanceRuntime.entries.unshift(result.entry);
+        if (editingId) {
+          FinanceRuntime.entries = FinanceRuntime.entries.map(entry => entry.id === editingId ? result.entry : entry);
+        } else {
+          FinanceRuntime.entries.unshift(result.entry);
+        }
         renderFinanceModule();
         resetFinanceForm();
-        setFinanceFeedback(financeText('finance.added', 'Entry added'));
+        setFinanceFeedback(financeText(editingId ? 'finance.updated' : 'finance.added', editingId ? 'Entry updated' : 'Entry added'));
       } catch (error) {
         setFinanceFeedback(financeText('finance.error.save', 'The finance entry could not be saved.'), 'error');
-        window.dispatchEvent(new CustomEvent('moscatelli:finance-create-error', { detail: { error: publicErrorDetail(error) } }));
+        window.dispatchEvent(new CustomEvent(editingId ? 'moscatelli:finance-update-error' : 'moscatelli:finance-create-error', { detail: { error: publicErrorDetail(error) } }));
       } finally {
         FinanceRuntime.saving = false;
+        if (financeEntryCancel) financeEntryCancel.disabled = false;
         if (financeEntrySubmit) {
           financeEntrySubmit.disabled = false;
-          financeEntrySubmit.textContent = financeText('finance.add', 'Add entry');
+          financeEntrySubmit.textContent = FinanceRuntime.editingId
+            ? financeText('finance.saveChanges', 'Save changes')
+            : financeText('finance.add', 'Add entry');
         }
       }
     }
@@ -19435,7 +19599,16 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
 
     financeEntryForm?.addEventListener('submit', event => {
       event.preventDefault();
-      createFinanceEntryFromForm();
+      saveFinanceEntryFromForm();
+    });
+
+    financeEntryCancel?.addEventListener('click', () => {
+      if (!FinanceRuntime.saving) resetFinanceForm();
+    });
+
+    financeLedgerBody?.addEventListener('click', event => {
+      const control = event.target.closest('[data-finance-edit]');
+      if (control) beginFinanceEntryEdit(control.dataset.financeEdit);
     });
 
     financeRetry?.addEventListener('click', () => loadFinanceEntries({ force: true }));
@@ -21212,6 +21385,7 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
       if (productDialog && !productDialog.hidden) closeProductDialog();
       if (productLotDialog && !productLotDialog.hidden) closeProductLotDialog();
       if (supplierDialog && !supplierDialog.hidden) closeSupplierDialog();
+      resetFinanceForm();
       [calendarEventForm, projectForm, productForm, productLotForm, supplierForm].forEach(form => {
         form?.reset();
         form?.querySelectorAll('button,input,select,textarea').forEach(control => { control.disabled = false; });
