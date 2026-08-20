@@ -8220,6 +8220,27 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
       overflow-wrap: anywhere;
     }
 
+    .finance-overview-value-primary,
+    .finance-overview-value-reference {
+      display: block;
+    }
+
+    .finance-overview-value-reference {
+      width: fit-content;
+      margin-top: clamp(10px, 1.25vh, 16px);
+      font-family: "Cormorant Garamond", serif;
+      font-size: clamp(15px, 1.05vw, 20px);
+      font-weight: 400;
+      line-height: 1.35;
+      letter-spacing: 0.045em;
+      color: var(--cream);
+      opacity: 0.48;
+    }
+
+    .finance-overview-value-reference.is-negative {
+      color: rgba(232, 192, 122, 0.72);
+    }
+
     .finance-overview-value.is-negative,
     .finance-overview-stat-value.is-negative {
       color: rgba(232, 192, 122, 0.72);
@@ -8483,6 +8504,11 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
 
       .finance-overview-value {
         font-size: clamp(32px, 10vw, 48px);
+      }
+
+      .finance-overview-value-reference {
+        margin-top: 9px;
+        font-size: 16px;
       }
 
       .finance-overview-secondary {
@@ -11175,7 +11201,10 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
           <div class="finance-overview-hero">
             <div class="finance-overview-primary">
               <span class="finance-overview-eyebrow i18n-text" data-i18n="finance.overview.available">Available capital</span>
-              <strong class="finance-overview-value" data-finance-overview="available">—</strong>
+              <strong class="finance-overview-value" data-finance-overview="available">
+                <span class="finance-overview-value-primary">—</span>
+                <small class="finance-overview-value-reference" data-finance-overview-reference hidden></small>
+              </strong>
               <span class="finance-overview-context i18n-text" data-i18n="finance.overview.availableContext">Recorded contributions less paid expenditure</span>
             </div>
             <div class="finance-overview-secondary">
@@ -14223,6 +14252,7 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
         'finance.tab.suppliers': 'Suppliers',
         'finance.reserved': 'Reserved',
         'finance.overview.available': 'Available capital',
+        'finance.overview.brlReference': 'BRL reference',
         'finance.overview.availableContext': 'Recorded contributions less paid expenditure',
         'finance.overview.committed': 'Committed',
         'finance.overview.committedContext': 'Agreed, not yet paid',
@@ -14672,6 +14702,7 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
         'finance.tab.suppliers': 'Fornecedores',
         'finance.reserved': 'Reservado',
         'finance.overview.available': 'Capital disponível',
+        'finance.overview.brlReference': 'Referência em BRL',
         'finance.overview.availableContext': 'Contribuições registradas menos despesas pagas',
         'finance.overview.committed': 'Comprometido',
         'finance.overview.committedContext': 'Acordado, ainda não pago',
@@ -19110,6 +19141,25 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
     function renderFinanceOverviewAmount(key, map, currencies) {
       const element = financeWorkspace?.querySelector(`[data-finance-overview="${key}"]`);
       if (!element) return;
+
+      if (key === 'available') {
+        const primary = element.querySelector('.finance-overview-value-primary');
+        const reference = element.querySelector('[data-finance-overview-reference]');
+        const eurAmount = Number(map.get('EUR') || 0);
+        const hasBrl = currencies.includes('BRL');
+        const brlAmount = Number(map.get('BRL') || 0);
+
+        if (primary) primary.textContent = formatFinanceMoney(eurAmount, 'EUR');
+        if (reference) {
+          const referenceLabel = translations[currentLang]?.['finance.overview.brlReference'] || 'BRL reference';
+          reference.textContent = hasBrl ? `${referenceLabel} · ${formatFinanceMoney(brlAmount, 'BRL')}` : '';
+          reference.hidden = !hasBrl;
+          reference.classList.toggle('is-negative', hasBrl && brlAmount < 0);
+        }
+        element.classList.toggle('is-negative', eurAmount < 0);
+        return;
+      }
+
       element.textContent = formatFinanceCurrencyMap(map, currencies);
       element.classList.toggle('is-negative', financeMapHasNegative(map));
     }

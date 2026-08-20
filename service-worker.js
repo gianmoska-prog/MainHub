@@ -1,4 +1,4 @@
-const CACHE_NAME = 'moscatelli-shell-30-calendar-recurrence';
+const CACHE_NAME = 'moscatelli-shell-31-finance-currency-hierarchy';
 const SHELL_ASSETS = [
   './',
   './index.html',
