@@ -1,4 +1,4 @@
-const CACHE_NAME = 'moscatelli-shell-32-finance-entry-editing';
+const CACHE_NAME = 'moscatelli-shell-33-palazzo-palette';
 const SHELL_ASSETS = [
   './',
   './index.html',
