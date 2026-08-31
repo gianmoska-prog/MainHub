@@ -1,4 +1,4 @@
-const CACHE_NAME = 'moscatelli-shell-33-palazzo-palette';
+const CACHE_NAME = 'moscatelli-shell-34-operations-editorial';
 const SHELL_ASSETS = [
   './',
   './index.html',
