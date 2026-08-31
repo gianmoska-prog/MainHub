@@ -1,9 +1,9 @@
-const CACHE_NAME = 'moscatelli-shell-36-marketing-layout-fix';
+const CACHE_NAME = 'moscatelli-shell-37-marketing-navigation-fix';
 const SHELL_ASSETS = [
   './',
   './index.html',
   './marketing-workspace.css?v=2',
-  './marketing-workspace.js?v=1',
+  './marketing-workspace.js?v=2',
   './manifest.webmanifest?v=28',
   './assets/brand/app-icon.svg',
   './assets/brand/app-icon-192.png?v=28',

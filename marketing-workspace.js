@@ -236,6 +236,12 @@
   $('marketingProjectAdd')?.addEventListener('click',()=>openProjectEditor());
   $('marketingProjectForm')?.addEventListener('submit',saveProject);
   $('marketingProjectFilters')?.addEventListener('click',event=>{const button=event.target.closest('[data-project-filter]');if(!button)return;state.projectFilter=button.dataset.projectFilter;document.querySelectorAll('[data-project-filter]').forEach(item=>item.setAttribute('aria-pressed',String(item===button)));renderProjects()});
+  $('divisionReturn')?.addEventListener('click',event=>{
+    if(!String(currentRoute||'').startsWith('divisions/marketing/'))return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    navigateTo(ROUTES.MARKETING);
+  },true);
 
   window.addEventListener('moscatelli:internal-user',()=>{state.loaded={social:false,contacts:false,projects:false};onRoute(currentRoute)});
   window.addEventListener('moscatelli:internal-sign-out',()=>{if(state.channel&&client())client().removeChannel(state.channel);state.channel=null;state.social=[];state.contacts=[];state.projects=[];state.loaded={social:false,contacts:false,projects:false}});
