@@ -10954,6 +10954,7 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
     }
 
 </style>
+  <link rel="stylesheet" href="marketing-workspace.css?v=1" />
 </head>
 <body data-internal-mode="supabase" data-internal-auth="signed_out" data-internal-ready="false" data-internal-route="public" data-internal-feature="public">
 
@@ -11491,7 +11492,7 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
         </button>
       </div>
     </section>
-    <section class="route-view route-division-page route-division-marketing" data-view="divisions/marketing" aria-hidden="true">
+    <section class="route-view route-division-page route-division-marketing marketing-route" data-view="divisions/marketing" aria-hidden="true">
       <div class="internal-gate internal-gate-division" data-internal-gate="division-marketing" aria-hidden="true">
         <div class="internal-gate-panel">
           <div class="internal-gate-kicker i18n-text" data-i18n="internal.kicker">Private Access</div>
@@ -11510,11 +11511,120 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
             </form>
         </div>
       </div>
-      <div class="division-empty-workspace" aria-label="Marketing workspace">
-        <div class="division-empty-kicker i18n-text" data-i18n="division.empty.kicker">Private workspace</div>
-        <h1 class="division-empty-title i18n-text" data-i18n="divisions.marketing">Marketing</h1>
-        <p class="division-empty-copy i18n-text" data-i18n="division.empty.copy">No modules have been added to this workspace yet.</p>
+      <div class="marketing-landing" id="marketingWorkspace" aria-label="Marketing workspace">
+        <header class="marketing-hero">
+          <div class="marketing-eyebrow">Private workspace · Division I</div>
+          <h1>Marketing</h1>
+          <p>Shape how MOSCATELLI is seen, remembered, and encountered—across every screen and every room.</p>
+        </header>
+        <section class="marketing-overview-strip" aria-label="Marketing overview">
+          <article><span>Social pipeline</span><strong id="marketingOverviewSocial">—</strong><small>Posts &amp; advertisements</small></article>
+          <article><span>Network</span><strong id="marketingOverviewContacts">—</strong><small>Curated relationships</small></article>
+          <article><span>Offline projects</span><strong id="marketingOverviewProjects">—</strong><small>Active initiatives</small></article>
+        </section>
+        <div class="marketing-module-grid">
+          <button class="marketing-module-card is-social" type="button" data-marketing-route="divisions/marketing/social">
+            <span class="marketing-module-number">I</span><span class="marketing-module-meta">Digital presence</span>
+            <span class="marketing-module-title">Social Media</span>
+            <span class="marketing-module-copy">Plan posts, advertisements, campaigns, and publication dates across the four principal platforms.</span>
+            <span class="marketing-module-action">Enter studio <b>→</b></span>
+          </button>
+          <button class="marketing-module-card is-offline" type="button" data-marketing-route="divisions/marketing/offline">
+            <span class="marketing-module-number">II</span><span class="marketing-module-meta">Physical world</span>
+            <span class="marketing-module-title">Offline Marketing</span>
+            <span class="marketing-module-copy">Cultivate the people, partnerships, encounters, and projects that give the house a life beyond the screen.</span>
+            <span class="marketing-module-action">Enter network <b>→</b></span>
+          </button>
+        </div>
       </div>
+    </section>
+
+    <section class="route-view route-division-page marketing-route route-marketing-social" data-view="divisions/marketing/social" aria-hidden="true">
+      <div class="internal-gate internal-gate-division" data-internal-gate="division-marketing-social" aria-hidden="true"></div>
+      <div class="marketing-page marketing-social-page" id="marketingSocialWorkspace">
+        <header class="marketing-page-head">
+          <div><button class="marketing-breadcrumb" type="button" data-marketing-route="divisions/marketing">Marketing</button><span> / Social Media</span>
+            <h1>Social Media</h1><p>A composed publishing room for the house's outward voice.</p></div>
+          <button class="marketing-primary-action" id="marketingSocialAdd" type="button">New item</button>
+        </header>
+        <nav class="marketing-platform-tabs" id="marketingPlatformTabs" aria-label="Social platforms">
+          <button type="button" data-platform="instagram" aria-pressed="true"><span>01</span>Instagram</button>
+          <button type="button" data-platform="youtube" aria-pressed="false"><span>02</span>YouTube</button>
+          <button type="button" data-platform="facebook" aria-pressed="false"><span>03</span>Facebook</button>
+          <button type="button" data-platform="tiktok" aria-pressed="false"><span>04</span>TikTok</button>
+        </nav>
+        <div class="marketing-register-head">
+          <div><div class="marketing-section-kicker" id="marketingSocialPlatformLabel">Instagram</div><h2>Publishing register</h2></div>
+          <div class="marketing-segmented" id="marketingSocialTypeTabs" role="group" aria-label="Content type">
+            <button type="button" data-social-type="post" aria-pressed="true">Posts</button>
+            <button type="button" data-social-type="ad" aria-pressed="false">Ads</button>
+          </div>
+        </div>
+        <div class="marketing-status-line" id="marketingSocialStatus" aria-live="polite"></div>
+        <div class="marketing-social-list" id="marketingSocialList"></div>
+        <div class="marketing-empty" id="marketingSocialEmpty" hidden><span>Nothing recorded yet</span><p>Begin with an idea, a draft, or a scheduled publication.</p></div>
+      </div>
+      <dialog class="marketing-dialog" id="marketingSocialDialog" aria-labelledby="marketingSocialDialogTitle">
+        <form class="marketing-dialog-card" id="marketingSocialForm" method="dialog">
+          <input id="marketingSocialId" type="hidden"><div class="marketing-dialog-kicker">Social Media studio</div>
+          <h2 id="marketingSocialDialogTitle">New social item</h2>
+          <div class="marketing-form-grid">
+            <label class="is-wide"><span>Title</span><input id="marketingSocialTitle" type="text" maxlength="160" required></label>
+            <label><span>Platform</span><select id="marketingSocialPlatform"><option value="instagram">Instagram</option><option value="youtube">YouTube</option><option value="facebook">Facebook</option><option value="tiktok">TikTok</option></select></label>
+            <label><span>Register</span><select id="marketingSocialType"><option value="post">Post</option><option value="ad">Ad</option></select></label>
+            <label><span>Status</span><select id="marketingSocialItemStatus"><option value="idea">Idea</option><option value="draft">Draft</option><option value="scheduled">Scheduled</option><option value="published">Published</option><option value="paused">Paused</option><option value="completed">Completed</option></select></label>
+            <label><span>Owner</span><input id="marketingSocialOwner" type="text" maxlength="120"></label>
+            <label class="is-wide"><span>Scheduled for</span><input id="marketingSocialScheduled" type="datetime-local"></label>
+            <label class="is-wide"><span>Campaign</span><input id="marketingSocialCampaign" type="text" maxlength="160"></label>
+            <label class="is-wide"><span>Objective</span><textarea id="marketingSocialObjective" maxlength="600"></textarea></label>
+            <label class="is-wide"><span>Caption / working notes</span><textarea id="marketingSocialContent" maxlength="4000"></textarea></label>
+            <label class="is-wide"><span>Destination link</span><input id="marketingSocialUrl" type="url" maxlength="600" placeholder="https://"></label>
+            <label><span>Budget</span><input id="marketingSocialBudget" type="number" min="0" step="0.01"></label>
+            <label><span>Currency</span><input id="marketingSocialCurrency" type="text" maxlength="3" value="EUR"></label>
+          </div>
+          <div class="marketing-form-feedback" id="marketingSocialFeedback"></div>
+          <div class="marketing-dialog-actions"><button type="button" data-marketing-dialog-close>Cancel</button><button class="is-primary" type="submit">Save item</button></div>
+        </form>
+      </dialog>
+    </section>
+
+    <section class="route-view route-division-page marketing-route route-marketing-offline" data-view="divisions/marketing/offline" aria-hidden="true">
+      <div class="internal-gate internal-gate-division" data-internal-gate="division-marketing-offline" aria-hidden="true"></div>
+      <div class="marketing-page marketing-offline-landing">
+        <header class="marketing-page-head"><div><button class="marketing-breadcrumb" type="button" data-marketing-route="divisions/marketing">Marketing</button><span> / Offline</span><h1>Offline Marketing</h1><p>The living network around MOSCATELLI: people, places, and purposeful collaborations.</p></div></header>
+        <div class="marketing-offline-grid">
+          <button class="marketing-offline-card" type="button" data-marketing-route="divisions/marketing/offline/contacts"><span class="marketing-module-number">I</span><span class="marketing-module-meta">Relationship directory</span><strong>Contacts</strong><p>Hold the context behind every introduction, conversation, and potential relationship.</p><em>Open directory →</em></button>
+          <button class="marketing-offline-card" type="button" data-marketing-route="divisions/marketing/offline/projects"><span class="marketing-module-number">II</span><span class="marketing-module-meta">Initiatives &amp; encounters</span><strong>Projects</strong><p>Follow collaborations, activations, events, and future plans from intention to completion.</p><em>Open register →</em></button>
+        </div>
+      </div>
+    </section>
+
+    <section class="route-view route-division-page marketing-route route-marketing-contacts" data-view="divisions/marketing/offline/contacts" aria-hidden="true">
+      <div class="internal-gate internal-gate-division" data-internal-gate="division-marketing-contacts" aria-hidden="true"></div>
+      <div class="marketing-page" id="marketingContactsWorkspace">
+        <header class="marketing-page-head"><div><button class="marketing-breadcrumb" type="button" data-marketing-route="divisions/marketing/offline">Offline Marketing</button><span> / Contacts</span><h1>Contacts</h1><p>A deliberate, private directory for the relationships around the house.</p></div><button class="marketing-primary-action" id="marketingContactAdd" type="button">New contact</button></header>
+        <div class="marketing-toolbar"><label><span>Search directory</span><input id="marketingContactSearch" type="search" placeholder="Name, organisation, area or country"></label><label><span>Relationship</span><select id="marketingContactStageFilter"><option value="all">All</option><option value="prospect">Prospect</option><option value="introduced">Introduced</option><option value="active">Active</option><option value="partner">Partner</option><option value="dormant">Dormant</option></select></label><strong id="marketingContactCount">—</strong></div>
+        <div class="marketing-status-line" id="marketingContactsStatus" aria-live="polite"></div><div class="marketing-contact-grid" id="marketingContactsList"></div><div class="marketing-empty" id="marketingContactsEmpty" hidden><span>No contacts found</span><p>Add the first relationship or adjust the filters.</p></div>
+      </div>
+      <dialog class="marketing-dialog" id="marketingContactDialog" aria-labelledby="marketingContactDialogTitle">
+        <form class="marketing-dialog-card" id="marketingContactForm" method="dialog"><input id="marketingContactId" type="hidden"><div class="marketing-dialog-kicker">Offline network</div><h2 id="marketingContactDialogTitle">New contact</h2>
+          <div class="marketing-form-grid"><label><span>Full name</span><input id="marketingContactName" type="text" maxlength="180" required></label><label><span>Organisation</span><input id="marketingContactOrganisation" type="text" maxlength="180"></label><label><span>Area / profession</span><input id="marketingContactArea" type="text" maxlength="180"></label><label><span>Relationship</span><select id="marketingContactStage"><option value="prospect">Prospect</option><option value="introduced">Introduced</option><option value="active">Active</option><option value="partner">Partner</option><option value="dormant">Dormant</option></select></label><label><span>Country</span><input id="marketingContactCountry" type="text" maxlength="120"></label><label><span>City</span><input id="marketingContactCity" type="text" maxlength="120"></label><label><span>Email</span><input id="marketingContactEmail" type="email" maxlength="254"></label><label><span>Phone</span><input id="marketingContactPhone" type="tel" maxlength="80"></label><label><span>Instagram</span><input id="marketingContactInstagram" type="url" maxlength="600" placeholder="https://"></label><label><span>LinkedIn</span><input id="marketingContactLinkedin" type="url" maxlength="600" placeholder="https://"></label><label class="is-wide"><span>Website / other link</span><input id="marketingContactWebsite" type="url" maxlength="600" placeholder="https://"></label><label class="is-wide"><span>Private notes</span><textarea id="marketingContactNotes" maxlength="3000"></textarea></label></div>
+          <div class="marketing-form-feedback" id="marketingContactFeedback"></div><div class="marketing-dialog-actions"><button type="button" data-marketing-dialog-close>Cancel</button><button class="is-primary" type="submit">Save contact</button></div>
+        </form>
+      </dialog>
+      <dialog class="marketing-dialog marketing-contact-detail-dialog" id="marketingContactDetailDialog" aria-labelledby="marketingContactDetailName"><div class="marketing-dialog-card"><div class="marketing-dialog-kicker">Personal details</div><h2 id="marketingContactDetailName"></h2><p class="marketing-contact-detail-role" id="marketingContactDetailRole"></p><dl class="marketing-contact-detail-list" id="marketingContactDetailList"></dl><p class="marketing-contact-detail-notes" id="marketingContactDetailNotes"></p><div class="marketing-dialog-actions"><button type="button" data-marketing-dialog-close>Close</button><button class="is-primary" id="marketingContactDetailEdit" type="button">Edit contact</button></div></div></dialog>
+    </section>
+
+    <section class="route-view route-division-page marketing-route route-marketing-projects" data-view="divisions/marketing/offline/projects" aria-hidden="true">
+      <div class="internal-gate internal-gate-division" data-internal-gate="division-marketing-projects" aria-hidden="true"></div>
+      <div class="marketing-page" id="marketingProjectsWorkspace">
+        <header class="marketing-page-head"><div><button class="marketing-breadcrumb" type="button" data-marketing-route="divisions/marketing/offline">Offline Marketing</button><span> / Projects</span><h1>Projects</h1><p>A concise view of physical initiatives—from first intention to completion.</p></div><button class="marketing-primary-action" id="marketingProjectAdd" type="button">New project</button></header>
+        <nav class="marketing-project-filters" id="marketingProjectFilters" aria-label="Project status"><button type="button" data-project-filter="all" aria-pressed="true">All</button><button type="button" data-project-filter="ongoing" aria-pressed="false">Ongoing</button><button type="button" data-project-filter="future" aria-pressed="false">Future plans</button><button type="button" data-project-filter="completed" aria-pressed="false">Completed</button></nav>
+        <div class="marketing-status-line" id="marketingProjectsStatus" aria-live="polite"></div><div class="marketing-project-list" id="marketingProjectsList"></div><div class="marketing-empty" id="marketingProjectsEmpty" hidden><span>No projects in this view</span><p>Add an initiative or choose another status.</p></div>
+      </div>
+      <dialog class="marketing-dialog" id="marketingProjectDialog" aria-labelledby="marketingProjectDialogTitle"><form class="marketing-dialog-card" id="marketingProjectForm" method="dialog"><input id="marketingProjectId" type="hidden"><div class="marketing-dialog-kicker">Offline initiatives</div><h2 id="marketingProjectDialogTitle">New project</h2>
+        <div class="marketing-form-grid"><label class="is-wide"><span>Project title</span><input id="marketingProjectTitle" type="text" maxlength="180" required></label><label><span>Status</span><select id="marketingProjectStatus"><option value="future">Future plan</option><option value="ongoing">Ongoing</option><option value="completed">Completed</option></select></label><label><span>Type</span><select id="marketingProjectType"><option value="campaign">Campaign</option><option value="partnership">Partnership</option><option value="event">Event</option><option value="editorial">Editorial</option><option value="networking">Networking</option><option value="other">Other</option></select></label><label><span>Lead</span><input id="marketingProjectLead" type="text" maxlength="120"></label><label><span>Country</span><input id="marketingProjectCountry" type="text" maxlength="120"></label><label><span>Start date</span><input id="marketingProjectStart" type="date"></label><label><span>Target date</span><input id="marketingProjectTarget" type="date"></label><label><span>Budget</span><input id="marketingProjectBudget" type="number" min="0" step="0.01"></label><label><span>Currency</span><input id="marketingProjectCurrency" type="text" maxlength="3" value="EUR"></label><label class="is-wide"><span>Objective</span><textarea id="marketingProjectObjective" maxlength="1200"></textarea></label><label class="is-wide"><span>Next action</span><textarea id="marketingProjectNext" maxlength="600"></textarea></label><label class="is-wide"><span>Notes</span><textarea id="marketingProjectNotes" maxlength="3000"></textarea></label></div>
+        <div class="marketing-form-feedback" id="marketingProjectFeedback"></div><div class="marketing-dialog-actions"><button type="button" data-marketing-dialog-close>Cancel</button><button class="is-primary" type="submit">Save project</button></div></form></dialog>
     </section>
     <section class="route-view route-division-page route-division-finance" data-view="divisions/finance" aria-hidden="true">
       <div class="internal-gate internal-gate-division" data-internal-gate="division-finance" aria-hidden="true">
@@ -12308,6 +12418,10 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
       DASHBOARD: 'dashboard',
       DIVISIONS: 'divisions',
       MARKETING: 'divisions/marketing',
+      MARKETING_SOCIAL: 'divisions/marketing/social',
+      MARKETING_OFFLINE: 'divisions/marketing/offline',
+      MARKETING_CONTACTS: 'divisions/marketing/offline/contacts',
+      MARKETING_PROJECTS: 'divisions/marketing/offline/projects',
       FINANCE: 'divisions/finance',
       OPERATIONS: 'divisions/operations',
       OPERATIONS_CALENDAR: 'divisions/operations/calendar',
@@ -12323,9 +12437,17 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
       ROUTES.OPERATIONS_SUPPLIERS
     ]);
     const OPERATIONS_CHILD_ROUTE_SET = new Set(OPERATIONS_CHILD_ROUTES);
+    const MARKETING_CHILD_ROUTES = Object.freeze([
+      ROUTES.MARKETING_SOCIAL,
+      ROUTES.MARKETING_OFFLINE,
+      ROUTES.MARKETING_CONTACTS,
+      ROUTES.MARKETING_PROJECTS
+    ]);
+    const MARKETING_CHILD_ROUTE_SET = new Set(MARKETING_CHILD_ROUTES);
     const VALID_ROUTES = new Set(Object.values(ROUTES));
     const DIVISION_CHILD_ROUTES = new Set([
       ROUTES.MARKETING,
+      ...MARKETING_CHILD_ROUTES,
       ROUTES.FINANCE,
       ROUTES.OPERATIONS,
       ...OPERATIONS_CHILD_ROUTES
@@ -12337,6 +12459,10 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
       [ROUTES.DASHBOARD]: 'Dashboard — Moscatelli',
       [ROUTES.DIVISIONS]: 'Divisions — Moscatelli',
       [ROUTES.MARKETING]: 'Marketing — Moscatelli',
+      [ROUTES.MARKETING_SOCIAL]: 'Social Media — Moscatelli',
+      [ROUTES.MARKETING_OFFLINE]: 'Offline Marketing — Moscatelli',
+      [ROUTES.MARKETING_CONTACTS]: 'Marketing Contacts — Moscatelli',
+      [ROUTES.MARKETING_PROJECTS]: 'Marketing Projects — Moscatelli',
       [ROUTES.FINANCE]: 'Finance — Moscatelli',
       [ROUTES.OPERATIONS]: 'Operations — Moscatelli',
       [ROUTES.OPERATIONS_CALENDAR]: 'Calendar — Moscatelli',
@@ -12555,6 +12681,7 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
       protectedRoutes: Object.freeze([
         ROUTES.DASHBOARD,
         ROUTES.MARKETING,
+        ...MARKETING_CHILD_ROUTES,
         ROUTES.FINANCE,
         ROUTES.OPERATIONS,
         ...OPERATIONS_CHILD_ROUTES
@@ -15998,7 +16125,7 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
       const targetRoute = normaliseRoute(route);
 
       if (targetRoute === ROUTES.DASHBOARD) return 'record';
-      if (targetRoute === ROUTES.MARKETING) return 'division-marketing';
+      if (targetRoute === ROUTES.MARKETING || MARKETING_CHILD_ROUTE_SET.has(targetRoute)) return 'division-marketing';
       if (targetRoute === ROUTES.FINANCE) return 'division-finance';
       if (targetRoute === ROUTES.OPERATIONS || isOperationsChildRoute(targetRoute)) return 'division-operations';
 
@@ -16532,6 +16659,10 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
       return OPERATIONS_CHILD_ROUTE_SET.has(normaliseRoute(route));
     }
 
+    function isMarketingChildRoute(route) {
+      return MARKETING_CHILD_ROUTE_SET.has(normaliseRoute(route));
+    }
+
     function isDivisionChildRoute(route) {
       return DIVISION_CHILD_ROUTES.has(route);
     }
@@ -16617,7 +16748,8 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
 
       divisionDoors.forEach(door => {
         const isOperationsChild = isOperationsChildRoute(nextRoute) && door.dataset.route === ROUTES.OPERATIONS;
-        const isCurrent = door.dataset.route === nextRoute || isOperationsChild;
+        const isMarketingChild = isMarketingChildRoute(nextRoute) && door.dataset.route === ROUTES.MARKETING;
+        const isCurrent = door.dataset.route === nextRoute || isOperationsChild || isMarketingChild;
         door.classList.toggle('is-selected', isCurrent);
         door.setAttribute('aria-pressed', String(isCurrent));
       });
@@ -16625,10 +16757,11 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
 
       if (divisionReturn) {
         const returnsToOperations = isOperationsChildRoute(nextRoute);
+        const returnsToMarketing = isMarketingChildRoute(nextRoute);
         const translationKey = returnsToOperations ? 'ui.returnOperations' : 'ui.return';
         divisionReturn.dataset.i18n = translationKey;
-        divisionReturn.textContent = translations[currentLang]?.[translationKey] || (returnsToOperations ? 'Operations' : 'Return');
-        divisionReturn.setAttribute('aria-label', returnsToOperations ? 'Return to Operations' : 'Return to divisions');
+        divisionReturn.textContent = returnsToMarketing ? 'Marketing' : (translations[currentLang]?.[translationKey] || (returnsToOperations ? 'Operations' : 'Return'));
+        divisionReturn.setAttribute('aria-label', returnsToOperations ? 'Return to Operations' : (returnsToMarketing ? 'Return to Marketing' : 'Return to divisions'));
       }
 
       applyInternalRouteProtection(nextRoute);
@@ -16636,6 +16769,8 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
       if (nextRoute === ROUTES.HOME && HomeOverviewRuntime.open && isInternalUserSignedIn()) {
         queueMicrotask(() => loadHomeOverview({ force: true }));
       }
+
+      queueMicrotask(() => window.MainHubMarketing?.onRoute?.(nextRoute));
     }
 
     async function navigateTo(route) {
@@ -17842,7 +17977,7 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
     divisionReturn?.addEventListener('click', () => {
       const targetRoute = isOperationsChildRoute(currentRoute)
         ? ROUTES.OPERATIONS
-        : ROUTES.DIVISIONS;
+        : (isMarketingChildRoute(currentRoute) ? ROUTES.MARKETING : ROUTES.DIVISIONS);
       navigateTo(targetRoute);
       releaseTapFocus();
     });
@@ -21829,5 +21964,6 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
       }, { once: true });
     }
   </script>
+  <script src="marketing-workspace.js?v=1"></script>
 </body>
 </html>

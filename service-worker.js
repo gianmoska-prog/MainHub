@@ -1,7 +1,9 @@
-const CACHE_NAME = 'moscatelli-shell-34-operations-editorial';
+const CACHE_NAME = 'moscatelli-shell-35-marketing-workspace';
 const SHELL_ASSETS = [
   './',
   './index.html',
+  './marketing-workspace.css?v=1',
+  './marketing-workspace.js?v=1',
   './manifest.webmanifest?v=28',
   './assets/brand/app-icon.svg',
   './assets/brand/app-icon-192.png?v=28',
@@ -49,7 +51,11 @@ self.addEventListener('fetch', event => {
     return;
   }
 
-  if (!url.pathname.includes('/assets/')) return;
+  if (
+    !url.pathname.includes('/assets/') &&
+    !url.pathname.endsWith('/marketing-workspace.css') &&
+    !url.pathname.endsWith('/marketing-workspace.js')
+  ) return;
 
   event.respondWith(
     caches.match(request).then(cached => {
