@@ -39,6 +39,27 @@ body[data-route^="divisions/marketing"] .division-return {
 
 .marketing-landing *, .marketing-page * { box-sizing: border-box; }
 
+/* MainHub's fixed masthead intentionally uses a global `header` selector.
+   Marketing has editorial headers inside its routes, so fully return those
+   descendants to normal document flow. */
+.marketing-route header,
+.marketing-route footer {
+  position: relative !important;
+  inset: auto !important;
+  z-index: auto !important;
+  width: auto !important;
+  height: auto !important;
+  min-height: 0 !important;
+  opacity: 1 !important;
+  transform: none !important;
+  pointer-events: auto !important;
+  background: transparent !important;
+  border: 0;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
 .marketing-hero {
   position: relative;
   display: grid;
