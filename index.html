@@ -10954,7 +10954,7 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
     }
 
 </style>
-  <link rel="stylesheet" href="marketing-workspace.css?v=2" />
+  <link rel="stylesheet" href="marketing-workspace.css?v=6" />
 </head>
 <body data-internal-mode="supabase" data-internal-auth="signed_out" data-internal-ready="false" data-internal-route="public" data-internal-feature="public">
 
@@ -11131,7 +11131,7 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
         <button class="slack-integration-test i18n-text" id="slackIntegrationTest" type="button" data-i18n="slack.test">Send test</button>
       </div>
     </div>
-    <button class="division-return i18n-text" id="divisionReturn" type="button" data-i18n="ui.return" aria-label="Return to divisions">Return</button>
+    <button class="division-return i18n-text" id="divisionReturn" type="button" data-i18n="ui.return" data-i18n-aria-label="ui.returnDivisionsAria" aria-label="Return to divisions">Return</button>
   </header>
 
   <section class="mainhub-search-dialog" id="mainhubSearchDialog" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="mainhubSearchTitle" inert>
@@ -11511,29 +11511,29 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
             </form>
         </div>
       </div>
-      <div class="marketing-landing" id="marketingWorkspace" aria-label="Marketing workspace">
+      <div class="marketing-landing" id="marketingWorkspace" data-i18n-aria-label="marketing.workspace.aria" aria-label="Marketing workspace">
         <header class="marketing-hero">
-          <div class="marketing-eyebrow">Private workspace · Division I</div>
+          <div class="marketing-eyebrow" data-i18n="marketing.hero.kicker">Private workspace · Division I</div>
           <h1>Marketing</h1>
-          <p>Shape how MOSCATELLI is seen, remembered, and encountered—across every screen and every room.</p>
+          <p data-i18n="marketing.hero.copy">Shape how MOSCATELLI is seen, remembered, and encountered—across every screen and every room.</p>
         </header>
-        <section class="marketing-overview-strip" aria-label="Marketing overview">
-          <article><span>Social pipeline</span><strong id="marketingOverviewSocial">—</strong><small>Posts &amp; advertisements</small></article>
-          <article><span>Network</span><strong id="marketingOverviewContacts">—</strong><small>Curated relationships</small></article>
-          <article><span>Offline projects</span><strong id="marketingOverviewProjects">—</strong><small>Active initiatives</small></article>
+        <section class="marketing-overview-strip" data-i18n-aria-label="marketing.overview.aria" aria-label="Marketing overview">
+          <article><span data-i18n="marketing.overview.social">Social pipeline</span><strong id="marketingOverviewSocial">—</strong><small data-i18n="marketing.overview.social.copy">Posts &amp; advertisements</small></article>
+          <article><span data-i18n="marketing.overview.network">Network</span><strong id="marketingOverviewContacts">—</strong><small data-i18n="marketing.overview.network.copy">Curated relationships</small></article>
+          <article><span data-i18n="marketing.overview.projects">Offline projects</span><strong id="marketingOverviewProjects">—</strong><small data-i18n="marketing.overview.projects.copy">Active initiatives</small></article>
         </section>
         <div class="marketing-module-grid">
           <button class="marketing-module-card is-social" type="button" data-marketing-route="divisions/marketing/social">
-            <span class="marketing-module-number">I</span><span class="marketing-module-meta">Digital presence</span>
+            <span class="marketing-module-number">I</span><span class="marketing-module-meta" data-i18n="marketing.social.meta">Digital presence</span>
             <span class="marketing-module-title">Social Media</span>
-            <span class="marketing-module-copy">Plan posts, advertisements, campaigns, and publication dates across the four principal platforms.</span>
-            <span class="marketing-module-action">Enter studio <b>→</b></span>
+            <span class="marketing-module-copy" data-i18n="marketing.social.card.copy">Plan posts, advertisements, campaigns, and publication dates across the four principal platforms.</span>
+            <span class="marketing-module-action"><span data-i18n="marketing.social.open">Enter studio</span> <b>→</b></span>
           </button>
           <button class="marketing-module-card is-offline" type="button" data-marketing-route="divisions/marketing/offline">
-            <span class="marketing-module-number">II</span><span class="marketing-module-meta">Physical world</span>
-            <span class="marketing-module-title">Offline Marketing</span>
-            <span class="marketing-module-copy">Cultivate the people, partnerships, encounters, and projects that give the house a life beyond the screen.</span>
-            <span class="marketing-module-action">Enter network <b>→</b></span>
+            <span class="marketing-module-number">II</span><span class="marketing-module-meta" data-i18n="marketing.offline.meta">Physical world</span>
+            <span class="marketing-module-title" data-i18n="marketing.offline.title">Offline Marketing</span>
+            <span class="marketing-module-copy" data-i18n="marketing.offline.card.copy">Cultivate the people, partnerships, encounters, and projects that give the house a life beyond the screen.</span>
+            <span class="marketing-module-action"><span data-i18n="marketing.offline.open">Enter network</span> <b>→</b></span>
           </button>
         </div>
       </div>
@@ -11544,46 +11544,46 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
       <div class="marketing-page marketing-social-page" id="marketingSocialWorkspace">
         <header class="marketing-page-head">
           <div><button class="marketing-breadcrumb" type="button" data-marketing-route="divisions/marketing">Marketing</button><span> / Social Media</span>
-            <h1>Social Media</h1><p>A composed publishing room for the house's outward voice.</p></div>
-          <button class="marketing-primary-action" id="marketingSocialAdd" type="button">New item</button>
+            <h1>Social Media</h1><p data-i18n="marketing.social.intro">A composed publishing room for the house's outward voice.</p></div>
+          <button class="marketing-primary-action" id="marketingSocialAdd" type="button" data-i18n="marketing.social.add">New item</button>
         </header>
-        <nav class="marketing-platform-tabs" id="marketingPlatformTabs" aria-label="Social platforms">
+        <nav class="marketing-platform-tabs" id="marketingPlatformTabs" data-i18n-aria-label="marketing.social.platforms.aria" aria-label="Social platforms">
           <button type="button" data-platform="instagram" aria-pressed="true"><span>01</span>Instagram</button>
           <button type="button" data-platform="youtube" aria-pressed="false"><span>02</span>YouTube</button>
           <button type="button" data-platform="facebook" aria-pressed="false"><span>03</span>Facebook</button>
           <button type="button" data-platform="tiktok" aria-pressed="false"><span>04</span>TikTok</button>
         </nav>
         <div class="marketing-register-head">
-          <div><div class="marketing-section-kicker" id="marketingSocialPlatformLabel">Instagram</div><h2>Publishing register</h2></div>
-          <div class="marketing-segmented" id="marketingSocialTypeTabs" role="group" aria-label="Content type">
-            <button type="button" data-social-type="post" aria-pressed="true">Posts</button>
-            <button type="button" data-social-type="ad" aria-pressed="false">Ads</button>
+          <div><div class="marketing-section-kicker" id="marketingSocialPlatformLabel">Instagram</div><h2 data-i18n="marketing.social.register">Publishing register</h2></div>
+          <div class="marketing-segmented" id="marketingSocialTypeTabs" role="group" data-i18n-aria-label="marketing.social.type.aria" aria-label="Content type">
+            <button type="button" data-social-type="post" aria-pressed="true" data-i18n="marketing.social.posts">Posts</button>
+            <button type="button" data-social-type="ad" aria-pressed="false" data-i18n="marketing.social.ads">Ads</button>
           </div>
         </div>
         <div class="marketing-status-line" id="marketingSocialStatus" aria-live="polite"></div>
         <div class="marketing-social-list" id="marketingSocialList"></div>
-        <div class="marketing-empty" id="marketingSocialEmpty" hidden><span>Nothing recorded yet</span><p>Begin with an idea, a draft, or a scheduled publication.</p></div>
+        <div class="marketing-empty" id="marketingSocialEmpty" hidden><span data-i18n="marketing.social.empty">Nothing recorded yet</span><p data-i18n="marketing.social.empty.copy">Begin with an idea, a draft, or a scheduled publication.</p></div>
       </div>
       <dialog class="marketing-dialog" id="marketingSocialDialog" aria-labelledby="marketingSocialDialogTitle">
-        <form class="marketing-dialog-card" id="marketingSocialForm" method="dialog">
-          <input id="marketingSocialId" type="hidden"><div class="marketing-dialog-kicker">Social Media studio</div>
-          <h2 id="marketingSocialDialogTitle">New social item</h2>
+        <form class="marketing-dialog-card" id="marketingSocialForm" method="dialog" novalidate>
+          <input id="marketingSocialId" type="hidden"><div class="marketing-dialog-kicker" data-i18n="marketing.social.dialog.kicker">Social Media studio</div>
+          <h2 id="marketingSocialDialogTitle" data-i18n="marketing.social.dialog.new">New social item</h2>
           <div class="marketing-form-grid">
-            <label class="is-wide"><span>Title</span><input id="marketingSocialTitle" type="text" maxlength="160" required></label>
-            <label><span>Platform</span><select id="marketingSocialPlatform"><option value="instagram">Instagram</option><option value="youtube">YouTube</option><option value="facebook">Facebook</option><option value="tiktok">TikTok</option></select></label>
-            <label><span>Register</span><select id="marketingSocialType"><option value="post">Post</option><option value="ad">Ad</option></select></label>
-            <label><span>Status</span><select id="marketingSocialItemStatus"><option value="idea">Idea</option><option value="draft">Draft</option><option value="scheduled">Scheduled</option><option value="published">Published</option><option value="paused">Paused</option><option value="completed">Completed</option></select></label>
-            <label><span>Owner</span><input id="marketingSocialOwner" type="text" maxlength="120"></label>
-            <label class="is-wide"><span>Scheduled for</span><input id="marketingSocialScheduled" type="datetime-local"></label>
-            <label class="is-wide"><span>Campaign</span><input id="marketingSocialCampaign" type="text" maxlength="160"></label>
-            <label class="is-wide"><span>Objective</span><textarea id="marketingSocialObjective" maxlength="600"></textarea></label>
-            <label class="is-wide"><span>Caption / working notes</span><textarea id="marketingSocialContent" maxlength="4000"></textarea></label>
-            <label class="is-wide"><span>Destination link</span><input id="marketingSocialUrl" type="url" maxlength="600" placeholder="https://"></label>
-            <label><span>Budget</span><input id="marketingSocialBudget" type="number" min="0" step="0.01"></label>
-            <label><span>Currency</span><input id="marketingSocialCurrency" type="text" maxlength="3" value="EUR"></label>
+            <label class="is-wide"><span data-i18n="marketing.field.title">Title</span><input id="marketingSocialTitle" type="text" maxlength="160" required></label>
+            <label><span data-i18n="marketing.field.platform">Platform</span><select id="marketingSocialPlatform"><option value="instagram">Instagram</option><option value="youtube">YouTube</option><option value="facebook">Facebook</option><option value="tiktok">TikTok</option></select></label>
+            <label><span data-i18n="marketing.field.register">Register</span><select id="marketingSocialType"><option value="post" data-i18n="marketing.type.post">Post</option><option value="ad" data-i18n="marketing.type.ad">Ad</option></select></label>
+            <label><span data-i18n="marketing.field.status">Status</span><select id="marketingSocialItemStatus"><option value="idea" data-i18n="marketing.status.idea">Idea</option><option value="draft" data-i18n="marketing.status.draft">Draft</option><option value="scheduled" data-i18n="marketing.status.scheduled">Scheduled</option><option value="published" data-i18n="marketing.status.published">Published</option><option value="paused" data-i18n="marketing.status.paused">Paused</option><option value="completed" data-i18n="marketing.status.completed">Completed</option></select></label>
+            <label><span data-i18n="marketing.field.owner">Owner</span><input id="marketingSocialOwner" type="text" maxlength="120"></label>
+            <label class="is-wide"><span data-i18n="marketing.field.scheduledFor">Scheduled for</span><input id="marketingSocialScheduled" type="datetime-local"></label>
+            <label class="is-wide"><span data-i18n="marketing.field.campaign">Campaign</span><input id="marketingSocialCampaign" type="text" maxlength="160"></label>
+            <label class="is-wide"><span data-i18n="marketing.field.objective">Objective</span><textarea id="marketingSocialObjective" maxlength="600"></textarea></label>
+            <label class="is-wide"><span data-i18n="marketing.field.caption">Caption / working notes</span><textarea id="marketingSocialContent" maxlength="4000"></textarea></label>
+            <label class="is-wide"><span data-i18n="marketing.field.destination">Destination link</span><input id="marketingSocialUrl" type="url" maxlength="600" placeholder="https://"></label>
+            <label><span data-i18n="marketing.field.budget">Budget</span><input id="marketingSocialBudget" type="number" min="0" step="0.01"></label>
+            <label><span data-i18n="marketing.field.currency">Currency</span><input id="marketingSocialCurrency" type="text" maxlength="3" value="EUR"></label>
           </div>
           <div class="marketing-form-feedback" id="marketingSocialFeedback"></div>
-          <div class="marketing-dialog-actions"><button type="button" data-marketing-dialog-close>Cancel</button><button class="is-primary" type="submit">Save item</button></div>
+          <div class="marketing-dialog-actions"><button type="button" data-marketing-dialog-close data-i18n="internal.cancel">Cancel</button><button class="is-primary" type="submit" data-i18n="marketing.social.save">Save item</button></div>
         </form>
       </dialog>
     </section>
@@ -11591,10 +11591,10 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
     <section class="route-view route-division-page marketing-route route-marketing-offline" data-view="divisions/marketing/offline" aria-hidden="true">
       <div class="internal-gate internal-gate-division" data-internal-gate="division-marketing-offline" aria-hidden="true"></div>
       <div class="marketing-page marketing-offline-landing">
-        <header class="marketing-page-head"><div><button class="marketing-breadcrumb" type="button" data-marketing-route="divisions/marketing">Marketing</button><span> / Offline</span><h1>Offline Marketing</h1><p>The living network around MOSCATELLI: people, places, and purposeful collaborations.</p></div></header>
+        <header class="marketing-page-head"><div><button class="marketing-breadcrumb" type="button" data-marketing-route="divisions/marketing">Marketing</button><span> / <span data-i18n="marketing.offline.short">Offline</span></span><h1 data-i18n="marketing.offline.title">Offline Marketing</h1><p data-i18n="marketing.offline.intro">The living network around MOSCATELLI: people, places, and purposeful collaborations.</p></div></header>
         <div class="marketing-offline-grid">
-          <button class="marketing-offline-card" type="button" data-marketing-route="divisions/marketing/offline/contacts"><span class="marketing-module-number">I</span><span class="marketing-module-meta">Relationship directory</span><strong>Contacts</strong><p>Hold the context behind every introduction, conversation, and potential relationship.</p><em>Open directory →</em></button>
-          <button class="marketing-offline-card" type="button" data-marketing-route="divisions/marketing/offline/projects"><span class="marketing-module-number">II</span><span class="marketing-module-meta">Initiatives &amp; encounters</span><strong>Projects</strong><p>Follow collaborations, activations, events, and future plans from intention to completion.</p><em>Open register →</em></button>
+          <button class="marketing-offline-card" type="button" data-marketing-route="divisions/marketing/offline/contacts"><span class="marketing-module-number">I</span><span class="marketing-module-meta" data-i18n="marketing.contacts.meta">Relationship directory</span><strong data-i18n="marketing.contacts.title">Contacts</strong><p data-i18n="marketing.contacts.card.copy">Hold the context behind every introduction, conversation, and potential relationship.</p><em data-i18n="marketing.contacts.open">Open directory →</em></button>
+          <button class="marketing-offline-card" type="button" data-marketing-route="divisions/marketing/offline/projects"><span class="marketing-module-number">II</span><span class="marketing-module-meta" data-i18n="marketing.projects.meta">Initiatives &amp; encounters</span><strong data-i18n="marketing.projects.title">Projects</strong><p data-i18n="marketing.projects.card.copy">Follow collaborations, activations, events, and future plans from intention to completion.</p><em data-i18n="marketing.projects.open">Open register →</em></button>
         </div>
       </div>
     </section>
@@ -11602,29 +11602,29 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
     <section class="route-view route-division-page marketing-route route-marketing-contacts" data-view="divisions/marketing/offline/contacts" aria-hidden="true">
       <div class="internal-gate internal-gate-division" data-internal-gate="division-marketing-contacts" aria-hidden="true"></div>
       <div class="marketing-page" id="marketingContactsWorkspace">
-        <header class="marketing-page-head"><div><button class="marketing-breadcrumb" type="button" data-marketing-route="divisions/marketing/offline">Offline Marketing</button><span> / Contacts</span><h1>Contacts</h1><p>A deliberate, private directory for the relationships around the house.</p></div><button class="marketing-primary-action" id="marketingContactAdd" type="button">New contact</button></header>
-        <div class="marketing-toolbar"><label><span>Search directory</span><input id="marketingContactSearch" type="search" placeholder="Name, organisation, area or country"></label><label><span>Relationship</span><select id="marketingContactStageFilter"><option value="all">All</option><option value="prospect">Prospect</option><option value="introduced">Introduced</option><option value="active">Active</option><option value="partner">Partner</option><option value="dormant">Dormant</option></select></label><strong id="marketingContactCount">—</strong></div>
-        <div class="marketing-status-line" id="marketingContactsStatus" aria-live="polite"></div><div class="marketing-contact-grid" id="marketingContactsList"></div><div class="marketing-empty" id="marketingContactsEmpty" hidden><span>No contacts found</span><p>Add the first relationship or adjust the filters.</p></div>
+        <header class="marketing-page-head"><div><button class="marketing-breadcrumb" type="button" data-marketing-route="divisions/marketing/offline" data-i18n="marketing.offline.title">Offline Marketing</button><span> / <span data-i18n="marketing.contacts.title">Contacts</span></span><h1 data-i18n="marketing.contacts.title">Contacts</h1><p data-i18n="marketing.contacts.intro">A deliberate, private directory for the relationships around the house.</p></div><button class="marketing-primary-action" id="marketingContactAdd" type="button" data-i18n="marketing.contacts.add">New contact</button></header>
+        <div class="marketing-toolbar"><label><span data-i18n="marketing.contacts.search">Search directory</span><input id="marketingContactSearch" type="search" data-i18n-placeholder="marketing.contacts.search.placeholder" placeholder="Name, organisation, area or country"></label><label><span data-i18n="marketing.field.relationship">Relationship</span><select id="marketingContactStageFilter"><option value="all" data-i18n="marketing.all">All</option><option value="prospect" data-i18n="marketing.status.prospect">Prospect</option><option value="introduced" data-i18n="marketing.status.introduced">Introduced</option><option value="active" data-i18n="marketing.status.active">Active</option><option value="partner" data-i18n="marketing.status.partner">Partner</option><option value="dormant" data-i18n="marketing.status.dormant">Dormant</option></select></label><strong id="marketingContactCount">—</strong></div>
+        <div class="marketing-status-line" id="marketingContactsStatus" aria-live="polite"></div><div class="marketing-contact-grid" id="marketingContactsList"></div><div class="marketing-empty" id="marketingContactsEmpty" hidden><span data-i18n="marketing.contacts.empty">No contacts found</span><p data-i18n="marketing.contacts.empty.copy">Add the first relationship or adjust the filters.</p></div>
       </div>
       <dialog class="marketing-dialog" id="marketingContactDialog" aria-labelledby="marketingContactDialogTitle">
-        <form class="marketing-dialog-card" id="marketingContactForm" method="dialog"><input id="marketingContactId" type="hidden"><div class="marketing-dialog-kicker">Offline network</div><h2 id="marketingContactDialogTitle">New contact</h2>
-          <div class="marketing-form-grid"><label><span>Full name</span><input id="marketingContactName" type="text" maxlength="180" required></label><label><span>Organisation</span><input id="marketingContactOrganisation" type="text" maxlength="180"></label><label><span>Area / profession</span><input id="marketingContactArea" type="text" maxlength="180"></label><label><span>Relationship</span><select id="marketingContactStage"><option value="prospect">Prospect</option><option value="introduced">Introduced</option><option value="active">Active</option><option value="partner">Partner</option><option value="dormant">Dormant</option></select></label><label><span>Country</span><input id="marketingContactCountry" type="text" maxlength="120"></label><label><span>City</span><input id="marketingContactCity" type="text" maxlength="120"></label><label><span>Email</span><input id="marketingContactEmail" type="email" maxlength="254"></label><label><span>Phone</span><input id="marketingContactPhone" type="tel" maxlength="80"></label><label><span>Instagram</span><input id="marketingContactInstagram" type="url" maxlength="600" placeholder="https://"></label><label><span>LinkedIn</span><input id="marketingContactLinkedin" type="url" maxlength="600" placeholder="https://"></label><label class="is-wide"><span>Website / other link</span><input id="marketingContactWebsite" type="url" maxlength="600" placeholder="https://"></label><label class="is-wide"><span>Private notes</span><textarea id="marketingContactNotes" maxlength="3000"></textarea></label></div>
-          <div class="marketing-form-feedback" id="marketingContactFeedback"></div><div class="marketing-dialog-actions"><button type="button" data-marketing-dialog-close>Cancel</button><button class="is-primary" type="submit">Save contact</button></div>
+        <form class="marketing-dialog-card" id="marketingContactForm" method="dialog" novalidate><input id="marketingContactId" type="hidden"><div class="marketing-dialog-kicker" data-i18n="marketing.contacts.dialog.kicker">Offline network</div><h2 id="marketingContactDialogTitle" data-i18n="marketing.contacts.dialog.new">New contact</h2>
+          <div class="marketing-form-grid"><label><span data-i18n="marketing.field.fullName">Full name</span><input id="marketingContactName" type="text" maxlength="180" required></label><label><span data-i18n="marketing.field.organisation">Organisation</span><input id="marketingContactOrganisation" type="text" maxlength="180"></label><label><span data-i18n="marketing.field.area">Area / profession</span><input id="marketingContactArea" type="text" maxlength="180"></label><label><span data-i18n="marketing.field.relationship">Relationship</span><select id="marketingContactStage"><option value="prospect" data-i18n="marketing.status.prospect">Prospect</option><option value="introduced" data-i18n="marketing.status.introduced">Introduced</option><option value="active" data-i18n="marketing.status.active">Active</option><option value="partner" data-i18n="marketing.status.partner">Partner</option><option value="dormant" data-i18n="marketing.status.dormant">Dormant</option></select></label><label><span data-i18n="marketing.field.country">Country</span><input id="marketingContactCountry" type="text" maxlength="120"></label><label><span data-i18n="marketing.field.city">City</span><input id="marketingContactCity" type="text" maxlength="120"></label><label><span>Email</span><input id="marketingContactEmail" type="email" maxlength="254"></label><label><span data-i18n="marketing.field.phone">Phone</span><input id="marketingContactPhone" type="tel" maxlength="80"></label><label><span>Instagram</span><input id="marketingContactInstagram" type="url" maxlength="600" placeholder="https://"></label><label><span>LinkedIn</span><input id="marketingContactLinkedin" type="url" maxlength="600" placeholder="https://"></label><label class="is-wide"><span data-i18n="marketing.field.website">Website / other link</span><input id="marketingContactWebsite" type="url" maxlength="600" placeholder="https://"></label><label class="is-wide"><span data-i18n="marketing.field.privateNotes">Private notes</span><textarea id="marketingContactNotes" maxlength="3000"></textarea></label></div>
+          <div class="marketing-form-feedback" id="marketingContactFeedback"></div><div class="marketing-dialog-actions"><button type="button" data-marketing-dialog-close data-i18n="internal.cancel">Cancel</button><button class="is-primary" type="submit" data-i18n="marketing.contacts.save">Save contact</button></div>
         </form>
       </dialog>
-      <dialog class="marketing-dialog marketing-contact-detail-dialog" id="marketingContactDetailDialog" aria-labelledby="marketingContactDetailName"><div class="marketing-dialog-card"><div class="marketing-dialog-kicker">Personal details</div><h2 id="marketingContactDetailName"></h2><p class="marketing-contact-detail-role" id="marketingContactDetailRole"></p><dl class="marketing-contact-detail-list" id="marketingContactDetailList"></dl><p class="marketing-contact-detail-notes" id="marketingContactDetailNotes"></p><div class="marketing-dialog-actions"><button type="button" data-marketing-dialog-close>Close</button><button class="is-primary" id="marketingContactDetailEdit" type="button">Edit contact</button></div></div></dialog>
+      <dialog class="marketing-dialog marketing-contact-detail-dialog" id="marketingContactDetailDialog" aria-labelledby="marketingContactDetailName"><div class="marketing-dialog-card"><div class="marketing-dialog-kicker" data-i18n="marketing.contacts.details">Personal details</div><h2 id="marketingContactDetailName"></h2><p class="marketing-contact-detail-role" id="marketingContactDetailRole"></p><dl class="marketing-contact-detail-list" id="marketingContactDetailList"></dl><p class="marketing-contact-detail-notes" id="marketingContactDetailNotes"></p><div class="marketing-dialog-actions"><button type="button" data-marketing-dialog-close data-i18n="search.close">Close</button><button class="is-primary" id="marketingContactDetailEdit" type="button" data-i18n="marketing.contacts.edit">Edit contact</button></div></div></dialog>
     </section>
 
     <section class="route-view route-division-page marketing-route route-marketing-projects" data-view="divisions/marketing/offline/projects" aria-hidden="true">
       <div class="internal-gate internal-gate-division" data-internal-gate="division-marketing-projects" aria-hidden="true"></div>
       <div class="marketing-page" id="marketingProjectsWorkspace">
-        <header class="marketing-page-head"><div><button class="marketing-breadcrumb" type="button" data-marketing-route="divisions/marketing/offline">Offline Marketing</button><span> / Projects</span><h1>Projects</h1><p>A concise view of physical initiatives—from first intention to completion.</p></div><button class="marketing-primary-action" id="marketingProjectAdd" type="button">New project</button></header>
-        <nav class="marketing-project-filters" id="marketingProjectFilters" aria-label="Project status"><button type="button" data-project-filter="all" aria-pressed="true">All</button><button type="button" data-project-filter="ongoing" aria-pressed="false">Ongoing</button><button type="button" data-project-filter="future" aria-pressed="false">Future plans</button><button type="button" data-project-filter="completed" aria-pressed="false">Completed</button></nav>
-        <div class="marketing-status-line" id="marketingProjectsStatus" aria-live="polite"></div><div class="marketing-project-list" id="marketingProjectsList"></div><div class="marketing-empty" id="marketingProjectsEmpty" hidden><span>No projects in this view</span><p>Add an initiative or choose another status.</p></div>
+        <header class="marketing-page-head"><div><button class="marketing-breadcrumb" type="button" data-marketing-route="divisions/marketing/offline" data-i18n="marketing.offline.title">Offline Marketing</button><span> / <span data-i18n="marketing.projects.title">Projects</span></span><h1 data-i18n="marketing.projects.title">Projects</h1><p data-i18n="marketing.projects.intro">A concise view of physical initiatives—from first intention to completion.</p></div><button class="marketing-primary-action" id="marketingProjectAdd" type="button" data-i18n="marketing.projects.add">New project</button></header>
+        <nav class="marketing-project-filters" id="marketingProjectFilters" data-i18n-aria-label="marketing.projects.status.aria" aria-label="Project status"><button type="button" data-project-filter="all" aria-pressed="true" data-i18n="marketing.all">All</button><button type="button" data-project-filter="ongoing" aria-pressed="false" data-i18n="marketing.status.ongoing">Ongoing</button><button type="button" data-project-filter="future" aria-pressed="false" data-i18n="marketing.status.future.plural">Future plans</button><button type="button" data-project-filter="completed" aria-pressed="false" data-i18n="marketing.status.completed">Completed</button></nav>
+        <div class="marketing-status-line" id="marketingProjectsStatus" aria-live="polite"></div><div class="marketing-project-list" id="marketingProjectsList"></div><div class="marketing-empty" id="marketingProjectsEmpty" hidden><span data-i18n="marketing.projects.empty">No projects in this view</span><p data-i18n="marketing.projects.empty.copy">Add an initiative or choose another status.</p></div>
       </div>
-      <dialog class="marketing-dialog" id="marketingProjectDialog" aria-labelledby="marketingProjectDialogTitle"><form class="marketing-dialog-card" id="marketingProjectForm" method="dialog"><input id="marketingProjectId" type="hidden"><div class="marketing-dialog-kicker">Offline initiatives</div><h2 id="marketingProjectDialogTitle">New project</h2>
-        <div class="marketing-form-grid"><label class="is-wide"><span>Project title</span><input id="marketingProjectTitle" type="text" maxlength="180" required></label><label><span>Status</span><select id="marketingProjectStatus"><option value="future">Future plan</option><option value="ongoing">Ongoing</option><option value="completed">Completed</option></select></label><label><span>Type</span><select id="marketingProjectType"><option value="campaign">Campaign</option><option value="partnership">Partnership</option><option value="event">Event</option><option value="editorial">Editorial</option><option value="networking">Networking</option><option value="other">Other</option></select></label><label><span>Lead</span><input id="marketingProjectLead" type="text" maxlength="120"></label><label><span>Country</span><input id="marketingProjectCountry" type="text" maxlength="120"></label><label><span>Start date</span><input id="marketingProjectStart" type="date"></label><label><span>Target date</span><input id="marketingProjectTarget" type="date"></label><label><span>Budget</span><input id="marketingProjectBudget" type="number" min="0" step="0.01"></label><label><span>Currency</span><input id="marketingProjectCurrency" type="text" maxlength="3" value="EUR"></label><label class="is-wide"><span>Objective</span><textarea id="marketingProjectObjective" maxlength="1200"></textarea></label><label class="is-wide"><span>Next action</span><textarea id="marketingProjectNext" maxlength="600"></textarea></label><label class="is-wide"><span>Notes</span><textarea id="marketingProjectNotes" maxlength="3000"></textarea></label></div>
-        <div class="marketing-form-feedback" id="marketingProjectFeedback"></div><div class="marketing-dialog-actions"><button type="button" data-marketing-dialog-close>Cancel</button><button class="is-primary" type="submit">Save project</button></div></form></dialog>
+      <dialog class="marketing-dialog" id="marketingProjectDialog" aria-labelledby="marketingProjectDialogTitle"><form class="marketing-dialog-card" id="marketingProjectForm" method="dialog" novalidate><input id="marketingProjectId" type="hidden"><div class="marketing-dialog-kicker" data-i18n="marketing.projects.dialog.kicker">Offline initiatives</div><h2 id="marketingProjectDialogTitle" data-i18n="marketing.projects.dialog.new">New project</h2>
+        <div class="marketing-form-grid"><label class="is-wide"><span data-i18n="marketing.field.projectTitle">Project title</span><input id="marketingProjectTitle" type="text" maxlength="180" required></label><label><span data-i18n="marketing.field.status">Status</span><select id="marketingProjectStatus"><option value="future" data-i18n="marketing.status.future">Future plan</option><option value="ongoing" data-i18n="marketing.status.ongoing">Ongoing</option><option value="completed" data-i18n="marketing.status.completed">Completed</option></select></label><label><span data-i18n="marketing.field.type">Type</span><select id="marketingProjectType"><option value="campaign" data-i18n="marketing.projectType.campaign">Campaign</option><option value="partnership" data-i18n="marketing.projectType.partnership">Partnership</option><option value="event" data-i18n="marketing.projectType.event">Event</option><option value="editorial" data-i18n="marketing.projectType.editorial">Editorial</option><option value="networking" data-i18n="marketing.projectType.networking">Networking</option><option value="other" data-i18n="marketing.projectType.other">Other</option></select></label><label><span data-i18n="marketing.field.lead">Lead</span><input id="marketingProjectLead" type="text" maxlength="120"></label><label><span data-i18n="marketing.field.country">Country</span><input id="marketingProjectCountry" type="text" maxlength="120"></label><label><span data-i18n="marketing.field.startDate">Start date</span><input id="marketingProjectStart" type="date"></label><label><span data-i18n="marketing.field.targetDate">Target date</span><input id="marketingProjectTarget" type="date"></label><label><span data-i18n="marketing.field.budget">Budget</span><input id="marketingProjectBudget" type="number" min="0" step="0.01"></label><label><span data-i18n="marketing.field.currency">Currency</span><input id="marketingProjectCurrency" type="text" maxlength="3" value="EUR"></label><label class="is-wide"><span data-i18n="marketing.field.objective">Objective</span><textarea id="marketingProjectObjective" maxlength="1200"></textarea></label><label class="is-wide"><span data-i18n="marketing.field.nextAction">Next action</span><textarea id="marketingProjectNext" maxlength="600"></textarea></label><label class="is-wide"><span data-i18n="marketing.field.notes">Notes</span><textarea id="marketingProjectNotes" maxlength="3000"></textarea></label></div>
+        <div class="marketing-form-feedback" id="marketingProjectFeedback"></div><div class="marketing-dialog-actions"><button type="button" data-marketing-dialog-close data-i18n="internal.cancel">Cancel</button><button class="is-primary" type="submit" data-i18n="marketing.projects.save">Save project</button></div></form></dialog>
     </section>
     <section class="route-view route-division-page route-division-finance" data-view="divisions/finance" aria-hidden="true">
       <div class="internal-gate internal-gate-division" data-internal-gate="division-finance" aria-hidden="true">
@@ -14636,6 +14636,157 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
         'divisions.marketing': 'Marketing',
         'divisions.finance': 'Finance',
         'divisions.operations': 'Operations',
+        'marketing.workspace.aria': 'Marketing workspace',
+        'marketing.overview.aria': 'Marketing overview',
+        'marketing.hero.kicker': 'Private workspace · Division I',
+        'marketing.hero.copy': 'Shape how MOSCATELLI is seen, remembered, and encountered—across every screen and every room.',
+        'marketing.overview.social': 'Social pipeline',
+        'marketing.overview.social.copy': 'Posts & advertisements',
+        'marketing.overview.network': 'Network',
+        'marketing.overview.network.copy': 'Curated relationships',
+        'marketing.overview.projects': 'Offline projects',
+        'marketing.overview.projects.copy': 'Active initiatives',
+        'marketing.social.meta': 'Digital presence',
+        'marketing.social.card.copy': 'Plan posts, advertisements, campaigns, and publication dates across the four principal platforms.',
+        'marketing.social.open': 'Enter studio',
+        'marketing.social.intro': "A composed publishing room for the house's outward voice.",
+        'marketing.social.add': 'New item',
+        'marketing.social.platforms.aria': 'Social platforms',
+        'marketing.social.register': 'Publishing register',
+        'marketing.social.type.aria': 'Content type',
+        'marketing.social.posts': 'Posts',
+        'marketing.social.ads': 'Ads',
+        'marketing.social.empty': 'Nothing recorded yet',
+        'marketing.social.empty.copy': 'Begin with an idea, a draft, or a scheduled publication.',
+        'marketing.social.dialog.kicker': 'Social Media studio',
+        'marketing.social.dialog.new': 'New social item',
+        'marketing.social.dialog.edit': 'Edit social item',
+        'marketing.social.save': 'Save item',
+        'marketing.social.loading': 'Loading publishing register…',
+        'marketing.social.error.load': 'Unable to load the publishing register.',
+        'marketing.social.error.save': 'The social item could not be saved.',
+        'marketing.social.error.delete': 'The social item could not be deleted.',
+        'marketing.social.noNotes': 'No working note has been added.',
+        'marketing.social.unscheduled': 'Unscheduled',
+        'marketing.social.deleteConfirm': 'Delete “{title}”?',
+        'marketing.offline.meta': 'Physical world',
+        'marketing.offline.title': 'Offline Marketing',
+        'marketing.offline.short': 'Offline',
+        'marketing.offline.card.copy': 'Cultivate the people, partnerships, encounters, and projects that give the house a life beyond the screen.',
+        'marketing.offline.open': 'Enter network',
+        'marketing.offline.intro': 'The living network around MOSCATELLI: people, places, and purposeful collaborations.',
+        'marketing.contacts.meta': 'Relationship directory',
+        'marketing.contacts.title': 'Contacts',
+        'marketing.contacts.card.copy': 'Hold the context behind every introduction, conversation, and potential relationship.',
+        'marketing.contacts.open': 'Open directory →',
+        'marketing.contacts.intro': 'A deliberate, private directory for the relationships around the house.',
+        'marketing.contacts.add': 'New contact',
+        'marketing.contacts.search': 'Search directory',
+        'marketing.contacts.search.placeholder': 'Name, organisation, area or country',
+        'marketing.contacts.empty': 'No contacts found',
+        'marketing.contacts.empty.copy': 'Add the first relationship or adjust the filters.',
+        'marketing.contacts.dialog.kicker': 'Offline network',
+        'marketing.contacts.dialog.new': 'New contact',
+        'marketing.contacts.dialog.edit': 'Edit contact',
+        'marketing.contacts.save': 'Save contact',
+        'marketing.contacts.details': 'Personal details',
+        'marketing.contacts.edit': 'Edit contact',
+        'marketing.contacts.loading': 'Loading directory…',
+        'marketing.contacts.error.load': 'Unable to load contacts.',
+        'marketing.contacts.error.save': 'The contact could not be saved.',
+        'marketing.contacts.error.delete': 'The contact could not be deleted.',
+        'marketing.contacts.independent': 'Independent',
+        'marketing.contacts.areaMissing': 'Area not specified',
+        'marketing.contacts.locationMissing': 'Location not specified',
+        'marketing.contacts.notesMissing': 'No private notes have been added.',
+        'marketing.contacts.notProvided': 'Not provided',
+        'marketing.contacts.deleteConfirm': 'Delete {name} from the directory?',
+        'marketing.projects.meta': 'Initiatives & encounters',
+        'marketing.projects.title': 'Projects',
+        'marketing.projects.card.copy': 'Follow collaborations, activations, events, and future plans from intention to completion.',
+        'marketing.projects.open': 'Open register →',
+        'marketing.projects.intro': 'A concise view of physical initiatives—from first intention to completion.',
+        'marketing.projects.add': 'New project',
+        'marketing.projects.status.aria': 'Project status',
+        'marketing.projects.empty': 'No projects in this view',
+        'marketing.projects.empty.copy': 'Add an initiative or choose another status.',
+        'marketing.projects.dialog.kicker': 'Offline initiatives',
+        'marketing.projects.dialog.new': 'New project',
+        'marketing.projects.dialog.edit': 'Edit project',
+        'marketing.projects.save': 'Save project',
+        'marketing.projects.loading': 'Loading project register…',
+        'marketing.projects.error.load': 'Unable to load projects.',
+        'marketing.projects.error.save': 'The project could not be saved.',
+        'marketing.projects.error.delete': 'The project could not be deleted.',
+        'marketing.projects.noObjective': 'No objective recorded.',
+        'marketing.projects.openTarget': 'Open',
+        'marketing.projects.deleteConfirm': 'Delete “{title}”?',
+        'marketing.all': 'All',
+        'marketing.type.post': 'Post',
+        'marketing.type.ad': 'Ad',
+        'marketing.status.idea': 'Idea',
+        'marketing.status.draft': 'Draft',
+        'marketing.status.scheduled': 'Scheduled',
+        'marketing.status.published': 'Published',
+        'marketing.status.paused': 'Paused',
+        'marketing.status.completed': 'Completed',
+        'marketing.status.future': 'Future plan',
+        'marketing.status.future.plural': 'Future plans',
+        'marketing.status.ongoing': 'Ongoing',
+        'marketing.status.prospect': 'Prospect',
+        'marketing.status.introduced': 'Introduced',
+        'marketing.status.active': 'Active',
+        'marketing.status.partner': 'Partner',
+        'marketing.status.dormant': 'Dormant',
+        'marketing.projectType.campaign': 'Campaign',
+        'marketing.projectType.partnership': 'Partnership',
+        'marketing.projectType.event': 'Event',
+        'marketing.projectType.editorial': 'Editorial',
+        'marketing.projectType.networking': 'Networking',
+        'marketing.projectType.other': 'Other',
+        'marketing.field.title': 'Title',
+        'marketing.field.platform': 'Platform',
+        'marketing.field.register': 'Register',
+        'marketing.field.status': 'Status',
+        'marketing.field.owner': 'Owner',
+        'marketing.field.scheduledFor': 'Scheduled for',
+        'marketing.field.campaign': 'Campaign',
+        'marketing.field.objective': 'Objective',
+        'marketing.field.caption': 'Caption / working notes',
+        'marketing.field.destination': 'Destination link',
+        'marketing.field.budget': 'Budget',
+        'marketing.field.currency': 'Currency',
+        'marketing.field.relationship': 'Relationship',
+        'marketing.field.fullName': 'Full name',
+        'marketing.field.organisation': 'Organisation',
+        'marketing.field.area': 'Area / profession',
+        'marketing.field.country': 'Country',
+        'marketing.field.city': 'City',
+        'marketing.field.phone': 'Phone',
+        'marketing.field.website': 'Website / other link',
+        'marketing.field.privateNotes': 'Private notes',
+        'marketing.field.projectTitle': 'Project title',
+        'marketing.field.type': 'Type',
+        'marketing.field.lead': 'Lead',
+        'marketing.field.startDate': 'Start date',
+        'marketing.field.targetDate': 'Target date',
+        'marketing.field.nextAction': 'Next action',
+        'marketing.field.notes': 'Notes',
+        'marketing.meta.owner': 'Owner · {value}',
+        'marketing.meta.campaign': 'Campaign · {value}',
+        'marketing.meta.budget': 'Budget · {value}',
+        'marketing.action.edit': 'Edit',
+        'marketing.action.delete': 'Delete',
+        'marketing.action.details': 'Personal details →',
+        'marketing.notSet': 'Not set',
+        'marketing.saving': 'Saving…',
+        'marketing.validation.title': 'A title is required.',
+        'marketing.validation.name': 'A full name is required.',
+        'marketing.validation.projectTitle': 'A project title is required.',
+        'marketing.validation.dates': 'The target date cannot precede the start date.',
+        'marketing.validation.url': 'Enter a valid web address, including https://.',
+        'marketing.validation.email': 'Enter a valid email address.',
+        'marketing.validation.budget': 'Budget must be zero or greater.',
         'operations.kicker': 'Private workspace',
         'operations.intro': 'Plan the practical work that carries MOSCATELLI from decision to execution.',
         'operations.calendar.kicker': 'Operations',
@@ -14857,6 +15008,10 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
         'finance.status.committed': 'Committed',
         'finance.status.paid': 'Paid',
         'ui.return': 'Return',
+        'ui.returnMarketing': 'Marketing',
+        'ui.returnDivisionsAria': 'Return to divisions',
+        'ui.returnMarketingAria': 'Return to Marketing',
+        'ui.returnOperationsAria': 'Return to Operations',
         'global.kicker': 'Private Threshold',
         'global.copy': 'Sign in with your account to continue.',
         'global.enter': 'Enter',
@@ -15095,6 +15250,157 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
         'divisions.marketing': 'Marketing',
         'divisions.finance': 'Finanças',
         'divisions.operations': 'Operações',
+        'marketing.workspace.aria': 'Área de trabalho de Marketing',
+        'marketing.overview.aria': 'Visão geral de Marketing',
+        'marketing.hero.kicker': 'Área privada · Divisão I',
+        'marketing.hero.copy': 'Defina como a MOSCATELLI é vista, lembrada e vivenciada—em cada tela e em cada ambiente.',
+        'marketing.overview.social': 'Fluxo social',
+        'marketing.overview.social.copy': 'Publicações e anúncios',
+        'marketing.overview.network': 'Rede',
+        'marketing.overview.network.copy': 'Relações selecionadas',
+        'marketing.overview.projects': 'Projetos offline',
+        'marketing.overview.projects.copy': 'Iniciativas ativas',
+        'marketing.social.meta': 'Presença digital',
+        'marketing.social.card.copy': 'Planeje publicações, anúncios, campanhas e datas de veiculação nas quatro plataformas principais.',
+        'marketing.social.open': 'Entrar no estúdio',
+        'marketing.social.intro': 'Um ambiente editorial sereno para a voz pública da casa.',
+        'marketing.social.add': 'Novo item',
+        'marketing.social.platforms.aria': 'Plataformas sociais',
+        'marketing.social.register': 'Registro de publicações',
+        'marketing.social.type.aria': 'Tipo de conteúdo',
+        'marketing.social.posts': 'Publicações',
+        'marketing.social.ads': 'Anúncios',
+        'marketing.social.empty': 'Ainda não há registros',
+        'marketing.social.empty.copy': 'Comece com uma ideia, um rascunho ou uma publicação agendada.',
+        'marketing.social.dialog.kicker': 'Estúdio de Social Media',
+        'marketing.social.dialog.new': 'Novo item social',
+        'marketing.social.dialog.edit': 'Editar item social',
+        'marketing.social.save': 'Salvar item',
+        'marketing.social.loading': 'Carregando registro de publicações…',
+        'marketing.social.error.load': 'Não foi possível carregar o registro de publicações.',
+        'marketing.social.error.save': 'Não foi possível salvar o item social.',
+        'marketing.social.error.delete': 'Não foi possível apagar o item social.',
+        'marketing.social.noNotes': 'Nenhuma nota de trabalho foi adicionada.',
+        'marketing.social.unscheduled': 'Não agendado',
+        'marketing.social.deleteConfirm': 'Apagar “{title}”?',
+        'marketing.offline.meta': 'Mundo físico',
+        'marketing.offline.title': 'Marketing Offline',
+        'marketing.offline.short': 'Offline',
+        'marketing.offline.card.copy': 'Cultive as pessoas, parcerias, encontros e projetos que dão vida à casa além das telas.',
+        'marketing.offline.open': 'Entrar na rede',
+        'marketing.offline.intro': 'A rede viva ao redor da MOSCATELLI: pessoas, lugares e colaborações com propósito.',
+        'marketing.contacts.meta': 'Diretório de relações',
+        'marketing.contacts.title': 'Contatos',
+        'marketing.contacts.card.copy': 'Preserve o contexto por trás de cada apresentação, conversa e relação em potencial.',
+        'marketing.contacts.open': 'Abrir diretório →',
+        'marketing.contacts.intro': 'Um diretório privado e criterioso para as relações ao redor da casa.',
+        'marketing.contacts.add': 'Novo contato',
+        'marketing.contacts.search': 'Buscar no diretório',
+        'marketing.contacts.search.placeholder': 'Nome, organização, área ou país',
+        'marketing.contacts.empty': 'Nenhum contato encontrado',
+        'marketing.contacts.empty.copy': 'Adicione a primeira relação ou ajuste os filtros.',
+        'marketing.contacts.dialog.kicker': 'Rede offline',
+        'marketing.contacts.dialog.new': 'Novo contato',
+        'marketing.contacts.dialog.edit': 'Editar contato',
+        'marketing.contacts.save': 'Salvar contato',
+        'marketing.contacts.details': 'Dados pessoais',
+        'marketing.contacts.edit': 'Editar contato',
+        'marketing.contacts.loading': 'Carregando diretório…',
+        'marketing.contacts.error.load': 'Não foi possível carregar os contatos.',
+        'marketing.contacts.error.save': 'Não foi possível salvar o contato.',
+        'marketing.contacts.error.delete': 'Não foi possível apagar o contato.',
+        'marketing.contacts.independent': 'Independente',
+        'marketing.contacts.areaMissing': 'Área não informada',
+        'marketing.contacts.locationMissing': 'Localização não informada',
+        'marketing.contacts.notesMissing': 'Nenhuma nota privada foi adicionada.',
+        'marketing.contacts.notProvided': 'Não informado',
+        'marketing.contacts.deleteConfirm': 'Apagar {name} do diretório?',
+        'marketing.projects.meta': 'Iniciativas e encontros',
+        'marketing.projects.title': 'Projetos',
+        'marketing.projects.card.copy': 'Acompanhe colaborações, ativações, eventos e planos futuros da intenção à conclusão.',
+        'marketing.projects.open': 'Abrir registro →',
+        'marketing.projects.intro': 'Uma visão concisa das iniciativas presenciais—da primeira intenção à conclusão.',
+        'marketing.projects.add': 'Novo projeto',
+        'marketing.projects.status.aria': 'Status do projeto',
+        'marketing.projects.empty': 'Nenhum projeto nesta visão',
+        'marketing.projects.empty.copy': 'Adicione uma iniciativa ou escolha outro status.',
+        'marketing.projects.dialog.kicker': 'Iniciativas offline',
+        'marketing.projects.dialog.new': 'Novo projeto',
+        'marketing.projects.dialog.edit': 'Editar projeto',
+        'marketing.projects.save': 'Salvar projeto',
+        'marketing.projects.loading': 'Carregando registro de projetos…',
+        'marketing.projects.error.load': 'Não foi possível carregar os projetos.',
+        'marketing.projects.error.save': 'Não foi possível salvar o projeto.',
+        'marketing.projects.error.delete': 'Não foi possível apagar o projeto.',
+        'marketing.projects.noObjective': 'Nenhum objetivo registrado.',
+        'marketing.projects.openTarget': 'Em aberto',
+        'marketing.projects.deleteConfirm': 'Apagar “{title}”?',
+        'marketing.all': 'Todos',
+        'marketing.type.post': 'Publicação',
+        'marketing.type.ad': 'Anúncio',
+        'marketing.status.idea': 'Ideia',
+        'marketing.status.draft': 'Rascunho',
+        'marketing.status.scheduled': 'Agendado',
+        'marketing.status.published': 'Publicado',
+        'marketing.status.paused': 'Pausado',
+        'marketing.status.completed': 'Concluído',
+        'marketing.status.future': 'Plano futuro',
+        'marketing.status.future.plural': 'Planos futuros',
+        'marketing.status.ongoing': 'Em andamento',
+        'marketing.status.prospect': 'Prospecto',
+        'marketing.status.introduced': 'Apresentado',
+        'marketing.status.active': 'Ativo',
+        'marketing.status.partner': 'Parceiro',
+        'marketing.status.dormant': 'Inativo',
+        'marketing.projectType.campaign': 'Campanha',
+        'marketing.projectType.partnership': 'Parceria',
+        'marketing.projectType.event': 'Evento',
+        'marketing.projectType.editorial': 'Editorial',
+        'marketing.projectType.networking': 'Relacionamento',
+        'marketing.projectType.other': 'Outro',
+        'marketing.field.title': 'Título',
+        'marketing.field.platform': 'Plataforma',
+        'marketing.field.register': 'Registro',
+        'marketing.field.status': 'Status',
+        'marketing.field.owner': 'Responsável',
+        'marketing.field.scheduledFor': 'Agendado para',
+        'marketing.field.campaign': 'Campanha',
+        'marketing.field.objective': 'Objetivo',
+        'marketing.field.caption': 'Legenda / notas de trabalho',
+        'marketing.field.destination': 'Link de destino',
+        'marketing.field.budget': 'Orçamento',
+        'marketing.field.currency': 'Moeda',
+        'marketing.field.relationship': 'Relação',
+        'marketing.field.fullName': 'Nome completo',
+        'marketing.field.organisation': 'Organização',
+        'marketing.field.area': 'Área / profissão',
+        'marketing.field.country': 'País',
+        'marketing.field.city': 'Cidade',
+        'marketing.field.phone': 'Telefone',
+        'marketing.field.website': 'Site / outro link',
+        'marketing.field.privateNotes': 'Notas privadas',
+        'marketing.field.projectTitle': 'Título do projeto',
+        'marketing.field.type': 'Tipo',
+        'marketing.field.lead': 'Responsável',
+        'marketing.field.startDate': 'Data de início',
+        'marketing.field.targetDate': 'Data-alvo',
+        'marketing.field.nextAction': 'Próxima ação',
+        'marketing.field.notes': 'Notas',
+        'marketing.meta.owner': 'Responsável · {value}',
+        'marketing.meta.campaign': 'Campanha · {value}',
+        'marketing.meta.budget': 'Orçamento · {value}',
+        'marketing.action.edit': 'Editar',
+        'marketing.action.delete': 'Apagar',
+        'marketing.action.details': 'Dados pessoais →',
+        'marketing.notSet': 'Não definido',
+        'marketing.saving': 'Salvando…',
+        'marketing.validation.title': 'Informe um título.',
+        'marketing.validation.name': 'Informe o nome completo.',
+        'marketing.validation.projectTitle': 'Informe o título do projeto.',
+        'marketing.validation.dates': 'A data-alvo não pode ser anterior à data de início.',
+        'marketing.validation.url': 'Informe um endereço válido, incluindo https://.',
+        'marketing.validation.email': 'Informe um endereço de email válido.',
+        'marketing.validation.budget': 'O orçamento deve ser igual ou maior que zero.',
         'operations.kicker': 'Área privada',
         'operations.intro': 'Planeje o trabalho prático que conduz a MOSCATELLI da decisão à execução.',
         'operations.calendar.kicker': 'Operações',
@@ -15312,6 +15618,10 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
         'finance.status.committed': 'Comprometido',
         'finance.status.paid': 'Pago',
         'ui.return': 'Voltar',
+        'ui.returnMarketing': 'Marketing',
+        'ui.returnDivisionsAria': 'Voltar às divisões',
+        'ui.returnMarketingAria': 'Voltar ao Marketing',
+        'ui.returnOperationsAria': 'Voltar às Operações',
         'global.kicker': 'Acesso Privado',
         'global.copy': 'Entre com sua conta para continuar.',
         'global.enter': 'Entrar',
@@ -16758,10 +17068,12 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
       if (divisionReturn) {
         const returnsToOperations = isOperationsChildRoute(nextRoute);
         const returnsToMarketing = isMarketingChildRoute(nextRoute);
-        const translationKey = returnsToOperations ? 'ui.returnOperations' : 'ui.return';
+        const translationKey = returnsToOperations ? 'ui.returnOperations' : (returnsToMarketing ? 'ui.returnMarketing' : 'ui.return');
+        const ariaKey = returnsToOperations ? 'ui.returnOperationsAria' : (returnsToMarketing ? 'ui.returnMarketingAria' : 'ui.returnDivisionsAria');
         divisionReturn.dataset.i18n = translationKey;
-        divisionReturn.textContent = returnsToMarketing ? 'Marketing' : (translations[currentLang]?.[translationKey] || (returnsToOperations ? 'Operations' : 'Return'));
-        divisionReturn.setAttribute('aria-label', returnsToOperations ? 'Return to Operations' : (returnsToMarketing ? 'Return to Marketing' : 'Return to divisions'));
+        divisionReturn.dataset.i18nAriaLabel = ariaKey;
+        divisionReturn.textContent = translations[currentLang]?.[translationKey] || (returnsToOperations ? 'Operations' : (returnsToMarketing ? 'Marketing' : 'Return'));
+        divisionReturn.setAttribute('aria-label', translations[currentLang]?.[ariaKey] || 'Return');
       }
 
       applyInternalRouteProtection(nextRoute);
@@ -17761,6 +18073,11 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
         if (translations[lang][key]) element.setAttribute('placeholder', translations[lang][key]);
       });
 
+      document.querySelectorAll('[data-i18n-aria-label]').forEach(element => {
+        const key = element.dataset.i18nAriaLabel;
+        if (translations[lang][key]) element.setAttribute('aria-label', translations[lang][key]);
+      });
+
       updateLangControls(lang);
       document.querySelectorAll('[data-delete-owned-entry]').forEach(button => {
         button.textContent = translations[lang]?.['dashboard.delete'] || button.textContent;
@@ -17783,6 +18100,7 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
         renderSlackIntegration();
         renderHomeOverview();
         refreshDashboardLanguage();
+        window.MainHubMarketing?.setLanguage?.(lang);
         mainhubSearchTrigger?.setAttribute('aria-label', mainhubSearchText('search.aria','Search MainHub'));
         if (MainHubSearchRuntime.open) {
           renderMainHubSearchResults();
@@ -17792,6 +18110,11 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
         }
       });
     }
+
+    window.MainHubI18n = {
+      get language() { return currentLang; },
+      text(key, fallback = '') { return translations[currentLang]?.[key] || fallback; }
+    };
 
     function detectDefaultLanguage() {
       try {
@@ -21964,6 +22287,6 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
       }, { once: true });
     }
   </script>
-  <script src="marketing-workspace.js?v=2"></script>
+  <script src="marketing-workspace.js?v=6"></script>
 </body>
 </html>
