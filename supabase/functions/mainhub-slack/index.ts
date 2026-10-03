@@ -264,6 +264,49 @@ function calendarReminderTime(event: Json) {
   return [start, end].filter(Boolean).join('\u2013') || 'Time not set'
 }
 
+function buildCalendarReminderMessage(events: Json[], date: string, baseUrl: string, test = false) {
+  const lines = events.slice(0, 30).map(event => {
+    const repeat = event.repeat_rule && event.repeat_rule !== 'none' ? ` \u00b7 ${titleCase(event.repeat_rule)}` : ''
+    return `\u2022 *${String(event.title || 'Untitled event')}* \u2014 ${calendarReminderTime(event)}${repeat}`
+  })
+  if (events.length > 30) lines.push(`\u2022 _${events.length - 30} more events are available in MainHub_`)
+  const calendarUrl = `${String(baseUrl || '').replace(/\/$/, '')}/index.html#divisions/operations/calendar`
+  const blocks: Json[] = [
+    { type: 'header', text: { type: 'plain_text', text: test ? 'MOSCATELLI \u00b7 Calendar Reminder Test' : 'MOSCATELLI \u00b7 Today\u2019s Calendar', emoji: false } },
+    { type: 'section', text: { type: 'mrkdwn', text: test ? `Preview of the calendar reminder for ${date}.` : 'Good morning. Here\u2019s what is scheduled for today.' } },
+    { type: 'section', text: { type: 'mrkdwn', text: lines.join('\n') } },
+    { type: 'context', elements: [{ type: 'mrkdwn', text: `${events.length} ${events.length === 1 ? 'event' : 'events'} \u00b7 ${date} \u00b7 Rome` }] },
+    { type: 'actions', elements: [{ type: 'button', text: { type: 'plain_text', text: 'Open calendar', emoji: false }, url: calendarUrl, action_id: 'open_calendar' }] },
+  ]
+  const summary = `${events.length} ${events.length === 1 ? 'event' : 'events'} ${test ? `for ${date}` : 'today'}`
+  return {
+    text: test ? `MOSCATELLI calendar reminder test \u00b7 ${summary}` : `MOSCATELLI calendar \u00b7 ${summary}`,
+    blocks,
+  }
+}
+
+async function calendarReminderTest(body: Json) {
+  const previewDate = String(body.preview_date || '')
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(previewDate) || new Date(`${previewDate}T00:00:00.000Z`).toISOString().slice(0, 10) !== previewDate) {
+    throw new Error('invalid_preview_date')
+  }
+  const settings = await getSettings()
+  const { data, error } = await admin.rpc('calendar_events_for_date', { p_date: previewDate })
+  if (error) throw error
+  const events = (data || []) as Json[]
+  if (!events.length) return { ok: true, skipped: 'no_events_for_preview_date', date: previewDate }
+  const route = await getRoute('testing')
+  const message = buildCalendarReminderMessage(events, previewDate, settings.mainhub_base_url, true)
+  const posted = await slackApi('chat.postMessage', {
+    channel: route.channel_id,
+    text: message.text,
+    blocks: message.blocks,
+    unfurl_links: false,
+    unfurl_media: false,
+  })
+  return { ok: true, preview: true, channel: route.channel_name, count: events.length, ts: posted.ts }
+}
+
 async function calendarReminderTick(settings: Json, local: { date: string, hour: string }) {
   const reminderHour = String(settings.calendar_reminder_local_time || '08:00').slice(0, 2)
   if (local.hour !== reminderHour) return { ok: true, skipped: 'outside_calendar_reminder_hour' }
@@ -301,23 +344,11 @@ async function calendarReminderTick(settings: Json, local: { date: string, hour:
     }
 
     const route = await getRoute('operations')
-    const lines = events.slice(0, 30).map(event => {
-      const repeat = event.repeat_rule && event.repeat_rule !== 'none' ? ` \u00b7 ${titleCase(event.repeat_rule)}` : ''
-      return `\u2022 *${String(event.title || 'Untitled event')}* \u2014 ${calendarReminderTime(event)}${repeat}`
-    })
-    if (events.length > 30) lines.push(`\u2022 _${events.length - 30} more events are available in MainHub_`)
-    const calendarUrl = `${String(settings.mainhub_base_url || '').replace(/\/$/, '')}/index.html#divisions/operations/calendar`
-    const blocks: Json[] = [
-      { type: 'header', text: { type: 'plain_text', text: 'MOSCATELLI \u00b7 Today\u2019s Calendar', emoji: false } },
-      { type: 'section', text: { type: 'mrkdwn', text: 'Good morning. Here\u2019s what is scheduled for today.' } },
-      { type: 'section', text: { type: 'mrkdwn', text: lines.join('\n') } },
-      { type: 'context', elements: [{ type: 'mrkdwn', text: `${events.length} ${events.length === 1 ? 'event' : 'events'} \u00b7 ${local.date} \u00b7 Rome` }] },
-      { type: 'actions', elements: [{ type: 'button', text: { type: 'plain_text', text: 'Open calendar', emoji: false }, url: calendarUrl, action_id: 'open_calendar' }] },
-    ]
+    const message = buildCalendarReminderMessage(events, local.date, settings.mainhub_base_url)
     const posted = await slackApi('chat.postMessage', {
       channel: route.channel_id,
-      text: `MOSCATELLI calendar \u00b7 ${events.length} ${events.length === 1 ? 'event' : 'events'} today`,
-      blocks,
+      text: message.text,
+      blocks: message.blocks,
       unfurl_links: false,
       unfurl_media: false,
     })
@@ -672,6 +703,10 @@ Deno.serve(async req => {
     const body = rawBody ? JSON.parse(rawBody) : {}
     if (body.kind === 'client_test') return response(await clientTest(req))
     if (body.kind === 'email_digest') return response(await emailInboxDigest(body))
+    if (body.kind === 'calendar_reminder_test') {
+      if (!SHARED_SECRET || !timingSafeEqual(req.headers.get('x-mainhub-secret') || '', SHARED_SECRET)) return response({ error: 'unauthorized' }, 401)
+      return response(await calendarReminderTest(body))
+    }
     if (body.kind === 'atlas_deployment') {
       if (!ATLAS_DEPLOY_SECRET || !timingSafeEqual(req.headers.get('x-atlas-secret') || '', ATLAS_DEPLOY_SECRET)) return response({ error: 'unauthorized' }, 401)
       return response(await atlasDeployment(body))
