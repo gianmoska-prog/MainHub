@@ -102,7 +102,7 @@ function titleCase(value: unknown) {
 
 function money(value: unknown, currency: unknown) {
   const amount = Number(value)
-  if (!Number.isFinite(amount)) return '—'
+  if (!Number.isFinite(amount)) return '\u2014'
   try { return new Intl.NumberFormat('en-GB', { style: 'currency', currency: String(currency || 'EUR') }).format(amount) } catch { return `${amount.toFixed(2)} ${currency || ''}`.trim() }
 }
 
@@ -140,9 +140,9 @@ function entityFields(entityType: string, entity: Json | null) {
   } else if (entityType === 'calendar') {
     add('Date', entity.event_date)
     add('Category', titleCase(entity.category))
-    add('Time', entity.all_day ? 'All day' : [entity.start_time, entity.end_time].filter(Boolean).join('–'))
+    add('Time', entity.all_day ? 'All day' : [entity.start_time, entity.end_time].filter(Boolean).join('\u2013'))
     if (entity.repeat_rule && entity.repeat_rule !== 'none') {
-      add('On repeat', `${titleCase(entity.repeat_rule)}${entity.repeat_until ? ` · until ${entity.repeat_until}` : ''}`)
+      add('On repeat', `${titleCase(entity.repeat_rule)}${entity.repeat_until ? ` \u00b7 until ${entity.repeat_until}` : ''}`)
     }
     add('Notes', entity.notes)
   } else if (entityType === 'project') {
@@ -191,14 +191,14 @@ function buildSlackMessage(activity: Json, entity: Json | null, baseUrl: string)
   const route = mainhubRoute(entityType)
   const url = `${baseUrl.replace(/\/$/, '')}/index.html#${route}`
   const eyebrow = entityType === 'decision' ? 'DECISION' : entityType.toUpperCase()
-  const fallback = `${eyebrow} · ${label} · ${titleCase(action)} by ${actor}`
+  const fallback = `${eyebrow} \u00b7 ${label} \u00b7 ${titleCase(action)} by ${actor}`
   const blocks: Json[] = [
-    { type: 'header', text: { type: 'plain_text', text: `MOSCATELLI · ${eyebrow}`, emoji: false } },
+    { type: 'header', text: { type: 'plain_text', text: `MOSCATELLI \u00b7 ${eyebrow}`, emoji: false } },
     { type: 'section', text: { type: 'mrkdwn', text: `*${label}*\n${titleCase(action)} by ${actor}` } },
   ]
   const fields = entityFields(entityType, entity)
   if (fields.length) blocks.push({ type: 'section', fields })
-  blocks.push({ type: 'context', elements: [{ type: 'mrkdwn', text: `Private Hub · ${new Date(String(activity.created_at || Date.now())).toLocaleString('en-GB', { timeZone: 'Europe/Rome', dateStyle: 'medium', timeStyle: 'short' })}` }] })
+  blocks.push({ type: 'context', elements: [{ type: 'mrkdwn', text: `Private Hub \u00b7 ${new Date(String(activity.created_at || Date.now())).toLocaleString('en-GB', { timeZone: 'Europe/Rome', dateStyle: 'medium', timeStyle: 'short' })}` }] })
   const elements: Json[] = [{ type: 'button', text: { type: 'plain_text', text: 'Open in MainHub', emoji: false }, url, action_id: 'open_mainhub', value: actionValue(entityType, entityId) }]
   if (entityId) elements.push({ type: 'button', text: { type: 'plain_text', text: 'Add comment', emoji: false }, action_id: 'comment_entity', value: actionValue(entityType, entityId) })
   if (entityType === 'decision' && entityId) elements.push({ type: 'button', text: { type: 'plain_text', text: 'Acknowledge', emoji: false }, style: 'primary', action_id: 'ack_decision', value: actionValue(entityType, entityId) })
@@ -261,7 +261,7 @@ function calendarReminderTime(event: Json) {
   if (event.all_day) return 'All day'
   const start = String(event.start_time || '').slice(0, 5)
   const end = String(event.end_time || '').slice(0, 5)
-  return [start, end].filter(Boolean).join('–') || 'Time not set'
+  return [start, end].filter(Boolean).join('\u2013') || 'Time not set'
 }
 
 async function calendarReminderTick(settings: Json, local: { date: string, hour: string }) {
@@ -302,21 +302,21 @@ async function calendarReminderTick(settings: Json, local: { date: string, hour:
 
     const route = await getRoute('operations')
     const lines = events.slice(0, 30).map(event => {
-      const repeat = event.repeat_rule && event.repeat_rule !== 'none' ? ` · ${titleCase(event.repeat_rule)}` : ''
-      return `• *${String(event.title || 'Untitled event')}* — ${calendarReminderTime(event)}${repeat}`
+      const repeat = event.repeat_rule && event.repeat_rule !== 'none' ? ` \u00b7 ${titleCase(event.repeat_rule)}` : ''
+      return `\u2022 *${String(event.title || 'Untitled event')}* \u2014 ${calendarReminderTime(event)}${repeat}`
     })
-    if (events.length > 30) lines.push(`• _${events.length - 30} more events are available in MainHub_`)
+    if (events.length > 30) lines.push(`\u2022 _${events.length - 30} more events are available in MainHub_`)
     const calendarUrl = `${String(settings.mainhub_base_url || '').replace(/\/$/, '')}/index.html#divisions/operations/calendar`
     const blocks: Json[] = [
-      { type: 'header', text: { type: 'plain_text', text: 'MOSCATELLI · Today’s Calendar', emoji: false } },
-      { type: 'section', text: { type: 'mrkdwn', text: 'Good morning. Here’s what is scheduled for today.' } },
+      { type: 'header', text: { type: 'plain_text', text: 'MOSCATELLI \u00b7 Today\u2019s Calendar', emoji: false } },
+      { type: 'section', text: { type: 'mrkdwn', text: 'Good morning. Here\u2019s what is scheduled for today.' } },
       { type: 'section', text: { type: 'mrkdwn', text: lines.join('\n') } },
-      { type: 'context', elements: [{ type: 'mrkdwn', text: `${events.length} ${events.length === 1 ? 'event' : 'events'} · ${local.date} · Rome` }] },
+      { type: 'context', elements: [{ type: 'mrkdwn', text: `${events.length} ${events.length === 1 ? 'event' : 'events'} \u00b7 ${local.date} \u00b7 Rome` }] },
       { type: 'actions', elements: [{ type: 'button', text: { type: 'plain_text', text: 'Open calendar', emoji: false }, url: calendarUrl, action_id: 'open_calendar' }] },
     ]
     const posted = await slackApi('chat.postMessage', {
       channel: route.channel_id,
-      text: `MOSCATELLI calendar · ${events.length} ${events.length === 1 ? 'event' : 'events'} today`,
+      text: `MOSCATELLI calendar \u00b7 ${events.length} ${events.length === 1 ? 'event' : 'events'} today`,
       blocks,
       unfurl_links: false,
       unfurl_media: false,
@@ -377,14 +377,14 @@ async function digestTick() {
     const route = await getRoute('updates')
     const lines = items.slice(0, 35).map(item => {
       const payload = item.payload || {}
-      return `• *${payload.entity_label || titleCase(payload.entity_type)}* — ${titleCase(payload.action)} by ${payload.actor_display || 'MOSCATELLI'}`
+      return `\u2022 *${payload.entity_label || titleCase(payload.entity_type)}* \u2014 ${titleCase(payload.action)} by ${payload.actor_display || 'MOSCATELLI'}`
     })
     const blocks: Json[] = [
-      { type: 'header', text: { type: 'plain_text', text: 'MOSCATELLI · Daily Update', emoji: false } },
+      { type: 'header', text: { type: 'plain_text', text: 'MOSCATELLI \u00b7 Daily Update', emoji: false } },
       { type: 'section', text: { type: 'mrkdwn', text: lines.join('\n') } },
-      { type: 'context', elements: [{ type: 'mrkdwn', text: `${items.length} routine ${items.length === 1 ? 'change' : 'changes'} · Open MainHub for full detail` }] },
+      { type: 'context', elements: [{ type: 'mrkdwn', text: `${items.length} routine ${items.length === 1 ? 'change' : 'changes'} \u00b7 Open MainHub for full detail` }] },
     ]
-    const posted = await slackApi('chat.postMessage', { channel: route.channel_id, text: `MOSCATELLI daily update · ${items.length} changes`, blocks })
+    const posted = await slackApi('chat.postMessage', { channel: route.channel_id, text: `MOSCATELLI daily update \u00b7 ${items.length} changes`, blocks })
     await admin.from('slack_outbox').update({ status: 'sent', sent_at: new Date().toISOString(), slack_channel_id: route.channel_id, slack_message_ts: posted.ts }).in('id', items.map(item => item.id))
     await admin.from('slack_digest_runs').update({ status: 'sent', sent_at: new Date().toISOString(), item_count: items.length, slack_channel_id: route.channel_id, slack_message_ts: posted.ts }).eq('digest_date', local.date)
     return { ok: true, count: items.length }
@@ -531,7 +531,7 @@ async function handleSlashCommand(form: URLSearchParams) {
     await openCalendarModal(triggerId)
     return response('')
   }
-  return response({ response_type: 'ephemeral', text: '*MOSCATELLI MainHub*\n`/mainhub record` — create a Record entry\n`/mainhub calendar` — create an all-day calendar event\nInteractive buttons on MainHub notifications handle acknowledgements, comments, milestones and project status.' })
+  return response({ response_type: 'ephemeral', text: '*MOSCATELLI MainHub*\n`/mainhub record` \u2014 create a Record entry\n`/mainhub calendar` \u2014 create an all-day calendar event\nInteractive buttons on MainHub notifications handle acknowledgements, comments, milestones and project status.' })
 }
 
 async function verifyMainHubUser(req: Request) {
@@ -567,16 +567,16 @@ async function emailInboxDigest(body: Json) {
     { type: 'mrkdwn', text: `*Marcella*\n${unread(counts.marcella)}` },
   ]
   const blocks: Json[] = [
-    { type: 'header', text: { type: 'plain_text', text: 'MOSCATELLI · Email Inbox', emoji: false } },
+    { type: 'header', text: { type: 'plain_text', text: 'MOSCATELLI \u00b7 Email Inbox', emoji: false } },
     { type: 'section', text: { type: 'mrkdwn', text: greeting } },
     { type: 'section', fields },
     { type: 'divider' },
-    { type: 'section', text: { type: 'mrkdwn', text: `*Total*  ·  ${total === 1 ? '1 unread message' : `${total} unread messages`}` } },
-    { type: 'context', elements: [{ type: 'mrkdwn', text: `Last checked at ${checkedAt} · Rome` }] },
+    { type: 'section', text: { type: 'mrkdwn', text: `*Total*  \u00b7  ${total === 1 ? '1 unread message' : `${total} unread messages`}` } },
+    { type: 'context', elements: [{ type: 'mrkdwn', text: `Last checked at ${checkedAt} \u00b7 Rome` }] },
   ]
   const posted = await slackApi('chat.postMessage', {
     channel: route.channel_id,
-    text: `MOSCATELLI email inbox status · ${total === 1 ? '1 unread message' : `${total} unread messages`}`,
+    text: `MOSCATELLI email inbox status \u00b7 ${total === 1 ? '1 unread message' : `${total} unread messages`}`,
     blocks,
     unfurl_links: false,
     unfurl_media: false,
@@ -606,9 +606,9 @@ async function atlasDeployment(body: Json) {
   const rawChanges = Array.isArray(body.changes) ? body.changes : []
   const changes = rawChanges.map(item => String(item || '').trim()).filter(Boolean).slice(0, 12)
   const grouped = [...new Set(changes.map(atlasChangeLabel))]
-  const fallback = `MOSCATELLI Atlas updated · ${headline}`
+  const fallback = `MOSCATELLI Atlas updated \u00b7 ${headline}`
   const blocks: Json[] = [
-    { type: 'header', text: { type: 'plain_text', text: 'MOSCATELLI · Atlas Update', emoji: false } },
+    { type: 'header', text: { type: 'plain_text', text: 'MOSCATELLI \u00b7 Atlas Update', emoji: false } },
     { type: 'section', text: { type: 'mrkdwn', text: `*${headline}*${summary ? `\n${summary}` : ''}` } },
   ]
   if (grouped.length) {
@@ -617,7 +617,7 @@ async function atlasDeployment(body: Json) {
       fields: grouped.slice(0, 6).map(label => ({ type: 'mrkdwn', text: `*${label}*\nUpdated` })),
     })
   }
-  blocks.push({ type: 'context', elements: [{ type: 'mrkdwn', text: `Published by ${author}${sha ? ` · ${sha.slice(0, 7)}` : ''} · Production` }] })
+  blocks.push({ type: 'context', elements: [{ type: 'mrkdwn', text: `Published by ${author}${sha ? ` \u00b7 ${sha.slice(0, 7)}` : ''} \u00b7 Production` }] })
   const actions: Json[] = [
     { type: 'button', text: { type: 'plain_text', text: 'Open Atlas', emoji: false }, url: atlasUrl, action_id: 'open_atlas' },
   ]
@@ -639,11 +639,11 @@ async function clientTest(req: Request) {
   const route = await getRoute('testing')
   const posted = await slackApi('chat.postMessage', {
     channel: route.channel_id,
-    text: 'MOSCATELLI MainHub · Slack connection test',
+    text: 'MOSCATELLI MainHub \u00b7 Slack connection test',
     blocks: [
-      { type: 'header', text: { type: 'plain_text', text: 'MOSCATELLI · Connection Test', emoji: false } },
+      { type: 'header', text: { type: 'plain_text', text: 'MOSCATELLI \u00b7 Connection Test', emoji: false } },
       { type: 'section', text: { type: 'mrkdwn', text: `MainHub and Slack are communicating securely.\nInitiated by *${profile.display_name}*.` } },
-      { type: 'context', elements: [{ type: 'mrkdwn', text: 'Testing channel · No production notification was sent' }] },
+      { type: 'context', elements: [{ type: 'mrkdwn', text: 'Testing channel \u00b7 No production notification was sent' }] },
     ],
   })
   return { ok: true, channel: route.channel_name, ts: posted.ts }
