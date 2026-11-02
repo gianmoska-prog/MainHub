@@ -1,4 +1,4 @@
-const CACHE_NAME = 'moscatelli-shell-40-marketing-i18n-polish';
+const CACHE_NAME = 'moscatelli-shell-41-dashboard-video';
 const SHELL_ASSETS = [
   './',
   './index.html',

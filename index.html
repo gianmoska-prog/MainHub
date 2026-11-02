@@ -1520,6 +1520,27 @@ body.is-dashboard-composing #dashboardFilterMenu,
       margin-top: 10px;
     }
 
+    .dashboard-attachment.is-video { grid-column: span 2; }
+    .dashboard-attachment video {
+      display: block;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 16 / 9;
+      max-height: 440px;
+      object-fit: contain;
+      background: #080706;
+    }
+    .dashboard-attachment.is-video .dashboard-attachment-label {
+      position: static;
+      display: block;
+      padding: 8px 10px;
+      font-size: 12px;
+    }
+    .dashboard-video-error { padding: 12px; font-size: 13px; line-height: 1.5; }
+    @media (max-width: 600px) {
+      .dashboard-attachment.is-video { grid-column: 1 / -1; }
+    }
+
     .dashboard-attachment {
       position: relative;
       min-height: 54px;
@@ -11403,10 +11424,10 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
           <textarea class="dashboard-textarea" id="dashboardEntryBody" data-i18n-placeholder="dashboard.bodyPlaceholder" placeholder="Write an internal note..."></textarea>
           <div class="dashboard-upload-row">
             <label class="dashboard-upload">
-              <input id="dashboardAttachmentInput" type="file" accept="image/*" multiple>
-              <span class="i18n-text" data-i18n="dashboard.attach">Attach images</span>
+              <input id="dashboardAttachmentInput" type="file" accept="image/*,video/mp4,video/webm,.mp4,.m4v,.webm" multiple>
+              <span class="i18n-text" data-i18n="dashboard.attach">Attach file</span>
             </label>
-            <span class="dashboard-upload-note i18n-text" data-i18n="dashboard.resizeNote">Images may be resized before upload and then attached to the entry.</span>
+            <span class="dashboard-upload-note i18n-text" data-i18n="dashboard.resizeNote">Images are optimised. MP4 / WebM videos up to 50 MB play here in the dashboard.</span>
             <button class="dashboard-commit i18n-text" id="dashboardCommitEntry" type="button" data-i18n="dashboard.commit">Send</button>
           </div>
           <div class="dashboard-attachments" id="dashboardAttachments" aria-live="polite"></div>
@@ -12482,6 +12503,7 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
       defaultCategory: 'meetings',
       defaultChannel: 'record',
       maxAttachments: 4,
+      maxVideoBytes: 50 * 1024 * 1024,
       allowAttachmentOnlyEntries: false,
       fallbackPreviewMaxBytes: 320 * 1024,
       realtimeEvent: 'postgres_changes',
@@ -13250,7 +13272,8 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
           .replace(/^-+|-+$/g, '')
           .slice(0, 54) || `attachment-${index + 1}`;
 
-        return `${Date.now()}-${index + 1}-${base}.jpg`;
+        const extension = ({ 'video/mp4': 'mp4', 'video/webm': 'webm' })[item.mime_type] || 'jpg';
+        return `${Date.now()}-${index + 1}-${base}.${extension}`;
       }
 
       async function signedAttachmentUrl(client, path) {
@@ -13311,6 +13334,8 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
       }
 
       async function persistAttachmentPreviewFallback(client, post, item, path, failure) {
+        // Videos stay in private Storage, never in a base64 database preview.
+        if (item.mime_type?.startsWith('video/')) throw failure || new Error('Video upload failed.');
         const maxFallbackBytes = DASHBOARD_DATA_CONFIG.fallbackPreviewMaxBytes || 0;
         const fallbackSize = Number(item.blob?.size || item.resized_size || 0);
 
@@ -14553,7 +14578,7 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
         'dashboard.localOnly': 'Private note',
         'dashboard.titlePlaceholder': 'Title',
         'dashboard.bodyPlaceholder': 'Write an internal note...',
-        'dashboard.attach': 'Attach images',
+        'dashboard.attach': 'Attach file',
         'dashboard.attachLimit': 'Up to four attachments may be added.',
         'dashboard.commit': 'Send',
         'dashboard.recording': 'Sending…',
@@ -14566,7 +14591,10 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
         'dashboard.feedback.attachFallback': 'Entry saved. One attachment used the backup preview method.',
         'dashboard.feedback.attachRollback': 'The entry was not saved because its attachment could not be added. Please try again.',
         'dashboard.feedback.attachRollbackDetail': 'The entry was not saved because its attachment could not be added.',
-        'dashboard.feedback.attachInvalid': 'Only image files may be attached.',
+        'dashboard.feedback.attachInvalid': 'Choose an image or an MP4 / WebM video.',
+        'dashboard.feedback.videoSize': 'This video exceeds 50 MB. Export a smaller MP4 or WebM and try again.',
+        'dashboard.videoPlaybackError': 'This video cannot play in this browser. Try an MP4 encoded with H.264.',
+        'dashboard.removeAttachment': 'Remove attachment',
         'dashboard.feedback.attachLimit': 'Only four attachments may be added.',
         'dashboard.feedback.attachResize': 'One attachment could not be prepared for preview.',
         'dashboard.feedback.processing': 'Sending the note…',
@@ -14588,7 +14616,7 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
         'dashboard.authorLocal': 'Local draft · Not saved',
         'dashboard.authorSupabase': 'Sent',
         'dashboard.authorBy': 'Posted by {name}',
-        'dashboard.resizeNote': 'Images may be resized before upload and then attached to the entry.',
+        'dashboard.resizeNote': 'Images are optimised. MP4 / WebM videos up to 50 MB play here in the dashboard.',
         'dashboard.cat.meetings': 'Meetings',
         'dashboard.cat.ideas': 'Ideas',
         'dashboard.cat.decisions': 'Decisions',
@@ -15167,7 +15195,7 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
         'dashboard.localOnly': 'Nota privada',
         'dashboard.titlePlaceholder': 'Título',
         'dashboard.bodyPlaceholder': 'Escreva uma nota interna...',
-        'dashboard.attach': 'Anexar imagens',
+        'dashboard.attach': 'Anexar arquivo',
         'dashboard.attachLimit': 'Até quatro anexos podem ser adicionados.',
         'dashboard.commit': 'Enviar',
         'dashboard.recording': 'Enviando…',
@@ -15180,7 +15208,10 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
         'dashboard.feedback.attachFallback': 'Entrada salva. Um anexo usou o método de pré-visualização de backup.',
         'dashboard.feedback.attachRollback': 'A entrada não foi salva porque o anexo não pôde ser adicionado. Tente novamente.',
         'dashboard.feedback.attachRollbackDetail': 'A entrada não foi salva porque o anexo não pôde ser adicionado.',
-        'dashboard.feedback.attachInvalid': 'Somente imagens podem ser anexadas.',
+        'dashboard.feedback.attachInvalid': 'Escolha uma imagem ou um vídeo MP4 / WebM.',
+        'dashboard.feedback.videoSize': 'Este vídeo excede 50 MB. Exporte um MP4 ou WebM menor e tente novamente.',
+        'dashboard.videoPlaybackError': 'Este vídeo não pode ser reproduzido neste navegador. Tente um MP4 com codificação H.264.',
+        'dashboard.removeAttachment': 'Remover anexo',
         'dashboard.feedback.attachLimit': 'Somente quatro anexos podem ser adicionados.',
         'dashboard.feedback.attachResize': 'Um anexo não pôde ser preparado para pré-visualização.',
         'dashboard.feedback.processing': 'Enviando a nota…',
@@ -15202,7 +15233,7 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
         'dashboard.authorLocal': 'Rascunho local · Não salvo',
         'dashboard.authorSupabase': 'Salvo',
         'dashboard.authorBy': 'Publicado por {name}',
-        'dashboard.resizeNote': 'As imagens podem ser redimensionadas antes do envio e depois anexadas à entrada.',
+        'dashboard.resizeNote': 'As imagens são otimizadas. Vídeos MP4 / WebM de até 50 MB são reproduzidos aqui no painel.',
         'dashboard.cat.meetings': 'Reuniões',
         'dashboard.cat.ideas': 'Ideias',
         'dashboard.cat.decisions': 'Decisões',
@@ -20431,6 +20462,7 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
     const dashboardDeleteConfirm = document.getElementById('dashboardDeleteConfirm');
     let dashboardLocalAttachments = [];
     let dashboardCommitInFlight = false;
+    let dashboardAttachmentsPreparing = false;
     let recordAttachmentViewerItems = [];
     let recordAttachmentViewerIndex = 0;
     let recordAttachmentViewerLastFocus = null;
@@ -20865,7 +20897,7 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
           if (rationaleLabel) rationaleLabel.textContent = dashboardActivityText('dashboard.decision.rationale', 'Rationale');
         }
 
-        post.querySelectorAll('.dashboard-attachment-open').forEach((button, index) => {
+        post.querySelectorAll('.dashboard-post-attachments > .dashboard-attachment').forEach((button, index) => {
           const label = formatAttachmentLabel(index);
           const caption = button.querySelector('.dashboard-attachment-label');
           if (caption) caption.textContent = label;
@@ -21140,7 +21172,7 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
 
     async function refreshDashboardAttachmentPreview(attachmentElement) {
       const path = attachmentElement?.dataset.attachmentPath;
-      const img = attachmentElement?.querySelector('img');
+      const img = attachmentElement?.querySelector('img, video');
       const currentUrl = attachmentElement?.dataset.previewUrl || img?.currentSrc || img?.src || '';
       if (!path || attachmentElement.dataset.refreshing === 'true' || (currentUrl && attachmentElement.dataset.failedPreviewUrl === currentUrl)) return '';
 
@@ -21434,9 +21466,10 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
 
         record.attachments.forEach((item, index) => {
           const attachmentLabel = formatAttachmentLabel(index);
-          const attachment = document.createElement('button');
-          attachment.className = 'dashboard-attachment dashboard-attachment-open';
-          attachment.type = 'button';
+          const isVideo = item.mime_type?.startsWith('video/');
+          const attachment = document.createElement(isVideo ? 'div' : 'button');
+          attachment.className = `dashboard-attachment ${isVideo ? 'is-video' : 'dashboard-attachment-open'}`;
+          if (!isVideo) attachment.type = 'button';
           attachment.dataset.attachmentId = item.id || '';
           attachment.dataset.attachmentPath = item.path || '';
           attachment.dataset.previewUrl = item.preview_url || '';
@@ -21447,7 +21480,43 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
           attachment.dataset.recordDate = formatLedgerDate(createdAt);
           attachment.setAttribute('aria-label', attachmentLabel);
 
-          if (item.preview_url) {
+          if (isVideo) {
+            const video = document.createElement('video');
+            video.controls = true;
+            video.playsInline = true;
+            video.preload = 'none';
+            video.setAttribute('aria-label', `${record.title || attachmentLabel} — video`);
+            if (item.preview_url) video.src = item.preview_url;
+            let refreshed = false;
+            video.addEventListener('error', async () => {
+              if (!refreshed && item.path) {
+                refreshed = true;
+                if (await refreshDashboardAttachmentPreview(attachment)) return;
+              }
+              if (!attachment.querySelector('.dashboard-video-error')) {
+                const error = document.createElement('div');
+                error.className = 'dashboard-video-error i18n-text';
+                error.dataset.i18n = 'dashboard.videoPlaybackError';
+                error.textContent = dashboardFeedbackText('dashboard.videoPlaybackError', 'This video cannot play in this browser. Try an MP4 encoded with H.264.');
+                attachment.appendChild(error);
+              }
+            });
+            // Refresh expiring private links before a later playback attempt.
+            const renderedAt = Date.now();
+            video.addEventListener('play', async () => {
+              if (Date.now() - renderedAt > 50 * 60 * 1000 && !refreshed) {
+                refreshed = true;
+                const position = video.currentTime;
+                if (await refreshDashboardAttachmentPreview(attachment)) {
+                  video.addEventListener('loadedmetadata', () => {
+                    video.currentTime = position;
+                    video.play().catch(() => {});
+                  }, { once: true });
+                }
+              }
+            });
+            attachment.appendChild(video);
+          } else if (item.preview_url) {
             const img = document.createElement('img');
             img.src = item.preview_url;
             img.alt = '';
@@ -21758,7 +21827,7 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
     }
 
     dashboardCommitEntry?.addEventListener('click', () => {
-      if (dashboardCommitInFlight) return;
+      if (dashboardCommitInFlight || dashboardAttachmentsPreparing) return;
 
       const payload = dashboardRecordFromComposer();
       if (!validateDashboardRecord(payload)) return;
@@ -21981,6 +22050,26 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
       };
     }
 
+    function dashboardVideoMime(file) {
+      if (/\.webm$/i.test(file.name) || file.type === 'video/webm') return 'video/webm';
+      if (/\.(mp4|m4v)$/i.test(file.name) || file.type === 'video/mp4') return 'video/mp4';
+      return '';
+    }
+
+    async function prepareDashboardAttachment(file) {
+      const mimeType = dashboardVideoMime(file);
+      if (!mimeType) return resizeDashboardImage(file);
+      if (file.size > DASHBOARD_DATA_CONFIG.maxVideoBytes) {
+        const error = new Error('video_size_limit');
+        error.code = 'video_size_limit';
+        throw error;
+      }
+      return {
+        blob: file, url: URL.createObjectURL(file), originalSize: file.size,
+        resizedSize: file.size, mimeType, fileName: file.name
+      };
+    }
+
     function formatBytes(bytes) {
       if (!bytes) return '0 KB';
       const kb = bytes / 1024;
@@ -21998,18 +22087,26 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
         item.className = 'dashboard-attachment';
         item.dataset.attachmentIndex = String(index);
 
-        const img = document.createElement('img');
+        const isVideo = attachment.mimeType?.startsWith('video/');
+        item.classList.toggle('is-video', isVideo);
+        const img = document.createElement(isVideo ? 'video' : 'img');
+        if (isVideo) {
+          img.controls = true;
+          img.playsInline = true;
+          img.preload = 'metadata';
+        }
         img.src = attachment.url;
         img.alt = '';
 
         const label = document.createElement('span');
-        label.textContent = `${formatBytes(attachment.originalSize)} → ${formatBytes(attachment.resizedSize)}`;
+        label.className = 'dashboard-attachment-label';
+        label.textContent = isVideo ? `${attachment.fileName} · ${formatBytes(attachment.resizedSize)}` : `${formatBytes(attachment.originalSize)} → ${formatBytes(attachment.resizedSize)}`;
 
         const remove = document.createElement('button');
         remove.className = 'dashboard-attachment-remove';
         remove.type = 'button';
         remove.dataset.removeAttachment = String(index);
-        remove.setAttribute('aria-label', 'Remove attachment');
+        remove.setAttribute('aria-label', dashboardFeedbackText('dashboard.removeAttachment', 'Remove attachment'));
         remove.textContent = '×';
 
         item.append(img, label, remove);
@@ -22069,12 +22166,13 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
     });
 
     dashboardAttachmentInput?.addEventListener('change', async event => {
+      if (dashboardCommitInFlight || dashboardAttachmentsPreparing) return;
       const selectedFiles = Array.from(event.target.files || []);
-      const files = selectedFiles.filter(file => file.type.startsWith('image/'));
+      const files = selectedFiles.filter(file => file.type.startsWith('image/') || dashboardVideoMime(file));
 
       if (selectedFiles.length && files.length < selectedFiles.length) {
         setDashboardComposerFeedback(
-          dashboardFeedbackText('dashboard.feedback.attachInvalid', 'Only image files may be attached.'),
+          dashboardFeedbackText('dashboard.feedback.attachInvalid', 'Choose an image or an MP4 / WebM video.'),
           'warning'
         );
       }
@@ -22102,13 +22200,18 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
         );
       }
 
+      dashboardAttachmentsPreparing = true;
+      dashboardAttachmentInput.disabled = true;
+      dashboardCommitEntry.disabled = true;
       for (const file of acceptedFiles) {
         try {
-          const resized = await resizeDashboardImage(file);
+          const resized = await prepareDashboardAttachment(file);
           dashboardLocalAttachments.push(resized);
         } catch (error) {
           setDashboardComposerFeedback(
-            dashboardFeedbackText('dashboard.feedback.attachResize', 'One attachment could not be prepared for preview.'),
+            error.code === 'video_size_limit'
+              ? dashboardFeedbackText('dashboard.feedback.videoSize', 'This video exceeds 50 MB. Export a smaller MP4 or WebM and try again.')
+              : dashboardFeedbackText('dashboard.feedback.attachResize', 'One attachment could not be prepared for preview.'),
             'warning'
           );
           window.dispatchEvent(new CustomEvent('moscatelli:record-attachment-resize-error', { detail: { error: publicErrorDetail(error), fileName: file.name } }));
@@ -22116,6 +22219,10 @@ body.internal-unlocked[data-route^="divisions"] .internal-session-user {
       }
 
       renderDashboardAttachments();
+
+      dashboardAttachmentsPreparing = false;
+      dashboardAttachmentInput.disabled = false;
+      dashboardCommitEntry.disabled = false;
 
       if (dashboardAttachmentInput) dashboardAttachmentInput.value = '';
     });
